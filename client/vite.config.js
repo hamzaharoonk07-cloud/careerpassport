@@ -4,6 +4,10 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   server: {
+    // Bound to every interface, not just loopback. Without this Vite
+    // listens on [::1] alone and a phone on the same Wi-Fi cannot reach
+    // the dev server at all — every request simply fails to connect.
+    host: true,
     port: 5273,
     strictPort: true,
     proxy: {

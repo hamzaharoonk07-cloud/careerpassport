@@ -42,6 +42,7 @@ export function ScrollFilm({
   const raf = useRef(null);
   const target = useRef(0);
   const current = useRef(0);
+  const lastScroll = useRef(0);
 
   const [ready, setReady] = useState(false);
   const [scrubbable, setScrubbable] = useState(false);
@@ -110,6 +111,7 @@ export function ScrollFilm({
 
     const onScroll = () => {
       target.current = Math.min(1, Math.max(0, (window.scrollY - top) / scrollable));
+      lastScroll.current = performance.now();
     };
 
     // Named, so the same reference can be removed again.
@@ -138,20 +140,70 @@ export function ScrollFilm({
   useEffect(() => {
     if (!scrubbable || !ready) return undefined;
 
-    const minGap = narrow ? 45 : 0;      // ms between seeks
-    const epsilon = narrow ? 0.05 : 0.02; // seconds worth ignoring
-    let lastSeek = 0;
+    /* ── Phones: play, do not scrub ───────────────────────────────
+       Seeking is what made this drag. Even rate-limited, every seek asks
+       a phone decoder to jump to an arbitrary frame and rebuild from the
+       nearest keyframe, and the file had to carry a keyframe every six
+       frames to make that bearable — which spent the bitrate on keyframes
+       instead of picture, so it looked poor as well as running badly.
 
+       Scrolling instead drives ordinary forward playback: the video runs
+       while the finger moves and pauses when it stops. Decoding forward is
+       what the hardware is built for. Position is only corrected when the
+       film has drifted well away from the scroll position — scrolling back
+       up, mostly, since video cannot play backwards — and that correction
+       is throttled hard.
+
+       The mobile cut is 720p with a normal GOP now: better picture, and
+       nothing seeks it frame by frame. */
+    if (narrow) {
+      const IDLE_MS = 170;      // finger considered lifted
+      const DRIFT = 0.22;       // fraction of the film before resyncing
+      const RESYNC_GAP = 700;   // ms between corrections
+      let lastResync = 0;
+
+      const tickMobile = (now) => {
+        const v = videoRef.current;
+        if (v && v.duration) {
+          const moving = now - lastScroll.current < IDLE_MS;
+
+          if (moving) {
+            if (v.paused) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+          } else if (!v.paused) {
+            v.pause();
+          }
+
+          const at = v.currentTime / v.duration;
+          if (
+            Math.abs(at - target.current) > DRIFT &&
+            now - lastResync > RESYNC_GAP &&
+            !v.seeking
+          ) {
+            lastResync = now;
+            try { v.currentTime = target.current * v.duration; } catch { /* busy */ }
+          }
+
+          const cs = chaptersRef.current;
+          if (cs.length) {
+            const i = cs.reduce((acc, c, idx) => (target.current >= c.at ? idx : acc), 0);
+            setChapter((prev) => (prev === i ? prev : i));
+          }
+        }
+        raf.current = requestAnimationFrame(tickMobile);
+      };
+
+      raf.current = requestAnimationFrame(tickMobile);
+      return () => cancelAnimationFrame(raf.current);
+    }
+
+    /* ── Pointer devices: true scrub, one seek per frame ─────────── */
     const tick = (now) => {
       const v = videoRef.current;
       if (v && v.duration) {
         current.current += (target.current - current.current) * 0.12;
         const t = current.current * v.duration;
-        // Seeking to a value the decoder already sits on wastes a frame,
-        // and on mobile a seek it is still working on wastes far more.
-        const due = now - lastSeek >= minGap;
-        if (due && !v.seeking && Math.abs(v.currentTime - t) > epsilon) {
-          lastSeek = now;
+        // Seeking to a value the decoder already sits on wastes a frame.
+        if (!v.seeking && Math.abs(v.currentTime - t) > 0.02) {
           try { v.currentTime = t; } catch { /* decoder busy; try next frame */ }
         }
         const cs = chaptersRef.current;

@@ -52,6 +52,18 @@ export default function Briefcase() {
     }, reduced ? 0 : 480);
   };
 
+  // The case opens itself. By the time anyone reaches this page the journey
+  // is finished and the click was only a gate standing in front of the
+  // payoff. The short beat before it fires is deliberate — the closed case
+  // needs to register as a case before the latches let go.
+  useEffect(() => {
+    if (loading || error || open) return undefined;
+    const t = setTimeout(openCase, reduced ? 0 : 700);
+    return () => clearTimeout(t);
+    // openCase is recreated every render; `open` is what actually guards it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, error, open, reduced]);
+
   if (loading) {
     return <main className="bc"><p className="t-low">Fetching your case…</p></main>;
   }

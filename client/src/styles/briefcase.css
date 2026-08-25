@@ -163,6 +163,53 @@
 }
 .bc--open .bc__glow { opacity: 1; }
 
+/* The shaft of light. A soft bloom alone reads as a lamp behind the case;
+   what sells the reference is visible light *escaping* — a cone rising out
+   of the mouth, with harder rays fanning through it.
+
+   Both are one-shot transitions, never loops. An infinite gradient
+   animation is what froze the renderer on the landing page. */
+.bc__glow::before,
+.bc__glow::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 40%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* The cone: narrow at the case mouth, wide and faded at the top. */
+.bc__glow::before {
+  width: 260%;
+  height: 340%;
+  clip-path: polygon(44% 100%, 56% 100%, 100% 0%, 0% 0%);
+  background: linear-gradient(
+    0deg,
+    rgba(240, 226, 184, 0.55),
+    rgba(232, 199, 102, 0.22) 34%,
+    transparent 78%
+  );
+  filter: blur(8px);
+}
+
+/* The rays: a fan of hard edges through the cone, masked so they only
+   show in its bright lower half. */
+.bc__glow::after {
+  width: 300%;
+  height: 380%;
+  background: repeating-conic-gradient(
+    from 202deg at 50% 100%,
+    rgba(255, 246, 214, 0.30) 0deg 2.4deg,
+    transparent 2.4deg 9deg
+  );
+  clip-path: polygon(40% 100%, 60% 100%, 100% 0%, 0% 0%);
+  -webkit-mask-image: linear-gradient(0deg, #000, transparent 62%);
+          mask-image: linear-gradient(0deg, #000, transparent 62%);
+  filter: blur(2px);
+  opacity: 0.85;
+}
+
 /* Contents revealed inside the case */
 .bc__contents {
   position: absolute;

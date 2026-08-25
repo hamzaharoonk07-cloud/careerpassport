@@ -31,6 +31,7 @@ import './ScrollFilm.css';
 export function ScrollFilm({
   src,
   mobileSrc,
+  mobileSrcHq,
   poster,
   chapters = [],
   height = '600vh',
@@ -47,6 +48,7 @@ export function ScrollFilm({
   const [ready, setReady] = useState(false);
   const [scrubbable, setScrubbable] = useState(false);
   const [narrow, setNarrow] = useState(false);
+  const [thrifty, setThrifty] = useState(false);
   const [chapter, setChapter] = useState(0);
 
   // The loop below reads the chapter list every frame but must not restart
@@ -61,6 +63,18 @@ export function ScrollFilm({
   // page — a touch device driving the film with its thumb is the whole
   // point of the effect, not something to opt out of.
   useEffect(() => { setScrubbable(!reduced); }, [reduced]);
+
+  // Does this connection want us to spend its bytes?
+  useEffect(() => {
+    const c = navigator.connection;
+    if (!c) return undefined;
+    const decide = () => setThrifty(
+      Boolean(c.saveData) || ['slow-2g', '2g', '3g'].includes(c.effectiveType)
+    );
+    decide();
+    c.addEventListener?.('change', decide);
+    return () => c.removeEventListener?.('change', decide);
+  }, []);
 
   // Narrow viewports get the lighter cut and a shorter scroll track.
   useEffect(() => {
@@ -273,9 +287,18 @@ export function ScrollFilm({
   /* ── Scrubbed film ───────────────────────────────────────────────── */
   const active = chapters[chapter];
 
-  // A phone gets the lighter cut, and a shorter track: 620vh of thumb-work
-  // is a long way to drag on a small screen.
-  const playSrc = narrow && mobileSrc ? mobileSrc : src;
+  // A phone gets its own cut, and a shorter track: 620vh of thumb-work is a
+  // long way to drag on a small screen.
+  //
+  // The 2K cut is the default on a phone — modern handsets run at a device
+  // pixel ratio of 3, so a 720p plate is genuinely soft on them. It is only
+  // affordable because this branch plays rather than seeks. Anyone who has
+  // asked to save data, or is on a measured connection, still gets the 720p
+  // file: shipping 5 MB to someone on 3G is not a quality decision, it is a
+  // bill.
+  const playSrc = narrow
+    ? (thrifty ? mobileSrc : (mobileSrcHq || mobileSrc)) || src
+    : src;
   const trackHeight = narrow ? '420vh' : height;
 
   return (

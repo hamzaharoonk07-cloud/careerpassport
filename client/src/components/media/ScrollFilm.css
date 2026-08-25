@@ -181,6 +181,9 @@
 }
 .sfilm--stacked .sfilm__copy {
   max-width: 60ch;
+  /* No entry animation on the copy itself — the Reveal wrapper around each
+     stacked chapter drives it on scroll instead, so it fires when the
+     chapter is actually looked at rather than all seven at once on load. */
   animation: none;
 }
 .sfilm--stacked .sfilm__copy--close {

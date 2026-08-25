@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from '../../hooks/useReducedMotion.js';
+import { Reveal } from '../motion/Reveal.jsx';
 import './ScrollFilm.css';
 
 /**
@@ -29,6 +30,7 @@ import './ScrollFilm.css';
  */
 export function ScrollFilm({
   src,
+  mobileSrc,
   poster,
   chapters = [],
   height = '600vh',
@@ -125,22 +127,36 @@ export function ScrollFilm({
   if (!scrubbable) {
     return (
       <section className={`sfilm sfilm--stacked ${className}`}>
-        {/* The poster, not the clip. This branch is the mobile path, and
-            autoplaying a 3.4 MB scrub-encoded file over cellular to show a
-            background would blow the budget every other clip on the site
-            keeps to. The still carries the same frame. */}
-        <div
-          className="sfilm__still"
-          aria-hidden="true"
-          style={{ backgroundImage: `url(${poster})` }}
-        >
+        {/* A mobile-weight cut of the same take, playing. Serving the desktop
+            file here would be wasteful — it carries a keyframe every six
+            frames so the scrollbar can seek it, and nothing seeks on this
+            branch — so `mobileSrc` is a 480p normal-GOP encode at a fifth of
+            the size. A still image was worse than either: it left the whole
+            landing page motionless on a phone. */}
+        <div className="sfilm__still" aria-hidden="true">
+          <video
+            className="sfilm__video"
+            poster={poster}
+            muted
+            playsInline
+            loop
+            autoPlay
+            preload="metadata"
+            disablePictureInPicture
+          >
+            <source src={mobileSrc || src} type="video/mp4" />
+          </video>
           <div className="sfilm__scrim" />
         </div>
 
+        {/* Each chapter reveals as it scrolls in. The pinned branch animates
+            copy on every chapter change, but here all seven are in the DOM
+            at once — firing them together on load would spend the whole
+            effect before anyone had scrolled. */}
         {chapters.map((c, i) => (
-          <div className="wrap sfilm__stack-item" key={c.eyebrow}>
+          <Reveal className="wrap sfilm__stack-item" key={c.eyebrow}>
             <Copy c={c} i={i} />
-          </div>
+          </Reveal>
         ))}
       </section>
     );

@@ -53,6 +53,7 @@ export default function Intro() {
           actually lands in the clip. */}
       <ScrollFilm
         src="/videos/journey.mp4"
+        mobileSrc="/videos/journey-m.mp4"
         poster="/images/journey.jpg"
         height="620vh"
         chapters={[

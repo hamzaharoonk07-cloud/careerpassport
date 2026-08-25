@@ -194,3 +194,25 @@
 @media (prefers-reduced-motion: reduce) {
   .sfilm__copy { animation: none; }
 }
+
+/* ── Phones scrub too ────────────────────────────────────────────
+   The pinned branch now runs on touch, so it needs a layout for small
+   screens: the chapter rail has nowhere to sit beside 46ch of copy, and
+   the hero type has to come down or it fills the whole frame. */
+@media (max-width: 900px) {
+  .sfilm__rail { display: none; }
+  .sfilm__copy,
+  .sfilm__copy--hero { max-width: none; }
+  .sfilm__copy--hero .sfilm__title { font-size: clamp(2rem, 8.5vw, 3rem); }
+  .sfilm__title { font-size: clamp(1.6rem, 6.5vw, 2.4rem); }
+  .sfilm__body { font-size: 0.95rem; }
+  /* The cue overlaps the buttons once the copy is full-width. */
+  .sfilm__scroll { display: none; }
+  /* Give the copy a floor to sit on: at this width the scrim's radial is
+     centred on empty frame rather than behind the text. */
+  .sfilm__scrim {
+    background:
+      radial-gradient(90% 60% at 50% 62%, rgba(6, 9, 17, 0.80), transparent 76%),
+      linear-gradient(180deg, rgba(6, 9, 17, 0.70), transparent 22%, transparent 48%, rgba(6, 9, 17, 0.90));
+  }
+}

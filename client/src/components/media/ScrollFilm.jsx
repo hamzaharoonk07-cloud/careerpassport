@@ -45,6 +45,7 @@ export function ScrollFilm({
 
   const [ready, setReady] = useState(false);
   const [scrubbable, setScrubbable] = useState(false);
+  const [narrow, setNarrow] = useState(false);
   const [chapter, setChapter] = useState(0);
 
   // The loop below reads the chapter list every frame but must not restart
@@ -55,13 +56,36 @@ export function ScrollFilm({
   const chaptersRef = useRef(chapters);
   chaptersRef.current = chapters;
 
-  // Decide once whether this device can scrub at all.
+  // Phones scrub too now. Only reduced motion falls back to the stacked
+  // page — a touch device driving the film with its thumb is the whole
+  // point of the effect, not something to opt out of.
+  useEffect(() => { setScrubbable(!reduced); }, [reduced]);
+
+  // Narrow viewports get the lighter cut and a shorter scroll track.
   useEffect(() => {
-    if (reduced) { setScrubbable(false); return; }
-    const coarse = window.matchMedia?.('(pointer: coarse)').matches;
-    const narrow = window.innerWidth < 900;
-    setScrubbable(!coarse && !narrow);
-  }, [reduced]);
+    const mq = window.matchMedia('(max-width: 900px)');
+    const apply = () => setNarrow(mq.matches);
+    apply();
+    mq.addEventListener('change', apply);
+    return () => mq.removeEventListener('change', apply);
+  }, []);
+
+  // iOS will not honour a currentTime assignment on a video that has never
+  // played — the seek is silently ignored and the film sits on frame one.
+  // Playing and immediately pausing inside the first touch unlocks it. The
+  // gesture requirement is why this cannot be done on mount.
+  useEffect(() => {
+    if (!scrubbable) return undefined;
+    const prime = () => {
+      const v = videoRef.current;
+      if (!v) return;
+      const p = v.play();
+      if (p && p.then) p.then(() => v.pause()).catch(() => { /* blocked; scrub still tries */ });
+      else v.pause();
+    };
+    window.addEventListener('touchstart', prime, { passive: true, once: true });
+    return () => window.removeEventListener('touchstart', prime);
+  }, [scrubbable]);
 
   // Track scroll progress through the section.
   useEffect(() => {
@@ -165,11 +189,17 @@ export function ScrollFilm({
   /* ── Scrubbed film ───────────────────────────────────────────────── */
   const active = chapters[chapter];
 
+  // A phone gets the lighter cut, and a shorter track: 620vh of thumb-work
+  // is a long way to drag on a small screen.
+  const playSrc = narrow && mobileSrc ? mobileSrc : src;
+  const trackHeight = narrow ? '420vh' : height;
+
   return (
-    <section ref={sectionRef} className={`sfilm ${className}`} style={{ height }}>
+    <section ref={sectionRef} className={`sfilm ${className}`} style={{ height: trackHeight }}>
       <div className="sfilm__pin">
         <video
           ref={videoRef}
+          key={playSrc}
           className="sfilm__video"
           poster={poster}
           muted
@@ -183,7 +213,7 @@ export function ScrollFilm({
               Forcing a keyframe every six frames for scrubbing makes VP9
               larger than H.264 on this clip, so preferring WebM would serve
               the heavier file for no benefit. */}
-          <source src={src} type="video/mp4" />
+          <source src={playSrc} type="video/mp4" />
         </video>
 
         <div className="sfilm__scrim" aria-hidden="true" />

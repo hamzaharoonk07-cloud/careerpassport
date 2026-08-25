@@ -13,7 +13,7 @@ import assert from 'node:assert/strict';
 
 const DURATION = 15.08;          // journey.mp4, from ffprobe
 const VIEWPORT = 900;
-const SECTION = VIEWPORT * 6.2;  // height="620vh"
+const SECTION = VIEWPORT * 6.2;  // height="620vh" on desktop
 const SCROLLABLE = SECTION - VIEWPORT;
 
 const CHAPTERS = [
@@ -105,6 +105,27 @@ ok('a full-page jump settles without oscillating', () => {
   }
   assert.ok(current > 0.99, 'a full jump never settles');
   assert.ok(worst < DURATION * 0.13, `first seek of ${worst.toFixed(2)}s is too large`);
+});
+
+/* ── The phone track ─────────────────────────────────────────────
+   Phones scrub the same film over a shorter track (420vh) at a smaller
+   viewport, so the per-frame seek must be re-checked: a shorter track
+   makes each pixel of scroll worth more video. */
+const MOB_VH = 720;
+const MOB_SCROLL = MOB_VH * 4.2 - MOB_VH;
+
+ok('a phone swipe stays inside one keyframe interval per frame', () => {
+  // A thumb flick moves far more than a wheel notch - call it 300px.
+  const swipe = (300 / MOB_SCROLL) * DURATION;
+  const firstFrame = swipe * 0.12;
+  assert.ok(firstFrame < 0.25,
+    `a swipe seeks ${firstFrame.toFixed(3)}s in one frame, past a keyframe`);
+});
+
+ok('every chapter is still reachable on the phone track', () => {
+  const seen = new Set();
+  for (let p = 0; p <= 1; p += 0.002) seen.add(chapterAt(p));
+  assert.equal(seen.size, CHAPTERS.length, 'a chapter is unreachable on mobile');
 });
 
 console.log(`\n${checks} checks passed.`);

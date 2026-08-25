@@ -161,6 +161,29 @@ export async function seedDatabase({ log = console.log } = {}) {
   log(`  careers           ${careers.length}  (${withSalary} with salary data, ${careers.length - withSalary} without)`);
   log(`  quiz questions    ${questionData.length}`);
   log(`  quiz options      ${optionCount}`);
+  // ── Owner account ────────────────────────────────────────────────
+  // Seeded from the environment so the password never enters the repo.
+  // Recreated on every boot, which is what makes it survive the in-memory
+  // database resets. If the account already exists the password is left
+  // alone — re-hashing it on every restart would silently overwrite a
+  // password changed through the app.
+  if (env.owner.email && env.owner.password) {
+    const existing = await User.findOne({ email: env.owner.email });
+    if (!existing) {
+      await User.create({
+        name: env.owner.name,
+        email: env.owner.email,
+        passwordHash: await User.hashPassword(env.owner.password),
+        role: 'admin',
+      });
+      log(`  owner created     ${env.owner.email}`);
+    } else if (existing.role !== 'admin') {
+      existing.role = 'admin';
+      await existing.save();
+      log(`  owner promoted    ${env.owner.email}`);
+    }
+  }
+
   // Re-apply the owner allowlist on every boot. A hand-promotion does not
   // survive a restart on the in-memory database, so without this the owner
   // loses the admin panel every time the server comes back up.

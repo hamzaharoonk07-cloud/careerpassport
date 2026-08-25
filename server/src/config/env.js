@@ -41,6 +41,19 @@ export const env = {
    *
    * Comma-separated. Compared lower-cased and trimmed.
    */
+  /**
+   * The owner account, seeded on every boot with the admin role.
+   *
+   * Lives in the environment rather than in seed.js because seed.js is
+   * committed and this file is not — a real password in the repository
+   * would be readable by anyone who clones it.
+   */
+  owner: {
+    name: process.env.OWNER_NAME || 'Owner',
+    email: (process.env.OWNER_EMAIL || '').trim().toLowerCase(),
+    password: process.env.OWNER_PASSWORD || '',
+  },
+
   adminEmails: (process.env.ADMIN_EMAILS || '')
     .split(',')
     .map((e) => e.trim().toLowerCase())

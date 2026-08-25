@@ -13,12 +13,29 @@ const AXIS_NAME = {
   S: 'Social', E: 'Enterprising', C: 'Conventional',
 };
 
+const fmtDate = (v) => (v ? new Date(v).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '—');
+
+/** One board on the dashboard. */
+function Board({ title, note, wide = false, children }) {
+  return (
+    <section className={`dash__board ${wide ? 'dash__wide' : ''}`}>
+      <div className="dash__board-head">
+        <h2 className="dash__board-title">{title}</h2>
+        {note && <span className="dash__board-note">{note}</span>}
+      </div>
+      <div className="dash__board-body">{children}</div>
+    </section>
+  );
+}
+
 /**
- * The dashboard the user returns to.
+ * The dashboard the user returns to — presented as their flight status.
  *
  * Everything on it is real: the match comes from their stored QuizResult,
  * the roadmap from the Career document, saved careers from the database.
  * Empty states say what is missing and link to the thing that fills them.
+ * The status word is derived from what exists, never invented — a traveller
+ * with no result reads "not checked in", not a fabricated gate.
  */
 export default function Dashboard() {
   const { user } = useAuth();
@@ -52,79 +69,92 @@ export default function Dashboard() {
 
   return (
     <div className="page wrap dash">
-      <header className="page__head">
-        <div>
-          <p className="t-eyebrow">Passport {user?.passportNumber}</p>
-          <h1 className="t-h2 page__title">Welcome back, {firstName}.</h1>
+      {/* ── Boarding-pass strip ──────────────────────────── */}
+      <header className="dash__strip">
+        <div className="dash__stub">
+          <span className="dash__stub-k">Passport</span>
+          <span className="dash__stub-v">{user?.passportNumber || '—'}</span>
+          <span className="dash__stub-k" style={{ marginTop: 'var(--sp-2)' }}>Status</span>
+          <span className="dash__badge">{top ? 'Arrived' : 'Not checked in'}</span>
         </div>
-        {!top && <Button to="/airport">Start the journey</Button>}
+        <div className="dash__strip-main">
+          <div>
+            <div className="dash__greet">Welcome back, {firstName}.</div>
+            <p className="dash__sub">
+              {top
+                ? `Your route is filed. Last flown ${fmtDate(result.takenAt)}.`
+                : 'No flight on record yet. The terminal is waiting.'}
+            </p>
+          </div>
+          <div className="dash__strip-actions">
+            {top
+              ? <Button to="/result">Full result</Button>
+              : <Button to="/airport">Start the journey</Button>}
+            <Button variant="secondary" to="/careers">Career bank</Button>
+          </div>
+        </div>
       </header>
 
       {loading && <p className="t-low" style={{ marginTop: 'var(--sp-6)' }}>Loading your passport…</p>}
 
       {!loading && (
-        <div className="db__grid">
-          {/* ── Career match ─────────────────────────────── */}
-          <section className="panel db__wide">
-            <h2 className="panel__h">Career match</h2>
+        <div className="dash__grid">
+          {/* ── Flight status: the match ─────────────────── */}
+          <Board title="Flight status" note={top ? 'Confirmed' : 'Awaiting departure'} wide>
             {top ? (
-              <div className="db__match">
-                <span className="db__match-pct">{top.score}%</span>
-                <div style={{ flex: 1, minWidth: '200px' }}>
-                  <div className="db__match-title">{top.career.title}</div>
-                  <div className="db__match-field">
-                    {top.career.field?.name} · taken {new Date(result.takenAt).toLocaleDateString('en-GB')}
+              <div className="dash__status">
+                <span className="dash__pct">{top.score}%</span>
+                <div>
+                  <div className="dash__dest">{top.career.title}</div>
+                  <div className="dash__meta">
+                    {top.career.field?.name} · flown {fmtDate(result.takenAt)}
                   </div>
-                  <p className="t-mid" style={{ marginTop: 'var(--sp-3)', fontSize: 'var(--fs-sm)', lineHeight: 1.6 }}>
-                    {top.reasons[0]}
-                  </p>
+                  <p className="dash__why">{top.reasons[0]}</p>
                 </div>
-                <div className="row" style={{ flexWrap: 'wrap' }}>
+                <div className="dash__status-actions">
                   <Button size="sm" to="/result">Full result</Button>
                   <Button size="sm" variant="ghost" to="/quiz">Retake</Button>
                 </div>
               </div>
             ) : (
-              <div className="db__empty">
+              <div className="dash__empty">
                 <p>You have not taken the quiz yet, so there is nothing to match against.</p>
                 <Button to="/airport">Take the journey</Button>
               </div>
             )}
-          </section>
+          </Board>
 
-          {/* ── Trait profile ────────────────────────────── */}
+          {/* ── Instruments: trait profile ───────────────── */}
           {result && (
-            <section className="panel">
-              <h2 className="panel__h">Your trait profile</h2>
-              <div className="axes">
+            <Board title="Instruments" note="Holland codes">
+              <div className="dash__gauges">
                 {Object.entries(result.riasecVector || {}).map(([k, v]) => (
-                  <div className="axis" key={k}>
-                    <span className="axis__k">{AXIS_NAME[k]}</span>
-                    <span className="axis__track">
-                      <span className="axis__fill" style={{ width: `${(v / 10) * 100}%` }} />
+                  <div className="dash__gauge" key={k}>
+                    <span className="dash__gauge-k">{AXIS_NAME[k]}</span>
+                    <span className="dash__gauge-track">
+                      <span className="dash__gauge-fill" style={{ width: `${(v / 10) * 100}%` }} />
                     </span>
-                    <span className="axis__v">{Number(v).toFixed(1)}</span>
+                    <span className="dash__gauge-v">{Number(v).toFixed(1)}</span>
                   </div>
                 ))}
               </div>
               <p className="t-low" style={{ fontSize: '0.76rem', marginTop: 'var(--sp-4)', lineHeight: 1.6 }}>
-                Holland codes, scored 0–10 from your answers. Your two strongest —{' '}
+                Scored 0–10 from your answers. Your two strongest —{' '}
                 {(result.dominantAxes || []).map((a) => AXIS_NAME[a]).join(' and ')} — drive 60% of the match.
               </p>
-            </section>
+            </Board>
           )}
 
-          {/* ── Roadmap ──────────────────────────────────── */}
+          {/* ── Route: roadmap legs ──────────────────────── */}
           {top?.career?.roadmap?.length > 0 && (
-            <section className="panel">
-              <h2 className="panel__h">Your roadmap</h2>
-              <div className="db__stages">
+            <Board title="Route" note={`${top.career.roadmap.length} legs`}>
+              <div className="dash__legs">
                 {top.career.roadmap.slice(0, 3).map((s) => (
-                  <div className="db__stage" key={s.stage}>
-                    <span className="db__stage-n">{s.stage}</span>
+                  <div className="dash__leg" key={s.stage}>
+                    <span className="dash__leg-n">{s.stage}</span>
                     <div>
-                      <div className="db__stage-t">{s.title}</div>
-                      <div className="db__stage-d">{s.detail}</div>
+                      <div className="dash__leg-t">{s.title}</div>
+                      <div className="dash__leg-d">{s.detail}</div>
                     </div>
                   </div>
                 ))}
@@ -132,15 +162,14 @@ export default function Dashboard() {
               <div style={{ marginTop: 'var(--sp-4)' }}>
                 <Button size="sm" variant="ghost" to="/roadmap">All six stages →</Button>
               </div>
-            </section>
+            </Board>
           )}
 
-          {/* ── Saved careers ────────────────────────────── */}
-          <section className="panel db__wide">
-            <h2 className="panel__h">Saved careers ({saved.length})</h2>
+          {/* ── Watchlist: saved careers ─────────────────── */}
+          <Board title="Watchlist" note={`${saved.length} saved`} wide>
             {error && <p className="t-low">{error}</p>}
             {saved.length === 0 ? (
-              <div className="db__empty">
+              <div className="dash__empty">
                 <p>Nothing saved yet. Anything you save from the career bank lands here.</p>
                 <Button variant="secondary" to="/careers">Browse careers</Button>
               </div>
@@ -171,22 +200,21 @@ export default function Dashboard() {
                 ))}
               </div>
             )}
-          </section>
+          </Board>
 
-          {/* ── Profile ──────────────────────────────────── */}
-          <section className="panel db__wide">
-            <h2 className="panel__h">Profile</h2>
-            <div className="db__profile">
-              <div className="db__row"><span className="db__row-k">Name</span><span className="db__row-v">{user?.name}</span></div>
-              <div className="db__row"><span className="db__row-k">Email</span><span className="db__row-v t-mono">{user?.email}</span></div>
-              <div className="db__row"><span className="db__row-k">Passport</span><span className="db__row-v t-mono">{user?.passportNumber}</span></div>
-              <div className="db__row"><span className="db__row-k">Password</span><span className="db__row-v t-mono">••••••••</span></div>
-              <div className="db__row" style={{ borderBottom: 'none' }}>
-                <span className="db__row-k">Member since</span>
-                <span className="db__row-v">{user?.createdAt ? new Date(user.createdAt).toLocaleDateString('en-GB') : '—'}</span>
+          {/* ── Passenger record ─────────────────────────── */}
+          <Board title="Passenger record" wide>
+            <div className="dash__rec">
+              <div className="dash__rec-row"><span className="dash__rec-k">Name</span><span className="dash__rec-v">{user?.name}</span></div>
+              <div className="dash__rec-row"><span className="dash__rec-k">Email</span><span className="dash__rec-v t-mono">{user?.email}</span></div>
+              <div className="dash__rec-row"><span className="dash__rec-k">Passport</span><span className="dash__rec-v t-mono">{user?.passportNumber}</span></div>
+              <div className="dash__rec-row"><span className="dash__rec-k">Password</span><span className="dash__rec-v t-mono">••••••••</span></div>
+              <div className="dash__rec-row">
+                <span className="dash__rec-k">Member since</span>
+                <span className="dash__rec-v">{fmtDate(user?.createdAt)}</span>
               </div>
             </div>
-          </section>
+          </Board>
         </div>
       )}
     </div>

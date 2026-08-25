@@ -40,8 +40,10 @@ h1, h2, h3, h4 { text-wrap: balance; }
   line-height: var(--lh-hero);
   /* Geometric sans needs to be pulled tighter than a serif at hero size,
      or the counters open up and it reads as a wordmark rather than a line. */
-  letter-spacing: -0.035em;
-  font-weight: 300;
+  /* Loosened from -0.035em when the display weight went from 300 to 600:
+     heavier letterforms need more room or the counters close up. */
+  letter-spacing: -0.018em;
+  font-weight: 600;
 }
 .t-h2 { font-size: var(--fs-h2); line-height: 1.15; }
 .t-h3 { font-size: var(--fs-h3); line-height: 1.25; }

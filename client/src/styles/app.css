@@ -98,25 +98,13 @@
 }
 
 /* ── Dashboard ──────────────────────────────────────────── */
-.db__grid {
-  margin-top: var(--sp-6);
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--sp-4);
-  align-items: start;
-}
-.db__wide { grid-column: 1 / -1; }
 
-.db__match { display: flex; align-items: center; gap: var(--sp-5); flex-wrap: wrap; }
-.db__match-pct {
-  font-family: var(--font-mono);
-  font-size: 2.6rem;
-  color: var(--gold-400);
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-.db__match-title { font-family: var(--font-display); font-size: 1.5rem; color: var(--text-hi); }
-.db__match-field { color: var(--text-low); font-size: var(--fs-sm); margin-top: 2px; }
+
+
+
+
+
+
 
 /* RIASEC bars */
 .axes { display: grid; gap: var(--sp-3); }
@@ -140,27 +128,19 @@
 }
 .axis__v { font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-low); text-align: right; }
 
-.db__stages { display: grid; gap: var(--sp-3); }
-.db__stage { display: grid; grid-template-columns: 26px 1fr; gap: var(--sp-3); align-items: start; }
-.db__stage-n {
-  width: 26px; height: 26px;
-  border-radius: 50%;
-  border: 1px solid var(--ink-600);
-  display: grid; place-items: center;
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  color: var(--gold-500);
-}
-.db__stage-t { font-weight: 600; color: var(--text-hi); font-size: 0.92rem; }
-.db__stage-d { color: var(--text-low); font-size: 0.8rem; line-height: 1.55; margin-top: 2px; }
 
-.db__empty { text-align: center; padding: var(--sp-6) var(--sp-4); }
-.db__empty p { color: var(--text-mid); margin-bottom: var(--sp-4); }
 
-.db__profile { display: grid; gap: var(--sp-4); }
-.db__row { display: flex; justify-content: space-between; gap: var(--sp-4); padding-bottom: var(--sp-3); border-bottom: 1px solid var(--ink-600); }
-.db__row-k { color: var(--text-low); font-size: var(--fs-sm); }
-.db__row-v { color: var(--text-hi); text-align: right; word-break: break-word; }
+
+
+
+
+
+
+
+
+
+
+
 
 /* ── Career bank ────────────────────────────────────────── */
 .bank__filters {

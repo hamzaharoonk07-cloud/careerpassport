@@ -1,37 +1,35 @@
 /* ============================================================
-   Dashboard — the terminal you come back to
+   Dashboard — your flight status at the terminal
 
-   Flat ink-900 read as dead space behind the cards. This gives the
-   page altitude: a cold navy wash, a warm horizon low and left where
-   the site's gold lives, and a faint chart grid over it.
+   Rebuilt to sit inside the airport world rather than beside it:
+   the same gold hairlines, mono column headers and dark translucent
+   boards as the departures display on the airport page.
 
-   Deliberately static. An earlier version of the landing page froze
+   Everything here is static. An earlier landing-page version froze
    the renderer with an infinite sheen over full-size repeating
-   gradients, so: no animation, the grid is a 48px tile rather than a
-   page-size paint, and the whole layer is isolated from the cards.
+   gradients, so: no animation, tiled backgrounds, `contain: paint`.
    ============================================================ */
 
-.dash {
-  position: relative;
-  isolation: isolate;
-}
+.dash { position: relative; isolation: isolate; }
 
+/* ── Ground ──────────────────────────────────────────────────
+   Night apron seen through terminal glass: cold light high and
+   right, sodium glow low where the runway would be. */
 .dash::before {
   content: '';
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: -2;
   pointer-events: none;
   contain: paint;
   background:
-    /* horizon glow, low and left */
-    radial-gradient(120% 70% at 12% 108%, rgba(201, 162, 39, 0.14), transparent 62%),
-    /* cold high-altitude light from above */
-    radial-gradient(90% 60% at 74% -12%, rgba(42, 75, 155, 0.30), transparent 66%),
-    linear-gradient(180deg, var(--ink-800), var(--ink-900) 58%);
+    radial-gradient(130% 68% at 8% 112%, rgba(201, 162, 39, 0.16), transparent 58%),
+    radial-gradient(86% 56% at 82% -14%, rgba(42, 75, 155, 0.34), transparent 62%),
+    linear-gradient(180deg, #0b1430, var(--ink-900) 62%);
 }
 
-/* Chart grid — a 48px tile, so the browser paints one square and repeats it. */
+/* Terminal grid, fading toward the horizon. A 56px tile, so the browser
+   paints one square and repeats it rather than a page-sized gradient. */
 .dash::after {
   content: '';
   position: fixed;
@@ -40,15 +38,227 @@
   pointer-events: none;
   contain: paint;
   background-image:
-    linear-gradient(to right, rgba(245, 240, 230, 0.028) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(245, 240, 230, 0.028) 1px, transparent 1px);
-  background-size: 48px 48px;
-  /* Fade the grid out toward the bottom so it never competes with content. */
-  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent 72%);
-          mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent 72%);
+    linear-gradient(to right, rgba(245, 240, 230, 0.030) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(245, 240, 230, 0.030) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(120% 80% at 50% 100%, #000, transparent 68%);
+          mask-image: radial-gradient(120% 80% at 50% 100%, #000, transparent 68%);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  /* Nothing moves here anyway — kept as a marker that it is intentional. */
-  .dash::before, .dash::after { animation: none; }
+/* ── Boarding-pass header strip ──────────────────────────── */
+.dash__strip {
+  display: flex;
+  align-items: stretch;
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(201, 162, 39, 0.30);
+  background: rgba(6, 9, 17, 0.78);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--sh-3);
+  overflow: hidden;
+}
+.dash__stub {
+  padding: var(--sp-5);
+  border-right: 1px dashed rgba(201, 162, 39, 0.34);
+  background: rgba(201, 162, 39, 0.07);
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  min-width: 190px;
+}
+.dash__stub-k {
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-low);
+}
+.dash__stub-v {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--gold-400);
+}
+.dash__strip-main {
+  flex: 1;
+  padding: var(--sp-5);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+  flex-wrap: wrap;
+}
+.dash__greet {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+  font-weight: 600;
+  color: var(--text-hi);
+}
+.dash__sub { margin-top: 4px; color: var(--text-mid); font-size: var(--fs-sm); }
+.dash__strip-actions { margin-left: auto; display: flex; gap: var(--sp-3); flex-wrap: wrap; }
+
+/* ── Boards ──────────────────────────────────────────────── */
+.dash__grid {
+  margin-top: var(--sp-5);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: var(--sp-4);
+  align-items: start;
+}
+.dash__wide { grid-column: 1 / -1; }
+
+.dash__board {
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(201, 162, 39, 0.24);
+  background: rgba(6, 9, 17, 0.80);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--sh-3);
+  overflow: hidden;
+}
+.dash__board-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: 1px solid rgba(201, 162, 39, 0.20);
+  background: rgba(201, 162, 39, 0.06);
+}
+.dash__board-title {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+}
+.dash__board-note {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-low);
+}
+.dash__board-body { padding: var(--sp-5); }
+
+/* ── The match, as a status row ──────────────────────────── */
+.dash__status {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--sp-5);
+  align-items: center;
+}
+.dash__pct {
+  font-family: var(--font-mono);
+  font-size: clamp(2.4rem, 6vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--gold-300);
+  text-shadow: 0 0 30px rgba(201, 162, 39, 0.30);
+}
+.dash__dest {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+  font-weight: 600;
+  color: var(--text-hi);
+}
+.dash__meta {
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-low);
+}
+.dash__why { margin-top: var(--sp-3); color: var(--text-mid); font-size: var(--fs-sm); line-height: 1.62; }
+.dash__status-actions { display: grid; gap: var(--sp-2); }
+
+.dash__badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 3px;
+  border: 1px solid rgba(201, 162, 39, 0.4);
+  background: rgba(201, 162, 39, 0.12);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-300);
+}
+
+/* ── Instruments (trait profile) ─────────────────────────── */
+.dash__gauges { display: grid; gap: var(--sp-3); }
+.dash__gauge {
+  display: grid;
+  grid-template-columns: 92px 1fr 34px;
+  gap: var(--sp-3);
+  align-items: center;
+}
+.dash__gauge-k {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+}
+/* block, not inline — a percentage width on an inline box resolves to 0 */
+.dash__gauge-track {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(245, 240, 230, 0.10);
+  overflow: hidden;
+}
+.dash__gauge-fill {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold-500), var(--gold-300));
+}
+.dash__gauge-v {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--gold-400);
+  text-align: right;
+}
+
+/* ── Route legs (roadmap) ────────────────────────────────── */
+.dash__legs { display: grid; gap: var(--sp-3); }
+.dash__leg { display: grid; grid-template-columns: 30px 1fr; gap: var(--sp-3); align-items: start; }
+.dash__leg-n {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(201, 162, 39, 0.42);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--gold-400);
+}
+.dash__leg-t { font-weight: 600; color: var(--text-hi); font-size: 0.95rem; }
+.dash__leg-d { margin-top: 2px; color: var(--text-mid); font-size: var(--fs-sm); line-height: 1.55; }
+
+/* ── Passenger record ────────────────────────────────────── */
+.dash__rec-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-3) 0;
+  border-bottom: 1px solid rgba(22, 36, 74, 0.8);
+}
+.dash__rec-row:last-child { border-bottom: none; }
+.dash__rec-k {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-low);
+}
+.dash__rec-v { color: var(--text-hi); font-size: var(--fs-sm); text-align: right; word-break: break-word; }
+
+/* ── Empty states ────────────────────────────────────────── */
+.dash__empty { display: grid; gap: var(--sp-4); justify-items: start; color: var(--text-mid); }
+
+@media (max-width: 720px) {
+  .dash__strip { flex-direction: column; }
+  .dash__stub { border-right: none; border-bottom: 1px dashed rgba(201, 162, 39, 0.34); }
+  .dash__status { grid-template-columns: 1fr; }
+  .dash__status-actions { grid-auto-flow: column; justify-content: start; }
 }

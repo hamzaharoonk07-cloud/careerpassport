@@ -192,7 +192,7 @@
 .cin__title-main {
   font-family: var(--font-display);
   font-size: clamp(1.4rem, 4vw, 2.4rem);
-  font-weight: 300;
+  font-weight: 600;
   color: var(--text-hi);
   margin-top: var(--sp-3);
 }

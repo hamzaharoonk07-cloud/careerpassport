@@ -50,9 +50,9 @@
   margin-top: var(--sp-3);
   font-family: var(--font-display);
   font-size: clamp(2rem, 5.2vw, 3.8rem);
-  font-weight: 300;
+  font-weight: 600;
   line-height: 1.04;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.018em;
   color: var(--text-hi);
   text-shadow: 0 2px 34px rgba(6, 9, 17, 0.85);
 }

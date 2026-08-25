@@ -67,8 +67,10 @@ const BEATS = [
   },
   {
     key: 'arrival',
-    src: '/videos/arrival.mp4',
-    poster: '/images/arrival.jpg',
+    // The actual touchdown: an Emirates wide-body on the runway at Karachi.
+    // arrival.mp4 stays on the career destination card, so no clip repeats.
+    src: '/videos/landing.mp4',
+    poster: '/images/landing.jpg',
     hold: 4200,
     stage: 'Arrival',
     line: (c) => `Welcome to ${c?.title}`,

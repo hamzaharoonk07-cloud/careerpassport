@@ -5,16 +5,32 @@
    the same gold hairlines, mono column headers and dark translucent
    boards as the departures display on the airport page.
 
-   Everything here is static. An earlier landing-page version froze
-   the renderer with an infinite sheen over full-size repeating
-   gradients, so: no animation, tiled backgrounds, `contain: paint`.
+   A cabin plate plays behind it, under a heavy scrim. Nothing else
+   moves: an earlier landing-page version froze the renderer with an
+   infinite sheen over full-size repeating gradients, so no CSS
+   animation, tiled backgrounds, and `contain: paint` on both layers.
    ============================================================ */
 
 .dash { position: relative; isolation: isolate; }
 
 /* ── Ground ──────────────────────────────────────────────────
-   Night apron seen through terminal glass: cold light high and
-   right, sodium glow low where the runway would be. */
+   The plate. Fixed, so it holds still while a long dashboard scrolls over
+   it, and pushed behind both the scrim and the grid. */
+.dash__bg {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  overflow: hidden;
+}
+/* SceneVideo positions itself absolutely against this box. */
+.dash__bg .sv { position: absolute; inset: 0; }
+
+/* Scrim, not background. This used to be the page's opaque ground; with a
+   clip playing underneath it has to stay translucent or the video is
+   invisible. Data-dense pages need a heavier floor than a hero does — the
+   numbers and mono labels here are small, and they have to hold against a
+   moving picture. */
 .dash::before {
   content: '';
   position: fixed;
@@ -23,9 +39,9 @@
   pointer-events: none;
   contain: paint;
   background:
-    radial-gradient(130% 68% at 8% 112%, rgba(201, 162, 39, 0.16), transparent 58%),
-    radial-gradient(86% 56% at 82% -14%, rgba(42, 75, 155, 0.34), transparent 62%),
-    linear-gradient(180deg, #0b1430, var(--ink-900) 62%);
+    radial-gradient(130% 68% at 8% 112%, rgba(201, 162, 39, 0.14), transparent 58%),
+    radial-gradient(86% 56% at 82% -14%, rgba(42, 75, 155, 0.30), transparent 62%),
+    linear-gradient(180deg, rgba(11, 20, 48, 0.88), rgba(6, 9, 17, 0.93) 62%);
 }
 
 /* Terminal grid, fading toward the horizon. A 56px tile, so the browser
@@ -38,8 +54,8 @@
   pointer-events: none;
   contain: paint;
   background-image:
-    linear-gradient(to right, rgba(245, 240, 230, 0.030) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(245, 240, 230, 0.030) 1px, transparent 1px);
+    linear-gradient(to right, rgba(245, 240, 230, 0.022) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(245, 240, 230, 0.022) 1px, transparent 1px);
   background-size: 56px 56px;
   -webkit-mask-image: radial-gradient(120% 80% at 50% 100%, #000, transparent 68%);
           mask-image: radial-gradient(120% 80% at 50% 100%, #000, transparent 68%);

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
+import { SceneVideo } from '../components/media/SceneVideo.jsx';
 import { quizService } from '../services/quiz.service.js';
 import { careerService } from '../services/career.service.js';
 import { apiError } from '../services/api.js';
@@ -69,6 +70,15 @@ export default function Dashboard() {
 
   return (
     <div className="page wrap dash">
+      {/* Fixed so the plate stays put while a long dashboard scrolls past it.
+          cabin.mp4 rather than terminal.mp4: the terminal clip already plays
+          on two other pages, and the cabin reads correctly here anyway — you
+          are in your seat going back over the trip. SceneVideo falls back to
+          the poster on reduced motion or save-data. */}
+      <div className="dash__bg" aria-hidden="true">
+        <SceneVideo src="/videos/cabin.mp4" poster="/images/cabin.jpg" loop />
+      </div>
+
       {/* ── Boarding-pass strip ──────────────────────────── */}
       <header className="dash__strip">
         <div className="dash__stub">

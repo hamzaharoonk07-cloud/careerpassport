@@ -122,3 +122,20 @@ h1, h2, h3, h4 { text-wrap: balance; }
 ::-webkit-scrollbar-track { background: var(--ink-900); }
 ::-webkit-scrollbar-thumb { background: var(--ink-600); border-radius: var(--r-pill); }
 ::-webkit-scrollbar-thumb:hover { background: var(--gold-500); }
+
+/* ── Mobile compositing budget ──────────────────────────────────
+   backdrop-filter is the single most expensive thing on this site for a
+   phone GPU: every blurred panel forces the compositor to re-sample what
+   is behind it on each frame, and with a video plate playing underneath
+   it re-samples a decoding surface. Fifteen of them across the app is
+   what made scrolling drag.
+
+   Dropped wholesale below 900px. Each panel already sets its own
+   background colour, so the only loss is the blur itself; the rule below
+   firms those backgrounds up so the panels stay legible without it. */
+@media (max-width: 900px) {
+  [class] {
+    -webkit-backdrop-filter: none !important;
+            backdrop-filter: none !important;
+  }
+}

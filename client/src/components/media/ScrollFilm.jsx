@@ -91,35 +91,67 @@ export function ScrollFilm({
   useEffect(() => {
     if (!scrubbable) return undefined;
 
-    const onScroll = () => {
+    // Geometry is cached rather than measured per scroll event.
+    // getBoundingClientRect() forces the browser to flush pending layout
+    // before it can answer, and doing that inside a scroll handler during
+    // momentum scrolling on a phone is a stall on every event. The section
+    // only changes size on resize, so measure it there and read the cheap
+    // scrollY the rest of the time.
+    let top = 0;
+    let scrollable = 1;
+
+    const measure = () => {
       const el = sectionRef.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
-      const scrollable = rect.height - window.innerHeight;
-      if (scrollable <= 0) return;
-      target.current = Math.min(1, Math.max(0, -rect.top / scrollable));
+      top = rect.top + window.scrollY;
+      scrollable = Math.max(1, rect.height - window.innerHeight);
     };
 
+    const onScroll = () => {
+      target.current = Math.min(1, Math.max(0, (window.scrollY - top) / scrollable));
+    };
+
+    // Named, so the same reference can be removed again.
+    const onResize = () => { measure(); onScroll(); };
+
+    measure();
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
+    window.addEventListener('resize', onResize);
     return () => {
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
+      window.removeEventListener('resize', onResize);
     };
   }, [scrubbable]);
 
-  // One seek per frame, eased.
+  // Eased, and rate-limited to what the decoder can actually serve.
+  //
+  // Asking for a seek on every animation frame is 60 per second. A desktop
+  // GPU absorbs that; a phone decoder does not, and the backlog is what
+  // makes the page feel like it is dragging — each seek arrives before the
+  // last one has been painted, so the video falls behind the finger and
+  // the main thread stays busy. Mobile therefore seeks at ~22fps, which is
+  // below the decoder's limit and still well above the eye's threshold for
+  // continuous motion, and it ignores smaller deltas before bothering at
+  // all. Desktop keeps the per-frame path.
   useEffect(() => {
     if (!scrubbable || !ready) return undefined;
 
-    const tick = () => {
+    const minGap = narrow ? 45 : 0;      // ms between seeks
+    const epsilon = narrow ? 0.05 : 0.02; // seconds worth ignoring
+    let lastSeek = 0;
+
+    const tick = (now) => {
       const v = videoRef.current;
       if (v && v.duration) {
         current.current += (target.current - current.current) * 0.12;
         const t = current.current * v.duration;
-        // Seeking to a value the decoder already sits on wastes a frame.
-        if (Math.abs(v.currentTime - t) > 0.02) {
+        // Seeking to a value the decoder already sits on wastes a frame,
+        // and on mobile a seek it is still working on wastes far more.
+        const due = now - lastSeek >= minGap;
+        if (due && !v.seeking && Math.abs(v.currentTime - t) > epsilon) {
+          lastSeek = now;
           try { v.currentTime = t; } catch { /* decoder busy; try next frame */ }
         }
         const cs = chaptersRef.current;
@@ -133,7 +165,7 @@ export function ScrollFilm({
 
     raf.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf.current);
-  }, [scrubbable, ready]);
+  }, [scrubbable, ready, narrow]);
 
   const Copy = ({ c, i }) => (
     <div className={`sfilm__copy ${c.variant ? `sfilm__copy--${c.variant}` : ''}`}>

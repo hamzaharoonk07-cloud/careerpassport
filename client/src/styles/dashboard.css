@@ -278,3 +278,10 @@
   .dash__status { grid-template-columns: 1fr; }
   .dash__status-actions { grid-auto-flow: column; justify-content: start; }
 }
+
+/* Without the blur (dropped globally on phones) the panels need a more
+   opaque ground to hold their contents against the moving plate. */
+@media (max-width: 900px) {
+  .dash__strip,
+  .dash__board { background: rgba(6, 9, 17, 0.94); }
+}

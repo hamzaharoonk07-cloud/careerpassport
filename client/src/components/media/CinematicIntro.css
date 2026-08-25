@@ -1,0 +1,211 @@
+/* ============================================================
+   Opening cinematic — video path and CSS fallback path
+   ============================================================ */
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-cinema);
+  background: var(--ink-900);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  transition: opacity var(--dur-4) var(--ease-out);
+}
+.intro--out { opacity: 0; pointer-events: none; }
+
+.intro__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Poster path (reduced motion / data saver) ──────────── */
+.intro__poster {
+  text-align: center;
+  padding: var(--sp-6);
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-3);
+}
+.intro__poster-mark { color: var(--gold-500); margin-bottom: var(--sp-3); }
+.intro__poster-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  font-weight: 400;
+  color: var(--text-hi);
+}
+.intro__poster-note { color: var(--text-low); font-size: var(--fs-sm); max-width: 40ch; }
+
+/* ── Controls ───────────────────────────────────────────── */
+.intro__controls {
+  position: absolute;
+  right: var(--sp-5);
+  bottom: var(--sp-5);
+  display: flex;
+  gap: var(--sp-3);
+  z-index: 3;
+}
+.intro__ctrl {
+  min-height: 44px;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(245, 240, 230, 0.22);
+  background: rgba(6, 9, 17, 0.55);
+  backdrop-filter: blur(6px);
+  color: var(--text-mid);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: border-color var(--dur-2), color var(--dur-2), transform var(--dur-2);
+}
+.intro__ctrl:hover { border-color: var(--gold-500); color: var(--gold-400); transform: translateY(-1px); }
+.intro__ctrl--skip { border-color: rgba(201, 162, 39, 0.45); color: var(--gold-400); }
+
+/* ============================================================
+   The CSS-only passport opening
+   Timeline, total 5.2s:
+     0.0  desk light rises
+     0.9  passport settles onto the desk
+     1.9  cover swings open
+     2.9  pages catch the light
+     3.4  title resolves
+   ============================================================ */
+
+.cin {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  perspective: 1400px;
+  overflow: hidden;
+}
+
+/* Warm desk surface */
+.cin__desk {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 80% at 50% 118%, rgba(59, 42, 30, 0.55), transparent 60%),
+    linear-gradient(180deg, #05070d 0%, #080c17 55%, #0b1020 100%);
+}
+
+/* The key light, coming in low from the left */
+.cin__pool {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(46% 40% at 40% 40%, rgba(232, 199, 102, 0.2), transparent 68%);
+  opacity: 0;
+  animation: cin-light 1.5s var(--ease-out) 0.1s forwards;
+}
+@keyframes cin-light { to { opacity: 1; } }
+
+.cin__book {
+  position: relative;
+  width: min(46vw, 244px);
+  aspect-ratio: 1 / 1.42;
+  transform-style: preserve-3d;
+  transform: translateY(48px) rotateX(58deg) scale(0.82);
+  opacity: 0;
+  animation: cin-settle 1.5s var(--ease-out) 0.55s forwards;
+}
+@keyframes cin-settle {
+  from { transform: translateY(48px) rotateX(58deg) scale(0.82); opacity: 0; }
+  to   { transform: translateY(-9%) rotateX(16deg) scale(1); opacity: 1; }
+}
+
+.cin__cover {
+  position: absolute;
+  inset: 0;
+  border-radius: 5px 12px 12px 5px;
+  background: linear-gradient(150deg, #142352, #0f1b3c 45%, #0a1128);
+  box-shadow: inset 0 0 0 1px rgba(201,162,39,0.2), 0 30px 70px rgba(0,0,0,0.6);
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  animation: cin-open 1.5s var(--ease-in-out) 1.9s forwards;
+}
+@keyframes cin-open {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(-154deg); }
+}
+
+.cin__foil {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-3);
+  color: var(--gold-300);
+  padding: var(--sp-5);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  border-radius: 3px;
+  width: 76%;
+}
+.cin__foil-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.cin__paper {
+  position: absolute;
+  inset: 0;
+  border-radius: 5px 12px 12px 5px;
+  background: linear-gradient(175deg, var(--cream-100), var(--cream-200));
+  box-shadow: inset 22px 0 30px -22px rgba(16, 20, 31, 0.5);
+  padding: 18% 12% 0;
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+.cin__line {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(16, 20, 31, 0.13);
+  opacity: 0;
+  transform: translateX(-14px);
+  animation: cin-line 620ms var(--ease-out) forwards;
+}
+.cin__line--1 { width: 74%; animation-delay: 2.9s; }
+.cin__line--2 { width: 52%; animation-delay: 3.05s; }
+.cin__line--3 { width: 63%; animation-delay: 3.2s; background: rgba(201, 162, 39, 0.4); }
+@keyframes cin-line { to { opacity: 1; transform: none; } }
+
+.cin__title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8%;
+  text-align: center;
+  padding-inline: var(--sp-5);
+  opacity: 0;
+  transform: translateY(16px);
+  animation: cin-title 1s var(--ease-out) 3.4s forwards;
+}
+@keyframes cin-title { to { opacity: 1; transform: none; } }
+.cin__title-main {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 4vw, 2.4rem);
+  font-weight: 300;
+  color: var(--text-hi);
+  margin-top: var(--sp-3);
+}
+
+@media (max-width: 640px) {
+  .intro__controls { right: 50%; transform: translateX(50%); bottom: var(--sp-4); }
+  .cin__book { width: min(62vw, 220px); }
+  .cin__title { bottom: 12%; }
+}
+
+/* Reduced motion never reaches this component — CinematicIntro renders the
+   poster path instead — but if it somehow does, everything lands immediately. */
+@media (prefers-reduced-motion: reduce) {
+  .cin__book, .cin__cover, .cin__line, .cin__title, .cin__pool { animation: none; opacity: 1; transform: none; }
+  .cin__cover { transform: rotateY(-154deg); }
+}

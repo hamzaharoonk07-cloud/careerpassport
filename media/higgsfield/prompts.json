@@ -1,0 +1,100 @@
+{
+  "project": "PathSeeker — Career Passport",
+  "account": "hamzaharoonk07@gmail.com (pro)",
+  "workspace_id": "b0706364-2d8a-4ca9-b7b2-6aabd2d815e9",
+  "cli_version": "1.1.23",
+  "style_bible": "Photorealistic cinematic commercial, shot on ARRI Alexa with anamorphic prime lens, shallow depth of field, warm golden key lighting from low 45 degrees, deep navy shadows, cream and gold colour palette, subtle film grain, volumetric light, luxury corporate advertising aesthetic, understated and elegant, 16:9, no text, no logos, no captions",
+  "models": {
+    "keyframes": "text2image_soul_v2 (Higgsfield Soul 2.0) — 0.12 credits, supports seed + image_references",
+    "video_standard": "kling3_0 (Kling v3.0) — ~8.75 credits at mode=pro, supports start_image AND end_image",
+    "video_hero_option": "seedance_2_5 — 32.5 credits, start/end images require mode=omni_reference"
+  },
+  "generations": [
+    {
+      "scene": "S0",
+      "label": "The Weight of Not Knowing",
+      "type": "keyframe",
+      "job_id": "4186ef33-174d-41a5-993e-1d4b3c5abcef",
+      "model": "text2image_soul_v2",
+      "seed": 202,
+      "aspect_ratio": "16:9",
+      "quality": "2k",
+      "status": "APPROVED — selected keyframe",
+      "file": "keyframes/s00-candidate-2.png",
+      "notes": "Visible light beam + dust motes. Large dark field suits DOM headline overlay. Background reads near-black; push toward #0A1128 navy in grade.",
+      "prompt": "A young university student sitting alone at a dark wooden desk at night, chin resting on hand, staring thoughtfully into the distance, scattered papers and a closed notebook, single warm desk lamp as the only light source, deep navy darkness surrounding, dust motes drifting in the lamp beam, quiet and contemplative mood"
+    },
+    {
+      "scene": "S0",
+      "label": "alt candidate",
+      "type": "keyframe",
+      "job_id": "430f892e-209e-447c-bbc3-d88233745e9d",
+      "seed": 404,
+      "status": "backup — truer navy background, flatter light",
+      "file": "keyframes/s00-candidate-1.png"
+    },
+    {
+      "scene": "S0",
+      "label": "The Weight of Not Knowing",
+      "type": "video",
+      "job_id": "6326ed6e-259d-4071-a40f-b2c3eaaff803",
+      "model": "kling3_0",
+      "mode": "pro",
+      "duration": 5,
+      "sound": "off",
+      "start_image": "4186ef33-174d-41a5-993e-1d4b3c5abcef",
+      "status": "RENDERED — pending review",
+      "file": "raw/s00-the-weight-of-not-knowing.mp4",
+      "prompt": "Extremely slow dolly in. The young woman sits still, breathing gently, deep in thought. Dust motes drift slowly through the warm lamp beam. The lamp light warms and intensifies almost imperceptibly. Cinematic, photoreal, no camera shake, motorised slow move."
+    },
+    {
+      "scene": "S1",
+      "label": "The Briefcase",
+      "type": "keyframe",
+      "job_id": "80150d53-8778-4939-bc32-01562482134b",
+      "model": "text2image_soul_v2",
+      "seed": 511,
+      "status": "NEEDS REGEN — model invented a brass nameplate reading 'ALIRA 31'; baked-in text violates the no-text rule",
+      "file": "keyframes/s01-briefcase.png",
+      "prompt": "A premium black leather briefcase with polished brass hardware resting on dark marble, clasps open, warm golden light spilling out from inside the case, low three-quarter angle"
+    },
+    {
+      "scene": "S10",
+      "label": "Career Result Reveal",
+      "type": "keyframe",
+      "job_id": "3830e28b-c122-4237-aee7-d6f2860f1bda",
+      "model": "text2image_soul_v2",
+      "seed": 1010,
+      "status": "APPROVED — hero frame, seal is generic ornamental so DOM text can overlay",
+      "file": "keyframes/s10-stamp.png",
+      "prompt": "Macro shot of a heavy antique brass stamp pressing onto an open cream passport page, gold dust puffing outward on impact, paper compressing under the weight, deeply embossed ornamental compass-rose seal, dark navy surroundings"
+    },
+    {
+      "scene": "S11",
+      "label": "Success Journey",
+      "type": "keyframe",
+      "job_id": "cda64146-5ef7-4ee9-8404-9ca81968c3ff",
+      "model": "text2image_soul_v2",
+      "image_reference": "4186ef33-174d-41a5-993e-1d4b3c5abcef",
+      "status": "FAILED — identity transferred correctly but the reference dominated composition; reproduced the S0 desk instead of a bright office. Use `higgsfield soul-id` to train an identity-only reference instead of passing a full frame.",
+      "file": "keyframes/s11-success-journey.png"
+    }
+  ],
+  "failed_jobs": [
+    "b3933252-936a-49f1-b7a2-08e98b9c704a (S0 seed 303 — server-side failure, no charge visible)",
+    "5ac38266-40b9-42da-85bc-1c9468ca7dfc (S0 seed 101 — server-side failure)"
+  ],
+  "learnings": [
+    "Media flags accept a JOB ID, not just a local path — skip uploads entirely by referencing a previous job.",
+    "`higgsfield upload create` failed on a 2.6MB PNG from this shell; job-id referencing is the reliable path.",
+    "`higgsfield generate wait` hangs; poll with `higgsfield generate list --size N` instead.",
+    "Passing a full frame as image_reference copies composition, not just identity. soul-id is the correct character-lock mechanism.",
+    "Soul 2.0 occasionally invents text/nameplates despite the negative prompt — inspect every hero frame before animating."
+  ],
+  "spend": {
+    "starting_credits": 610,
+    "after_this_batch": 600.65,
+    "spent": 9.35,
+    "breakdown": "5 successful keyframes @0.12 + 1 Kling v3.0 pro video @~8.75"
+  }
+}

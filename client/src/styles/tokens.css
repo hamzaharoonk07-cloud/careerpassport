@@ -1,0 +1,116 @@
+/* ============================================================
+   Career Passport — Design Tokens
+   Colour values are taken verbatim from docs/05-DESIGN-SYSTEM.md §5.1.
+   Nothing outside this file may invent a colour.
+   ============================================================ */
+
+:root {
+  /* ── Surfaces — dark (default theme) ───────────────────── */
+  --ink-900: #060911;
+  --ink-800: #0a1128;
+  --ink-700: #0f1b3c;
+  --ink-600: #16244a;
+  --leather: #3b2a1e;
+
+  /* ── Gold — ink, edge and light. Never a large fill. ───── */
+  --gold-500: #c9a227;
+  --gold-400: #d9b84a;
+  --gold-300: #e8c766;
+  --gold-100: #f0e2b8;
+
+  /* ── Cream — light surfaces, passport paper ───────────── */
+  --cream-50: #faf7f0;
+  --cream-100: #f5f0e6;
+  --cream-200: #ede6d6;
+  --cream-300: #ddd3be;
+
+  /* ── Text ─────────────────────────────────────────────── */
+  --text-hi: #f5f0e6;
+  --text-mid: #b6bccb;
+  --text-low: #7a8296;
+  --text-dark: #10141f;
+
+  /* ── Semantic ─────────────────────────────────────────── */
+  --success: #2e7d5b;
+  --warn: #b4791f;
+  --danger: #a63a32;
+  --info: #3b6e8f;
+
+  /* ── Typography ───────────────────────────────────────── */
+  /* Sora for display: geometric, confident, reads as modern aviation rather
+     than editorial. Outfit for body — warmer and less anonymous than Inter.
+     IBM Plex Mono stays: it is the right face for a machine-readable zone,
+     a boarding pass and a departures board, which is most of this product. */
+  --font-display: 'Sora', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Outfit', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+
+  --fs-hero: clamp(2.6rem, 5.6vw, 5rem);
+  --fs-h2: clamp(1.75rem, 3.5vw, 3rem);
+  --fs-h3: clamp(1.25rem, 2vw, 1.75rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.875rem;
+  --fs-eyebrow: 0.75rem;
+
+  --lh-hero: 1.05;
+  --lh-body: 1.65;
+  --tracking-eyebrow: 0.14em;
+  --measure: 68ch;
+
+  /* ── Space (4px base) ─────────────────────────────────── */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+  --sp-8: 4rem;
+  --sp-9: 6rem;
+  --sp-10: 8rem;
+
+  /* ── Radius ───────────────────────────────────────────── */
+  --r-sm: 6px;
+  --r-md: 12px;
+  --r-lg: 20px;
+  --r-pill: 999px;
+
+  /* ── Elevation — soft, never harsh ────────────────────── */
+  --sh-1: 0 1px 2px rgba(0, 0, 0, 0.28);
+  --sh-2: 0 6px 18px rgba(0, 0, 0, 0.35);
+  --sh-3: 0 18px 48px rgba(0, 0, 0, 0.45);
+  --sh-4: 0 36px 90px rgba(0, 0, 0, 0.55);
+  --glow-gold: 0 0 0 1px rgba(201, 162, 39, 0.35), 0 8px 28px rgba(201, 162, 39, 0.18);
+
+  /* ── Motion ───────────────────────────────────────────── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-impact: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --dur-1: 120ms;
+  --dur-2: 240ms;
+  --dur-3: 420ms;
+  --dur-4: 700ms;
+  --dur-5: 1200ms;
+
+  /* ── Layout ───────────────────────────────────────────── */
+  --wrap: 1200px;
+  --wrap-narrow: 760px;
+  --nav-h: 72px;
+  --z-nav: 100;
+  --z-overlay: 500;
+  --z-cinema: 900;
+}
+
+/* Light surfaces — dashboards and passport paper.
+   Applied per-section with .surface-light, not to the whole app. */
+.surface-light {
+  --text-hi: var(--text-dark);
+  --text-mid: #4a5164;
+  --text-low: #767d90;
+  --sh-1: 0 1px 2px rgba(16, 20, 31, 0.08);
+  --sh-2: 0 6px 18px rgba(16, 20, 31, 0.1);
+  --sh-3: 0 18px 48px rgba(16, 20, 31, 0.14);
+  background: var(--cream-100);
+  color: var(--text-dark);
+}

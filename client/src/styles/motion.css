@@ -1,0 +1,112 @@
+/* ============================================================
+   Career Passport — Motion System
+   Every animation lives here or in a scene stylesheet that
+   imports these easings. Rules:
+     1. transform + opacity + filter only. Never layout props.
+     2. Anything decorative is wrapped in the no-preference query.
+     3. Nothing loops forever above the fold.
+   ============================================================ */
+
+/* ── Reveal primitives (driven by useReveal + IntersectionObserver) ── */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity var(--dur-4) var(--ease-out),
+    transform var(--dur-4) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform, opacity;
+}
+.reveal.is-in { opacity: 1; transform: none; }
+.reveal--left  { transform: translate3d(-28px, 0, 0); }
+.reveal--right { transform: translate3d(28px, 0, 0); }
+.reveal--scale { transform: scale(0.94); }
+.reveal--blur  { filter: blur(10px); transition-property: opacity, transform, filter; }
+.reveal.is-in.reveal--blur { filter: none; }
+
+/* Stagger: children inherit an index-based delay set inline as --i */
+.stagger > * { --reveal-delay: calc(var(--i, 0) * var(--stagger-step, 90ms)); }
+
+/* ── Shared keyframes ───────────────────────────────────── */
+@keyframes ps-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+@keyframes ps-rise {
+  from { opacity: 0; transform: translate3d(0, 24px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes ps-slide-in-right {
+  from { opacity: 0; transform: translate3d(48px, 0, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes ps-slide-out-left {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: translate3d(-48px, 0, 0); }
+}
+
+@keyframes ps-slide-in-left {
+  from { opacity: 0; transform: translate3d(-48px, 0, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes ps-slide-out-right {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: translate3d(48px, 0, 0); }
+}
+
+/* The stamp impact — used by the VERIFIED and DESTINATION stamps */
+@keyframes ps-stamp-press {
+  0%   { opacity: 0; transform: translate3d(0, -120px, 0) scale(2.4) rotate(-24deg); }
+  55%  { opacity: 1; transform: translate3d(0, 0, 0) scale(1.06) rotate(-11deg); }
+  70%  { transform: translate3d(0, 0, 0) scale(0.95) rotate(-11deg); }
+  85%  { transform: translate3d(0, 0, 0) scale(1.02) rotate(-11deg); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotate(-11deg); }
+}
+
+/* The paper flinches when the stamp lands */
+@keyframes ps-paper-shake {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  20% { transform: translate3d(0, 2px, 0) rotate(0.18deg); }
+  45% { transform: translate3d(-1px, -1px, 0) rotate(-0.12deg); }
+  70% { transform: translate3d(1px, 1px, 0); }
+}
+
+@keyframes ps-shockwave {
+  from { opacity: 0.5; transform: scale(0.2); }
+  to   { opacity: 0; transform: scale(2.6); }
+}
+
+@keyframes ps-glow-pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes ps-caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+@keyframes ps-spin { to { transform: rotate(360deg); } }
+
+@keyframes ps-sheen {
+  from { transform: translateX(-120%) skewX(-18deg); }
+  to   { transform: translateX(220%) skewX(-18deg); }
+}
+
+/* ── Utility animation classes ──────────────────────────── */
+.anim-rise  { animation: ps-rise var(--dur-4) var(--ease-out) both; }
+.anim-fade  { animation: ps-fade-in var(--dur-3) var(--ease-out) both; }
+.anim-delay-1 { animation-delay: 120ms; }
+.anim-delay-2 { animation-delay: 260ms; }
+.anim-delay-3 { animation-delay: 420ms; }
+.anim-delay-4 { animation-delay: 600ms; }
+
+/* ── Reduced motion — the hard stop ─────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; filter: none; }
+}

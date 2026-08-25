@@ -1,0 +1,473 @@
+/* ============================================================
+   Quiz · Analysis · Result · Roadmap
+   ============================================================ */
+
+.qz {
+  position: relative;
+  min-height: 100dvh;
+  padding-block: var(--sp-6) var(--sp-8);
+  overflow-x: hidden;
+  background: radial-gradient(60% 44% at 50% 0%, rgba(15, 27, 60, 0.85), var(--ink-900) 72%);
+}
+
+/* ── Progress ───────────────────────────────────────────── */
+.qz__bar-wrap { display: grid; gap: var(--sp-3); }
+.qz__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--sp-4);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-low);
+}
+.qz__meta strong { color: var(--gold-400); font-weight: 500; }
+
+.qz__bar {
+  height: 3px;
+  border-radius: var(--r-pill);
+  background: var(--ink-600);
+  overflow: hidden;
+}
+.qz__bar-fill {
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--gold-500), var(--gold-300));
+  transition: width var(--dur-4) var(--ease-out);
+}
+
+/* ── Question card ──────────────────────────────────────── */
+.qz__stage { margin-top: var(--sp-7); min-height: 420px; }
+
+.qz__q { display: grid; gap: var(--sp-5); }
+.qz__q--in-right { animation: ps-slide-in-right var(--dur-3) var(--ease-out) both; }
+.qz__q--in-left { animation: ps-slide-in-left var(--dur-3) var(--ease-out) both; }
+.qz__q--out-left { animation: ps-slide-out-left var(--dur-2) var(--ease-in-out) both; }
+.qz__q--out-right { animation: ps-slide-out-right var(--dur-2) var(--ease-in-out) both; }
+
+.qz__dimension {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-500);
+}
+.qz__prompt {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.6vw, 2.35rem);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--text-hi);
+  max-width: 24ch;
+}
+.qz__helper { color: var(--text-low); font-size: var(--fs-sm); max-width: 52ch; }
+
+/* ── Answer cards ───────────────────────────────────────── */
+.qz__options { display: grid; gap: var(--sp-3); }
+
+.opt {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  width: 100%;
+  min-height: 64px;
+  padding: var(--sp-4) var(--sp-5);
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-600);
+  background: var(--ink-800);
+  color: var(--text-hi);
+  text-align: left;
+  line-height: 1.5;
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    background var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-out);
+}
+.opt:hover { border-color: #24356b; transform: translateX(3px); }
+.opt--on {
+  border-color: var(--gold-500);
+  background: linear-gradient(100deg, rgba(201, 162, 39, 0.12), rgba(201, 162, 39, 0.03));
+  transform: translateX(3px) scale(1.01);
+}
+
+.opt__key {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--ink-600);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--text-low);
+  text-transform: uppercase;
+  transition: all var(--dur-2) var(--ease-out);
+}
+.opt--on .opt__key {
+  border-color: var(--gold-500);
+  background: var(--gold-500);
+  color: var(--ink-900);
+  font-weight: 700;
+}
+
+/* ── Nav ────────────────────────────────────────────────── */
+.qz__nav {
+  margin-top: var(--sp-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+}
+.qz__dots { display: flex; gap: 6px; flex-wrap: wrap; }
+.qz__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink-600);
+  transition: background var(--dur-2), transform var(--dur-2);
+}
+.qz__dot--done { background: var(--gold-500); }
+.qz__dot--now { background: var(--gold-300); transform: scale(1.6); }
+
+/* ── Resume notice ──────────────────────────────────────── */
+.qz__resume {
+  margin-top: var(--sp-5);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px dashed var(--ink-600);
+  border-radius: var(--r-md);
+  font-size: var(--fs-sm);
+  color: var(--text-mid);
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   Analysis
+   ============================================================ */
+.an {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: var(--sp-6);
+  background: radial-gradient(50% 40% at 50% 42%, rgba(201, 162, 39, 0.09), var(--ink-900) 74%);
+}
+.an__title { margin-top: var(--sp-4); }
+
+.an__steps {
+  margin-top: var(--sp-7);
+  display: grid;
+  gap: var(--sp-3);
+  justify-items: start;
+  text-align: left;
+  min-width: min(92vw, 340px);
+}
+.an__step {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-low);
+  opacity: 0;
+  transform: translateY(8px);
+  animation: ps-rise var(--dur-3) var(--ease-out) forwards;
+}
+.an__step--done { color: var(--text-mid); }
+.an__tick {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid var(--ink-600);
+  display: grid;
+  place-items: center;
+  font-size: 0.6rem;
+  flex: none;
+}
+.an__step--done .an__tick { border-color: var(--success); color: var(--success); }
+
+.an__ring {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 2px solid var(--ink-600);
+  border-top-color: var(--gold-500);
+  margin-inline: auto;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .an__ring { animation: ps-spin 1.1s linear infinite; }
+}
+
+/* ============================================================
+   Result
+   ============================================================ */
+.rs {
+  min-height: 100dvh;
+  padding-block: var(--sp-7) var(--sp-9);
+  background: radial-gradient(58% 40% at 50% 0%, rgba(15, 27, 60, 0.9), var(--ink-900) 70%);
+}
+
+.rs__head { text-align: center; }
+.rs__title { margin-top: var(--sp-3); }
+
+/* The destination page — styled as a passport leaf */
+.rs__card {
+  position: relative;
+  margin-top: var(--sp-6);
+  padding: clamp(var(--sp-5), 4vw, var(--sp-8));
+  border-radius: var(--r-lg);
+  background: linear-gradient(170deg, var(--cream-50), var(--cream-200));
+  color: var(--text-dark);
+  box-shadow: var(--sh-4);
+  overflow: hidden;
+}
+.rs__card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: repeating-radial-gradient(circle at 40% 30%, transparent 0 12px, var(--ink-700) 12px 12.5px);
+  background-size: 200px 200px;
+}
+.rs__card-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #8a7333;
+}
+.rs__career {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5.4vw, 3.4rem);
+  font-weight: 500;
+  line-height: 1.08;
+  color: var(--ink-800);
+  margin-top: var(--sp-3);
+}
+.rs__field { color: #6a6552; margin-top: var(--sp-2); }
+
+.rs__top {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--sp-6);
+  align-items: center;
+}
+
+/* Match ring */
+.rs__ring { position: relative; width: 150px; height: 150px; flex: none; }
+.rs__ring svg { transform: rotate(-90deg); }
+.rs__ring-track { stroke: rgba(16, 20, 31, 0.1); }
+.rs__ring-fill {
+  stroke: var(--gold-500);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.8s var(--ease-out);
+}
+.rs__ring-num {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+}
+.rs__ring-pct {
+  font-family: var(--font-mono);
+  font-size: 1.9rem;
+  font-weight: 600;
+  color: var(--ink-800);
+  font-variant-numeric: tabular-nums;
+}
+.rs__ring-label {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8a8471;
+}
+
+/* Destination stamp */
+/* The stamp sits low on the page, clear of the match ring in the top-right —
+   the way a real stamp lands on free paper rather than over the printing. */
+.rs__stamp {
+  position: absolute;
+  bottom: var(--sp-6);
+  right: var(--sp-6);
+  width: clamp(96px, 14vw, 132px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  color: rgba(46, 125, 91, 0.8);
+  border: 2.5px solid rgba(46, 125, 91, 0.7);
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  text-align: center;
+  opacity: 0.9;
+  -webkit-mask-image: radial-gradient(circle at 30% 26%, #000 80%, transparent 81%), linear-gradient(#000, #000);
+  mask-image: radial-gradient(circle at 30% 26%, #000 80%, transparent 81%), linear-gradient(#000, #000);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rs__stamp { animation: ps-stamp-press 800ms var(--ease-impact) 1.5s both; }
+}
+.rs__stamp-a { font-size: 0.58rem; letter-spacing: 0.16em; }
+.rs__stamp-b {
+  font-size: 0.86rem;
+  letter-spacing: 0.1em;
+  border-block: 1.5px solid rgba(46, 125, 91, 0.55);
+  padding: 2px 0;
+  margin: 3px 0;
+}
+
+/* Sections inside the card */
+.rs__section { margin-top: var(--sp-6); }
+.rs__section-h {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #8a7333;
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid rgba(16, 20, 31, 0.12);
+  margin-bottom: var(--sp-4);
+}
+.rs__body { color: #3a3a35; line-height: 1.7; max-width: 66ch; }
+
+.rs__reasons { display: grid; gap: var(--sp-3); list-style: none; padding: 0; }
+.rs__reason {
+  display: flex;
+  gap: var(--sp-3);
+  color: #3a3a35;
+  line-height: 1.6;
+  max-width: 70ch;
+}
+.rs__reason-mark { color: var(--gold-500); flex: none; font-weight: 700; }
+
+.rs__chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.chip {
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(16, 20, 31, 0.16);
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  color: #3a3a35;
+}
+.chip--strong { border-color: rgba(201, 162, 39, 0.55); background: rgba(201, 162, 39, 0.1); }
+
+.rs__facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--sp-4); }
+.fact { display: grid; gap: 4px; }
+.fact__k {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8a8471;
+}
+.fact__v { font-family: var(--font-display); font-size: 1.12rem; color: var(--ink-800); }
+.fact__v--none { font-style: italic; color: rgba(16, 20, 31, 0.4); font-size: 1rem; }
+.fact__note { font-size: 0.72rem; color: #8a8471; line-height: 1.5; }
+
+/* Runners-up */
+.rs__others { margin-top: var(--sp-7); }
+.rs__other-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--sp-3); }
+.rs__other {
+  display: grid;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-600);
+  background: var(--ink-800);
+  text-align: left;
+  transition: border-color var(--dur-2), transform var(--dur-2);
+}
+.rs__other:hover { border-color: var(--gold-500); transform: translateY(-2px); }
+.rs__other-top { display: flex; justify-content: space-between; gap: var(--sp-3); align-items: baseline; }
+.rs__other-title { font-family: var(--font-display); font-size: 1.05rem; color: var(--text-hi); }
+.rs__other-pct { font-family: var(--font-mono); color: var(--gold-400); font-variant-numeric: tabular-nums; }
+.rs__other-sum { font-size: var(--fs-sm); color: var(--text-mid); line-height: 1.55; }
+
+.rs__actions { margin-top: var(--sp-7); display: flex; gap: var(--sp-3); justify-content: center; flex-wrap: wrap; }
+
+@media (max-width: 720px) {
+  .rs__top { grid-template-columns: 1fr; justify-items: start; }
+  .rs__stamp { position: static; margin-top: var(--sp-6); margin-inline: auto; }
+}
+
+/* ============================================================
+   Roadmap
+   ============================================================ */
+.rm {
+  min-height: 100dvh;
+  padding-block: var(--sp-7) var(--sp-9);
+  background: linear-gradient(180deg, var(--ink-900), #080d1c 60%, var(--ink-900));
+}
+.rm__head { text-align: center; }
+.rm__title { margin-top: var(--sp-3); }
+
+.rm__line { position: relative; margin-top: var(--sp-8); display: grid; gap: var(--sp-5); }
+
+/* The rail the stages hang off */
+.rm__line::before {
+  content: '';
+  position: absolute;
+  left: 27px;
+  top: 12px;
+  bottom: 12px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--gold-500), rgba(201, 162, 39, 0.12));
+}
+
+.stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: var(--sp-4);
+  align-items: start;
+}
+.stage__num {
+  position: relative;
+  z-index: 2;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--ink-600);
+  background: var(--ink-800);
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  color: var(--text-low);
+  transition: all var(--dur-3) var(--ease-out);
+}
+.stage.is-in .stage__num {
+  border-color: var(--gold-500);
+  color: var(--gold-400);
+  box-shadow: var(--glow-gold);
+}
+.stage__body {
+  padding: var(--sp-4) var(--sp-5);
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-600);
+  background: var(--ink-800);
+}
+.stage__title { font-family: var(--font-display); font-size: 1.3rem; color: var(--text-hi); }
+.stage__detail { margin-top: var(--sp-2); color: var(--text-mid); line-height: 1.65; max-width: 68ch; }
+
+.rm__foot { margin-top: var(--sp-8); text-align: center; }
+
+@media (max-width: 560px) {
+  .rm__line::before { left: 21px; }
+  .stage { grid-template-columns: 44px 1fr; gap: var(--sp-3); }
+  .stage__num { width: 44px; height: 44px; font-size: 0.76rem; }
+}
+
+/* While a question is sliding out, its options must stop accepting input —
+   the outgoing card is still in the DOM and would otherwise swallow a fast
+   click meant for the question arriving behind it. */
+.qz__q--locked { pointer-events: none; }

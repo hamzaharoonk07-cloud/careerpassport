@@ -1,0 +1,655 @@
+/* ============================================================
+   Airport — departure board, boarding pass, flight sequence
+   Dark navy + gold, glass over real terminal footage.
+   ============================================================ */
+
+/* ── Departure board ────────────────────────────────────── */
+.board3 {
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(201, 162, 39, 0.28);
+  background: rgba(6, 9, 17, 0.82);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--sh-3);
+  overflow: hidden;
+}
+
+.board3__head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: 1px solid rgba(201, 162, 39, 0.22);
+  background: rgba(201, 162, 39, 0.06);
+}
+.board3__plane { color: var(--gold-500); font-size: 1.1rem; }
+.board3__title {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+}
+.board3__clock { margin-left: auto; color: var(--text-low); font-size: 0.78rem; }
+
+.board3__cols,
+.row3 {
+  display: grid;
+  grid-template-columns: 72px minmax(150px, 1.1fr) minmax(0, 1.7fr) 104px;
+  gap: var(--sp-4);
+  align-items: center;
+}
+.board3__cols {
+  padding: var(--sp-3) var(--sp-5);
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-low);
+  border-bottom: 1px solid var(--ink-600);
+}
+
+.board3__rows { list-style: none; margin: 0; padding: 0; }
+
+.row3 {
+  width: 100%;
+  padding: var(--sp-4) var(--sp-5);
+  text-align: left;
+  border-bottom: 1px solid rgba(22, 36, 74, 0.7);
+  transition: background var(--dur-2) var(--ease-out), opacity var(--dur-3) var(--ease-out);
+}
+.row3:hover:not(:disabled) { background: rgba(201, 162, 39, 0.07); }
+.row3--on { background: rgba(201, 162, 39, 0.12); }
+.row3--dim { opacity: 0.34; }
+.row3:disabled { cursor: default; }
+
+.row3__gate { color: var(--gold-400); font-size: 0.95rem; }
+
+/* Split-flap characters */
+.flaps { display: inline-flex; gap: 2px; }
+.flap {
+  display: inline-grid;
+  place-items: center;
+  min-width: 15px;
+  padding: 2px 1px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #131c37 50%, #0c1428 50%);
+  border: 1px solid rgba(245, 240, 230, 0.08);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--gold-300);
+}
+
+.row3__dest {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  color: var(--text-hi);
+  line-height: 1.2;
+}
+.row3__icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  border-radius: var(--r-sm);
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  color: var(--gold-500);
+}
+
+.row3__desc {
+  font-size: var(--fs-sm);
+  color: var(--text-mid);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.row3__status {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--success);
+  text-align: right;
+}
+.row3__status--now { color: var(--gold-400); }
+
+.board3__pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-4) var(--sp-5);
+  flex-wrap: wrap;
+}
+.board3__pagebtn {
+  min-height: 44px;
+  padding: 0 var(--sp-4);
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-600);
+  color: var(--text-mid);
+  font-size: 0.8rem;
+  transition: border-color var(--dur-2), color var(--dur-2);
+}
+.board3__pagebtn:hover:not(:disabled) { border-color: var(--gold-500); color: var(--gold-400); }
+.board3__pagebtn:disabled { opacity: 0.35; cursor: not-allowed; }
+.board3__pagenum { font-size: 0.72rem; color: var(--text-low); }
+
+/* ── Boarding pass ──────────────────────────────────────── */
+.bpass {
+  display: grid;
+  grid-template-columns: 1fr 150px;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: linear-gradient(160deg, var(--cream-50), var(--cream-200));
+  color: var(--text-dark);
+  box-shadow: var(--sh-4);
+  max-width: 620px;
+  opacity: 0;
+  transform: translateY(14px) rotate(-0.6deg);
+}
+.bpass--issued {
+  animation: bp-issue 700ms var(--ease-impact) both;
+}
+@keyframes bp-issue {
+  from { opacity: 0; transform: translateY(26px) rotate(-2.4deg) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) rotate(-0.6deg) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bpass { opacity: 1; transform: none; }
+  .bpass--issued { animation: none; }
+}
+
+.bpass__main { padding: var(--sp-5); }
+.bpass__head { display: flex; align-items: center; gap: var(--sp-3); }
+.bpass__mark { color: #8a7333; display: grid; place-items: center; }
+.bpass__brand {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.24em;
+  color: var(--ink-800);
+}
+.bpass__type {
+  margin-left: auto;
+  font-size: 0.56rem;
+  letter-spacing: 0.2em;
+  color: #8a8471;
+}
+
+.bpass__route {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-top: var(--sp-5);
+}
+.bpass__end { display: grid; gap: 2px; min-width: 0; max-width: 42%; }
+.bpass__end--to { text-align: right; margin-left: auto; }
+.bpass__code { font-size: 1.7rem; color: var(--ink-800); line-height: 1; }
+.bpass__place {
+  font-size: 0.68rem;
+  color: #8a8471;
+  line-height: 1.35;
+  /* Two lines, then ellipsis — a 30-character destination must not push
+     the route apart or run under the flight details below it. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: break-word;
+}
+.bpass__path { flex: 1; display: flex; align-items: center; gap: 6px; min-width: 40px; }
+.bpass__line { flex: 1; height: 1px; background: repeating-linear-gradient(90deg, rgba(16,20,31,0.3) 0 4px, transparent 4px 8px); }
+.bpass__jet { color: #8a7333; font-size: 0.9rem; }
+
+.bpass__grid {
+  margin-top: var(--sp-5);
+  padding-top: var(--sp-4);
+  border-top: 1px dashed rgba(16, 20, 31, 0.2);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-4) var(--sp-3);
+}
+.bpass__grid dt {
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8a8471;
+}
+.bpass__grid dd {
+  margin: 3px 0 0;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  line-height: 1.25;
+  color: var(--ink-800);
+  overflow-wrap: break-word;
+  hyphens: none;
+}
+.bpass__grid > div { min-width: 0; }
+
+.bpass__stub {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-3);
+  background: rgba(16, 20, 31, 0.06);
+  border-left: 2px dashed rgba(16, 20, 31, 0.28);
+  text-align: center;
+}
+.bpass__stub-code { font-size: 1.25rem; color: var(--ink-800); }
+.bpass__stub-name {
+  font-size: 0.66rem;
+  color: #6a6559;
+  line-height: 1.3;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: break-word;
+}
+.bpass__stub { min-width: 0; }
+.bpass__stub-seat { font-size: 0.72rem; color: #8a8471; }
+.bpass__barcode {
+  width: 100%;
+  height: 42px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--ink-800) 0 2px, transparent 2px 4px,
+    var(--ink-800) 4px 5px, transparent 5px 9px,
+    var(--ink-800) 9px 12px, transparent 12px 14px
+  );
+  opacity: 0.75;
+}
+
+/* ── Flight sequence ────────────────────────────────────── */
+.flight {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-cinema);
+  background: var(--ink-900);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.flight__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14%;
+  z-index: 4;
+  text-align: center;
+  padding-inline: var(--sp-5);
+}
+.flight__stage {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+}
+.flight__line {
+  margin-top: var(--sp-3);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 2.8rem);
+  font-weight: 300;
+  color: var(--text-hi);
+  text-shadow: 0 2px 26px rgba(6, 9, 17, 0.8);
+}
+
+/* Progress through the four flight stages */
+.flight__track {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.flight__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink-600);
+  transition: background var(--dur-2), transform var(--dur-2);
+}
+.flight__dot--on { background: var(--gold-500); transform: scale(1.5); }
+
+.flight__skip {
+  position: absolute;
+  right: var(--sp-5);
+  bottom: var(--sp-5);
+  z-index: 5;
+  min-height: 44px;
+  padding: 0 var(--sp-4);
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(201, 162, 39, 0.45);
+  background: rgba(6, 9, 17, 0.55);
+  backdrop-filter: blur(6px);
+  color: var(--gold-400);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Airport home ───────────────────────────────────────── */
+.apt {
+  position: relative;
+  min-height: 100dvh;
+  padding-block: var(--sp-7) var(--sp-9);
+  overflow-x: hidden;
+  isolation: isolate;
+}
+.apt__inner { position: relative; z-index: 2; }
+
+.apt__head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--sp-5); flex-wrap: wrap; }
+.apt__welcome {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4.4vw, 3rem);
+  font-weight: 300;
+  line-height: 1.08;
+  color: var(--text-hi);
+  margin-top: var(--sp-3);
+  text-shadow: 0 2px 24px rgba(6, 9, 17, 0.75);
+}
+.apt__loc { display: flex; align-items: center; gap: var(--sp-2); color: var(--text-mid); font-size: var(--fs-sm); margin-top: var(--sp-3); }
+
+.apt__actions {
+  margin-top: var(--sp-6);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: var(--sp-3);
+}
+.apt__action {
+  display: grid;
+  gap: var(--sp-2);
+  padding: var(--sp-5) var(--sp-4);
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(201, 162, 39, 0.2);
+  background: rgba(10, 17, 40, 0.7);
+  backdrop-filter: blur(10px);
+  text-align: left;
+  justify-items: start;
+  transition: border-color var(--dur-2), transform var(--dur-2), box-shadow var(--dur-2);
+}
+.apt__action:hover { border-color: var(--gold-500); transform: translateY(-3px); box-shadow: var(--sh-3); }
+.apt__action-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-md);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  color: var(--gold-500);
+}
+.apt__action-title { font-family: var(--font-display); font-size: 1.1rem; color: var(--text-hi); }
+.apt__action-sub { font-size: 0.78rem; color: var(--text-low); line-height: 1.45; }
+
+.apt__grid {
+  margin-top: var(--sp-6);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-5);
+}
+
+@media (max-width: 900px) {
+  .board3__cols { display: none; }
+  .row3 {
+    grid-template-columns: 62px 1fr;
+    grid-template-areas: 'gate dest' 'gate desc' 'gate status';
+    gap: var(--sp-1) var(--sp-3);
+  }
+  .row3__gate { grid-area: gate; align-self: start; }
+  .row3__dest { grid-area: dest; }
+  .row3__desc { grid-area: desc; }
+  .row3__status { grid-area: status; text-align: left; }
+  .bpass { grid-template-columns: 1fr; max-width: none; }
+  .bpass__stub { border-left: none; border-top: 2px dashed rgba(16, 20, 31, 0.28); }
+  .bpass__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── The tear ───────────────────────────────────────────────
+   At the gate the stub is torn off along the perforation. Two things
+   sell it: the halves separate on an arc rather than sliding apart,
+   and the torn edge is ragged rather than a clean rectangle. */
+.bpass__main,
+.bpass__stub {
+  transform-origin: center;
+  transition:
+    transform 820ms cubic-bezier(0.34, 1.2, 0.44, 1),
+    opacity 620ms var(--ease-out),
+    filter 620ms var(--ease-out);
+}
+.bpass__main { position: relative; }
+.bpass__stub { position: relative; }
+
+.bpass--torn .bpass__main { transform: translateX(-10px) rotate(-1.2deg); }
+
+.bpass--torn .bpass__stub {
+  transform: translate(58px, -34px) rotate(13deg) scale(0.97);
+  opacity: 0;
+  filter: blur(1.5px);
+}
+
+/* A ragged edge on both halves where the perforation gave way. */
+.bpass--torn .bpass__main::after,
+.bpass--torn .bpass__stub::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  width: 7px;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(16, 20, 31, 0.26) 0 2px,
+    transparent 2px 5px,
+    rgba(16, 20, 31, 0.16) 5px 6px,
+    transparent 6px 11px
+  );
+}
+.bpass--torn .bpass__main::after { right: -3px; }
+.bpass--torn .bpass__stub::before { left: -3px; }
+
+/* The gate accepts it: a green CLEARED mark stamps onto the pass. */
+.bpass__cleared {
+  position: absolute;
+  right: 20%;
+  bottom: 14%;
+  z-index: 3;
+  padding: 6px 14px;
+  border: 2px solid rgba(46, 125, 91, 0.8);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  color: rgba(46, 125, 91, 0.9);
+  opacity: 0;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bpass--torn .bpass__cleared { animation: ps-stamp-press 620ms var(--ease-impact) 260ms both; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bpass__main, .bpass__stub { transition: none; }
+  .bpass--torn .bpass__cleared { opacity: 1; }
+}
+
+/* ── Flight HUD ─────────────────────────────────────────────
+   Instrument readouts over the footage. The numbers are eased toward
+   each beat's target rather than randomised, so altitude and speed
+   tell the same story as the picture. */
+.flight__void {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 50% at 50% 45%, #16244a, #060911 78%);
+}
+
+.flight__grid {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.16;
+  background-image:
+    linear-gradient(rgba(201, 162, 39, 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201, 162, 39, 0.5) 1px, transparent 1px);
+  background-size: 88px 88px;
+  -webkit-mask-image: radial-gradient(72% 62% at 50% 50%, transparent 30%, #000 100%);
+  mask-image: radial-gradient(72% 62% at 50% 50%, transparent 30%, #000 100%);
+}
+
+.flight__pass { position: relative; z-index: 4; width: min(92vw, 620px); }
+
+.hud {
+  position: absolute;
+  top: var(--sp-6);
+  left: var(--sp-6);
+  z-index: 4;
+  display: grid;
+  gap: var(--sp-2);
+  min-width: 230px;
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  background: rgba(6, 9, 17, 0.55);
+  backdrop-filter: blur(10px);
+}
+.hud__row { display: flex; justify-content: space-between; gap: var(--sp-4); align-items: baseline; }
+.hud__k {
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-low);
+}
+.hud__v {
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  color: var(--gold-300);
+  font-variant-numeric: tabular-nums;
+}
+.hud__bar {
+  margin-top: var(--sp-2);
+  height: 2px;
+  border-radius: var(--r-pill);
+  background: var(--ink-600);
+  overflow: hidden;
+}
+.hud__bar-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-500), var(--gold-300));
+  transition: width var(--dur-4) var(--ease-out);
+}
+
+.flight__line { animation: ps-rise var(--dur-4) var(--ease-out) both; }
+
+@media (max-width: 760px) {
+  .hud { top: auto; bottom: 22%; left: 50%; transform: translateX(-50%); min-width: 0; width: min(92vw, 320px); }
+  .flight__caption { bottom: 34%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flight__line { animation: none; }
+  .hud__bar-fill { transition: none; }
+}
+
+/* ── Flight plan (roadmap) ──────────────────────────────────
+   Waypoints along a route rather than stations on a rail. The
+   dashed line is the great-circle track between legs. */
+.fplan {
+  position: relative;
+  margin-top: var(--sp-8);
+  display: grid;
+  gap: var(--sp-5);
+}
+.fplan::before {
+  content: '';
+  position: absolute;
+  left: 21px;
+  top: 14px;
+  bottom: 14px;
+  width: 2px;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(201, 162, 39, 0.75) 0 7px,
+    transparent 7px 15px
+  );
+}
+
+.fplan__leg {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: var(--sp-4);
+  align-items: start;
+}
+
+.fplan__marker {
+  position: relative;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--ink-600);
+  background: var(--ink-900);
+  transition: border-color var(--dur-3) var(--ease-out), box-shadow var(--dur-3) var(--ease-out);
+}
+.fplan__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ink-600);
+  transition: background var(--dur-3) var(--ease-out);
+}
+.fplan__leg.is-in .fplan__marker { border-color: var(--gold-500); box-shadow: var(--glow-gold); }
+.fplan__leg.is-in .fplan__dot { background: var(--gold-400); }
+
+.fplan__card {
+  padding: var(--sp-4) var(--sp-5);
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-600);
+  background: rgba(10, 17, 40, 0.82);
+  backdrop-filter: blur(10px);
+}
+.fplan__card-head { display: flex; align-items: baseline; gap: var(--sp-3); flex-wrap: wrap; }
+.fplan__wp {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--gold-500);
+  padding: 3px 8px;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  border-radius: var(--r-sm);
+}
+
+@media (max-width: 560px) {
+  .fplan::before { left: 17px; }
+  .fplan__leg { grid-template-columns: 36px 1fr; gap: var(--sp-3); }
+  .fplan__marker { width: 36px; height: 36px; }
+}
+
+/* While the boarding pass is on screen it owns the centre. The caption and
+   the instrument panel step aside rather than printing over it. */
+.flight--pass .flight__caption { bottom: 6%; }
+.flight--pass .hud { opacity: 0.35; transform: scale(0.94); transform-origin: top left; }
+.flight--pass .flight__grid { opacity: 0.07; }
+.hud { transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out); }
+.flight__caption { transition: bottom var(--dur-3) var(--ease-out); }
+
+@media (max-width: 900px) {
+  /* No room for both on a phone — the pass is the point at this moment. */
+  .flight--pass .hud { display: none; }
+  .flight--pass .flight__caption { bottom: 4%; }
+  .flight__pass { width: min(94vw, 460px); }
+}

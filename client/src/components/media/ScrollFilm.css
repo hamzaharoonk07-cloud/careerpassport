@@ -1,0 +1,193 @@
+/* ============================================================
+   Scroll film — one clip, scrubbed by the scrollbar, carrying
+   the whole landing page from the hero through to the passport
+   ============================================================ */
+
+.sfilm { position: relative; }
+
+/* The viewport-sized frame the film is pinned inside while the tall
+   section scrolls past it. */
+.sfilm__pin {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+  display: grid;
+  align-items: center;
+}
+
+.sfilm__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Copy sits over bright golden-hour footage, so it needs a floor. */
+.sfilm__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(68% 58% at 30% 50%, rgba(6, 9, 17, 0.82), transparent 72%),
+    linear-gradient(180deg, rgba(6, 9, 17, 0.66), transparent 24%, transparent 56%, rgba(6, 9, 17, 0.86));
+}
+
+.sfilm__inner { position: relative; z-index: 2; }
+
+.sfilm__copy {
+  max-width: 46ch;
+  margin-right: auto;
+  animation: ps-rise var(--dur-4) var(--ease-out) both;
+}
+
+.sfilm__mark { color: var(--gold-500); margin-bottom: var(--sp-4); }
+
+.sfilm__title {
+  margin-top: var(--sp-3);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5.2vw, 3.8rem);
+  font-weight: 300;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  color: var(--text-hi);
+  text-shadow: 0 2px 34px rgba(6, 9, 17, 0.85);
+}
+
+.sfilm__body {
+  margin-top: var(--sp-4);
+  color: var(--text-mid);
+  line-height: 1.72;
+  text-shadow: 0 1px 18px rgba(6, 9, 17, 0.9);
+}
+
+.sfilm__actions {
+  margin-top: var(--sp-6);
+  display: flex;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.sfilm__note {
+  flex-basis: 100%;
+  margin-top: var(--sp-2);
+  color: var(--text-mid);
+  font-size: var(--fs-sm);
+}
+.sfilm__note strong {
+  font-family: var(--font-mono);
+  color: var(--gold-400);
+  font-weight: 600;
+}
+
+/* The opening frame carries the page's masthead, so it runs larger. */
+.sfilm__copy--hero { max-width: 52ch; }
+.sfilm__copy--hero .sfilm__title { font-size: clamp(2.6rem, 7vw, 5.4rem); }
+
+/* The closing frame is the handover to the passport — centred, so it reads
+   as an ending rather than another chapter. */
+.sfilm__copy--close {
+  max-width: 40ch;
+  margin-inline: auto;
+  text-align: center;
+}
+.sfilm__copy--close .sfilm__actions { justify-content: center; }
+
+/* Chapter rail — where you are in the flight */
+.sfilm__rail {
+  position: absolute;
+  right: clamp(var(--sp-4), 3vw, var(--sp-7));
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: grid;
+  gap: var(--sp-4);
+}
+.sfilm__tick {
+  position: relative;
+  display: block;
+  width: 26px;
+  height: 2px;
+  background: rgba(245, 240, 230, 0.22);
+  transition: background var(--dur-3) var(--ease-out), width var(--dur-3) var(--ease-out);
+}
+.sfilm__tick--on { background: var(--gold-500); width: 40px; }
+.sfilm__tick-label {
+  position: absolute;
+  right: calc(100% + var(--sp-3));
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-low);
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+.sfilm__tick--on .sfilm__tick-label { opacity: 1; color: var(--gold-400); }
+
+/* Scroll cue, only on the opening frame */
+.sfilm__scroll {
+  position: absolute;
+  left: 50%;
+  bottom: var(--sp-5);
+  transform: translateX(-50%);
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-2);
+}
+.sfilm__scroll-line {
+  width: 1px;
+  height: 46px;
+  background: linear-gradient(180deg, transparent, var(--gold-500));
+}
+.sfilm__scroll-label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-low);
+}
+
+/* ── Stacked fallback ────────────────────────────────────────────
+   Touch and reduced-motion visitors cannot scrub, and this component is
+   the whole landing page — so every chapter is laid out in normal flow
+   over a fixed still instead. */
+.sfilm--stacked { position: relative; isolation: isolate; }
+
+.sfilm__still {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+.sfilm__stack-item {
+  position: relative;
+  z-index: 1;
+  min-height: 88vh;
+  display: grid;
+  align-content: center;
+  padding-block: var(--sp-8);
+}
+.sfilm--stacked .sfilm__copy {
+  max-width: 60ch;
+  animation: none;
+}
+.sfilm--stacked .sfilm__copy--close {
+  max-width: 46ch;
+  margin-inline: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sfilm__copy { animation: none; }
+}

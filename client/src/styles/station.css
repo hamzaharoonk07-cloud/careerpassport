@@ -1,0 +1,433 @@
+/* ============================================================
+   Career Station & Career Train
+   Glass architecture, polished floor, warm light, a premium train.
+   Built entirely from divs and gradients — no video, no images.
+   ============================================================ */
+
+.st {
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: linear-gradient(180deg, #060911 0%, #0a1128 52%, #070b16 100%);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+/* ── Architecture ───────────────────────────────────────── */
+
+/* Vaulted glass roof — repeating mullions in perspective */
+.st__roof {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 34%;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, rgba(182, 188, 203, 0.07) 0 1px, transparent 1px 76px),
+    linear-gradient(180deg, rgba(232, 199, 102, 0.07), transparent 78%);
+  transform: perspective(760px) rotateX(46deg);
+  transform-origin: top center;
+  opacity: 0.9;
+}
+
+/* The far wall of the concourse */
+.st__hall {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(76% 52% at 50% 34%, rgba(22, 36, 74, 0.85), transparent 72%);
+}
+
+/* Platform lights receding into the distance */
+.st__lamps {
+  position: absolute;
+  top: 26%;
+  left: 0;
+  right: 0;
+  height: 3px;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(232, 199, 102, 0.55) 0 4px,
+    transparent 4px 118px
+  );
+  filter: blur(0.4px);
+  opacity: 0.75;
+}
+
+/* Polished floor — the reflection is a mirrored gradient, not a second render */
+.st__floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 30%;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(232, 199, 102, 0.09), transparent 62%),
+    linear-gradient(180deg, #0b1226, #05070e);
+}
+.st__floor::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, rgba(245, 240, 230, 0.032) 0 1px, transparent 1px 132px);
+  transform: perspective(520px) rotateX(72deg);
+  transform-origin: top center;
+}
+
+/* The platform edge */
+.st__edge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 30%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.6), transparent);
+  pointer-events: none;
+}
+
+/* ── The train ──────────────────────────────────────────── */
+.st__train {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 30%;
+  height: clamp(180px, 30vh, 280px);
+  pointer-events: none;
+  transform: translate3d(115%, 0, 0);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .st__train--arriving { animation: st-arrive 3.4s cubic-bezier(0.22, 0.9, 0.25, 1) forwards; }
+}
+.st__train--arrived { transform: translate3d(0, 0, 0); }
+@keyframes st-arrive {
+  0%   { transform: translate3d(115%, 0, 0); }
+  72%  { transform: translate3d(-2.5%, 0, 0); }
+  88%  { transform: translate3d(1%, 0, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+.st__carriage {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px 14px 4px 4px;
+  background:
+    linear-gradient(180deg, #1b2a55 0%, #142145 34%, #0d1730 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(245, 240, 230, 0.12),
+    inset 0 -18px 30px -18px rgba(0, 0, 0, 0.9),
+    0 -10px 60px rgba(0, 0, 0, 0.55);
+  border-top: 1px solid rgba(201, 162, 39, 0.32);
+}
+
+/* Gold liner running the length of the carriage */
+.st__liner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 34%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.7) 12%, rgba(201, 162, 39, 0.7) 88%, transparent);
+}
+
+/* Windows — one repeating gradient rather than N elements */
+.st__windows {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 16%;
+  height: 30%;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 26px,
+    rgba(232, 199, 102, 0.16) 26px 116px,
+    transparent 116px 142px
+  );
+  border-radius: 3px;
+  filter: blur(0.3px);
+}
+
+/* Headlights, thrown down the platform */
+.st__headlight {
+  position: absolute;
+  top: 44%;
+  width: 16px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold-100);
+  box-shadow: 0 0 22px 8px rgba(240, 226, 184, 0.5), 0 0 70px 26px rgba(232, 199, 102, 0.22);
+}
+.st__headlight--l { left: 5%; }
+.st__headlight--r { left: 11%; }
+
+/* ── Doors ──────────────────────────────────────────────── */
+.st__doors {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: clamp(150px, 22vw, 230px);
+  top: 12%;
+  display: flex;
+  overflow: hidden;
+  border-radius: 6px 6px 0 0;
+  border: 1px solid rgba(201, 162, 39, 0.34);
+  background: linear-gradient(180deg, rgba(10, 17, 40, 0.9), rgba(6, 9, 17, 0.96));
+}
+.st__door {
+  flex: 1;
+  background: linear-gradient(180deg, #16244a, #0c1430);
+  border-inline: 1px solid rgba(201, 162, 39, 0.2);
+  transition: transform 1.1s var(--ease-in-out);
+}
+.st__door--l { transform-origin: left; }
+.st__door--r { transform-origin: right; }
+.st__doors--open .st__door--l { transform: translateX(-101%); }
+.st__doors--open .st__door--r { transform: translateX(101%); }
+
+/* Warm interior light spilling out once the doors part */
+.st__doorlight {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(232, 199, 102, 0.3), rgba(201, 162, 39, 0.08));
+  opacity: 0;
+  transition: opacity 900ms var(--ease-out) 220ms;
+}
+.st__doors--open .st__doorlight { opacity: 1; }
+
+/* ── Foreground content ─────────────────────────────────── */
+.st__content {
+  position: relative;
+  z-index: 4;
+  grid-row: 2;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: var(--sp-6) var(--sp-5);
+}
+.st__board {
+  display: grid;
+  gap: var(--sp-4);
+  justify-items: center;
+  padding: var(--sp-6) var(--sp-7);
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(201, 162, 39, 0.22);
+  background: rgba(6, 9, 17, 0.62);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--sh-3);
+  max-width: 560px;
+}
+.st__dest {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+}
+.st__note { color: var(--text-mid); max-width: 46ch; }
+
+/* ── Departure-board flap row ───────────────────────────── */
+.st__flaps {
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.st__flap {
+  min-width: 22px;
+  padding: 5px 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #10182f 50%, #0b1224 50%);
+  border: 1px solid rgba(245, 240, 230, 0.08);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--gold-300);
+  text-align: center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .st__flap { animation: st-flap 420ms var(--ease-out) both; }
+}
+@keyframes st-flap {
+  from { transform: rotateX(-90deg); opacity: 0; }
+  to   { transform: rotateX(0); opacity: 1; }
+}
+
+/* ── The whole scene departs ────────────────────────────── */
+.st--departing .st__train,
+.st--departing .st__content { transition: transform 1.2s var(--ease-in-out), opacity 900ms var(--ease-out); }
+.st--departing .st__train { transform: translate3d(-130%, 0, 0); }
+.st--departing .st__content { opacity: 0; transform: scale(0.96); }
+
+/* Motion blur streaks as the train pulls away */
+.st__speed {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: repeating-linear-gradient(90deg, rgba(245,240,230,0.1) 0 2px, transparent 2px 42px);
+}
+.st--departing .st__speed {
+  animation: st-speed 1.2s var(--ease-in-out) forwards;
+}
+@keyframes st-speed {
+  0%   { opacity: 0; transform: translateX(0) scaleX(1); }
+  40%  { opacity: 0.5; }
+  100% { opacity: 0; transform: translateX(-40%) scaleX(3); }
+}
+
+/* ============================================================
+   Inside the train — the career compartments
+   ============================================================ */
+
+.tr {
+  position: relative;
+  min-height: 100dvh;
+  padding-block: var(--sp-7) var(--sp-8);
+  overflow: hidden;
+  background: linear-gradient(180deg, #070b16, #0a1128 40%, #060911);
+}
+
+/* Carriage interior: ribbed ceiling, warm sconces, window strip */
+.tr__ceiling {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 16%;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, rgba(245, 240, 230, 0.035) 0 1px, transparent 1px 58px),
+    linear-gradient(180deg, rgba(232, 199, 102, 0.1), transparent);
+  transform: perspective(600px) rotateX(38deg);
+  transform-origin: top center;
+}
+.tr__glass {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(60% 44% at 50% 22%, rgba(201, 162, 39, 0.09), transparent 70%);
+}
+
+.tr__head { position: relative; z-index: 2; text-align: center; }
+.tr__title { margin-top: var(--sp-3); }
+.tr__sub { margin-top: var(--sp-4); margin-inline: auto; }
+
+/* ── Compartment cards ──────────────────────────────────── */
+.tr__grid {
+  position: relative;
+  z-index: 2;
+  margin-top: var(--sp-7);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--sp-4);
+  perspective: 1200px;
+}
+
+.cmp {
+  --cmp-accent: var(--gold-500);
+  position: relative;
+  display: grid;
+  gap: var(--sp-3);
+  padding: var(--sp-5);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--ink-600);
+  background: linear-gradient(165deg, var(--ink-700), var(--ink-800));
+  text-align: left;
+  overflow: hidden;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition:
+    transform var(--dur-3) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-3) var(--ease-out);
+}
+.cmp::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(70% 60% at 50% 0%, color-mix(in srgb, var(--cmp-accent) 22%, transparent), transparent 72%);
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+.cmp:hover, .cmp:focus-visible {
+  border-color: color-mix(in srgb, var(--cmp-accent) 55%, transparent);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
+}
+.cmp:hover::before, .cmp:focus-visible::before { opacity: 1; }
+.cmp--active {
+  border-color: var(--gold-500);
+  box-shadow: var(--glow-gold), 0 20px 50px rgba(0, 0, 0, 0.55);
+}
+.cmp--active::before { opacity: 1; }
+
+.cmp__icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-md);
+  border: 1px solid color-mix(in srgb, var(--cmp-accent) 42%, transparent);
+  color: var(--cmp-accent);
+}
+.cmp__title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 500; color: var(--text-hi); }
+.cmp__tagline { font-size: var(--fs-sm); color: var(--gold-400); }
+.cmp__desc { font-size: var(--fs-sm); color: var(--text-mid); line-height: 1.6; }
+.cmp__check {
+  position: absolute;
+  top: var(--sp-4);
+  right: var(--sp-4);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--gold-500);
+  color: var(--ink-900);
+  display: grid;
+  place-items: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  transform: scale(0);
+  transition: transform var(--dur-2) var(--ease-impact);
+}
+.cmp--active .cmp__check { transform: scale(1); }
+
+.tr__foot {
+  position: relative;
+  z-index: 2;
+  margin-top: var(--sp-7);
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-3);
+  text-align: center;
+}
+
+/* ── Departing into the quiz ────────────────────────────── */
+.tr--leaving {
+  animation: tr-leave 1.1s var(--ease-in-out) forwards;
+}
+@keyframes tr-leave {
+  0%   { filter: blur(0); transform: translateX(0) scale(1); opacity: 1; }
+  100% { filter: blur(14px); transform: translateX(-8%) scale(1.06); opacity: 0; }
+}
+
+/* ── Mobile: compartments swipe horizontally ────────────── */
+@media (max-width: 720px) {
+  .tr__grid {
+    grid-auto-flow: column;
+    grid-auto-columns: 78%;
+    grid-template-columns: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: var(--sp-3);
+    scrollbar-width: thin;
+  }
+  .cmp { scroll-snap-align: center; }
+  .st__doors { width: 46vw; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .st__train { transform: none; }
+  .tr--leaving { animation: none; opacity: 0; }
+}

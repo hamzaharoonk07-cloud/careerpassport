@@ -1,0 +1,9 @@
+/* ============================================================
+   Landing page
+
+   The page is now a single scroll-scrubbed film — see
+   components/media/ScrollFilm.css for everything visible on it.
+   All that belongs here is the ground the film sits on.
+   ============================================================ */
+
+.lp { background: var(--ink-900); }

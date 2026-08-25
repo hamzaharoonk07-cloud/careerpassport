@@ -1,0 +1,231 @@
+/* ============================================================
+   Career destination — an arrivals card, not a document dump
+   ============================================================ */
+
+.dst { position: relative; }
+
+/* ── Arrival plate ──────────────────────────────────────── */
+.dst__hero {
+  position: relative;
+  isolation: isolate;
+  padding-block: var(--sp-6) var(--sp-7);
+  border-bottom: 1px solid rgba(201, 162, 39, 0.22);
+  overflow: hidden;
+}
+.dst__hero-inner { position: relative; z-index: 2; }
+.dst__back { display: inline-block; margin-bottom: var(--sp-5); }
+
+.dst__plate {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-4);
+  padding: var(--sp-5);
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  background: rgba(6, 9, 17, 0.72);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--sh-3);
+}
+.dst__plate-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  flex: none;
+  border-radius: var(--r-md);
+  border: 1px solid color-mix(in srgb, var(--board-accent, var(--gold-500)) 45%, transparent);
+  color: var(--board-accent, var(--gold-500));
+}
+.dst__plate-text { min-width: 0; }
+.dst__title {
+  margin-top: var(--sp-2);
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 4.4vw, 3rem);
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  color: var(--text-hi);
+}
+.dst__summary {
+  margin-top: var(--sp-3);
+  color: var(--text-mid);
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+/* Four facts, the way an arrivals board shows them */
+.dst__strip {
+  margin-top: var(--sp-4);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--sp-3);
+}
+.dst__strip > div {
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-600);
+  background: rgba(10, 17, 40, 0.7);
+  backdrop-filter: blur(8px);
+  min-width: 0;
+}
+.dst__strip dt {
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-low);
+}
+.dst__strip dd {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  color: var(--text-hi);
+  overflow-wrap: break-word;
+}
+.dst__strip dd em { font-family: var(--font-body); font-size: 0.8rem; color: var(--text-low); }
+
+.dst__actions { margin-top: var(--sp-5); display: flex; gap: var(--sp-3); flex-wrap: wrap; }
+.dst__savenote { margin-top: var(--sp-3); font-size: var(--fs-sm); }
+
+/* ── Tabs ───────────────────────────────────────────────── */
+.dst__body { padding-block: var(--sp-6) var(--sp-9); }
+
+.dst__tabs {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--ink-600);
+  padding-bottom: var(--sp-3);
+}
+.dst__tab {
+  min-height: 44px;
+  padding: 0 var(--sp-4);
+  border-radius: var(--r-pill);
+  border: 1px solid transparent;
+  color: var(--text-mid);
+  font-size: 0.86rem;
+  transition: color var(--dur-2), background var(--dur-2), border-color var(--dur-2);
+}
+.dst__tab:hover { color: var(--text-hi); background: var(--ink-700); }
+.dst__tab--on {
+  color: var(--gold-400);
+  border-color: rgba(201, 162, 39, 0.4);
+  background: rgba(201, 162, 39, 0.1);
+}
+
+.dst__panel {
+  margin-top: var(--sp-5);
+  animation: ps-rise var(--dur-3) var(--ease-out) both;
+}
+@media (prefers-reduced-motion: reduce) { .dst__panel { animation: none; } }
+
+.dst__body-text { color: var(--text-mid); line-height: 1.78; max-width: 68ch; }
+
+.dst__note {
+  margin-top: var(--sp-5);
+  padding: var(--sp-4) var(--sp-5);
+  border-radius: var(--r-md);
+  border-left: 2px solid var(--gold-500);
+  background: var(--ink-800);
+}
+.dst__note-k {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-500);
+  margin-bottom: var(--sp-2);
+}
+.dst__note p { color: var(--text-mid); line-height: 1.7; max-width: 66ch; }
+.dst__chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+
+/* ── Skills ─────────────────────────────────────────────── */
+.dst__skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--sp-3); }
+.dst__skill {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-600);
+  background: var(--ink-800);
+}
+.dst__skill-n { color: var(--text-hi); font-size: 0.94rem; min-width: 0; }
+.dst__pips { display: flex; gap: 4px; flex: none; }
+.dst__pip { width: 13px; height: 5px; border-radius: 2px; background: var(--ink-600); }
+.dst__pip--on { background: var(--gold-500); }
+
+/* ── Route ──────────────────────────────────────────────── */
+.dst__route { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }
+.dst__route li {
+  display: grid;
+  grid-template-columns: 62px 1fr;
+  gap: var(--sp-4);
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-600);
+  background: var(--ink-800);
+}
+.dst__wp {
+  align-self: start;
+  padding: 4px 8px;
+  border-radius: var(--r-sm);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  color: var(--gold-500);
+  text-align: center;
+}
+.dst__route-t { font-family: var(--font-display); font-size: 1.08rem; color: var(--text-hi); }
+.dst__route-d { margin-top: var(--sp-2); color: var(--text-mid); line-height: 1.65; font-size: 0.92rem; max-width: 66ch; }
+
+/* ── Market ─────────────────────────────────────────────── */
+.dst__market { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--sp-4); }
+.dst__market > div {
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-600);
+  background: var(--ink-800);
+}
+.dst__market dt {
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-low);
+}
+.dst__market dd { margin: 5px 0 0; font-family: var(--font-display); font-size: 1.1rem; color: var(--text-hi); }
+.dst__market dd em { font-family: var(--font-body); font-size: 0.86rem; color: var(--text-low); }
+.dst__market-note { margin-top: var(--sp-2); font-size: 0.74rem; color: var(--text-low); line-height: 1.5; }
+
+/* ── Connecting flights ─────────────────────────────────── */
+.dst__related { margin-top: var(--sp-8); }
+.dst__related-grid {
+  margin-top: var(--sp-3);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--sp-3);
+}
+.dst__related-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-600);
+  background: var(--ink-800);
+  color: var(--text-mid);
+  transition: border-color var(--dur-2), color var(--dur-2), transform var(--dur-2);
+}
+.dst__related-card:hover { border-color: var(--gold-500); color: var(--text-hi); transform: translateY(-2px); }
+.dst__related-t { font-family: var(--font-display); font-size: 1rem; }
+.dst__related-go { color: var(--gold-500); }
+
+@media (max-width: 640px) {
+  .dst__plate { flex-direction: column; }
+  .dst__route li { grid-template-columns: 1fr; gap: var(--sp-2); }
+  .dst__wp { justify-self: start; }
+}

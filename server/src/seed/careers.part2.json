@@ -1,0 +1,526 @@
+[
+  {
+    "slug": "general-physician",
+    "title": "General Physician",
+    "field": "healthcare",
+    "summary": "Diagnoses and treats across the whole range of everyday illness.",
+    "description": "General physicians are the first serious point of contact in medicine. The work demands breadth rather than depth, sustained study long after qualification, and the ability to make a decision with incomplete information while a person waits in front of you.",
+    "dayInLife": "Thirty patients. Most are routine. Two are not, and the skill is telling which is which quickly enough to matter.",
+    "skills": [
+      { "name": "Clinical diagnosis", "weight": 5 },
+      { "name": "Patient communication", "weight": 5 },
+      { "name": "Decision under uncertainty", "weight": 5 },
+      { "name": "Pharmacology", "weight": 4 },
+      { "name": "Record keeping", "weight": 4 },
+      { "name": "Stamina and composure", "weight": 5 }
+    ],
+    "learningAreas": ["Human anatomy and physiology", "Pathology", "Pharmacology", "Clinical examination", "Medical ethics"],
+    "roadmap": [
+      "Complete pre-medical education with strong biology and chemistry, then gain admission to an accredited medical college.",
+      "Work through the MBBS curriculum — the basic sciences first, then the clinical rotations where the real learning happens.",
+      "Complete house job and clinical rotations across specialties. This is where diagnostic judgement is actually built.",
+      "Register with the Pakistan Medical and Dental Council and practise under supervision.",
+      "Practise as a general physician, or apply for residency if you intend to specialise.",
+      "Specialise through postgraduate training (FCPS or equivalent), or grow into practice ownership, teaching, or public health."
+    ],
+    "demand": { "level": "very-high", "note": "Persistent shortage relative to population, particularly outside major urban centres." },
+    "salary": { "entry": 70000, "mid": 200000, "senior": 600000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 5, "I": 9, "A": 2, "S": 9, "E": 4, "C": 6 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "clinical" }
+  },
+  {
+    "slug": "registered-nurse",
+    "title": "Registered Nurse",
+    "field": "healthcare",
+    "summary": "Delivers and coordinates the care patients actually receive.",
+    "description": "Nurses provide direct clinical care, monitor deterioration, administer treatment and act as the constant presence around a patient. It is physically and emotionally demanding, highly skilled, and consistently underestimated by people outside the profession.",
+    "dayInLife": "Handover, then rounds. Medication, observations, dressings, and the two conversations with families that take the most out of you.",
+    "skills": [
+      { "name": "Clinical care skills", "weight": 5 },
+      { "name": "Patient assessment", "weight": 5 },
+      { "name": "Medication administration", "weight": 5 },
+      { "name": "Empathy under pressure", "weight": 5 },
+      { "name": "Documentation", "weight": 4 },
+      { "name": "Teamwork", "weight": 5 }
+    ],
+    "learningAreas": ["Anatomy and physiology", "Clinical procedures", "Pharmacology for nursing", "Infection control", "Patient communication"],
+    "roadmap": [
+      "Complete pre-nursing education with strong biology, then enter an accredited BSN or diploma nursing programme.",
+      "Build clinical fundamentals — assessment, procedures, pharmacology, infection control — alongside supervised practice.",
+      "Complete clinical placements across wards. Breadth early tells you which environment suits you.",
+      "Register with the Pakistan Nursing Council and take a staff nurse post.",
+      "Practise in your chosen setting — ward, ICU, theatre, community — and consolidate.",
+      "Specialise (critical care, paediatrics, midwifery), or move into nurse education, management, or advanced practice."
+    ],
+    "demand": { "level": "very-high", "note": "Significant ongoing shortage domestically and strong international demand." },
+    "salary": { "entry": 45000, "mid": 110000, "senior": 250000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 6, "I": 5, "A": 2, "S": 10, "E": 3, "C": 6 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "clinical" }
+  },
+  {
+    "slug": "physiotherapist",
+    "title": "Physiotherapist",
+    "field": "healthcare",
+    "summary": "Restores movement and function after injury, surgery or illness.",
+    "description": "Physiotherapists assess movement problems and treat them through exercise, manual therapy and education. Much of the work is persuading a patient to do difficult things consistently for weeks, which makes it as much a coaching role as a clinical one.",
+    "dayInLife": "Eight patients, each mid-way through a programme. Reassess, adjust, and spend real time explaining why the boring exercise is the one that matters.",
+    "skills": [
+      { "name": "Musculoskeletal assessment", "weight": 5 },
+      { "name": "Manual therapy", "weight": 4 },
+      { "name": "Exercise prescription", "weight": 5 },
+      { "name": "Patient motivation", "weight": 5 },
+      { "name": "Anatomy", "weight": 5 },
+      { "name": "Progress documentation", "weight": 4 }
+    ],
+    "learningAreas": ["Anatomy and biomechanics", "Assessment techniques", "Therapeutic exercise", "Neurological rehabilitation", "Patient education"],
+    "roadmap": [
+      "Complete pre-medical education, then enter an accredited Doctor of Physical Therapy or BS Physiotherapy programme.",
+      "Build deep anatomy and biomechanics knowledge alongside assessment and treatment technique.",
+      "Complete supervised clinical rotations across musculoskeletal, neurological and cardiopulmonary settings.",
+      "Work in a hospital or clinic under experienced supervision, where you see enough volume to build pattern recognition.",
+      "Practise independently in a clinic, hospital or sports setting.",
+      "Specialise in sports, neurology or paediatrics, or grow toward running your own practice."
+    ],
+    "demand": { "level": "high", "note": "Growing demand with increasing awareness of rehabilitation and an ageing population." },
+    "salary": { "entry": 50000, "mid": 130000, "senior": 300000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 7, "I": 6, "A": 3, "S": 9, "E": 4, "C": 5 },
+    "workStyle": { "pace": "balanced", "collaboration": "mixed", "environment": "clinical" }
+  },
+  {
+    "slug": "pharmacist",
+    "title": "Pharmacist",
+    "field": "healthcare",
+    "summary": "The last check between a prescription and a patient.",
+    "description": "Pharmacists dispense medication, check for interactions and dosing errors, and advise patients and prescribers. It is a precision role where the cost of a lapse is direct, and it suits people who find careful, rule-governed work satisfying rather than dull.",
+    "dayInLife": "Verify prescriptions against interactions and dose. Catch one that is wrong. Counsel a patient who has not understood their regimen, and manage stock before closing.",
+    "skills": [
+      { "name": "Pharmacology", "weight": 5 },
+      { "name": "Drug interaction checking", "weight": 5 },
+      { "name": "Attention to detail", "weight": 5 },
+      { "name": "Patient counselling", "weight": 4 },
+      { "name": "Inventory management", "weight": 3 },
+      { "name": "Regulatory compliance", "weight": 4 }
+    ],
+    "learningAreas": ["Pharmacology", "Pharmaceutical chemistry", "Clinical pharmacy", "Dispensing practice", "Pharmacy law"],
+    "roadmap": [
+      "Complete pre-medical education with strong chemistry, then enter an accredited Pharm-D programme.",
+      "Build pharmacology, pharmaceutics and clinical pharmacy knowledge, plus the legal framework governing dispensing.",
+      "Complete internship hours in hospital and community pharmacy settings.",
+      "Register with the Pharmacy Council and practise under supervision.",
+      "Take a role in community, hospital or industrial pharmacy depending on which environment suits you.",
+      "Specialise in clinical pharmacy, regulatory affairs, or pharmaceutical industry roles — or open your own pharmacy."
+    ],
+    "demand": { "level": "high", "note": "Steady demand across retail, hospital and pharmaceutical industry settings." },
+    "salary": { "entry": 55000, "mid": 140000, "senior": 320000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 4, "I": 7, "A": 2, "S": 7, "E": 3, "C": 9 },
+    "workStyle": { "pace": "steady", "collaboration": "mixed", "environment": "clinical" }
+  },
+  {
+    "slug": "clinical-psychologist",
+    "title": "Clinical Psychologist",
+    "field": "healthcare",
+    "summary": "Assesses and treats psychological distress and mental illness.",
+    "description": "Clinical psychologists work with people experiencing mental health difficulties, using assessment and evidence-based therapy. It requires long training, genuine emotional steadiness, and the discipline to work within evidence rather than intuition.",
+    "dayInLife": "Five sessions with substantial gaps to write notes and think. Supervision in the afternoon, because doing this without supervision is how practitioners get hurt.",
+    "skills": [
+      { "name": "Clinical assessment", "weight": 5 },
+      { "name": "Therapeutic technique", "weight": 5 },
+      { "name": "Active listening", "weight": 5 },
+      { "name": "Research literacy", "weight": 4 },
+      { "name": "Professional boundaries", "weight": 5 },
+      { "name": "Case documentation", "weight": 4 }
+    ],
+    "learningAreas": ["Psychological theory", "Psychopathology", "Assessment instruments", "CBT and other modalities", "Research methods and ethics"],
+    "roadmap": [
+      "Complete a BS in Psychology, building strong foundations in theory, statistics and research methods.",
+      "Enter an MS or MPhil in Clinical Psychology, adding psychopathology, assessment and therapeutic modalities.",
+      "Complete supervised clinical practicum hours. Practice under supervision is the core of the training, not an add-on.",
+      "Work in a hospital, clinic or institutional setting where you see a range of presentations with support around you.",
+      "Practise as a clinical psychologist, in an institution or private practice.",
+      "Specialise (child, trauma, neuropsychology), pursue a doctorate, or move toward supervision, teaching or research."
+    ],
+    "demand": { "level": "high", "note": "Rising demand as mental health provision expands, though formal posts remain limited." },
+    "salary": { "entry": 55000, "mid": 150000, "senior": 350000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 2, "I": 8, "A": 4, "S": 10, "E": 4, "C": 5 },
+    "workStyle": { "pace": "steady", "collaboration": "solo", "environment": "clinical" }
+  },
+  {
+    "slug": "medical-lab-scientist",
+    "title": "Medical Laboratory Scientist",
+    "field": "healthcare",
+    "summary": "Produces the test results clinical decisions are built on.",
+    "description": "Laboratory scientists run and validate the diagnostic tests behind most medical decisions. It is exacting, largely invisible work — a wrong result propagates into a wrong diagnosis, so quality control is the profession's core discipline rather than an afterthought.",
+    "dayInLife": "Run the morning batch, validate the controls, flag two results that do not fit the clinical picture and need repeating before they are released.",
+    "skills": [
+      { "name": "Laboratory technique", "weight": 5 },
+      { "name": "Quality control", "weight": 5 },
+      { "name": "Instrumentation", "weight": 4 },
+      { "name": "Microbiology and biochemistry", "weight": 5 },
+      { "name": "Precision and consistency", "weight": 5 },
+      { "name": "Result interpretation", "weight": 4 }
+    ],
+    "learningAreas": ["Clinical biochemistry", "Microbiology", "Haematology", "Laboratory instrumentation", "Quality assurance"],
+    "roadmap": [
+      "Complete pre-medical education, then a BS in Medical Laboratory Technology or a related applied science.",
+      "Build the core disciplines — biochemistry, haematology, microbiology, immunology — plus instrumentation and quality control.",
+      "Complete laboratory internship hours across departments to find which discipline holds your interest.",
+      "Take a technologist post in a hospital or diagnostic laboratory and build volume experience.",
+      "Work as a laboratory scientist, taking responsibility for validation and release of results.",
+      "Specialise in a discipline, move into laboratory management, or step across into research or quality assurance."
+    ],
+    "demand": { "level": "high", "note": "Consistent demand across hospital and private diagnostic laboratories." },
+    "salary": { "entry": 40000, "mid": 100000, "senior": 220000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 6, "I": 8, "A": 2, "S": 4, "E": 2, "C": 9 },
+    "workStyle": { "pace": "steady", "collaboration": "mixed", "environment": "clinical" }
+  },
+
+  {
+    "slug": "financial-analyst",
+    "title": "Financial Analyst",
+    "field": "finance",
+    "summary": "Turns financial data into a recommendation someone will act on.",
+    "description": "Financial analysts build models, evaluate performance and forecast outcomes to support investment or business decisions. The modelling is learnable; the judgement about which assumptions are load-bearing is what takes years.",
+    "dayInLife": "Update the model with the new quarter. Discover the variance is in one line item. Spend the afternoon finding out why, then write the two paragraphs that explain it.",
+    "skills": [
+      { "name": "Financial modelling", "weight": 5 },
+      { "name": "Excel", "weight": 5 },
+      { "name": "Accounting fundamentals", "weight": 5 },
+      { "name": "Valuation", "weight": 4 },
+      { "name": "Written analysis", "weight": 4 },
+      { "name": "Attention to detail", "weight": 5 }
+    ],
+    "learningAreas": ["Financial accounting", "Corporate finance", "Excel modelling", "Valuation methods", "Financial statement analysis"],
+    "roadmap": [
+      "Learn accounting properly — you cannot analyse statements you cannot read. Then corporate finance fundamentals.",
+      "Build real Excel modelling ability and learn the standard valuation approaches and their limits.",
+      "Model three real companies from published statements and write the investment case for each.",
+      "Take an analyst or finance associate role. Reviewing real numbers under a deadline builds judgement quickly.",
+      "Apply for financial analyst roles, with CFA progress if the employers you want expect it.",
+      "Move toward senior analysis, portfolio management, corporate finance leadership, or specialised valuation work."
+    ],
+    "demand": { "level": "high", "note": "Steady demand in banking, corporate finance and the growing asset management sector." },
+    "salary": { "entry": 70000, "mid": 200000, "senior": 480000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 2, "I": 8, "A": 2, "S": 3, "E": 6, "C": 9 },
+    "workStyle": { "pace": "balanced", "collaboration": "mixed", "environment": "office" }
+  },
+  {
+    "slug": "chartered-accountant",
+    "title": "Chartered Accountant",
+    "field": "finance",
+    "summary": "Certifies that an organisation's financial picture is true.",
+    "description": "Chartered accountants prepare, audit and interpret financial statements, and advise on tax and compliance. The qualification is long and demanding, and it is one of the most portable and respected credentials in business.",
+    "dayInLife": "Work through a client's ledger. Find the treatment that is defensible but aggressive. Have the conversation about it, then document the position properly.",
+    "skills": [
+      { "name": "Financial accounting", "weight": 5 },
+      { "name": "Audit and assurance", "weight": 5 },
+      { "name": "Taxation", "weight": 4 },
+      { "name": "Regulatory standards", "weight": 5 },
+      { "name": "Analytical rigour", "weight": 5 },
+      { "name": "Professional scepticism", "weight": 5 }
+    ],
+    "learningAreas": ["Financial reporting standards", "Auditing", "Taxation law", "Corporate law", "Cost and management accounting"],
+    "roadmap": [
+      "Complete intermediate education, then register with ICAP and begin the CA foundation examinations.",
+      "Work through the professional syllabus — reporting standards, audit, tax and corporate law — while sitting the examinations.",
+      "Complete the mandatory articleship in an approved firm. This is where the qualification becomes real competence.",
+      "Finish the training period and the final examinations, gaining broad client exposure along the way.",
+      "Qualify and take a post in practice or industry as a chartered accountant.",
+      "Grow toward partnership in practice, or move into industry as a financial controller or chief financial officer."
+    ],
+    "demand": { "level": "very-high", "note": "Qualified CAs are consistently in short supply relative to demand." },
+    "salary": { "entry": 90000, "mid": 280000, "senior": 700000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 2, "I": 6, "A": 1, "S": 3, "E": 5, "C": 10 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "office" }
+  },
+  {
+    "slug": "investment-banker",
+    "title": "Investment Banker",
+    "field": "finance",
+    "summary": "Advises on raising capital and buying or selling companies.",
+    "description": "Investment bankers structure and execute large financial transactions — capital raises, mergers, acquisitions. The compensation is high and so is the cost: the hours are genuinely punishing, particularly in the first years, and honest guidance names that.",
+    "dayInLife": "Model until late. Rebuild the deck after a comment at eleven at night. Present a version of the analysis in the morning that nobody will remember was rebuilt twice.",
+    "skills": [
+      { "name": "Financial modelling", "weight": 5 },
+      { "name": "Valuation", "weight": 5 },
+      { "name": "Deal structuring", "weight": 4 },
+      { "name": "Client relationships", "weight": 5 },
+      { "name": "Presentation craft", "weight": 5 },
+      { "name": "Endurance", "weight": 5 }
+    ],
+    "learningAreas": ["Corporate finance", "Valuation and LBO modelling", "Capital markets", "Accounting", "Negotiation"],
+    "roadmap": [
+      "Build strong finance and accounting foundations at university, with results good enough to clear a competitive screen.",
+      "Master modelling and valuation to a professional standard — DCF, comparables, precedent transactions, LBO.",
+      "Complete a summer internship at a bank. Full-time entry runs almost entirely through internship conversion.",
+      "Take an analyst position and survive the first two years, which are as much about reliability as intelligence.",
+      "Progress to associate, either directly or via an MBA.",
+      "Stay through to senior banking, or exit into private equity, corporate development, or a chief financial officer track."
+    ],
+    "demand": { "level": "moderate", "note": "A small number of highly competitive positions concentrated in Karachi and Lahore." },
+    "salary": { "entry": 150000, "mid": 450000, "senior": 1200000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 2, "I": 7, "A": 2, "S": 4, "E": 9, "C": 8 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "office" }
+  },
+  {
+    "slug": "actuary",
+    "title": "Actuary",
+    "field": "finance",
+    "summary": "Prices risk using mathematics, for insurance and pensions.",
+    "description": "Actuaries quantify future uncertainty — mortality, claims, investment returns — and price it. The qualification route is a long sequence of difficult examinations, and the profession is small, well paid and unusually stable as a result.",
+    "dayInLife": "Rerun the reserving model against updated claims experience. Explain to a non-technical committee why the number moved, without either alarming or misleading them.",
+    "skills": [
+      { "name": "Probability and statistics", "weight": 5 },
+      { "name": "Financial mathematics", "weight": 5 },
+      { "name": "Modelling", "weight": 5 },
+      { "name": "Programming (R, Python, VBA)", "weight": 4 },
+      { "name": "Communicating risk", "weight": 4 },
+      { "name": "Persistence through exams", "weight": 5 }
+    ],
+    "learningAreas": ["Probability theory", "Financial mathematics", "Survival models", "Risk modelling", "Actuarial software"],
+    "roadmap": [
+      "Build a strong mathematics and statistics foundation at degree level. This route is closed without genuine mathematical ability.",
+      "Begin the professional examinations (SOA, IFoA or equivalent) and add programming for modelling work.",
+      "Apply the mathematics to real datasets — pricing, reserving, mortality — rather than only exam problems.",
+      "Take an actuarial analyst or trainee role at an insurer or consultancy, which usually funds and supports your examinations.",
+      "Continue passing examinations while working, progressing responsibility as you clear each stage.",
+      "Qualify as a fellow, then specialise in life, general insurance, pensions, or risk management."
+    ],
+    "demand": { "level": "moderate", "note": "A small profession locally, with demand consistently exceeding the number of qualified actuaries." },
+    "salary": { "entry": 90000, "mid": 300000, "senior": 750000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 2, "I": 10, "A": 1, "S": 2, "E": 4, "C": 10 },
+    "workStyle": { "pace": "steady", "collaboration": "mixed", "environment": "office" }
+  },
+  {
+    "slug": "risk-analyst",
+    "title": "Risk Analyst",
+    "field": "finance",
+    "summary": "Identifies what could go wrong and how much it would cost.",
+    "description": "Risk analysts assess credit, market and operational exposure, build the models that quantify it, and monitor limits. The role is analytical and increasingly regulated, and it rewards people who are comfortable being the person who says no.",
+    "dayInLife": "Review the portfolio against limits. One exposure has drifted. Quantify it, escalate it, and defend the recommendation to a business unit that would rather you had not noticed.",
+    "skills": [
+      { "name": "Risk modelling", "weight": 5 },
+      { "name": "Statistics", "weight": 5 },
+      { "name": "Regulatory frameworks", "weight": 4 },
+      { "name": "Data analysis", "weight": 5 },
+      { "name": "Report writing", "weight": 4 },
+      { "name": "Independence of judgement", "weight": 5 }
+    ],
+    "learningAreas": ["Credit and market risk", "Statistical modelling", "Basel and regulatory frameworks", "SQL and Excel", "Stress testing"],
+    "roadmap": [
+      "Build foundations in finance, statistics and economics, with genuine comfort in quantitative work.",
+      "Learn risk-specific modelling — credit scoring, value at risk, stress testing — plus the regulatory framework banks operate under.",
+      "Work real datasets: build a credit model, run a stress scenario, and write up what it means in plain language.",
+      "Take an analyst role in a bank, insurer or corporate treasury function.",
+      "Apply for risk analyst positions, with FRM certification if your target employers expect it.",
+      "Specialise in credit, market or operational risk, or grow toward risk management leadership."
+    ],
+    "demand": { "level": "high", "note": "Growing with regulatory requirements across banking and insurance." },
+    "salary": { "entry": 70000, "mid": 200000, "senior": 470000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 2, "I": 9, "A": 2, "S": 3, "E": 5, "C": 9 },
+    "workStyle": { "pace": "balanced", "collaboration": "mixed", "environment": "office" }
+  },
+  {
+    "slug": "auditor",
+    "title": "Auditor",
+    "field": "finance",
+    "summary": "Independently verifies that the numbers say what they claim.",
+    "description": "Auditors examine financial records and controls to confirm accuracy and compliance. External auditors serve shareholders; internal auditors serve the organisation itself. Both require professional scepticism and a willingness to be unpopular when the evidence requires it.",
+    "dayInLife": "Sample transactions and test the control. Find the exception. Trace it, document it properly, and raise it knowing the client will push back.",
+    "skills": [
+      { "name": "Audit methodology", "weight": 5 },
+      { "name": "Accounting standards", "weight": 5 },
+      { "name": "Internal controls", "weight": 5 },
+      { "name": "Evidence documentation", "weight": 5 },
+      { "name": "Professional scepticism", "weight": 5 },
+      { "name": "Client communication", "weight": 4 }
+    ],
+    "learningAreas": ["Auditing standards", "Financial reporting", "Internal control frameworks", "Risk-based auditing", "Data analytics in audit"],
+    "roadmap": [
+      "Complete a degree in accounting or finance, or begin a professional accountancy qualification.",
+      "Learn audit methodology, reporting standards and internal control frameworks in detail.",
+      "Practise on real engagements as a trainee — sampling, testing, and documenting evidence to a standard that survives review.",
+      "Complete a training contract with an audit firm, where you see many organisations quickly.",
+      "Qualify and take a post as an auditor, in practice or in an internal audit function.",
+      "Progress to audit manager and partnership, or move into internal audit leadership, compliance, or financial control."
+    ],
+    "demand": { "level": "high", "note": "Steady demand in professional practice and in-house internal audit functions." },
+    "salary": { "entry": 60000, "mid": 170000, "senior": 400000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 2, "I": 6, "A": 1, "S": 4, "E": 4, "C": 10 },
+    "workStyle": { "pace": "balanced", "collaboration": "team", "environment": "office" }
+  },
+
+  {
+    "slug": "journalist",
+    "title": "Journalist",
+    "field": "media",
+    "summary": "Finds out what is true and publishes it before the deadline.",
+    "description": "Journalists research, verify and write stories for print, broadcast or digital publication. The craft is sourcing and verification as much as writing, and the profession is under real economic pressure — which honest guidance should say alongside its genuine importance.",
+    "dayInLife": "Three calls, two of which go nowhere. The third gives you something. Verify it independently before writing, then file eight hundred words by five.",
+    "skills": [
+      { "name": "Reporting and sourcing", "weight": 5 },
+      { "name": "Writing to deadline", "weight": 5 },
+      { "name": "Fact verification", "weight": 5 },
+      { "name": "Interviewing", "weight": 5 },
+      { "name": "Media law and ethics", "weight": 4 },
+      { "name": "Research", "weight": 4 }
+    ],
+    "learningAreas": ["News writing", "Interviewing technique", "Media law and ethics", "Data journalism", "Digital publishing"],
+    "roadmap": [
+      "Study journalism or a subject you could report on with authority, and read enormous amounts of good reporting.",
+      "Learn the craft: news structure, interviewing, verification, and the legal and ethical framework you work inside.",
+      "Publish constantly — student media, local outlets, your own beat. Bylines are the currency of this profession.",
+      "Take an internship or junior reporting role. Newsroom experience under a working editor is irreplaceable.",
+      "Apply for reporting roles with a portfolio of published, verifiable work.",
+      "Build a specialist beat, move into editing or investigations, or go independent with your own publication."
+    ],
+    "demand": { "level": "moderate", "note": "Traditional newsroom roles are contracting while digital and specialist reporting grows." },
+    "salary": { "entry": 40000, "mid": 110000, "senior": 260000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 3, "I": 7, "A": 8, "S": 7, "E": 6, "C": 4 },
+    "workStyle": { "pace": "fast", "collaboration": "mixed", "environment": "field" }
+  },
+  {
+    "slug": "content-strategist",
+    "title": "Content Strategist",
+    "field": "media",
+    "summary": "Decides what an organisation should say, where, and why.",
+    "description": "Content strategists plan and govern the content an organisation produces — what gets made, for whom, on which channel, measured how. It sits between marketing, editorial and product, and it suits people who think structurally about communication.",
+    "dayInLife": "Audit what already exists and find half of it is redundant. Build the plan for what replaces it, and the argument for why less will perform better.",
+    "skills": [
+      { "name": "Editorial planning", "weight": 5 },
+      { "name": "Audience research", "weight": 5 },
+      { "name": "Writing and editing", "weight": 5 },
+      { "name": "SEO fundamentals", "weight": 4 },
+      { "name": "Analytics", "weight": 4 },
+      { "name": "Stakeholder management", "weight": 4 }
+    ],
+    "learningAreas": ["Content strategy", "SEO", "Editorial standards", "Analytics", "Information architecture"],
+    "roadmap": [
+      "Become a genuinely good writer and editor first. Strategy without craft produces plans nobody can execute.",
+      "Add audience research, SEO, analytics and the structural side — taxonomy, governance, content models.",
+      "Run a real content programme, even small, and measure it. A blog you grew with evidence beats a certificate.",
+      "Work as a content writer or editor inside an organisation to learn how content actually gets approved and published.",
+      "Apply for content strategist roles with a portfolio showing audience decisions and measured outcomes.",
+      "Grow into content leadership, or specialise into UX writing, SEO strategy, or brand editorial."
+    ],
+    "demand": { "level": "high", "note": "Strong demand as organisations consolidate scattered content efforts under a strategy." },
+    "salary": { "entry": 55000, "mid": 160000, "senior": 380000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 2, "I": 6, "A": 8, "S": 6, "E": 6, "C": 5 },
+    "workStyle": { "pace": "balanced", "collaboration": "team", "environment": "office" }
+  },
+  {
+    "slug": "filmmaker-director",
+    "title": "Filmmaker / Director",
+    "field": "media",
+    "summary": "Decides what the audience sees, hears and feels — and gets it made.",
+    "description": "Directors shape the creative vision of a film or video and lead the crew that realises it. The creative authority is real, and so is the responsibility for a budget, a schedule and dozens of people. Entry is unstructured and depends heavily on work you make yourself.",
+    "dayInLife": "Shot list at dawn. Lose the location by mid-morning. Reblock the scene, keep the crew calm, and get the coverage you need before the light goes.",
+    "skills": [
+      { "name": "Visual storytelling", "weight": 5 },
+      { "name": "Directing performance", "weight": 5 },
+      { "name": "Shot composition", "weight": 5 },
+      { "name": "Crew leadership", "weight": 5 },
+      { "name": "Editing literacy", "weight": 4 },
+      { "name": "Production planning", "weight": 4 }
+    ],
+    "learningAreas": ["Film language and grammar", "Directing actors", "Cinematography basics", "Editing", "Production management"],
+    "roadmap": [
+      "Learn film language by watching deliberately and reading structure, then write and shoot constantly on whatever camera you have.",
+      "Build technical literacy across camera, sound, lighting and edit — you must be able to talk to every department.",
+      "Make short films. Finish them. An unfinished feature is worth less than three finished shorts.",
+      "Work on other people's sets in any role. Understanding the crew from inside is what makes a director trusted.",
+      "Direct commissioned work — commercials, music videos, documentary — while developing your own projects.",
+      "Build toward features or long-form, or specialise in commercial and documentary directing."
+    ],
+    "demand": { "level": "low", "note": "Highly competitive with no structured entry path; most work is project-based and self-generated." },
+    "salary": { "entry": null, "mid": null, "senior": null, "currency": "PKR", "period": "month", "source": "" },
+    "riasec": { "R": 5, "I": 5, "A": 10, "S": 5, "E": 7, "C": 3 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "field" }
+  },
+  {
+    "slug": "video-editor",
+    "title": "Video Editor",
+    "field": "media",
+    "summary": "Builds the film in the edit, where the story is actually decided.",
+    "description": "Editors assemble footage into a finished piece, controlling pace, clarity and emotion. It is patient, technical, deeply creative work, and it is one of the most reliably employable crafts in media because everything shot must eventually be cut.",
+    "dayInLife": "Watch four hours of rushes and log them. Build an assembly. Realise the scene works better without its best line, and cut it.",
+    "skills": [
+      { "name": "Editing software", "weight": 5 },
+      { "name": "Pacing and rhythm", "weight": 5 },
+      { "name": "Story structure", "weight": 5 },
+      { "name": "Colour and sound basics", "weight": 3 },
+      { "name": "File and media management", "weight": 4 },
+      { "name": "Working to notes", "weight": 4 }
+    ],
+    "learningAreas": ["Premiere Pro or DaVinci Resolve", "Edit theory", "Sound design basics", "Colour grading", "Delivery formats"],
+    "roadmap": [
+      "Learn one editing application thoroughly, and learn edit theory — why a cut lands where it does — alongside it.",
+      "Add sound, basic colour and delivery formats so you can hand over a finished, correctly specified file.",
+      "Edit constantly. Re-cut existing footage, edit friends' projects, build volume until pacing becomes instinct.",
+      "Assist an established editor or work in a post house. Media management and client workflow are learned, not intuited.",
+      "Take editing work — agencies, production companies, or direct clients — with a reel of finished pieces.",
+      "Specialise in narrative, documentary or commercial editing, or move toward post-production supervision or directing."
+    ],
+    "demand": { "level": "high", "note": "Strong and growing demand driven by video-first marketing and online content." },
+    "salary": { "entry": 45000, "mid": 130000, "senior": 300000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 4, "I": 4, "A": 9, "S": 2, "E": 2, "C": 6 },
+    "workStyle": { "pace": "balanced", "collaboration": "solo", "environment": "studio" }
+  },
+  {
+    "slug": "pr-specialist",
+    "title": "Public Relations Specialist",
+    "field": "media",
+    "summary": "Manages what an organisation says publicly, and what is said about it.",
+    "description": "PR specialists build media relationships, shape narrative, and handle communication when things go wrong. It requires excellent writing, genuine relationship skills, and calm under pressure — the crisis is the part of the job that defines the professional.",
+    "dayInLife": "Pitch three journalists, two of whom ignore you. Draft a statement about something difficult. Get it approved by legal without letting it become unreadable.",
+    "skills": [
+      { "name": "Media relations", "weight": 5 },
+      { "name": "Press writing", "weight": 5 },
+      { "name": "Crisis communication", "weight": 5 },
+      { "name": "Relationship building", "weight": 5 },
+      { "name": "Message discipline", "weight": 4 },
+      { "name": "Monitoring and measurement", "weight": 3 }
+    ],
+    "learningAreas": ["Media relations", "Press and statement writing", "Crisis communications", "Stakeholder mapping", "Reputation measurement"],
+    "roadmap": [
+      "Study communications or journalism, and learn to write clearly and fast under a word limit.",
+      "Add the professional toolkit: press releases, media lists, pitching, and the framework for handling a crisis.",
+      "Practise on real campaigns — university, non-profit, or a small business that needs coverage and cannot pay for it.",
+      "Take an agency or in-house junior communications role and build genuine journalist relationships.",
+      "Apply for PR specialist roles with placements you secured, not campaigns you observed.",
+      "Grow into communications leadership, or specialise in corporate, crisis, or public affairs communication."
+    ],
+    "demand": { "level": "moderate", "note": "Steady demand in agencies and larger corporates; increasingly merged with digital communications." },
+    "salary": { "entry": 50000, "mid": 140000, "senior": 340000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 2, "I": 4, "A": 6, "S": 8, "E": 8, "C": 5 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "office" }
+  },
+  {
+    "slug": "social-media-manager",
+    "title": "Social Media Manager",
+    "field": "media",
+    "summary": "Builds and holds an audience on platforms that keep changing the rules.",
+    "description": "Social media managers plan, produce and analyse content across platforms, and handle the community that forms around it. It looks casual from outside and is not — the work is relentless, publicly measured, and requires real editorial judgement about tone.",
+    "dayInLife": "Plan the week, shoot and cut three pieces, respond to comments, and adjust the plan because a post performed twenty times better than expected.",
+    "skills": [
+      { "name": "Platform-native content", "weight": 5 },
+      { "name": "Copywriting", "weight": 5 },
+      { "name": "Community management", "weight": 5 },
+      { "name": "Basic video and design", "weight": 4 },
+      { "name": "Analytics", "weight": 4 },
+      { "name": "Tone judgement", "weight": 5 }
+    ],
+    "learningAreas": ["Platform mechanics", "Short-form video", "Copywriting", "Community management", "Social analytics"],
+    "roadmap": [
+      "Learn how each platform actually distributes content, and study accounts that grow without paid support.",
+      "Build production skills — short-form video, basic design, and copy that works without a caption doing the heavy lifting.",
+      "Grow a real account from zero. This is the only evidence that convinces anyone in this field.",
+      "Take a coordinator or executive role and manage a brand account with real stakes and approval processes.",
+      "Apply for social media manager roles with audience and engagement growth you personally drove.",
+      "Grow into social or content leadership, or specialise in paid social, community, or creator partnerships."
+    ],
+    "demand": { "level": "high", "note": "Broad demand, though quality expectations have risen sharply as the role has professionalised." },
+    "salary": { "entry": 45000, "mid": 125000, "senior": 280000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 2, "I": 5, "A": 8, "S": 7, "E": 7, "C": 5 },
+    "workStyle": { "pace": "fast", "collaboration": "mixed", "environment": "office" }
+  }
+]

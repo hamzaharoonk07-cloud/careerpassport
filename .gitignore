@@ -1,0 +1,20 @@
+node_modules/
+dist/
+build/
+.env
+.env.local
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+coverage/
+.mongodb-binaries/
+media/higgsfield/raw/
+media/higgsfield/masters/
+# The delivered clips are part of the site, not build output — a deploy
+# without them renders a landing page with no film. The 2K Higgsfield
+# masters above stay out; these are the encoded ~19 MB of delivery assets.
+
+media/higgsfield/keyframes/

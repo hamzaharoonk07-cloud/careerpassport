@@ -1,0 +1,116 @@
+/* ============================================================
+   Account — the traveller's own document
+   ============================================================ */
+
+.acct__grid {
+  margin-top: var(--sp-6);
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: var(--sp-5);
+  align-items: start;
+}
+
+/* The document itself, on cream paper like the passport pages */
+.acct__doc {
+  position: relative;
+  padding: var(--sp-6);
+  border-radius: var(--r-lg);
+  background: linear-gradient(170deg, var(--cream-50), var(--cream-200));
+  color: var(--text-dark);
+  box-shadow: var(--sh-4);
+  overflow: hidden;
+}
+.acct__doc::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: repeating-radial-gradient(circle at 38% 30%, transparent 0 12px, var(--ink-700) 12px 12.5px);
+  background-size: 200px 200px;
+}
+
+.acct__doc-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding-bottom: var(--sp-4);
+  border-bottom: 1px solid rgba(16, 20, 31, 0.14);
+}
+.acct__doc-mark { color: #8a7333; display: grid; place-items: center; flex: none; }
+.acct__doc-auth {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #8a7333;
+}
+.acct__doc-no { font-size: 1.15rem; color: var(--ink-800); margin-top: 3px; }
+
+.acct__badge {
+  margin-left: auto;
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(16, 20, 31, 0.2);
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6a6559;
+  white-space: nowrap;
+}
+.acct__badge--admin { border-color: rgba(46, 125, 91, 0.5); color: #2e7d5b; background: rgba(46, 125, 91, 0.08); }
+
+.acct__facts {
+  position: relative;
+  margin-top: var(--sp-5);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-4);
+}
+.acct__facts > div { min-width: 0; }
+.acct__facts dt {
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8a8471;
+}
+.acct__facts dd {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--ink-800);
+  overflow-wrap: break-word;
+}
+.acct__facts dd a { color: #8a6f18; text-decoration: underline; text-underline-offset: 3px; }
+.acct__facts dd em { font-family: var(--font-body); font-size: 0.86rem; color: rgba(16,20,31,0.4); }
+
+.acct__traits {
+  position: relative;
+  margin-top: var(--sp-6);
+  padding-top: var(--sp-4);
+  border-top: 1px solid rgba(16, 20, 31, 0.14);
+}
+/* The bars live on cream here, so the dark-surface tokens need overriding. */
+.acct__traits .axis__k { color: #4a4740; }
+.acct__traits .axis__track { background: rgba(16, 20, 31, 0.1); }
+.acct__traits .axis__v { color: #8a8471; }
+.acct__traits .t-eyebrow { color: #8a7333; }
+
+.acct__form { display: grid; gap: var(--sp-4); }
+.acct__row { display: grid; grid-template-columns: 1fr 110px; gap: var(--sp-3); }
+.acct__note {
+  padding: var(--sp-3);
+  border-radius: var(--r-sm);
+  border: 1px solid rgba(46, 125, 91, 0.4);
+  background: rgba(46, 125, 91, 0.1);
+  color: #7fd0aa;
+  font-size: var(--fs-sm);
+}
+
+@media (max-width: 900px) {
+  .acct__grid { grid-template-columns: 1fr; }
+  .acct__facts { grid-template-columns: 1fr; }
+}

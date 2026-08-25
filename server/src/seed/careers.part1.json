@@ -1,0 +1,1482 @@
+[
+  {
+    "slug": "software-engineer",
+    "title": "Software Engineer",
+    "field": "technology",
+    "summary": "Designs, builds and maintains the software other people depend on.",
+    "description": "Software engineers turn a problem statement into a working system, then keep it working as reality changes around it. Most of the job is not typing code — it is deciding what to build, choosing between imperfect trade-offs, and reading other people's work well enough to change it safely.",
+    "dayInLife": "Stand-up, then a long block on one feature. An hour reviewing a colleague's pull request. Something breaks in production and you spend the afternoon proving what actually caused it.",
+    "skills": [
+      {
+        "name": "Programming fundamentals",
+        "weight": 5
+      },
+      {
+        "name": "Data structures and algorithms",
+        "weight": 4
+      },
+      {
+        "name": "Version control (Git)",
+        "weight": 5
+      },
+      {
+        "name": "Databases and SQL",
+        "weight": 4
+      },
+      {
+        "name": "Debugging and testing",
+        "weight": 5
+      },
+      {
+        "name": "System design",
+        "weight": 3
+      }
+    ],
+    "learningAreas": [
+      "One language deeply",
+      "HTTP and web fundamentals",
+      "Relational databases",
+      "Automated testing",
+      "Cloud basics"
+    ],
+    "roadmap": [
+      "Pick one language and learn it properly rather than four badly. Cover syntax, types, functions, and how memory and errors behave.",
+      "Add the surrounding craft: Git, the command line, HTTP, SQL and how a request actually reaches a database and comes back.",
+      "Build three finished projects end to end. Finished means deployed, with a README and tests, not a tutorial you followed.",
+      "Get real code reviewed — an internship, open source, or freelance work. The feedback loop matters more than the pay at this stage.",
+      "Apply for junior roles with a portfolio you can defend line by line in an interview.",
+      "Go deeper (systems, performance, architecture) or wider (leading a team). Both are real paths; pick deliberately, not by drift."
+    ],
+    "demand": {
+      "level": "very-high",
+      "note": "Consistently among the largest hiring categories in Pakistan's tech sector and remote market."
+    },
+    "salary": {
+      "entry": 80000,
+      "mid": 220000,
+      "senior": 500000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 6,
+      "I": 9,
+      "A": 4,
+      "S": 3,
+      "E": 3,
+      "C": 6
+    },
+    "workStyle": {
+      "pace": "balanced",
+      "collaboration": "team",
+      "environment": "office"
+    }
+  },
+  {
+    "slug": "data-scientist",
+    "title": "Data Scientist",
+    "field": "technology",
+    "summary": "Turns messy data into decisions someone can actually act on.",
+    "description": "A data scientist frames a business question as something measurable, gets the data into a usable state, and produces an answer with an honest confidence attached. The statistics matter, but the harder skill is refusing to over-claim.",
+    "dayInLife": "Most of the morning cleaning a dataset that arrived worse than promised. An afternoon modelling, then rewriting the finding into two sentences a manager can act on.",
+    "skills": [
+      {
+        "name": "Statistics and probability",
+        "weight": 5
+      },
+      {
+        "name": "Python or R",
+        "weight": 5
+      },
+      {
+        "name": "SQL",
+        "weight": 4
+      },
+      {
+        "name": "Data cleaning",
+        "weight": 5
+      },
+      {
+        "name": "Data visualisation",
+        "weight": 4
+      },
+      {
+        "name": "Communicating findings",
+        "weight": 4
+      }
+    ],
+    "learningAreas": [
+      "Descriptive and inferential statistics",
+      "Python with pandas and scikit-learn",
+      "SQL joins and aggregation",
+      "Experiment design",
+      "Clear charting"
+    ],
+    "roadmap": [
+      "Learn statistics before tools. Distributions, sampling, correlation versus causation, and what a p-value does and does not mean.",
+      "Add Python with pandas and scikit-learn, plus enough SQL to pull your own data without asking anyone.",
+      "Work three public datasets from raw file to written conclusion. Publish the notebooks with your reasoning visible.",
+      "Take a data internship or an analyst role. Working with real, dirty, political data is a different skill from Kaggle.",
+      "Apply to data analyst or junior data scientist roles, leading with the business impact of your projects rather than the model type.",
+      "Specialise — experimentation, machine learning engineering, or analytics leadership — once you know which part you actually enjoy."
+    ],
+    "demand": {
+      "level": "high",
+      "note": "Growing steadily, though employers increasingly expect engineering skill alongside analysis."
+    },
+    "salary": {
+      "entry": 90000,
+      "mid": 250000,
+      "senior": 550000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 3,
+      "I": 10,
+      "A": 3,
+      "S": 3,
+      "E": 3,
+      "C": 7
+    },
+    "workStyle": {
+      "pace": "balanced",
+      "collaboration": "mixed",
+      "environment": "office"
+    }
+  },
+  {
+    "slug": "cybersecurity-analyst",
+    "title": "Cybersecurity Analyst",
+    "field": "technology",
+    "summary": "Finds the weakness before someone hostile does.",
+    "description": "Security analysts monitor systems, investigate incidents, and harden what is exposed. It rewards a suspicious, methodical mind — the job is largely about noticing what does not fit and proving it rather than assuming it.",
+    "dayInLife": "Triage overnight alerts, most of which are noise. Investigate the one that is not. Write up the finding so someone else can fix it, and check the fix held.",
+    "skills": [
+      {
+        "name": "Networking fundamentals",
+        "weight": 5
+      },
+      {
+        "name": "Operating systems (Linux)",
+        "weight": 4
+      },
+      {
+        "name": "Threat analysis",
+        "weight": 5
+      },
+      {
+        "name": "Scripting",
+        "weight": 3
+      },
+      {
+        "name": "Incident documentation",
+        "weight": 4
+      },
+      {
+        "name": "Security tooling",
+        "weight": 4
+      }
+    ],
+    "learningAreas": [
+      "TCP/IP and networking",
+      "Linux administration",
+      "Common vulnerability classes",
+      "SIEM and log analysis",
+      "Security frameworks"
+    ],
+    "roadmap": [
+      "Learn networking and operating systems properly. You cannot defend a system whose normal behaviour you do not know.",
+      "Add Linux, scripting, and the common vulnerability classes — injection, misconfiguration, weak authentication, exposed services.",
+      "Practise in legal environments: capture-the-flag events, deliberately vulnerable labs, and your own home network.",
+      "Get an entry security or IT support role. Most analysts arrive via helpdesk or network administration, and that route is respected.",
+      "Apply for SOC analyst roles, with a certification such as Security+ if the employers you want ask for one.",
+      "Move toward incident response, penetration testing, or security architecture depending on whether you prefer defending, breaking, or designing."
+    ],
+    "demand": {
+      "level": "high",
+      "note": "Demand outpaces qualified supply, particularly for candidates with hands-on incident experience."
+    },
+    "salary": {
+      "entry": 85000,
+      "mid": 230000,
+      "senior": 480000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 6,
+      "I": 9,
+      "A": 2,
+      "S": 3,
+      "E": 3,
+      "C": 8
+    },
+    "workStyle": {
+      "pace": "fast",
+      "collaboration": "mixed",
+      "environment": "office"
+    }
+  },
+  {
+    "slug": "devops-engineer",
+    "title": "DevOps Engineer",
+    "field": "technology",
+    "summary": "Builds the pipes that get code from a laptop to production safely.",
+    "description": "DevOps engineers automate the path between writing software and running it, and own the reliability of what results. The job is equal parts infrastructure, scripting, and persuading teams to adopt a process that is boring on purpose.",
+    "dayInLife": "Fix a failing build pipeline. Automate a deployment step someone still does by hand. Get paged, restore service, then write the postmortem that stops it recurring.",
+    "skills": [
+      {
+        "name": "Linux and shell",
+        "weight": 5
+      },
+      {
+        "name": "CI/CD pipelines",
+        "weight": 5
+      },
+      {
+        "name": "Containers and orchestration",
+        "weight": 4
+      },
+      {
+        "name": "Cloud platforms",
+        "weight": 4
+      },
+      {
+        "name": "Infrastructure as code",
+        "weight": 4
+      },
+      {
+        "name": "Monitoring and alerting",
+        "weight": 4
+      }
+    ],
+    "learningAreas": [
+      "Linux administration",
+      "Docker and Kubernetes",
+      "One cloud provider",
+      "Terraform",
+      "Observability"
+    ],
+    "roadmap": [
+      "Learn Linux and shell scripting until the terminal is faster for you than a GUI. This is the foundation everything else sits on.",
+      "Add containers, one cloud provider, and a CI tool. Understand what a build, an artefact and a deployment actually are.",
+      "Automate something real end to end — take a personal project from a git push to a running deployed service with no manual steps.",
+      "Work in a software or systems role first. DevOps is hard to enter cold because it requires knowing what developers and operators each need.",
+      "Apply for DevOps, platform or SRE roles, showing infrastructure you have written as code rather than clicked together.",
+      "Grow into platform engineering or site reliability, where the work shifts from pipelines to designing systems that fail gracefully."
+    ],
+    "demand": {
+      "level": "high",
+      "note": "Strong demand, though most roles expect prior development or systems administration experience."
+    },
+    "salary": {
+      "entry": 95000,
+      "mid": 260000,
+      "senior": 550000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 8,
+      "I": 8,
+      "A": 2,
+      "S": 4,
+      "E": 3,
+      "C": 7
+    },
+    "workStyle": {
+      "pace": "fast",
+      "collaboration": "team",
+      "environment": "remote"
+    }
+  },
+  {
+    "slug": "mobile-app-developer",
+    "title": "Mobile App Developer",
+    "field": "technology",
+    "summary": "Builds the software people carry in their pocket.",
+    "description": "Mobile developers build applications for phones, working under constraints desktop developers never think about — battery, intermittent connectivity, small screens, and an app store standing between you and your users.",
+    "dayInLife": "Implement a screen against a design, then spend as long again making it behave correctly on a slow connection and a four-year-old device.",
+    "skills": [
+      {
+        "name": "Mobile language (Kotlin, Swift or Dart)",
+        "weight": 5
+      },
+      {
+        "name": "UI implementation",
+        "weight": 5
+      },
+      {
+        "name": "REST APIs",
+        "weight": 4
+      },
+      {
+        "name": "Local storage and offline behaviour",
+        "weight": 4
+      },
+      {
+        "name": "App store deployment",
+        "weight": 3
+      },
+      {
+        "name": "Performance profiling",
+        "weight": 3
+      }
+    ],
+    "learningAreas": [
+      "One mobile platform deeply",
+      "State management",
+      "API integration",
+      "Responsive layout",
+      "Release process"
+    ],
+    "roadmap": [
+      "Learn programming fundamentals in one language, then the platform SDK — Android with Kotlin, iOS with Swift, or cross-platform with Flutter.",
+      "Add API integration, local persistence, navigation and state management. These four cover most of what a real app does.",
+      "Ship two apps to a real store. The submission, review and update process is a genuine skill that tutorials skip entirely.",
+      "Take freelance or internship work building against someone else's designs and deadlines.",
+      "Apply for junior mobile roles with published apps you can hand an interviewer to open on their own phone.",
+      "Deepen into performance and architecture, or broaden into full-stack so you can build the backend your app talks to."
+    ],
+    "demand": {
+      "level": "high",
+      "note": "Steady demand, with cross-platform skills (Flutter, React Native) widening the available roles."
+    },
+    "salary": {
+      "entry": 75000,
+      "mid": 200000,
+      "senior": 440000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 6,
+      "I": 8,
+      "A": 5,
+      "S": 3,
+      "E": 3,
+      "C": 5
+    },
+    "workStyle": {
+      "pace": "balanced",
+      "collaboration": "team",
+      "environment": "office"
+    }
+  },
+  {
+    "slug": "ai-ml-engineer",
+    "title": "AI / Machine Learning Engineer",
+    "field": "technology",
+    "summary": "Puts machine learning models into production and keeps them honest.",
+    "description": "ML engineers sit between research and software engineering: they take a model that works in a notebook and make it work reliably, at cost, for real users. Increasingly the work is less about training models and more about evaluating and integrating them.",
+    "dayInLife": "Build an evaluation set because the current one flatters the model. Ship a change behind a flag. Investigate why quality dropped for one category of input.",
+    "skills": [
+      {
+        "name": "Python",
+        "weight": 5
+      },
+      {
+        "name": "Machine learning fundamentals",
+        "weight": 5
+      },
+      {
+        "name": "Linear algebra and statistics",
+        "weight": 4
+      },
+      {
+        "name": "Model evaluation",
+        "weight": 5
+      },
+      {
+        "name": "Software engineering practice",
+        "weight": 4
+      },
+      {
+        "name": "MLOps tooling",
+        "weight": 3
+      }
+    ],
+    "learningAreas": [
+      "Python and numerical computing",
+      "Supervised learning",
+      "Neural network basics",
+      "Evaluation and error analysis",
+      "Deployment and monitoring"
+    ],
+    "roadmap": [
+      "Build the mathematical base — linear algebra, probability, and calculus to the level where gradient descent is intuitive rather than magic.",
+      "Learn Python properly, then classical machine learning before deep learning. Most production problems do not need a neural network.",
+      "Train, evaluate and deploy three models yourself, including the unglamorous parts: data splits, baselines, and honest error analysis.",
+      "Get a software engineering or data role first. Almost nobody is hired straight into ML engineering without shipping something else first.",
+      "Apply for ML engineer roles, leading with a model you deployed and measured rather than a course certificate.",
+      "Specialise by domain — vision, language, recommendations — or move toward research or ML platform work."
+    ],
+    "demand": {
+      "level": "high",
+      "note": "High demand but competitive at entry level; most openings expect prior engineering experience."
+    },
+    "salary": {
+      "entry": 110000,
+      "mid": 300000,
+      "senior": 650000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 4,
+      "I": 10,
+      "A": 4,
+      "S": 2,
+      "E": 3,
+      "C": 6
+    },
+    "workStyle": {
+      "pace": "balanced",
+      "collaboration": "mixed",
+      "environment": "office"
+    }
+  },
+  {
+    "slug": "ui-ux-designer",
+    "title": "UI / UX Designer",
+    "field": "design",
+    "summary": "Decides how a product works before deciding how it looks.",
+    "description": "UX designers research what people are actually trying to do, then structure a product so it is obvious. UI designers make that structure legible and pleasant. Most jobs ask for both, and the strongest practitioners can defend every decision without appealing to taste.",
+    "dayInLife": "Watch three user sessions and discover a flow nobody understands. Redraw it. Take the new version to engineering and find out what is actually buildable this quarter.",
+    "skills": [
+      {
+        "name": "User research",
+        "weight": 5
+      },
+      {
+        "name": "Wireframing and prototyping",
+        "weight": 5
+      },
+      {
+        "name": "Visual hierarchy and typography",
+        "weight": 5
+      },
+      {
+        "name": "Design systems",
+        "weight": 4
+      },
+      {
+        "name": "Figma",
+        "weight": 5
+      },
+      {
+        "name": "Presenting and defending work",
+        "weight": 4
+      }
+    ],
+    "learningAreas": [
+      "Interaction design principles",
+      "Typography and layout",
+      "Research methods",
+      "Accessibility",
+      "Design systems"
+    ],
+    "roadmap": [
+      "Learn design fundamentals — hierarchy, spacing, typography, colour and contrast — before learning any tool. The tool takes a week; judgement takes years.",
+      "Get fluent in Figma, and learn a research method or two so your decisions rest on evidence rather than preference.",
+      "Redesign three real products and write up the reasoning. A portfolio of pretty screens loses to a portfolio that explains why.",
+      "Take freelance or internship work where a client pushes back. Defending a decision is the skill that separates designers from decorators.",
+      "Apply for junior product or UI/UX roles, leading with process and outcomes rather than dribbble-style visuals.",
+      "Grow into product design, design systems, or design leadership — or deepen into research or interaction craft."
+    ],
+    "demand": {
+      "level": "high",
+      "note": "Strong demand for designers who can also work in a design system and talk to engineers."
+    },
+    "salary": {
+      "entry": 65000,
+      "mid": 180000,
+      "senior": 400000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 2,
+      "I": 6,
+      "A": 9,
+      "S": 6,
+      "E": 4,
+      "C": 4
+    },
+    "workStyle": {
+      "pace": "balanced",
+      "collaboration": "team",
+      "environment": "studio"
+    }
+  },
+  {
+    "slug": "graphic-designer",
+    "title": "Graphic Designer",
+    "field": "design",
+    "summary": "Communicates a message visually, on brief and on deadline.",
+    "description": "Graphic designers work in identity, print, packaging and campaign work. The craft is composition and type; the profession is doing that repeatedly to a brief, with revisions, for a client who does not share your vocabulary.",
+    "dayInLife": "Three logo directions by lunch. Client picks the one you like least. Refine it until it is genuinely good anyway, then build the file for print.",
+    "skills": [
+      {
+        "name": "Typography",
+        "weight": 5
+      },
+      {
+        "name": "Composition and layout",
+        "weight": 5
+      },
+      {
+        "name": "Colour theory",
+        "weight": 4
+      },
+      {
+        "name": "Adobe Illustrator and Photoshop",
+        "weight": 5
+      },
+      {
+        "name": "Brand thinking",
+        "weight": 4
+      },
+      {
+        "name": "Print production",
+        "weight": 3
+      }
+    ],
+    "learningAreas": [
+      "Typography",
+      "Grid systems",
+      "Brand identity",
+      "Print specification",
+      "Vector illustration"
+    ],
+    "roadmap": [
+      "Study typography and composition seriously. Set type badly a thousand times and learn why it is bad — this is the whole foundation.",
+      "Get fluent in Illustrator, Photoshop and InDesign, plus enough Figma to work with digital teams.",
+      "Build a portfolio of real briefs, including self-set ones with a written brief you hold yourself to.",
+      "Take freelance and studio internship work. Client revisions teach speed and detachment faster than anything else.",
+      "Apply to studios or in-house brand teams with a portfolio of eight to ten pieces, not thirty.",
+      "Specialise — identity, packaging, editorial — or move toward art direction where you brief others rather than execute."
+    ],
+    "demand": {
+      "level": "moderate",
+      "note": "Competitive at entry level; specialisation and brand thinking separate the hired from the unhired."
+    },
+    "salary": {
+      "entry": 45000,
+      "mid": 120000,
+      "senior": 280000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 3,
+      "I": 3,
+      "A": 10,
+      "S": 3,
+      "E": 3,
+      "C": 3
+    },
+    "workStyle": {
+      "pace": "fast",
+      "collaboration": "mixed",
+      "environment": "studio"
+    }
+  },
+  {
+    "slug": "product-designer",
+    "title": "Product Designer",
+    "field": "design",
+    "summary": "Owns the whole experience of a product, from problem to shipped detail.",
+    "description": "Product designers work further upstream than UI designers: they help decide what should be built, not only how it should look. The role demands comfort with ambiguity, business context, and being told no by engineering for good reasons.",
+    "dayInLife": "Argue for cutting a feature. Prototype the replacement. Sit with an engineer working out which of your three states are actually reachable.",
+    "skills": [
+      {
+        "name": "Problem framing",
+        "weight": 5
+      },
+      {
+        "name": "Prototyping",
+        "weight": 5
+      },
+      {
+        "name": "User research",
+        "weight": 4
+      },
+      {
+        "name": "Visual design",
+        "weight": 4
+      },
+      {
+        "name": "Working with engineers",
+        "weight": 5
+      },
+      {
+        "name": "Metrics literacy",
+        "weight": 3
+      }
+    ],
+    "learningAreas": [
+      "Interaction patterns",
+      "Research and synthesis",
+      "Design systems",
+      "Product strategy basics",
+      "Prototyping tools"
+    ],
+    "roadmap": [
+      "Build UI and UX fundamentals first — a product designer who cannot design a screen is not credible.",
+      "Add product literacy: how features get prioritised, what a metric is, and why engineering constraints are not obstacles to route around.",
+      "Take a product from problem statement to shipped prototype three times, documenting what you cut and why.",
+      "Work embedded in a real product team, even as an intern. The collaboration is the job.",
+      "Apply for product design roles with case studies that lead on the problem and the outcome.",
+      "Grow into staff-level craft, design systems ownership, or design management."
+    ],
+    "demand": {
+      "level": "high",
+      "note": "Well-paid and in demand, but rarely an entry-level title — most arrive from UI/UX or research."
+    },
+    "salary": {
+      "entry": 80000,
+      "mid": 220000,
+      "senior": 480000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 3,
+      "I": 7,
+      "A": 8,
+      "S": 6,
+      "E": 5,
+      "C": 4
+    },
+    "workStyle": {
+      "pace": "balanced",
+      "collaboration": "team",
+      "environment": "office"
+    }
+  },
+  {
+    "slug": "motion-designer",
+    "title": "Motion Designer",
+    "field": "design",
+    "summary": "Makes things move with intent, not decoration.",
+    "description": "Motion designers animate for film, product, advertising and broadcast. Good motion communicates state, direction and hierarchy; bad motion is a distraction with an easing curve. The technical ceiling is high and the craft compounds.",
+    "dayInLife": "Storyboard a thirty-second explainer. Animate the first ten seconds. Re-time everything because the voiceover came in four seconds shorter.",
+    "skills": [
+      {
+        "name": "After Effects",
+        "weight": 5
+      },
+      {
+        "name": "Timing and easing",
+        "weight": 5
+      },
+      {
+        "name": "Storyboarding",
+        "weight": 4
+      },
+      {
+        "name": "Typography in motion",
+        "weight": 4
+      },
+      {
+        "name": "3D basics",
+        "weight": 3
+      },
+      {
+        "name": "Sound and rhythm",
+        "weight": 3
+      }
+    ],
+    "learningAreas": [
+      "Animation principles",
+      "After Effects",
+      "Storyboarding",
+      "Cinema 4D or Blender",
+      "Editing fundamentals"
+    ],
+    "roadmap": [
+      "Learn the twelve animation principles and graphic design fundamentals. Motion without composition is just movement.",
+      "Get deep in After Effects, then add a 3D tool and basic editing so you can deliver a finished piece, not a layer.",
+      "Animate every day for a period — short loops, title cards, UI transitions. Volume builds timing instinct faster than theory.",
+      "Take freelance work and studio internships where the deadline is real and the feedback is blunt.",
+      "Apply to studios or in-house creative teams with a tight sixty-second reel, cut to your best five seconds first.",
+      "Specialise in broadcast, product motion, or 3D — or move toward direction, where you decide what moves and why."
+    ],
+    "demand": {
+      "level": "moderate",
+      "note": "Growing with video-first marketing, though heavily freelance and portfolio-driven."
+    },
+    "salary": {
+      "entry": 55000,
+      "mid": 150000,
+      "senior": 350000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 3,
+      "I": 4,
+      "A": 10,
+      "S": 2,
+      "E": 3,
+      "C": 3
+    },
+    "workStyle": {
+      "pace": "fast",
+      "collaboration": "mixed",
+      "environment": "studio"
+    }
+  },
+  {
+    "slug": "interior-designer",
+    "title": "Interior Designer",
+    "field": "design",
+    "summary": "Shapes how a physical space works and feels to be in.",
+    "description": "Interior designers plan spatial layout, light, material and furniture for homes, offices and commercial spaces. It combines aesthetic judgement with building regulation, budget and contractor management — the last of which is most of the job.",
+    "dayInLife": "Site visit where nothing matches the drawing. Revise the layout, source a replacement material within budget, and manage a client who has seen a photograph they now want.",
+    "skills": [
+      {
+        "name": "Space planning",
+        "weight": 5
+      },
+      {
+        "name": "Technical drawing and CAD",
+        "weight": 5
+      },
+      {
+        "name": "Materials and finishes",
+        "weight": 4
+      },
+      {
+        "name": "Lighting design",
+        "weight": 4
+      },
+      {
+        "name": "Client and contractor management",
+        "weight": 4
+      },
+      {
+        "name": "Budgeting",
+        "weight": 4
+      }
+    ],
+    "learningAreas": [
+      "Space planning",
+      "AutoCAD and SketchUp",
+      "Materials knowledge",
+      "Lighting",
+      "Building codes"
+    ],
+    "roadmap": [
+      "Study design fundamentals and spatial thinking, plus technical drawing — you must be able to communicate to a builder, not only a client.",
+      "Learn AutoCAD, SketchUp and a rendering tool, and build real knowledge of materials, costs and local building regulation.",
+      "Design three complete spaces to full documentation, including a budget that adds up.",
+      "Work under an established designer or with a contractor. Site experience is what makes drawings buildable.",
+      "Apply to design firms, or take on residential projects independently while you build a photographed portfolio.",
+      "Specialise in residential, commercial or hospitality — or grow toward running your own practice."
+    ],
+    "demand": {
+      "level": "moderate",
+      "note": "Tied closely to construction and property activity in the local market."
+    },
+    "salary": {
+      "entry": 50000,
+      "mid": 140000,
+      "senior": 320000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 5,
+      "I": 4,
+      "A": 9,
+      "S": 5,
+      "E": 5,
+      "C": 4
+    },
+    "workStyle": {
+      "pace": "balanced",
+      "collaboration": "mixed",
+      "environment": "field"
+    }
+  },
+  {
+    "slug": "industrial-designer",
+    "title": "Industrial Designer",
+    "field": "design",
+    "summary": "Designs physical products that can actually be manufactured.",
+    "description": "Industrial designers shape objects — appliances, tools, furniture, devices — balancing how a thing looks and feels against how it can be made at volume and cost. The constraint is manufacturing, and it is unforgiving.",
+    "dayInLife": "Sketch twenty handle variations. 3D-model the three that survive. Print one, hold it, discover it is wrong in the hand, and start again.",
+    "skills": [
+      {
+        "name": "Sketching and ideation",
+        "weight": 5
+      },
+      {
+        "name": "3D CAD modelling",
+        "weight": 5
+      },
+      {
+        "name": "Materials and manufacturing",
+        "weight": 5
+      },
+      {
+        "name": "Prototyping",
+        "weight": 4
+      },
+      {
+        "name": "Ergonomics",
+        "weight": 4
+      },
+      {
+        "name": "Design for cost",
+        "weight": 3
+      }
+    ],
+    "learningAreas": [
+      "Sketching",
+      "SolidWorks or Fusion 360",
+      "Manufacturing processes",
+      "Materials science",
+      "Ergonomics"
+    ],
+    "roadmap": [
+      "Learn to sketch fast and think in three dimensions. Volume of sketching is non-negotiable in this discipline.",
+      "Add CAD and real knowledge of manufacturing processes — injection moulding, casting, sheet metal — and what each does to a design.",
+      "Prototype physically. 3D print, model in foam, hold your work. Screen-only industrial design fails on contact with a hand.",
+      "Intern with a manufacturer or design consultancy where cost and tooling constrain every decision.",
+      "Apply with a portfolio showing process from sketch through CAD to prototype, not just rendered hero shots.",
+      "Specialise by sector, or move toward design engineering or creative direction."
+    ],
+    "demand": {
+      "level": "low",
+      "note": "A small field locally; most opportunity is with manufacturers, consultancies or abroad."
+    },
+    "salary": {
+      "entry": null,
+      "mid": null,
+      "senior": null,
+      "currency": "PKR",
+      "period": "month",
+      "source": ""
+    },
+    "riasec": {
+      "R": 7,
+      "I": 6,
+      "A": 9,
+      "S": 3,
+      "E": 4,
+      "C": 4
+    },
+    "workStyle": {
+      "pace": "steady",
+      "collaboration": "mixed",
+      "environment": "studio"
+    }
+  },
+  {
+    "slug": "product-manager",
+    "title": "Product Manager",
+    "field": "business",
+    "summary": "Decides what gets built, and is accountable for whether it mattered.",
+    "description": "Product managers hold the problem, the priorities and the trade-offs. They have responsibility without direct authority, which means the job is mostly clear thinking, clear writing, and persuading capable people who disagree with you.",
+    "dayInLife": "Write the case for cutting a feature. Take it to engineering and design. Spend the afternoon with a customer who wanted it, and decide anyway.",
+    "skills": [
+      {
+        "name": "Problem framing",
+        "weight": 5
+      },
+      {
+        "name": "Prioritisation",
+        "weight": 5
+      },
+      {
+        "name": "Written communication",
+        "weight": 5
+      },
+      {
+        "name": "Data literacy",
+        "weight": 4
+      },
+      {
+        "name": "Stakeholder management",
+        "weight": 5
+      },
+      {
+        "name": "Technical fluency",
+        "weight": 3
+      }
+    ],
+    "learningAreas": [
+      "Product discovery",
+      "Metrics and analytics",
+      "Roadmapping",
+      "User research",
+      "Working with engineering"
+    ],
+    "roadmap": [
+      "Build depth in something first — engineering, design, analysis or a domain. Product management is not a credible first job.",
+      "Learn the craft: discovery, prioritisation frameworks, writing specs, and how to read a funnel without fooling yourself.",
+      "Run a real product decision end to end, even a small one, and measure whether it worked.",
+      "Move sideways into an associate PM or product-adjacent role from wherever you started.",
+      "Apply for PM roles leading with decisions you made and outcomes you owned, including one that went badly.",
+      "Grow into senior product, group PM, or product leadership — or move toward founding something."
+    ],
+    "demand": {
+      "level": "high",
+      "note": "Strong demand, but very few genuine entry-level positions."
+    },
+    "salary": {
+      "entry": 100000,
+      "mid": 280000,
+      "senior": 600000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 2,
+      "I": 7,
+      "A": 5,
+      "S": 7,
+      "E": 9,
+      "C": 5
+    },
+    "workStyle": {
+      "pace": "fast",
+      "collaboration": "team",
+      "environment": "office"
+    }
+  },
+  {
+    "slug": "marketing-manager",
+    "title": "Marketing Manager",
+    "field": "business",
+    "summary": "Gets the right people to find, understand and choose the product.",
+    "description": "Marketing managers own positioning, channels and budget. Modern marketing is measurable, which is both the appeal and the pressure — you will be asked what the spend returned, and 'brand awareness' is not an answer.",
+    "dayInLife": "Review last week's campaign numbers. Kill the channel that is not converting. Brief the design team on the replacement and argue for the budget to test it.",
+    "skills": [
+      {
+        "name": "Positioning and messaging",
+        "weight": 5
+      },
+      {
+        "name": "Campaign analytics",
+        "weight": 5
+      },
+      {
+        "name": "Copywriting",
+        "weight": 4
+      },
+      {
+        "name": "Channel strategy",
+        "weight": 4
+      },
+      {
+        "name": "Budget management",
+        "weight": 4
+      },
+      {
+        "name": "Customer research",
+        "weight": 4
+      }
+    ],
+    "learningAreas": [
+      "Marketing fundamentals",
+      "Analytics tools",
+      "Copywriting",
+      "Paid and organic channels",
+      "Brand strategy"
+    ],
+    "roadmap": [
+      "Learn the fundamentals — segmentation, positioning, and the difference between demand capture and demand creation.",
+      "Add practical skills: copywriting, analytics, and hands-on experience of at least two channels.",
+      "Run real campaigns with a real budget, even small. Marketing without a measured outcome is opinion.",
+      "Take an executive or specialist role and own a channel end to end before trying to own a strategy.",
+      "Apply for marketing manager roles leading with numbers you moved, not campaigns you were present for.",
+      "Grow into head of marketing or specialise into performance, brand, or product marketing."
+    ],
+    "demand": {
+      "level": "high",
+      "note": "Consistent demand, with digital and analytical skills strongly favoured."
+    },
+    "salary": {
+      "entry": 60000,
+      "mid": 180000,
+      "senior": 420000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 2,
+      "I": 5,
+      "A": 7,
+      "S": 6,
+      "E": 9,
+      "C": 4
+    },
+    "workStyle": {
+      "pace": "fast",
+      "collaboration": "team",
+      "environment": "office"
+    }
+  },
+  {
+    "slug": "management-consultant",
+    "title": "Management Consultant",
+    "field": "business",
+    "summary": "Diagnoses an organisation's problem and argues for what to do about it.",
+    "description": "Consultants are brought in to analyse a business problem quickly and recommend action. The work is intense, analytical and highly structured, and the training in problem decomposition is genuinely transferable — which is why many use it as a launchpad.",
+    "dayInLife": "Interview six people who each describe a different problem. Build the model that reconciles them. Present a recommendation to people who outrank you and may not want to hear it.",
+    "skills": [
+      {
+        "name": "Structured problem solving",
+        "weight": 5
+      },
+      {
+        "name": "Financial modelling",
+        "weight": 4
+      },
+      {
+        "name": "Presentation and storytelling",
+        "weight": 5
+      },
+      {
+        "name": "Stakeholder interviewing",
+        "weight": 4
+      },
+      {
+        "name": "Excel and data analysis",
+        "weight": 5
+      },
+      {
+        "name": "Working under pressure",
+        "weight": 5
+      }
+    ],
+    "learningAreas": [
+      "Case-style problem structuring",
+      "Financial modelling",
+      "Slide craft",
+      "Business fundamentals",
+      "Industry research"
+    ],
+    "roadmap": [
+      "Build strong business fundamentals — accounting, strategy, operations — and the analytical habit of breaking problems into mutually exclusive parts.",
+      "Get genuinely good at Excel and at building an argument on slides. Both are the working language of the profession.",
+      "Practise case interviews seriously; entry to the field is gated almost entirely on them.",
+      "Take internships at consulting firms, or analytical roles in industry as an alternative route in.",
+      "Apply to consulting firms, or to strategy and operations teams inside larger companies.",
+      "Stay and make partner, or use the training to move into industry leadership, private equity, or founding a company."
+    ],
+    "demand": {
+      "level": "moderate",
+      "note": "Competitive entry concentrated in a small number of firms and large corporates."
+    },
+    "salary": {
+      "entry": 120000,
+      "mid": 350000,
+      "senior": 800000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 2,
+      "I": 8,
+      "A": 4,
+      "S": 6,
+      "E": 9,
+      "C": 6
+    },
+    "workStyle": {
+      "pace": "fast",
+      "collaboration": "team",
+      "environment": "office"
+    }
+  },
+  {
+    "slug": "hr-specialist",
+    "title": "Human Resources Specialist",
+    "field": "business",
+    "summary": "Builds the systems that let an organisation hire, keep and develop people.",
+    "description": "HR covers recruitment, employee relations, compensation, policy and development. Done badly it is paperwork; done well it materially changes whether good people join and stay. It requires discretion and a genuine tolerance for difficult conversations.",
+    "dayInLife": "Two interviews before lunch. A grievance meeting after. Redraft a policy so it is both legally sound and readable by a human.",
+    "skills": [
+      {
+        "name": "Interviewing and assessment",
+        "weight": 5
+      },
+      {
+        "name": "Employment law awareness",
+        "weight": 4
+      },
+      {
+        "name": "Conflict resolution",
+        "weight": 5
+      },
+      {
+        "name": "Communication",
+        "weight": 5
+      },
+      {
+        "name": "HR systems and records",
+        "weight": 4
+      },
+      {
+        "name": "Discretion",
+        "weight": 5
+      }
+    ],
+    "learningAreas": [
+      "Recruitment and selection",
+      "Labour law",
+      "Compensation basics",
+      "Employee relations",
+      "HR analytics"
+    ],
+    "roadmap": [
+      "Study organisational behaviour, labour law and the fundamentals of recruitment and compensation.",
+      "Add practical capability: structured interviewing, record keeping, and the HR information systems employers actually use.",
+      "Get experience handling real cases under supervision — recruitment coordination is the usual entry point.",
+      "Take an HR assistant or recruiter role and learn the operational reality before specialising.",
+      "Apply for HR specialist or generalist roles, with a professional certification if the employers you want expect one.",
+      "Specialise in talent acquisition, compensation, or employee relations — or grow toward HR business partnering and leadership."
+    ],
+    "demand": {
+      "level": "moderate",
+      "note": "Steady demand across sectors; specialists in talent acquisition are most sought."
+    },
+    "salary": {
+      "entry": 50000,
+      "mid": 140000,
+      "senior": 330000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 2,
+      "I": 4,
+      "A": 3,
+      "S": 9,
+      "E": 6,
+      "C": 6
+    },
+    "workStyle": {
+      "pace": "balanced",
+      "collaboration": "team",
+      "environment": "office"
+    }
+  },
+  {
+    "slug": "operations-manager",
+    "title": "Operations Manager",
+    "field": "business",
+    "summary": "Makes the machine run — reliably, at cost, every day.",
+    "description": "Operations managers own the processes that deliver a product or service: supply, scheduling, quality, cost. The work is unglamorous and enormously consequential; when operations fail, nothing else in the business matters.",
+    "dayInLife": "A supplier misses a delivery. Rework the schedule, brief the team, escalate what cannot be absorbed, and update the forecast before the day ends.",
+    "skills": [
+      {
+        "name": "Process design",
+        "weight": 5
+      },
+      {
+        "name": "Supply chain understanding",
+        "weight": 4
+      },
+      {
+        "name": "Data and reporting",
+        "weight": 4
+      },
+      {
+        "name": "People management",
+        "weight": 5
+      },
+      {
+        "name": "Problem escalation",
+        "weight": 4
+      },
+      {
+        "name": "Cost control",
+        "weight": 4
+      }
+    ],
+    "learningAreas": [
+      "Operations management",
+      "Supply chain",
+      "Lean and process improvement",
+      "Excel and reporting",
+      "Team leadership"
+    ],
+    "roadmap": [
+      "Learn operations fundamentals — process, capacity, inventory, quality — and the vocabulary of lean improvement.",
+      "Build strong Excel and reporting skills, plus enough people-management capability to run a shift or a team.",
+      "Improve a real process and measure the result. A documented before-and-after is the strongest evidence you can carry.",
+      "Work on the floor first — coordinator, supervisor, analyst. Operations respects people who have done the work.",
+      "Apply for operations manager roles with specific efficiency, cost or quality gains you can quantify.",
+      "Grow into senior operations leadership, or specialise in supply chain, logistics or continuous improvement."
+    ],
+    "demand": {
+      "level": "high",
+      "note": "Broad demand across manufacturing, retail, logistics and services."
+    },
+    "salary": {
+      "entry": 65000,
+      "mid": 190000,
+      "senior": 450000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 5,
+      "I": 5,
+      "A": 2,
+      "S": 6,
+      "E": 8,
+      "C": 8
+    },
+    "workStyle": {
+      "pace": "fast",
+      "collaboration": "team",
+      "environment": "field"
+    }
+  },
+  {
+    "slug": "entrepreneur-founder",
+    "title": "Entrepreneur / Founder",
+    "field": "business",
+    "summary": "Builds an organisation from nothing and carries the consequences.",
+    "description": "Founding is not a job you apply for. It means finding a problem people will pay to solve, building something that solves it, and surviving long enough to matter. The upside is real and so is the failure rate, and honest career guidance says both.",
+    "dayInLife": "Sell in the morning, build in the afternoon, do payroll at night. Every unglamorous task is yours until you can afford to hand it over.",
+    "skills": [
+      {
+        "name": "Selling",
+        "weight": 5
+      },
+      {
+        "name": "Resourcefulness",
+        "weight": 5
+      },
+      {
+        "name": "Financial literacy",
+        "weight": 5
+      },
+      {
+        "name": "Building a first product",
+        "weight": 4
+      },
+      {
+        "name": "Hiring",
+        "weight": 4
+      },
+      {
+        "name": "Tolerance for uncertainty",
+        "weight": 5
+      }
+    ],
+    "learningAreas": [
+      "Customer discovery",
+      "Unit economics",
+      "Sales",
+      "Product development",
+      "Fundraising basics"
+    ],
+    "roadmap": [
+      "Build a real skill someone will pay for. Founding without a craft means you can only ever hire people you cannot evaluate.",
+      "Learn the commercial basics: cash flow, margins, pricing, and how to have a sales conversation without apologising.",
+      "Sell something small before building anything large. Pre-sales are the only honest validation.",
+      "Work at an early-stage company first if you can. Watching a small company operate up close is a compressed education.",
+      "Start — with a defined problem, a first customer, and an amount of money and time you can afford to lose.",
+      "Grow the company, or close it cleanly and take the education with you. Both are legitimate outcomes."
+    ],
+    "demand": {
+      "level": null,
+      "note": "Not an employment category — demand figures do not apply."
+    },
+    "salary": {
+      "entry": null,
+      "mid": null,
+      "senior": null,
+      "currency": "PKR",
+      "period": "month",
+      "source": ""
+    },
+    "riasec": {
+      "R": 4,
+      "I": 6,
+      "A": 6,
+      "S": 5,
+      "E": 10,
+      "C": 3
+    },
+    "workStyle": {
+      "pace": "fast",
+      "collaboration": "mixed",
+      "environment": "office"
+    }
+  },
+  {
+    "slug": "cloud-engineer",
+    "title": "Cloud Engineer",
+    "field": "technology",
+    "summary": "Designs and runs the cloud infrastructure everything else sits on.",
+    "description": "Cloud engineers architect, deploy and operate systems on cloud platforms — networking, compute, storage, identity and cost. The work is part design and part economics: almost any architecture will run, and the skill is choosing the one that stays affordable and survives a region going down.",
+    "dayInLife": "Review a bill that jumped 40% overnight and find the cause. Design the network for a new service. Rehearse a failover and discover the runbook is wrong.",
+    "skills": [
+      {
+        "name": "One cloud platform deeply",
+        "weight": 5
+      },
+      {
+        "name": "Networking and security groups",
+        "weight": 5
+      },
+      {
+        "name": "Infrastructure as code",
+        "weight": 5
+      },
+      {
+        "name": "Identity and access management",
+        "weight": 4
+      },
+      {
+        "name": "Cost management",
+        "weight": 4
+      },
+      {
+        "name": "Linux",
+        "weight": 4
+      }
+    ],
+    "learningAreas": [
+      "AWS, Azure or GCP",
+      "Networking fundamentals",
+      "Terraform",
+      "Identity and access",
+      "Observability"
+    ],
+    "roadmap": [
+      "Learn networking and Linux first. Cloud is someone else's computers, and you cannot design for them without knowing how computers and networks behave.",
+      "Pick one provider and go deep rather than three shallow. Compute, storage, networking, identity and billing are the five pillars.",
+      "Build a real multi-tier system in your own account, entirely as code, and then deliberately break it and recover it.",
+      "Take a systems, support or development role that touches infrastructure. Cloud is rarely a first job because it is mostly judgement.",
+      "Apply for cloud or platform engineering roles, with an associate-level certification if your target employers screen on one.",
+      "Specialise in architecture, security or FinOps, or move toward platform engineering where you build for other engineers."
+    ],
+    "demand": {
+      "level": "very-high",
+      "note": "Among the most consistently advertised technical roles, locally and remote."
+    },
+    "salary": {
+      "entry": 95000,
+      "mid": 270000,
+      "senior": 580000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 7,
+      "I": 8,
+      "A": 2,
+      "S": 4,
+      "E": 4,
+      "C": 8
+    },
+    "workStyle": {
+      "pace": "balanced",
+      "collaboration": "team",
+      "environment": "remote"
+    }
+  },
+  {
+    "slug": "game-developer",
+    "title": "Game Developer",
+    "field": "technology",
+    "summary": "Builds the systems that make a game feel good to play.",
+    "description": "Game developers write the code behind gameplay, physics, rendering and tools. It is unusually demanding programming — everything must run inside 16 milliseconds — and unusually iterative, because whether something is fun cannot be determined by reasoning, only by playing it.",
+    "dayInLife": "Tune a jump until it feels right, which takes forty attempts. Fix a physics bug that only happens on slopes. Build a tool so designers stop asking you to change numbers.",
+    "skills": [
+      {
+        "name": "C++ or C#",
+        "weight": 5
+      },
+      {
+        "name": "A game engine (Unity or Unreal)",
+        "weight": 5
+      },
+      {
+        "name": "Mathematics for games",
+        "weight": 5
+      },
+      {
+        "name": "Performance optimisation",
+        "weight": 4
+      },
+      {
+        "name": "Gameplay feel and iteration",
+        "weight": 5
+      },
+      {
+        "name": "Version control for large assets",
+        "weight": 3
+      }
+    ],
+    "learningAreas": [
+      "C# with Unity or C++ with Unreal",
+      "Vectors and matrices",
+      "Game loops and state",
+      "Profiling",
+      "Shipping a build"
+    ],
+    "roadmap": [
+      "Learn to program properly first, then the mathematics games run on: vectors, matrices, interpolation and frame timing.",
+      "Pick one engine and learn it thoroughly — the engine is most of the job, and switching later is easy once one is deep.",
+      "Finish and release three small games. Finishing is the rare skill; most people have twelve abandoned prototypes.",
+      "Join a game jam team or a small studio. Games are made by groups, and working to someone else's design is the test.",
+      "Apply to studios with playable builds, not videos. Anyone can cut a trailer; a build proves it runs.",
+      "Specialise in gameplay, engine, graphics or tools — or go independent, with clear eyes about the economics."
+    ],
+    "demand": {
+      "level": "moderate",
+      "note": "A small but growing local studio scene; competitive and portfolio-driven."
+    },
+    "salary": {
+      "entry": 65000,
+      "mid": 180000,
+      "senior": 400000,
+      "currency": "PKR",
+      "period": "month",
+      "source": "Indicative range for Pakistan, 2025 — verify against current local market data"
+    },
+    "riasec": {
+      "R": 5,
+      "I": 8,
+      "A": 7,
+      "S": 3,
+      "E": 3,
+      "C": 5
+    },
+    "workStyle": {
+      "pace": "fast",
+      "collaboration": "team",
+      "environment": "studio"
+    }
+  }
+]

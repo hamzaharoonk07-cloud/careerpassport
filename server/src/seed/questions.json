@@ -1,0 +1,122 @@
+[
+  {
+    "order": 1,
+    "dimension": "interests",
+    "prompt": "A free Saturday, no obligations. What are you most likely to actually do?",
+    "helper": "Answer with what you would really do, not what sounds impressive.",
+    "options": [
+      { "key": "a", "label": "Take something apart, or build something that works", "fieldWeights": { "technology": 3, "design": 1 }, "riasec": { "R": 3, "I": 2 } },
+      { "key": "b", "label": "Make something — draw, edit, write, arrange a space", "fieldWeights": { "design": 3, "media": 2 }, "riasec": { "A": 4 } },
+      { "key": "c", "label": "Meet people, organise something, get a plan moving", "fieldWeights": { "business": 3, "media": 1 }, "riasec": { "E": 3, "S": 2 } },
+      { "key": "d", "label": "Read up on something properly, or help someone who asked", "fieldWeights": { "healthcare": 2, "finance": 2 }, "riasec": { "I": 3, "S": 2 } }
+    ]
+  },
+  {
+    "order": 2,
+    "dimension": "strengths",
+    "prompt": "When a group works with you, what do they end up relying on you for?",
+    "helper": "The thing people ask you for without thinking about it.",
+    "options": [
+      { "key": "a", "label": "Working out why something broke", "fieldWeights": { "technology": 3, "finance": 1 }, "riasec": { "I": 4, "R": 1 } },
+      { "key": "b", "label": "Making the output actually look and read well", "fieldWeights": { "design": 3, "media": 2 }, "riasec": { "A": 4 } },
+      { "key": "c", "label": "Keeping everyone moving and deciding what comes next", "fieldWeights": { "business": 4 }, "riasec": { "E": 4 } },
+      { "key": "d", "label": "Catching the detail everyone else skipped", "fieldWeights": { "finance": 3, "healthcare": 2 }, "riasec": { "C": 4, "I": 1 } }
+    ]
+  },
+  {
+    "order": 3,
+    "dimension": "problem-solving",
+    "prompt": "You are handed a problem nobody has solved before. What is your first move?",
+    "helper": "",
+    "options": [
+      { "key": "a", "label": "Break it into pieces and test the smallest one", "fieldWeights": { "technology": 4 }, "riasec": { "I": 4, "R": 2 } },
+      { "key": "b", "label": "Find who is affected and understand their situation first", "fieldWeights": { "healthcare": 3, "design": 2 }, "riasec": { "S": 4, "I": 1 } },
+      { "key": "c", "label": "Pull the numbers and see what they say before guessing", "fieldWeights": { "finance": 4, "business": 1 }, "riasec": { "C": 3, "I": 3 } },
+      { "key": "d", "label": "Sketch three completely different approaches", "fieldWeights": { "design": 3, "media": 2 }, "riasec": { "A": 4 } }
+    ]
+  },
+  {
+    "order": 4,
+    "dimension": "creativity",
+    "prompt": "How true is this: I would rather make something new than improve something that already exists.",
+    "helper": "",
+    "options": [
+      { "key": "a", "label": "Completely — a blank page is the best part", "fieldWeights": { "design": 4, "media": 3 }, "riasec": { "A": 5 } },
+      { "key": "b", "label": "Partly — I like inventing, but inside real constraints", "fieldWeights": { "technology": 3, "design": 2 }, "riasec": { "A": 2, "I": 3, "R": 1 } },
+      { "key": "c", "label": "Not really — improving something until it is excellent is the craft", "fieldWeights": { "finance": 3, "healthcare": 2, "business": 1 }, "riasec": { "C": 4 } },
+      { "key": "d", "label": "I care less about new and more about it working for people", "fieldWeights": { "healthcare": 3, "business": 2 }, "riasec": { "S": 4, "E": 1 } }
+    ]
+  },
+  {
+    "order": 5,
+    "dimension": "communication",
+    "prompt": "You have to explain something difficult to a room. How do you feel walking in?",
+    "helper": "",
+    "options": [
+      { "key": "a", "label": "Good — persuading a room is a thing I enjoy", "fieldWeights": { "business": 4, "media": 2 }, "riasec": { "E": 5 } },
+      { "key": "b", "label": "Fine, as long as I can show it rather than only say it", "fieldWeights": { "design": 3, "media": 2 }, "riasec": { "A": 3, "E": 1 } },
+      { "key": "c", "label": "Comfortable one to one; a whole room is harder", "fieldWeights": { "healthcare": 3, "technology": 1 }, "riasec": { "S": 4 } },
+      { "key": "d", "label": "I would rather write it down properly and let it speak", "fieldWeights": { "technology": 3, "finance": 2 }, "riasec": { "I": 3, "C": 3 } }
+    ]
+  },
+  {
+    "order": 6,
+    "dimension": "technical-interest",
+    "prompt": "How do you feel about learning a technical tool well enough to be dangerous with it?",
+    "helper": "Code, CAD, statistical software, clinical equipment — anything with a real learning curve.",
+    "options": [
+      { "key": "a", "label": "That is genuinely how I like to spend my time", "fieldWeights": { "technology": 5 }, "riasec": { "I": 4, "R": 3 } },
+      { "key": "b", "label": "Yes, if it lets me make better work", "fieldWeights": { "design": 3, "media": 2, "technology": 1 }, "riasec": { "A": 3, "R": 2 } },
+      { "key": "c", "label": "Yes, if it makes me faster or more accurate", "fieldWeights": { "finance": 3, "business": 2, "healthcare": 1 }, "riasec": { "C": 4 } },
+      { "key": "d", "label": "I would rather build judgement about people than tools", "fieldWeights": { "business": 3, "healthcare": 3 }, "riasec": { "S": 3, "E": 3 } }
+    ]
+  },
+  {
+    "order": 7,
+    "dimension": "business-interest",
+    "prompt": "Someone explains how a company actually makes money. What is your reaction?",
+    "helper": "",
+    "options": [
+      { "key": "a", "label": "I want the numbers — margins, costs, where it leaks", "fieldWeights": { "finance": 5, "business": 2 }, "riasec": { "C": 3, "I": 2, "E": 2 } },
+      { "key": "b", "label": "I start thinking about how I would grow it", "fieldWeights": { "business": 5 }, "riasec": { "E": 5 } },
+      { "key": "c", "label": "I want to know whether the product is any good", "fieldWeights": { "design": 3, "technology": 2 }, "riasec": { "A": 2, "I": 3 } },
+      { "key": "d", "label": "I mostly want to know who it helps", "fieldWeights": { "healthcare": 3, "media": 2 }, "riasec": { "S": 4 } }
+    ]
+  },
+  {
+    "order": 8,
+    "dimension": "work-environment",
+    "prompt": "Where would you do your best work, honestly?",
+    "helper": "",
+    "options": [
+      { "key": "a", "label": "Long uninterrupted stretches at a desk, deep in one thing", "fieldWeights": { "technology": 3, "finance": 3 }, "riasec": { "I": 3, "C": 3 } },
+      { "key": "b", "label": "A studio — messy, visual, work pinned on the wall", "fieldWeights": { "design": 4, "media": 3 }, "riasec": { "A": 5 } },
+      { "key": "c", "label": "Out among people, in meetings, moving between things", "fieldWeights": { "business": 4, "media": 2 }, "riasec": { "E": 4, "S": 2 } },
+      { "key": "d", "label": "Somewhere with real urgency, where I am needed on the spot", "fieldWeights": { "healthcare": 5 }, "riasec": { "S": 4, "R": 2 } }
+    ]
+  },
+  {
+    "order": 9,
+    "dimension": "learning-preference",
+    "prompt": "You have to learn something new and hard. What actually works for you?",
+    "helper": "",
+    "options": [
+      { "key": "a", "label": "Build a broken version and fix it until it works", "fieldWeights": { "technology": 4, "design": 1 }, "riasec": { "R": 4, "I": 3 } },
+      { "key": "b", "label": "Copy work I admire until I understand why it is good", "fieldWeights": { "design": 4, "media": 2 }, "riasec": { "A": 4 } },
+      { "key": "c", "label": "Structured course, clear syllabus, work through it properly", "fieldWeights": { "finance": 3, "healthcare": 3 }, "riasec": { "C": 4, "I": 2 } },
+      { "key": "d", "label": "Find someone already doing it and get myself in the room", "fieldWeights": { "business": 4, "media": 1 }, "riasec": { "E": 4, "S": 2 } }
+    ]
+  },
+  {
+    "order": 10,
+    "dimension": "values",
+    "prompt": "Ten years from now, which sentence would you most want to be true?",
+    "helper": "",
+    "options": [
+      { "key": "a", "label": "I built things that a lot of people use every day", "fieldWeights": { "technology": 4, "design": 2 }, "riasec": { "I": 3, "R": 2, "A": 1 } },
+      { "key": "b", "label": "My work is recognisably mine", "fieldWeights": { "design": 3, "media": 4 }, "riasec": { "A": 5 } },
+      { "key": "c", "label": "I run something, and the results are mine to own", "fieldWeights": { "business": 4, "finance": 2 }, "riasec": { "E": 5 } },
+      { "key": "d", "label": "Specific people are better off because I was competent", "fieldWeights": { "healthcare": 5, "media": 1 }, "riasec": { "S": 5 } }
+    ]
+  }
+]

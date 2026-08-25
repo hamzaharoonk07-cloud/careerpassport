@@ -1,0 +1,79 @@
+.btn {
+  --btn-pad-y: 0.75rem;
+  --btn-pad-x: 2rem;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  min-height: 44px;               /* touch target floor, never smaller */
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  border-radius: var(--r-pill);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    transform var(--dur-2) var(--ease-out),
+    background var(--dur-2) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out);
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+.btn--sm { --btn-pad-y: 0.55rem; --btn-pad-x: 1.25rem; font-size: 0.8rem; }
+.btn--lg { --btn-pad-y: 0.95rem; --btn-pad-x: 2.5rem; font-size: 1rem; }
+.btn--full { width: 100%; }
+
+/* Primary — one per screen */
+.btn--primary {
+  background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
+  color: var(--ink-900);
+  box-shadow: var(--glow-gold);
+}
+.btn--primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px rgba(201,162,39,0.5), 0 12px 34px rgba(201,162,39,0.26);
+}
+.btn--primary:active:not(:disabled) { transform: translateY(0); }
+
+/* Secondary — gold edge, fills on hover */
+.btn--secondary {
+  background: transparent;
+  border: 1px solid var(--gold-500);
+  color: var(--gold-400);
+}
+.btn--secondary:hover:not(:disabled) { background: var(--gold-500); color: var(--ink-900); transform: translateY(-2px); }
+
+/* Ghost — tertiary */
+.btn--ghost { background: transparent; color: var(--text-mid); padding-inline: var(--sp-3); }
+.btn--ghost:hover:not(:disabled) { color: var(--gold-400); }
+.btn--ghost .btn__label { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: transparent; transition: text-decoration-color var(--dur-2); }
+.btn--ghost:hover .btn__label { text-decoration-color: currentColor; }
+
+/* Danger — destructive only */
+.btn--danger { background: transparent; border: 1px solid var(--danger); color: var(--danger); }
+.btn--danger:hover:not(:disabled) { background: var(--danger); color: var(--cream-50); }
+
+.btn--loading { color: transparent; pointer-events: none; }
+.btn--loading .btn__label { opacity: 0; }
+.btn__spinner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  color: var(--ink-900);
+  animation: ps-spin 620ms linear infinite;
+}
+.btn--secondary .btn__spinner, .btn--ghost .btn__spinner, .btn--danger .btn__spinner { color: var(--gold-400); }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover { transform: none !important; }
+}

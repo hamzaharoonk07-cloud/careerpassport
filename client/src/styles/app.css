@@ -1,0 +1,280 @@
+/* ============================================================
+   Application shell — nav, dashboard, career bank, detail
+   ============================================================ */
+
+/* ── Navbar ─────────────────────────────────────────────── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--ink-600);
+  background: rgba(6, 9, 17, 0.82);
+  backdrop-filter: blur(12px);
+}
+.nav__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-5); width: 100%; }
+.nav__brand { display: flex; align-items: center; gap: var(--sp-3); color: var(--gold-500); }
+.nav__brand-name {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  color: var(--text-hi);
+}
+.nav__links { display: flex; align-items: center; gap: var(--sp-2); }
+.nav__link {
+  padding: 0.55rem 0.9rem;
+  border-radius: var(--r-pill);
+  font-size: 0.86rem;
+  color: var(--text-mid);
+  transition: color var(--dur-2), background var(--dur-2);
+}
+.nav__link:hover { color: var(--text-hi); background: var(--ink-700); }
+.nav__link--on { color: var(--gold-400); background: rgba(201, 162, 39, 0.1); }
+.nav__pass {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--text-low);
+  padding-right: var(--sp-3);
+  border-right: 1px solid var(--ink-600);
+  margin-right: var(--sp-1);
+}
+
+/* Mobile tab bar — primary actions in the thumb zone */
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-nav);
+  display: none;
+  border-top: 1px solid var(--ink-600);
+  background: rgba(6, 9, 17, 0.94);
+  backdrop-filter: blur(12px);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.tabbar__link {
+  flex: 1;
+  min-height: 56px;
+  display: grid;
+  place-items: center;
+  gap: 3px;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-low);
+}
+.tabbar__link--on { color: var(--gold-400); }
+
+@media (max-width: 760px) {
+  .nav__links { display: none; }
+  .tabbar { display: flex; }
+  .app-main { padding-bottom: 76px; }
+}
+
+/* ── Page frame ─────────────────────────────────────────── */
+.page { padding-block: var(--sp-7) var(--sp-9); min-height: calc(100dvh - var(--nav-h)); }
+.page__head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--sp-5); flex-wrap: wrap; }
+.page__title { margin-top: var(--sp-3); }
+
+/* ── Cards & panels ─────────────────────────────────────── */
+.panel {
+  padding: var(--sp-5);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--ink-600);
+  background: var(--ink-800);
+}
+.panel__h {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-500);
+  margin-bottom: var(--sp-4);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--ink-600);
+}
+
+/* ── Dashboard ──────────────────────────────────────────── */
+.db__grid {
+  margin-top: var(--sp-6);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--sp-4);
+  align-items: start;
+}
+.db__wide { grid-column: 1 / -1; }
+
+.db__match { display: flex; align-items: center; gap: var(--sp-5); flex-wrap: wrap; }
+.db__match-pct {
+  font-family: var(--font-mono);
+  font-size: 2.6rem;
+  color: var(--gold-400);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.db__match-title { font-family: var(--font-display); font-size: 1.5rem; color: var(--text-hi); }
+.db__match-field { color: var(--text-low); font-size: var(--fs-sm); margin-top: 2px; }
+
+/* RIASEC bars */
+.axes { display: grid; gap: var(--sp-3); }
+.axis { display: grid; grid-template-columns: 96px 1fr 34px; gap: var(--sp-3); align-items: center; }
+.axis__k { font-size: 0.76rem; color: var(--text-mid); }
+/* Both are <span>s, so they must be blockified explicitly — a percentage
+   width inside an inline box resolves to zero and the bar vanishes. */
+.axis__track {
+  display: block;
+  height: 5px;
+  border-radius: var(--r-pill);
+  background: var(--ink-600);
+  overflow: hidden;
+}
+.axis__fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--gold-500), var(--gold-300));
+  transition: width var(--dur-5) var(--ease-out);
+}
+.axis__v { font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-low); text-align: right; }
+
+.db__stages { display: grid; gap: var(--sp-3); }
+.db__stage { display: grid; grid-template-columns: 26px 1fr; gap: var(--sp-3); align-items: start; }
+.db__stage-n {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--ink-600);
+  display: grid; place-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--gold-500);
+}
+.db__stage-t { font-weight: 600; color: var(--text-hi); font-size: 0.92rem; }
+.db__stage-d { color: var(--text-low); font-size: 0.8rem; line-height: 1.55; margin-top: 2px; }
+
+.db__empty { text-align: center; padding: var(--sp-6) var(--sp-4); }
+.db__empty p { color: var(--text-mid); margin-bottom: var(--sp-4); }
+
+.db__profile { display: grid; gap: var(--sp-4); }
+.db__row { display: flex; justify-content: space-between; gap: var(--sp-4); padding-bottom: var(--sp-3); border-bottom: 1px solid var(--ink-600); }
+.db__row-k { color: var(--text-low); font-size: var(--fs-sm); }
+.db__row-v { color: var(--text-hi); text-align: right; word-break: break-word; }
+
+/* ── Career bank ────────────────────────────────────────── */
+.bank__filters {
+  margin-top: var(--sp-6);
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--sp-3);
+}
+.bank__count { margin-top: var(--sp-4); color: var(--text-low); font-size: var(--fs-sm); }
+
+.bank__grid {
+  margin-top: var(--sp-5);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: var(--sp-4);
+}
+
+.ccard {
+  display: grid;
+  gap: var(--sp-3);
+  padding: var(--sp-5);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--ink-600);
+  background: var(--ink-800);
+  align-content: start;
+  transition: border-color var(--dur-2), transform var(--dur-2), box-shadow var(--dur-2);
+}
+.ccard:hover { border-color: var(--gold-500); transform: translateY(-3px); box-shadow: var(--sh-3); }
+.ccard__top { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-3); }
+.ccard__field {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-500);
+}
+.ccard__title { font-family: var(--font-display); font-size: 1.24rem; color: var(--text-hi); line-height: 1.2; }
+.ccard__sum { color: var(--text-mid); font-size: var(--fs-sm); line-height: 1.6; }
+.ccard__foot { display: flex; gap: var(--sp-2); flex-wrap: wrap; margin-top: auto; padding-top: var(--sp-2); }
+.tag {
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-600);
+  font-size: 0.68rem;
+  color: var(--text-low);
+}
+.tag--gold { border-color: rgba(201, 162, 39, 0.4); color: var(--gold-400); }
+
+.bank__pager { margin-top: var(--sp-7); display: flex; justify-content: center; align-items: center; gap: var(--sp-4); }
+.bank__pager-n { font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-low); }
+
+.bank__empty { text-align: center; padding: var(--sp-9) var(--sp-4); color: var(--text-mid); }
+
+/* ── Career detail ──────────────────────────────────────── */
+.cd__hero { display: grid; gap: var(--sp-4); }
+.cd__layout {
+  margin-top: var(--sp-7);
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: var(--sp-6);
+  align-items: start;
+}
+.cd__side { display: grid; gap: var(--sp-4); position: sticky; top: calc(var(--nav-h) + var(--sp-5)); }
+.cd__section + .cd__section { margin-top: var(--sp-6); }
+.cd__h {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-500);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--ink-600);
+  margin-bottom: var(--sp-4);
+}
+.cd__body { color: var(--text-mid); line-height: 1.75; max-width: 68ch; }
+.cd__skills { display: grid; gap: var(--sp-3); }
+.cd__skill { display: grid; grid-template-columns: 1fr 92px; gap: var(--sp-3); align-items: center; }
+.cd__skill-n { color: var(--text-hi); font-size: 0.92rem; }
+.cd__pips { display: flex; gap: 4px; justify-content: flex-end; }
+.cd__pip { width: 13px; height: 5px; border-radius: 2px; background: var(--ink-600); }
+.cd__pip--on { background: var(--gold-500); }
+
+.cd__stages { display: grid; gap: var(--sp-4); }
+.cd__stage { display: grid; grid-template-columns: 40px 1fr; gap: var(--sp-4); }
+.cd__stage-n {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-500);
+  color: var(--gold-400);
+  display: grid; place-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.cd__related { display: grid; gap: var(--sp-2); }
+.cd__related a {
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-600);
+  color: var(--text-mid);
+  font-size: 0.88rem;
+  transition: border-color var(--dur-2), color var(--dur-2);
+}
+.cd__related a:hover { border-color: var(--gold-500); color: var(--gold-400); }
+
+@media (max-width: 900px) {
+  .cd__layout { grid-template-columns: 1fr; }
+  .cd__side { position: static; }
+  .bank__filters { grid-template-columns: 1fr; }
+}
+
+/* The passport number in the nav opens the account. It has to look and
+   behave like the link it now is. */
+a.nav__pass {
+  transition: color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
+}
+a.nav__pass:hover { color: var(--gold-400); border-right-color: var(--gold-500); }

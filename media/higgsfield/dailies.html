@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PathSeeker — Dailies</title>
+<style>
+  :root{
+    --ink-900:#060911; --ink-800:#0A1128; --ink-700:#0F1B3C; --ink-600:#16244A;
+    --gold-500:#C9A227; --gold-300:#E8C766;
+    --cream-100:#F5F0E6; --text-mid:#B6BCCB; --text-low:#7A8296;
+    --ok:#2E7D5B; --warn:#B4791F; --bad:#A63A32;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--ink-900); color:var(--cream-100);
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
+    line-height:1.6; padding:48px 32px 96px;
+  }
+  .wrap{max-width:1180px;margin:0 auto}
+  header{border-bottom:1px solid rgba(201,162,39,.18); padding-bottom:28px; margin-bottom:44px}
+  .eyebrow{
+    font-size:.72rem; text-transform:uppercase; letter-spacing:.16em;
+    color:var(--gold-500); font-weight:600; margin-bottom:10px;
+  }
+  h1{font-family:Georgia,'Times New Roman',serif; font-weight:400; font-size:clamp(2rem,5vw,3.2rem); letter-spacing:-.02em; line-height:1.05}
+  .sub{color:var(--text-mid); margin-top:10px; max-width:60ch}
+  .stats{display:flex; gap:28px; flex-wrap:wrap; margin-top:22px}
+  .stat{border-left:2px solid var(--gold-500); padding-left:12px}
+  .stat b{display:block; font-size:1.5rem; font-variant-numeric:tabular-nums; font-weight:500}
+  .stat span{font-size:.72rem; text-transform:uppercase; letter-spacing:.12em; color:var(--text-low)}
+
+  .scene{margin-bottom:56px}
+  .scene-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:16px}
+  .num{font-family:ui-monospace,'Consolas',monospace; color:var(--gold-500); font-size:.85rem; letter-spacing:.08em}
+  .scene h2{font-family:Georgia,serif; font-weight:400; font-size:1.5rem; letter-spacing:-.01em}
+  .tag{
+    font-size:.68rem; text-transform:uppercase; letter-spacing:.1em; font-weight:600;
+    padding:4px 10px; border-radius:999px; border:1px solid;
+  }
+  .tag.ok{color:var(--ok); border-color:rgba(46,125,91,.5); background:rgba(46,125,91,.1)}
+  .tag.warn{color:var(--warn); border-color:rgba(180,121,31,.5); background:rgba(180,121,31,.1)}
+  .tag.bad{color:var(--bad); border-color:rgba(166,58,50,.5); background:rgba(166,58,50,.1)}
+  .tag.vid{color:var(--gold-300); border-color:rgba(201,162,39,.5); background:rgba(201,162,39,.1)}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:20px}
+  figure{
+    background:var(--ink-700); border:1px solid rgba(201,162,39,.14); border-radius:16px;
+    overflow:hidden; box-shadow:0 1px 2px rgba(0,0,0,.4),0 12px 32px rgba(0,0,0,.28);
+  }
+  figure img,figure video{display:block; width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--ink-900)}
+  figcaption{padding:14px 18px; font-size:.82rem; color:var(--text-mid)}
+  figcaption b{color:var(--cream-100); font-weight:500}
+  .note{
+    margin-top:12px; padding:12px 16px; border-left:2px solid var(--gold-500);
+    background:rgba(201,162,39,.06); font-size:.85rem; color:var(--text-mid); border-radius:0 8px 8px 0;
+  }
+  .jid{font-family:ui-monospace,'Consolas',monospace; font-size:.7rem; color:var(--text-low)}
+  footer{margin-top:64px; padding-top:24px; border-top:1px solid rgba(201,162,39,.18); color:var(--text-low); font-size:.82rem}
+  code{font-family:ui-monospace,'Consolas',monospace; background:var(--ink-800); padding:2px 6px; border-radius:4px; color:var(--gold-300); font-size:.85em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">PathSeeker · Career Passport</div>
+    <h1>Dailies</h1>
+    <p class="sub">Higgsfield generation review. Approve a frame before it gets animated — video costs ~70&times; what a keyframe does.</p>
+    <div class="stats">
+      <div class="stat"><b>600.65</b><span>Credits left</span></div>
+      <div class="stat"><b>9.35</b><span>Spent</span></div>
+      <div class="stat"><b>1 / 12</b><span>Scenes filmed</span></div>
+      <div class="stat"><b>0.12</b><span>Cr / keyframe</span></div>
+    </div>
+  </header>
+
+  <section class="scene">
+    <div class="scene-head">
+      <span class="num">SCENE 00</span>
+      <h2>The Weight of Not Knowing</h2>
+      <span class="tag vid">Video rendered</span>
+    </div>
+    <div class="grid">
+      <figure>
+        <video src="raw/s00-the-weight-of-not-knowing.mp4" controls muted loop playsinline preload="metadata"></video>
+        <figcaption><b>Final clip</b> — Kling v3.0 pro, 5s, slow dolly in<br><span class="jid">6326ed6e · ~8.75 cr</span></figcaption>
+      </figure>
+      <figure>
+        <img src="keyframes/s00-candidate-2.png" alt="Scene 0 selected keyframe">
+        <figcaption><b>Keyframe — selected</b> · seed 202<br><span class="jid">4186ef33</span></figcaption>
+      </figure>
+      <figure>
+        <img src="keyframes/s00-candidate-1.png" alt="Scene 0 alternate keyframe">
+        <figcaption><b>Alternate</b> · seed 404 — truer navy, flatter light<br><span class="jid">430f892e</span></figcaption>
+      </figure>
+    </div>
+    <p class="note">Chosen for the visible beam and dust motes, plus the large dark field the headline overlay needs. Background reads near-black — push toward <code>#0A1128</code> in the grade.</p>
+  </section>
+
+  <section class="scene">
+    <div class="scene-head">
+      <span class="num">SCENE 10</span>
+      <h2>Career Result Reveal</h2>
+      <span class="tag ok">Keyframe approved</span>
+    </div>
+    <div class="grid">
+      <figure>
+        <img src="keyframes/s10-stamp.png" alt="Scene 10 stamp keyframe">
+        <figcaption><b>Hero frame</b> · seed 1010<br><span class="jid">3830e28b</span></figcaption>
+      </figure>
+    </div>
+    <p class="note">The WOW moment. Seal is generic ornamental — so the user's real career name overlays as DOM text in perspective. Ready to animate; worth spending Seedance 2.5 (32.5&nbsp;cr) on the impact.</p>
+  </section>
+
+  <section class="scene">
+    <div class="scene-head">
+      <span class="num">SCENE 01</span>
+      <h2>The Briefcase</h2>
+      <span class="tag warn">Needs regen</span>
+    </div>
+    <div class="grid">
+      <figure>
+        <img src="keyframes/s01-briefcase.png" alt="Scene 1 briefcase keyframe">
+        <figcaption><b>Rejected</b> · seed 511<br><span class="jid">80150d53</span></figcaption>
+      </figure>
+    </div>
+    <p class="note">Materials and light are right, but the model invented a brass nameplate reading &ldquo;ALIRA 31&rdquo;. Baked-in text breaks the rule that all text stays in the DOM. Regenerate.</p>
+  </section>
+
+  <section class="scene">
+    <div class="scene-head">
+      <span class="num">SCENE 11</span>
+      <h2>Success Journey</h2>
+      <span class="tag bad">Failed — wrong mechanism</span>
+    </div>
+    <div class="grid">
+      <figure>
+        <img src="keyframes/s11-success-journey.png" alt="Scene 11 failed character lock">
+        <figcaption><b>Character lock failed</b><br><span class="jid">cda64146</span></figcaption>
+      </figure>
+    </div>
+    <p class="note">The face carried over correctly, but passing a full frame as reference copies the whole <em>composition</em> — we got the Scene&nbsp;0 desk again instead of a bright office. Fix: train an identity-only reference with <code>higgsfield soul-id</code>.</p>
+  </section>
+
+  <footer>
+    Regenerate this page after each batch. Every job id, seed and prompt is logged in <code>prompts.json</code>.
+  </footer>
+</div>
+</body>
+</html>

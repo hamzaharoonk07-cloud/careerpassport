@@ -1,0 +1,64 @@
+/* ============================================================
+   Form primitives
+   Global on purpose: these are used by the auth pages, the career
+   bank search, and anywhere else that takes input. Scoping them to a
+   page stylesheet means an input silently falls back to the browser
+   default the first time it is reused somewhere else.
+   ============================================================ */
+
+.field { display: grid; gap: var(--sp-2); }
+
+.field__label {
+  font-family: var(--font-body);
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-low);
+}
+
+.field__input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.7rem 1rem;
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-600);
+  background: var(--ink-800);
+  color: var(--text-hi);
+  transition: border-color var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
+}
+.field__input::placeholder { color: var(--text-low); }
+.field__input:hover { border-color: #223261; }
+.field__input:focus {
+  border-color: var(--gold-500);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.14);
+  outline: none;
+}
+.field__input[aria-invalid='true'] { border-color: var(--danger); }
+
+/* Search inputs get Safari's own affordances stripped so they match. */
+.field__input[type='search'] { appearance: none; -webkit-appearance: none; }
+.field__input[type='search']::-webkit-search-cancel-button { filter: invert(0.7); cursor: pointer; }
+
+.field__error { font-size: var(--fs-sm); color: var(--danger); }
+
+.select {
+  min-height: 48px;
+  padding: 0.7rem 1rem;
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-600);
+  background: var(--ink-800);
+  color: var(--text-hi);
+  cursor: pointer;
+}
+.select:focus { border-color: var(--gold-500); outline: none; }
+
+/* Inline alert used by every form on the site. */
+.auth__alert {
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid rgba(166, 58, 50, 0.4);
+  background: rgba(166, 58, 50, 0.1);
+  color: #e7a49e;
+  font-size: var(--fs-sm);
+}

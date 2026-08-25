@@ -1,0 +1,29 @@
+{
+  "name": "pathseeker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PathSeeker — Career Passport. MERN career discovery platform with a cinematic interactive journey.",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently -n API,WEB -c yellow,cyan \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:server": "npm run dev --workspace server",
+    "dev:client": "npm run dev --workspace client",
+    "seed": "npm run seed --workspace server",
+    "build": "npm run build --workspace client",
+    "test": "npm run test --workspace server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "ffmpeg-static": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true,
+    "mongodb-memory-server@10.4.3": true
+  }
+}

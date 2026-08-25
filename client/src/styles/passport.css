@@ -1,0 +1,403 @@
+/* ============================================================
+   The Career Passport
+   Navy leather cover, gold foil, cream paper, 3D page turn.
+   Pure CSS — no video, no image assets, no libraries.
+   ============================================================ */
+
+.pp-stage {
+  perspective: 2200px;
+  perspective-origin: 50% 42%;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-6) 0;
+}
+
+/* ── The book ───────────────────────────────────────────── */
+.pp {
+  /* Sized by whichever runs out first: width or height. A passport that
+     overflows a short laptop viewport is worse than a slightly smaller one. */
+  --pp-max-h: calc(100dvh - 240px);
+  --pp-w: min(92vw, 440px, max(330px, calc(var(--pp-max-h) / 1.42)));
+  --pp-h: calc(var(--pp-w) * 1.42);
+
+  position: relative;
+  width: var(--pp-w);
+  height: var(--pp-h);
+  transform-style: preserve-3d;
+  transform: rotateX(6deg) rotateZ(-0.6deg);
+  transition: transform var(--dur-5) var(--ease-out);
+}
+.pp--open { transform: rotateX(3deg); }
+.pp--closing { transform: rotateX(10deg) scale(0.92); opacity: 0; }
+
+/* ── Cover ──────────────────────────────────────────────── */
+.pp__cover {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px 14px 14px 6px;
+  background:
+    radial-gradient(120% 90% at 20% 0%, rgba(255, 255, 255, 0.06), transparent 55%),
+    linear-gradient(150deg, #142352 0%, #0f1b3c 42%, #0a1128 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(201, 162, 39, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    var(--sh-4);
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  z-index: 4;
+  overflow: hidden;
+  contain: paint;
+  transition: transform var(--dur-5) var(--ease-in-out);
+}
+.pp--open .pp__cover { transform: rotateY(-158deg); }
+
+/* Leather grain, drawn rather than loaded */
+.pp__cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background-image:
+    repeating-radial-gradient(circle at 30% 30%, rgba(255,255,255,0.03) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(58deg, rgba(0,0,0,0.05) 0 2px, transparent 2px 6px);
+  background-size: 64px 64px, 48px 48px;
+}
+
+/* The spine */
+.pp__cover::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 26px;
+  background: linear-gradient(90deg, rgba(0,0,0,0.5), rgba(0,0,0,0.14) 60%, transparent);
+  border-right: 1px solid rgba(201, 162, 39, 0.12);
+}
+
+.pp__foil {
+  position: absolute;
+  inset: 34px 30px;
+  border: 1px solid rgba(201, 162, 39, 0.42);
+  border-radius: 4px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
+  padding: var(--sp-6) var(--sp-4);
+  text-align: center;
+  color: var(--gold-300);
+}
+
+.pp__crest {
+  width: 74px;
+  height: 74px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(201, 162, 39, 0.5);
+  border-radius: 50%;
+  margin-bottom: var(--sp-4);
+}
+.pp__crest svg { width: 40px; height: 40px; }
+
+.pp__cover-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 4.4vw, 1.9rem);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--gold-300);
+}
+.pp__cover-sub {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(201, 162, 39, 0.62);
+  margin-top: var(--sp-3);
+}
+.pp__cover-foot {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: rgba(201, 162, 39, 0.45);
+}
+
+/* Slow gold sheen travelling across the foil */
+.pp__sheen {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 34%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(232, 199, 102, 0.13), transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pp__sheen {
+    will-change: transform;   /* own layer, so the leather beneath never repaints */
+    animation: ps-sheen 5s var(--ease-in-out) 1.2s 3;
+  }
+}
+
+/* ── Pages ──────────────────────────────────────────────── */
+.pp__book {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px 14px 14px 6px;
+  background: linear-gradient(180deg, var(--cream-100), var(--cream-200));
+  box-shadow: var(--sh-3);
+  overflow: hidden;
+  contain: paint;
+  transform-style: preserve-3d;
+}
+
+/* Gutter shadow so the paper reads as bound, not printed */
+.pp__book::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 42px;
+  background: linear-gradient(90deg, rgba(16, 20, 31, 0.26), rgba(16, 20, 31, 0.05) 55%, transparent);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.pp__page {
+  position: absolute;
+  inset: 0;
+  padding: var(--sp-6) var(--sp-5) var(--sp-5) calc(var(--sp-6) + 14px);
+  color: var(--text-dark);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(22px, 0, 0);
+  transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out);
+}
+.pp__page--active { opacity: 1; pointer-events: auto; transform: none; }
+.pp__page--left { transform: translate3d(-22px, 0, 0); }
+
+/* Paper fibre */
+.pp__book::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(16,20,31,0.014) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(16,20,31,0.012) 0 1px, transparent 1px 4px);
+}
+
+/* Guilloché security pattern, faint */
+.pp__guilloche {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.055;
+  background-image:
+    repeating-radial-gradient(circle at 50% 46%, transparent 0 13px, var(--ink-700) 13px 13.6px),
+    repeating-radial-gradient(circle at 22% 78%, transparent 0 9px, var(--ink-700) 9px 9.5px);
+  background-size: 220px 220px, 160px 160px;
+}
+
+.pp__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #8a7333;
+}
+.pp__rule {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(201,162,39,0.55), rgba(201,162,39,0.06));
+  margin: var(--sp-3) 0 var(--sp-5);
+}
+.pp__h {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 4.6vw, 1.85rem);
+  font-weight: 500;
+  line-height: 1.15;
+  color: var(--ink-800);
+}
+
+.pp__fields { display: grid; gap: var(--sp-4); margin-top: var(--sp-5); }
+
+/* Photo beside the holder details, stacking when the passport is narrow. */
+.pp__identity {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+  flex-wrap: wrap;
+}
+.pp__identity-fields { flex: 1 1 150px; min-width: 0; margin-top: 0; gap: var(--sp-3); }
+.pp__field-label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #8a8471;
+}
+.pp__field-value {
+  font-family: var(--font-display);
+  font-size: 1.06rem;
+  color: var(--ink-800);
+  border-bottom: 1px dotted rgba(16, 20, 31, 0.2);
+  padding-bottom: 3px;
+  min-height: 1.7em;
+  /* break-word split names mid-letter on narrow passports; this only breaks
+     a word that genuinely cannot fit on its own line. */
+  overflow-wrap: break-word;
+  hyphens: none;
+}
+.pp__field-value--mono { font-family: var(--font-mono); font-size: 0.92rem; letter-spacing: 0.04em; }
+.pp__field-value--empty { color: rgba(16, 20, 31, 0.28); font-style: italic; }
+
+/* The blinking caret while the name is being written on */
+.pp__caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--ink-800);
+  margin-left: 2px;
+  vertical-align: -0.12em;
+  animation: ps-caret 1s steps(1) infinite;
+}
+
+/* Machine-readable zone along the bottom, like a real passport */
+.pp__mrz {
+  margin-top: auto;
+  padding-top: var(--sp-4);
+  font-family: var(--font-mono);
+  /* Sized so a full 44-character MRZ line fits without wrapping to an
+     orphaned run of filler characters. */
+  font-size: clamp(0.42rem, 1.35vw, 0.56rem);
+  letter-spacing: 0.02em;
+  color: rgba(16, 20, 31, 0.42);
+  border-top: 1px solid rgba(16, 20, 31, 0.1);
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 1.6;
+}
+
+.pp__photo {
+  width: 84px;
+  height: 104px;
+  border: 1px solid rgba(16, 20, 31, 0.18);
+  border-radius: 2px;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(135deg, rgba(16,20,31,0.05), rgba(16,20,31,0.01)),
+    var(--cream-50);
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: rgba(16, 20, 31, 0.42);
+  flex: none;
+}
+
+/* ── Page navigation ────────────────────────────────────── */
+.pp-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-5);
+}
+.pp-nav__dots { display: flex; gap: var(--sp-2); }
+.pp-nav__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ink-600);
+  transition: background var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+}
+.pp-nav__dot--on { background: var(--gold-500); transform: scale(1.35); }
+.pp-nav__btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--ink-600);
+  color: var(--text-mid);
+  display: grid;
+  place-items: center;
+  transition: border-color var(--dur-2), color var(--dur-2), transform var(--dur-2);
+}
+.pp-nav__btn:hover:not(:disabled) { border-color: var(--gold-500); color: var(--gold-400); transform: translateY(-1px); }
+.pp-nav__btn:disabled { opacity: 0.32; cursor: not-allowed; }
+
+/* ── The VERIFIED stamp ─────────────────────────────────── */
+.pp__stamp {
+  position: absolute;
+  right: 6%;
+  bottom: 9%;
+  width: clamp(112px, 34%, 150px);
+  aspect-ratio: 1;
+  height: auto;
+  z-index: 5;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+}
+.pp__stamp--landed { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .pp__stamp--landed { animation: ps-stamp-press 760ms var(--ease-impact) both; }
+  .pp--shake .pp__book { animation: ps-paper-shake 320ms var(--ease-out) 380ms; }
+}
+
+.pp__stamp-ink {
+  width: 100%;
+  height: 100%;
+  border: 3px solid rgba(166, 58, 50, 0.78);
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+  gap: 2px;
+  text-align: center;
+  color: rgba(166, 58, 50, 0.82);
+  font-family: var(--font-mono);
+  box-shadow: inset 0 0 0 6px rgba(166, 58, 50, 0.1);
+  /* Ink never prints evenly — this breaks up the edge */
+  -webkit-mask-image: radial-gradient(circle at 32% 28%, #000 78%, transparent 79%),
+    radial-gradient(circle at 70% 74%, #000 82%, transparent 83%), linear-gradient(#000, #000);
+  -webkit-mask-composite: source-over;
+  mask-image: radial-gradient(circle at 32% 28%, #000 78%, transparent 79%),
+    radial-gradient(circle at 70% 74%, #000 82%, transparent 83%), linear-gradient(#000, #000);
+  opacity: 0.88;
+}
+.pp__stamp-brand { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.18em; }
+.pp__stamp-word {
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  border-top: 1.5px solid rgba(166, 58, 50, 0.6);
+  border-bottom: 1.5px solid rgba(166, 58, 50, 0.6);
+  padding: 3px 0;
+  margin: 2px 0;
+}
+.pp__stamp-date { font-size: 0.56rem; letter-spacing: 0.16em; opacity: 0.8; }
+
+.pp__shockwave {
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(201, 162, 39, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pp__stamp--landed .pp__shockwave { animation: ps-shockwave 620ms var(--ease-out) 300ms both; }
+}
+
+/* ── Small screens ──────────────────────────────────────── */
+@media (max-width: 520px) {
+  .pp { --pp-w: min(94vw, 360px); }
+  .pp__foil { inset: 24px 20px; }
+  .pp__page { padding: var(--sp-5) var(--sp-4) var(--sp-4) calc(var(--sp-5) + 10px); }
+  .pp__stamp { width: 118px; height: 118px; right: 5%; }
+  .pp__crest { width: 58px; height: 58px; }
+}

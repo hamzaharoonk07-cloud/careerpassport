@@ -1,0 +1,56 @@
+[
+  {
+    "slug": "technology",
+    "name": "Technology",
+    "icon": "cpu",
+    "tagline": "Build the systems everything else runs on",
+    "description": "Software, data and infrastructure. You solve problems by building things that scale, and you are comfortable being wrong quickly on the way to being right.",
+    "accent": "hsl(205 68% 58%)",
+    "order": 1
+  },
+  {
+    "slug": "design",
+    "name": "Design",
+    "icon": "pen-tool",
+    "tagline": "Decide how it looks, feels and works",
+    "description": "Product, visual and experience design. You care about the gap between what a thing does and how it feels to use, and you can argue for a decision without saying 'it looks nicer'.",
+    "accent": "hsl(280 48% 62%)",
+    "order": 2
+  },
+  {
+    "slug": "business",
+    "name": "Business",
+    "icon": "briefcase",
+    "tagline": "Turn direction into decisions",
+    "description": "Strategy, operations, marketing and management. You are energised by moving people and resources toward an outcome, and comfortable owning the result.",
+    "accent": "hsl(38 62% 55%)",
+    "order": 3
+  },
+  {
+    "slug": "healthcare",
+    "name": "Healthcare",
+    "icon": "heart-pulse",
+    "tagline": "Work where the stakes are people",
+    "description": "Clinical practice, allied health and public health. You want your competence to matter to someone directly, and you can hold steady when it counts.",
+    "accent": "hsl(158 46% 50%)",
+    "order": 4
+  },
+  {
+    "slug": "finance",
+    "name": "Finance",
+    "icon": "line-chart",
+    "tagline": "Make the numbers tell the truth",
+    "description": "Accounting, analysis, banking and investment. You trust evidence over instinct and you find precision satisfying rather than tedious.",
+    "accent": "hsl(172 52% 46%)",
+    "order": 5
+  },
+  {
+    "slug": "media",
+    "name": "Media",
+    "icon": "clapperboard",
+    "tagline": "Hold attention and earn it",
+    "description": "Content, journalism, film and communications. You think in audience and narrative, and you would rather be understood than admired.",
+    "accent": "hsl(8 62% 58%)",
+    "order": 6
+  }
+]

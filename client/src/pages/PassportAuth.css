@@ -1,0 +1,457 @@
+/* ============================================================
+   Passport authentication — the document IS the form
+   ============================================================ */
+
+.pa {
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  justify-items: center;
+  /* `safe` matters here: a centred grid item taller than its container
+     overflows equally in both directions, and the top — the passport's
+     heading and first fields — ends up above the scroll origin where it
+     cannot be reached. `safe` drops back to start-alignment in that case. */
+  align-content: safe center;
+  padding: var(--sp-6) var(--sp-4);
+  /* Only the horizontal axis is clipped. The 3D transforms throw a little
+     width, but the page must stay free to scroll down to a tall spread. */
+  overflow-x: hidden;
+  isolation: isolate;
+  transition: opacity var(--dur-4) var(--ease-out), transform var(--dur-4) var(--ease-out);
+}
+.pa--exit { opacity: 0; transform: scale(0.96); }
+
+.pa__back,
+.pa__sound {
+  position: absolute;
+  top: var(--sp-5);
+  z-index: 5;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--sp-3);
+}
+.pa__back { left: var(--sp-5); }
+.pa__sound {
+  right: var(--sp-5);
+  border: 1px solid rgba(245, 240, 230, 0.2);
+  border-radius: var(--r-pill);
+  background: rgba(6, 9, 17, 0.55);
+  backdrop-filter: blur(6px);
+  color: var(--text-mid);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: border-color var(--dur-2), color var(--dur-2);
+}
+.pa__sound:hover { border-color: var(--gold-500); color: var(--gold-400); }
+
+.pa__stage {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-5);
+  perspective: 2600px;
+  width: 100%;
+}
+
+/* ── The book ─────────────────────────────────────────────
+   A passport is ISO ID-3: 125 x 176 mm, so 1 : 1.408 portrait when
+   closed. The open spread is exactly twice that width, which makes
+   the whole book 1.408 : 1 landscape. Deriving the width from the
+   height keeps both states correct at every size instead of letting
+   the closed cover come out square. */
+.pa__book {
+  --pa-h: clamp(360px, 58vh, 560px);
+  --pa-ratio: 1.408;
+
+  position: relative;
+  height: var(--pa-h);
+  width: min(96vw, calc(var(--pa-h) * var(--pa-ratio)));
+  transform-style: preserve-3d;
+  transition: transform var(--dur-5) var(--ease-out);
+  transform: rotateX(9deg) scale(0.82);
+}
+
+/* Once the book is open it stops being a picture of a passport and starts
+   being a form, so content wins over the ISO ratio. A laptop is short — at
+   588px of viewport the closed height lands on its 360px floor, which is
+   nowhere near enough for six fields plus a button, and the spread used to
+   scroll inside itself. Growing the book instead keeps every field visible
+   and lets the page scroll normally if it must. The closed cover above is
+   untouched, so the passport still reads as ID-3 before you open it. */
+.pa--open .pa__book {
+  transform: rotateX(3deg) scale(1);
+  height: auto;
+  min-height: var(--pa-h);
+}
+
+/* ── Cover ──────────────────────────────────────────────── */
+.pa__cover {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 50%;
+  border-radius: 6px 14px 14px 6px;
+  /* The green of a Pakistani passport, kept deep enough that the site's
+     gold still reads as the accent rather than fighting it. */
+  background:
+    radial-gradient(120% 90% at 20% 0%, rgba(255, 255, 255, 0.06), transparent 55%),
+    linear-gradient(150deg, #0d4a31 0%, #08361f 44%, #04200f 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(201, 162, 39, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    var(--sh-4);
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  contain: paint;
+  overflow: hidden;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  /* Closed, the cover sits centred over the spread. */
+  translate: -50% 0;
+  transition: transform var(--dur-5) var(--ease-in-out);
+}
+.pa--open .pa__cover { transform: rotateY(-166deg); }
+
+.pa__cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background-image:
+    repeating-radial-gradient(circle at 30% 30%, rgba(255,255,255,0.03) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(58deg, rgba(0,0,0,0.05) 0 2px, transparent 2px 6px);
+  background-size: 64px 64px, 48px 48px;
+}
+
+.pa__sheen {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 34%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(232, 199, 102, 0.14), transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pa__sheen { will-change: transform; animation: ps-sheen 5s var(--ease-in-out) 0.8s 3; }
+}
+
+.pa__foil {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-6) var(--sp-5);
+  width: 82%;
+  text-align: center;
+  color: var(--gold-300);
+}
+
+/* Country name, set the way it is blocked on the real cover: a small line
+   above a larger one. */
+.pa__foil-country { display: grid; gap: 2px; }
+.pa__foil-country-sm {
+  font-family: var(--font-body);
+  font-size: clamp(0.6rem, 1.6vw, 0.76rem);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(232, 199, 102, 0.9);
+}
+.pa__foil-country-lg {
+  font-family: var(--font-body);
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-300);
+}
+
+.pa__foil-crest {
+  display: grid;
+  place-items: center;
+  color: var(--gold-300);
+  /* Foil sits proud of the leather rather than flat on it */
+  filter:
+    drop-shadow(0 1px 0 rgba(255, 255, 255, 0.25))
+    drop-shadow(0 -1px 0 rgba(0, 0, 0, 0.45));
+}
+
+.pa__foil-urdu {
+  font-size: clamp(0.82rem, 2.2vw, 1.05rem);
+  color: rgba(232, 199, 102, 0.92);
+  direction: rtl;
+  line-height: 1.6;
+}
+
+.pa__foil-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 2.6vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-300);
+}
+.pa__foil-title-ur {
+  font-size: 0.9em;
+  letter-spacing: 0;
+  text-transform: none;
+  direction: rtl;
+}
+
+/* ── Inside spread ──────────────────────────────────────── */
+.pa__pages {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--cream-50), var(--cream-200));
+  box-shadow: var(--sh-4);
+  overflow: hidden;
+  contain: paint;
+  opacity: 0;
+  transform: scaleX(0.5);
+  transform-origin: center;
+  transition: opacity var(--dur-3) var(--ease-out) 180ms,
+              transform var(--dur-5) var(--ease-out);
+}
+.pa--open .pa__pages { opacity: 1; transform: none; }
+
+/* Centre gutter — the shadow of the binding */
+.pa__pages::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 56px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, rgba(16,20,31,0.16) 45%, rgba(16,20,31,0.16) 55%, transparent);
+  pointer-events: none;
+  z-index: 3;
+}
+.pa__pages::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: repeating-radial-gradient(circle at 42% 34%, transparent 0 12px, var(--ink-700) 12px 12.5px);
+  background-size: 190px 190px;
+}
+
+.pa__page {
+  position: relative;
+  z-index: 2;
+  padding: clamp(var(--sp-5), 3vw, var(--sp-7));
+  display: flex;
+  flex-direction: column;
+  color: var(--text-dark);
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease-out) 420ms;
+}
+.pa--open .pa__page { opacity: 1; }
+
+.pa__crest { color: #0d4a31; margin-bottom: var(--sp-3); }
+.pa__doc {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #8a7333;
+}
+.pa__h {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 500;
+  line-height: 1.14;
+  color: var(--ink-800);
+  margin-top: var(--sp-3);
+}
+.pa__blurb {
+  margin-top: var(--sp-4);
+  color: #4a4740;
+  line-height: 1.7;
+  font-size: 0.94rem;
+  max-width: 34ch;
+}
+
+/* Embossed dry seal on the left page */
+.pa__seal {
+  margin: var(--sp-6) 0 auto;
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  border: 2px dashed rgba(16, 20, 31, 0.14);
+  background:
+    radial-gradient(circle at 40% 36%, rgba(255,255,255,0.7), transparent 62%),
+    repeating-radial-gradient(circle at 50% 50%, transparent 0 5px, rgba(16,20,31,0.05) 5px 5.6px);
+}
+
+.pa__switch { margin-top: var(--sp-5); font-size: 0.86rem; color: #6a6559; }
+.pa__link {
+  color: #8a6f18;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  min-height: 44px;
+}
+.pa__link:hover { color: var(--ink-800); }
+
+/* ── Form on the right page ─────────────────────────────── */
+.pa__form { display: grid; gap: var(--sp-3); align-content: start; }
+.pa__row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
+
+.pf { display: grid; gap: 5px; }
+.pf__label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8a8471;
+}
+.pf__input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.55rem 0.2rem;
+  border: none;
+  border-bottom: 1px solid rgba(16, 20, 31, 0.22);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink-800);
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  transition: border-color var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
+}
+.pf__input::placeholder { color: rgba(16, 20, 31, 0.28); font-style: italic; }
+.pf__input:focus {
+  outline: none;
+  border-bottom-color: var(--gold-500);
+  box-shadow: 0 1px 0 var(--gold-500);
+}
+.pf__input[aria-invalid='true'] { border-bottom-color: var(--danger); }
+.pf__input:disabled { opacity: 0.55; }
+.pf__hint { font-size: 0.66rem; color: rgba(16, 20, 31, 0.35); }
+.pf__err { font-size: 0.72rem; color: var(--danger); }
+
+.pa__alert {
+  padding: var(--sp-3);
+  border-radius: var(--r-sm);
+  border: 1px solid rgba(166, 58, 50, 0.35);
+  background: rgba(166, 58, 50, 0.08);
+  color: #8d2e28;
+  font-size: 0.84rem;
+}
+
+.pa__demo {
+  font-size: 0.76rem;
+  color: #8a6f18;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  min-height: 44px;
+  text-align: left;
+}
+.pa__demo:hover { color: var(--ink-800); }
+
+/* ── Open CTA ───────────────────────────────────────────── */
+.pa__opencta { display: grid; justify-items: center; gap: var(--sp-3); text-align: center; }
+.pa__opencta-note { color: var(--text-low); font-size: var(--fs-sm); }
+
+/* ── Verification ───────────────────────────────────────── */
+.pa__verify {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--sp-4);
+  border-radius: 8px;
+  background: rgba(250, 247, 240, 0.9);
+  backdrop-filter: blur(3px);
+}
+.pa__verify-ring {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid rgba(16, 20, 31, 0.12);
+  border-top-color: var(--gold-500);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pa__verify-ring { animation: ps-spin 900ms linear infinite; }
+}
+.pa__verify-text {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #6a6559;
+}
+
+/* ── Official stamp ─────────────────────────────────────────
+   The artwork lives in EntryStamp.jsx; this only places it on the
+   page and drives the impact. */
+.pa__stamp {
+  position: absolute;
+  right: 7%;
+  bottom: 10%;
+  z-index: 7;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  /* Ink soaks in rather than printing at full strength */
+  opacity: 0.88;
+  mix-blend-mode: multiply;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pa__stamp { animation: ps-stamp-press 780ms var(--ease-impact) both; }
+  .pa--open .pa__pages { animation: ps-paper-shake 340ms var(--ease-out) 400ms; }
+}
+
+.pa__shock {
+  position: absolute;
+  inset: 8%;
+  border: 2px solid rgba(46, 125, 91, 0.45);
+  border-radius: 50%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pa__shock { animation: ps-shockwave 640ms var(--ease-out) 300ms both; }
+}
+
+/* ── Small screens: the spread becomes a single page ────── */
+@media (max-width: 860px) {
+  .pa__book { height: auto; min-height: clamp(520px, 76vh, 700px); }
+  .pa__pages { grid-template-columns: 1fr; }
+  .pa__pages::after { display: none; }
+  /* The left page is context, not input — it costs a whole screen on a phone. */
+  .pa__page--left { display: none; }
+  .pa__cover { left: 0; width: 100%; translate: 0 0; }
+  .pa--open .pa__cover { transform: rotateY(-166deg); }
+  .pa__stamp { right: 6%; bottom: 6%; width: clamp(120px, 34%, 160px); }
+  .pa__back, .pa__sound { top: var(--sp-4); }
+  .pa__back { left: var(--sp-4); }
+  .pa__sound { right: var(--sp-4); }
+}
+
+/* When the 3D passport is live the CSS book steps back but stays mounted —
+   if WebGL is lost mid-session the fallback is already in the tree. */
+.pa__book--hidden { opacity: 0; pointer-events: none; }
+
+/* The canvas needs real height to lay out against. */
+.pa__stage { min-height: clamp(420px, 66vh, 640px); }
+
+/* Controls sit above the 3D canvas, which fills the stage. */
+.pa__opencta { position: relative; z-index: 3; }

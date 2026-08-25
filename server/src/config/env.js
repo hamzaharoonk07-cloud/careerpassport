@@ -29,4 +29,24 @@ export const env = {
     refreshTtl: process.env.JWT_REFRESH_TTL || '7d',
   },
   bcryptRounds: Number(process.env.BCRYPT_ROUNDS) || 12,
+
+  /**
+   * Emails that always hold the admin role.
+   *
+   * Without this the only administrator is the seeded account, and the
+   * owner's own registration comes out as an ordinary user with the panel
+   * hidden from them. Promoting by hand does not survive a restart on the
+   * in-memory database, so the allowlist is applied on registration and
+   * again on every boot.
+   *
+   * Comma-separated. Compared lower-cased and trimmed.
+   */
+  adminEmails: (process.env.ADMIN_EMAILS || '')
+    .split(',')
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean),
 };
+
+/** Is this address one of the configured owners? */
+export const isAdminEmail = (email) =>
+  Boolean(email) && env.adminEmails.includes(String(email).trim().toLowerCase());

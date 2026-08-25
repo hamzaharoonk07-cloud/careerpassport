@@ -6,6 +6,7 @@ import {
   verifyRefreshToken,
   REFRESH_COOKIE,
 } from '../utils/tokens.js';
+import { isAdminEmail } from '../config/env.js';
 
 /** The only shape of a user that ever leaves the server. */
 const publicUser = (user) => ({
@@ -32,6 +33,9 @@ export const register = asyncHandler(async (req, res) => {
     name,
     email,
     passwordHash,
+    // Configured owner addresses register straight into the admin role.
+    // Everyone else gets the model default.
+    ...(isAdminEmail(email) ? { role: 'admin' } : {}),
     profile: { education: education || '', age: age ?? null },
   });
 

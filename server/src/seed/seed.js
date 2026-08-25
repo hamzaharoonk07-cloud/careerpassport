@@ -13,6 +13,7 @@ import {
   QuizResult,
   SavedCareer,
 } from '../models/index.js';
+import { env } from '../config/env.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const readJson = async (file) => JSON.parse(await readFile(path.join(__dirname, file), 'utf8'));
@@ -160,6 +161,17 @@ export async function seedDatabase({ log = console.log } = {}) {
   log(`  careers           ${careers.length}  (${withSalary} with salary data, ${careers.length - withSalary} without)`);
   log(`  quiz questions    ${questionData.length}`);
   log(`  quiz options      ${optionCount}`);
+  // Re-apply the owner allowlist on every boot. A hand-promotion does not
+  // survive a restart on the in-memory database, so without this the owner
+  // loses the admin panel every time the server comes back up.
+  if (env.adminEmails.length) {
+    const promoted = await User.updateMany(
+      { email: { $in: env.adminEmails }, role: { $ne: 'admin' } },
+      { $set: { role: 'admin' } }
+    );
+    if (promoted.modifiedCount) log(`  owners promoted   ${promoted.modifiedCount}`);
+  }
+
   log(`  users preserved   ${await User.countDocuments()}`);
   log('────────────────────────────────\n');
 

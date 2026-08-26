@@ -70,7 +70,7 @@ export default function Intro() {
             variant: 'hero',
             mark: <div className="sfilm__mark"><Logo size={54} /></div>,
             eyebrow: 'PathSeeker · Aptech TechWiz',
-            title: <>Find the career<br />that actually fits you.</>,
+            title: <>Your career,<br />stamped and routed.</>,
             body: `PathSeeker is a career guidance tool for students, graduates and working professionals. Answer ten honest questions and it matches you against ${careersPhrase} — then tells you why, what you would be giving up, and the exact steps to get there.`,
             actions: loading ? (
               <p className="t-low">Checking your session…</p>
@@ -94,40 +94,40 @@ export default function Intro() {
           },
           {
             at: 0.16,
-            eyebrow: 'Step 01 · Explore',
-            title: 'Browse every career on the board.',
+            eyebrow: 'Step 01 · The departures board',
+            title: 'Every career is a destination.',
             body: `${careersPhrase} across ${counts?.fields || 'six'} fields, each with the skills it needs, what it pays where we have verified figures, and a route in. Search it without an account.`,
           },
           {
             at: 0.34,
-            eyebrow: 'Step 02 · Choose a direction',
-            title: 'Pick the field you are drawn to.',
-            body: 'Technology, design, business, healthcare, finance or media. It is a starting point, not a commitment — the quiz can and often does point somewhere else.',
+            eyebrow: 'Step 02 · Your boarding pass',
+            title: 'Choose a gate, and the pass is issued.',
+            body: 'Technology, design, business, healthcare, finance or media. A boarding pass is printed in your name with your passport number, your gate and your seat. It is a starting point, not a commitment — the quiz can and often does route you somewhere else.',
           },
           {
             at: 0.52,
-            eyebrow: 'Step 03 · The quiz',
-            title: 'Ten questions about how you actually work.',
+            eyebrow: 'Step 03 · Departure',
+            title: 'Ten questions, taken at altitude.',
             body: 'No right answers and nothing to revise for. How you solve problems, where you do your best work, what you would want to be true in ten years. Three minutes.',
           },
           {
             at: 0.68,
-            eyebrow: 'Step 04 · The matching',
-            title: 'How the match is worked out.',
+            eyebrow: 'Step 04 · En route',
+            title: 'How your destination is chosen.',
             body: 'Your answers become a profile across six recognised interest traits, compared against every career in the bank. The same answers always give the same result — nothing here is random, and every score can be traced back to a question you answered.',
           },
           {
             at: 0.82,
-            eyebrow: 'Step 05 · Your result',
-            title: 'A career, and the reasoning behind it.',
+            eyebrow: 'Step 05 · Arrival',
+            title: 'You land somewhere, with the reasoning.',
             body: 'Your match, why it fits, what it pays, and a six-stage route to get there. If two careers are too close to call, it says so instead of pretending to be certain.',
           },
           {
             at: 0.93,
             variant: 'close',
             eyebrow: 'Ready when you are',
-            title: 'Start with ten questions.',
-            body: 'Free, no wrong answers, and you can retake it whenever you want. You leave with a career, a route, and the reasoning behind both.',
+            title: 'No entry without a passport.',
+            body: 'Claim yours — it takes a minute, it is free, and there are no wrong answers. You leave with a career, a route, and the reasoning behind both.',
             actions: (
               <Button size="lg" to={isAuthed ? resumeRoute : '/register'}>
                 {isAuthed ? 'Continue your journey' : 'Claim your passport'}

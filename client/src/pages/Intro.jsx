@@ -44,6 +44,9 @@ export default function Intro() {
   }
 
   const destinations = counts ? `${counts.careers} destinations` : 'every destination in the bank';
+  // Plain wording for the sentences that explain the product, where the
+  // airport metaphor would get in the way of being understood.
+  const careersPhrase = counts ? `${counts.careers} real careers` : 'every career in the bank';
   // Says what the visitor gets, not what they do. "Browse careers" sat
   // outside the airport world and left two unlabelled doors side by side.
   const browseLabel = counts
@@ -67,8 +70,8 @@ export default function Intro() {
             variant: 'hero',
             mark: <div className="sfilm__mark"><Logo size={54} /></div>,
             eyebrow: 'PathSeeker · Aptech TechWiz',
-            title: <>Every journey<br />needs a document.</>,
-            body: 'Most people choose a career the way they choose a queue — by watching what everyone else does. This is the other way. Take the passport, answer honestly, and leave with a destination you can defend.',
+            title: <>Find the career<br />that actually fits you.</>,
+            body: `PathSeeker is a career guidance tool for students, graduates and working professionals. Answer ten honest questions and it matches you against ${careersPhrase} — then tells you why, what you would be giving up, and the exact steps to get there.`,
             actions: loading ? (
               <p className="t-low">Checking your session…</p>
             ) : isAuthed ? (
@@ -91,40 +94,40 @@ export default function Intro() {
           },
           {
             at: 0.16,
-            eyebrow: 'Stage 01 · The Terminal',
-            title: 'Every gate is a career.',
-            body: `The departures board is built from the careers in our database — ${destinations}, each with its own gate. Karachi is where the journey starts.`,
+            eyebrow: 'Step 01 · Explore',
+            title: 'Browse every career on the board.',
+            body: `${careersPhrase} across ${counts?.fields || 'six'} fields, each with the skills it needs, what it pays where we have verified figures, and a route in. Search it without an account.`,
           },
           {
             at: 0.34,
-            eyebrow: 'Stage 02 · Your Boarding Pass',
-            title: 'Choose a gate. The pass is yours.',
-            body: 'Pick a destination and a boarding pass is issued in your name, with your passport number, your gate and your seat.',
+            eyebrow: 'Step 02 · Choose a direction',
+            title: 'Pick the field you are drawn to.',
+            body: 'Technology, design, business, healthcare, finance or media. It is a starting point, not a commitment — the quiz can and often does point somewhere else.',
           },
           {
             at: 0.52,
-            eyebrow: 'Stage 03 · Departure',
-            title: 'Ten questions at altitude.',
-            body: 'Each one measures something real — how you solve problems, where you do your best work, what you would want to be true in ten years.',
+            eyebrow: 'Step 03 · The quiz',
+            title: 'Ten questions about how you actually work.',
+            body: 'No right answers and nothing to revise for. How you solve problems, where you do your best work, what you would want to be true in ten years. Three minutes.',
           },
           {
             at: 0.68,
-            eyebrow: 'Stage 04 · En Route',
-            title: 'The maths does the rest.',
-            body: 'Holland-code similarity against every career in the bank, weighted against the field you chose. Deterministic, explainable, and never random.',
+            eyebrow: 'Step 04 · The matching',
+            title: 'How the match is worked out.',
+            body: 'Your answers become a profile across six recognised interest traits, compared against every career in the bank. The same answers always give the same result — nothing here is random, and every score can be traced back to a question you answered.',
           },
           {
             at: 0.82,
-            eyebrow: 'Stage 05 · Arrival',
-            title: 'A match with a reason attached.',
-            body: 'Every percentage comes with the sentence behind it, then a six-stage flight plan to get you there.',
+            eyebrow: 'Step 05 · Your result',
+            title: 'A career, and the reasoning behind it.',
+            body: 'Your match, why it fits, what it pays, and a six-stage route to get there. If two careers are too close to call, it says so instead of pretending to be certain.',
           },
           {
             at: 0.93,
             variant: 'close',
             eyebrow: 'Ready when you are',
-            title: 'Your passport is waiting.',
-            body: 'Three minutes of honest answers, and you leave with a destination, a route, and the reasoning behind both.',
+            title: 'Start with ten questions.',
+            body: 'Free, no wrong answers, and you can retake it whenever you want. You leave with a career, a route, and the reasoning behind both.',
             actions: (
               <Button size="lg" to={isAuthed ? resumeRoute : '/register'}>
                 {isAuthed ? 'Continue your journey' : 'Claim your passport'}

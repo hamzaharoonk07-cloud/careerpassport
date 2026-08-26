@@ -1,0 +1,271 @@
+[
+  {
+    "order": 1,
+    "variant": 2,
+    "dimension": "interests",
+    "prompt": "A week off and no plans. What do you drift towards without deciding to?",
+    "helper": "The honest answer, not the one that sounds best.",
+    "options": [
+      { "key": "a", "label": "Fixing or building something physical around the house", "fieldWeights": { "technology": 3, "design": 1 }, "riasec": { "R": 4, "I": 1 } },
+      { "key": "b", "label": "A creative project nobody asked for", "fieldWeights": { "design": 3, "media": 2 }, "riasec": { "A": 4 } },
+      { "key": "c", "label": "Getting people together, or starting something", "fieldWeights": { "business": 3, "media": 1 }, "riasec": { "E": 4, "S": 1 } },
+      { "key": "d", "label": "Going deep on a subject until it makes sense", "fieldWeights": { "healthcare": 2, "finance": 2 }, "riasec": { "I": 4 } }
+    ]
+  },
+  {
+    "order": 1,
+    "variant": 3,
+    "dimension": "interests",
+    "prompt": "Which of these could you lose three hours to without noticing?",
+    "helper": "Think about the last time it actually happened.",
+    "options": [
+      { "key": "a", "label": "Getting a machine or a system to work properly", "fieldWeights": { "technology": 3 }, "riasec": { "R": 3, "C": 2 } },
+      { "key": "b", "label": "Shaping how something looks, sounds or reads", "fieldWeights": { "design": 3, "media": 2 }, "riasec": { "A": 4 } },
+      { "key": "c", "label": "Talking a plan through with someone until it is sharp", "fieldWeights": { "business": 3 }, "riasec": { "E": 3, "S": 2 } },
+      { "key": "d", "label": "Chasing down why something works the way it does", "fieldWeights": { "healthcare": 2, "technology": 2 }, "riasec": { "I": 4 } }
+    ]
+  },
+
+  {
+    "order": 2,
+    "variant": 2,
+    "dimension": "strengths",
+    "prompt": "A project is going badly. What do people turn to you for?",
+    "helper": "What you are actually asked for, not what you wish you were.",
+    "options": [
+      { "key": "a", "label": "Making the broken thing work again", "fieldWeights": { "technology": 3 }, "riasec": { "R": 4 } },
+      { "key": "b", "label": "A different angle nobody had considered", "fieldWeights": { "design": 2, "media": 2 }, "riasec": { "A": 4 } },
+      { "key": "c", "label": "Holding the group together and keeping it moving", "fieldWeights": { "business": 2, "healthcare": 1 }, "riasec": { "S": 3, "E": 2 } },
+      { "key": "d", "label": "Finding the detail everyone else missed", "fieldWeights": { "finance": 3 }, "riasec": { "C": 4, "I": 1 } }
+    ]
+  },
+  {
+    "order": 2,
+    "variant": 3,
+    "dimension": "strengths",
+    "prompt": "What has someone genuinely thanked you for recently?",
+    "helper": "Real thanks, not politeness.",
+    "options": [
+      { "key": "a", "label": "Sorting something out with your hands", "fieldWeights": { "technology": 2 }, "riasec": { "R": 4 } },
+      { "key": "b", "label": "Making something look or feel right", "fieldWeights": { "design": 3, "media": 1 }, "riasec": { "A": 4 } },
+      { "key": "c", "label": "Listening properly when it mattered", "fieldWeights": { "healthcare": 3 }, "riasec": { "S": 4 } },
+      { "key": "d", "label": "Catching a mistake before it cost anything", "fieldWeights": { "finance": 3 }, "riasec": { "C": 4 } }
+    ]
+  },
+
+  {
+    "order": 3,
+    "variant": 2,
+    "dimension": "problem-solving",
+    "prompt": "Something has stopped working and nobody knows why. What do you do first?",
+    "helper": "Your actual first move, not the textbook one.",
+    "options": [
+      { "key": "a", "label": "Start testing parts until I find the one at fault", "fieldWeights": { "technology": 3 }, "riasec": { "R": 3, "I": 2 } },
+      { "key": "b", "label": "Step back and look for a completely different approach", "fieldWeights": { "design": 3 }, "riasec": { "A": 4 } },
+      { "key": "c", "label": "Ask whoever was closest to it what changed", "fieldWeights": { "business": 2, "healthcare": 1 }, "riasec": { "S": 3, "E": 2 } },
+      { "key": "d", "label": "Work through it methodically from the start", "fieldWeights": { "finance": 2, "technology": 1 }, "riasec": { "C": 3, "I": 2 } }
+    ]
+  },
+  {
+    "order": 3,
+    "variant": 3,
+    "dimension": "problem-solving",
+    "prompt": "You are stuck on something hard. What gets you unstuck?",
+    "helper": "What has actually worked before.",
+    "options": [
+      { "key": "a", "label": "Trying things until something gives", "fieldWeights": { "technology": 3 }, "riasec": { "R": 4 } },
+      { "key": "b", "label": "Leaving it and letting an idea arrive sideways", "fieldWeights": { "design": 2, "media": 2 }, "riasec": { "A": 4 } },
+      { "key": "c", "label": "Explaining it out loud to somebody", "fieldWeights": { "business": 2, "media": 1 }, "riasec": { "S": 3, "E": 2 } },
+      { "key": "d", "label": "Reading until I understand it properly", "fieldWeights": { "healthcare": 2, "finance": 2 }, "riasec": { "I": 4 } }
+    ]
+  },
+
+  {
+    "order": 4,
+    "variant": 2,
+    "dimension": "creativity",
+    "prompt": "How true is this: a blank page excites me more than a finished draft to fix.",
+    "helper": "There is no better answer here — both are real ways to work.",
+    "options": [
+      { "key": "a", "label": "Completely true — I want the blank page", "fieldWeights": { "design": 3, "media": 2 }, "riasec": { "A": 5 } },
+      { "key": "b", "label": "Mostly true", "fieldWeights": { "design": 2, "media": 1 }, "riasec": { "A": 3 } },
+      { "key": "c", "label": "Mostly false — I would rather improve something real", "fieldWeights": { "technology": 2, "finance": 1 }, "riasec": { "C": 3, "R": 1 } },
+      { "key": "d", "label": "Completely false — give me the draft", "fieldWeights": { "finance": 2, "technology": 2 }, "riasec": { "C": 4 } }
+    ]
+  },
+  {
+    "order": 4,
+    "variant": 3,
+    "dimension": "creativity",
+    "prompt": "Would you rather invent the idea, or be the one who makes it actually work?",
+    "helper": "Both are needed. Which is you?",
+    "options": [
+      { "key": "a", "label": "Invent it — the idea is the interesting part", "fieldWeights": { "design": 3, "media": 2 }, "riasec": { "A": 5 } },
+      { "key": "b", "label": "Lean towards inventing", "fieldWeights": { "design": 2, "business": 1 }, "riasec": { "A": 3, "E": 1 } },
+      { "key": "c", "label": "Lean towards making it work", "fieldWeights": { "technology": 2 }, "riasec": { "R": 3, "C": 1 } },
+      { "key": "d", "label": "Make it work — an idea nobody shipped is nothing", "fieldWeights": { "technology": 3, "finance": 1 }, "riasec": { "R": 4, "C": 2 } }
+    ]
+  },
+
+  {
+    "order": 5,
+    "variant": 2,
+    "dimension": "communication",
+    "prompt": "You have to give bad news to someone who will not like it. How does that sit?",
+    "helper": "Everyone finds it uncomfortable. The question is what you do with it.",
+    "options": [
+      { "key": "a", "label": "I would rather write it than say it", "fieldWeights": { "technology": 2 }, "riasec": { "I": 3, "C": 1 } },
+      { "key": "b", "label": "I would find the words that land gently", "fieldWeights": { "healthcare": 3, "media": 1 }, "riasec": { "S": 4 } },
+      { "key": "c", "label": "I would say it straight and deal with the reaction", "fieldWeights": { "business": 3 }, "riasec": { "E": 4 } },
+      { "key": "d", "label": "I would rather someone else did it", "fieldWeights": { "technology": 2, "finance": 1 }, "riasec": { "R": 2, "C": 2 } }
+    ]
+  },
+  {
+    "order": 5,
+    "variant": 3,
+    "dimension": "communication",
+    "prompt": "In a meeting where you disagree with everyone, what happens?",
+    "helper": "Be honest about the room, not the ideal version of yourself.",
+    "options": [
+      { "key": "a", "label": "I keep it to myself and write it up after", "fieldWeights": { "technology": 2, "finance": 1 }, "riasec": { "I": 3, "C": 2 } },
+      { "key": "b", "label": "I ask questions until they see it themselves", "fieldWeights": { "healthcare": 2, "business": 1 }, "riasec": { "S": 3, "I": 2 } },
+      { "key": "c", "label": "I say it plainly and argue for it", "fieldWeights": { "business": 3 }, "riasec": { "E": 5 } },
+      { "key": "d", "label": "I look for the version everyone can live with", "fieldWeights": { "business": 2, "healthcare": 1 }, "riasec": { "S": 3, "E": 2 } }
+    ]
+  },
+
+  {
+    "order": 6,
+    "variant": 2,
+    "dimension": "technical-interest",
+    "prompt": "A tool you need has no tutorial, only documentation. What happens next?",
+    "helper": "This is about appetite, not ability.",
+    "options": [
+      { "key": "a", "label": "Good — I would rather read the source of truth", "fieldWeights": { "technology": 4 }, "riasec": { "I": 4, "R": 1 } },
+      { "key": "b", "label": "I would get through it if I needed to", "fieldWeights": { "technology": 2, "finance": 1 }, "riasec": { "I": 2, "C": 2 } },
+      { "key": "c", "label": "I would find a person to show me instead", "fieldWeights": { "business": 2, "healthcare": 1 }, "riasec": { "S": 3, "E": 1 } },
+      { "key": "d", "label": "I would look for a tool that does not need it", "fieldWeights": { "design": 2, "media": 2 }, "riasec": { "A": 3 } }
+    ]
+  },
+  {
+    "order": 6,
+    "variant": 3,
+    "dimension": "technical-interest",
+    "prompt": "How do you feel about work where the tools change every couple of years?",
+    "helper": "Some people find that energising and some find it exhausting.",
+    "options": [
+      { "key": "a", "label": "That is the appeal", "fieldWeights": { "technology": 4 }, "riasec": { "I": 4 } },
+      { "key": "b", "label": "Fine, as long as the point of the work stays put", "fieldWeights": { "technology": 2, "business": 1 }, "riasec": { "I": 2, "E": 2 } },
+      { "key": "c", "label": "I would rather get deep in one craft", "fieldWeights": { "design": 2, "healthcare": 2 }, "riasec": { "A": 3, "R": 1 } },
+      { "key": "d", "label": "I would rather the ground stayed still", "fieldWeights": { "finance": 3 }, "riasec": { "C": 4 } }
+    ]
+  },
+
+  {
+    "order": 7,
+    "variant": 2,
+    "dimension": "business-interest",
+    "prompt": "A small shop is doing well. What do you find yourself wondering?",
+    "helper": "Whatever your mind actually goes to first.",
+    "options": [
+      { "key": "a", "label": "What their margins look like", "fieldWeights": { "finance": 3, "business": 2 }, "riasec": { "E": 3, "C": 2 } },
+      { "key": "b", "label": "How I would grow it", "fieldWeights": { "business": 4 }, "riasec": { "E": 5 } },
+      { "key": "c", "label": "Whether the people working there are happy", "fieldWeights": { "healthcare": 3 }, "riasec": { "S": 4 } },
+      { "key": "d", "label": "Honestly, none of that crosses my mind", "fieldWeights": { "design": 2, "technology": 1 }, "riasec": { "A": 3, "R": 1 } }
+    ]
+  },
+  {
+    "order": 7,
+    "variant": 3,
+    "dimension": "business-interest",
+    "prompt": "Would you rather own a share of the outcome, or be paid reliably for the work?",
+    "helper": "Neither is wrong. They lead to different places.",
+    "options": [
+      { "key": "a", "label": "A share of the outcome, with the risk that carries", "fieldWeights": { "business": 4 }, "riasec": { "E": 5 } },
+      { "key": "b", "label": "Mostly the outcome", "fieldWeights": { "business": 2, "finance": 1 }, "riasec": { "E": 3 } },
+      { "key": "c", "label": "Mostly the reliable pay", "fieldWeights": { "finance": 2, "healthcare": 1 }, "riasec": { "C": 3 } },
+      { "key": "d", "label": "Reliable pay — I want to think about the work, not the risk", "fieldWeights": { "finance": 3, "healthcare": 2 }, "riasec": { "C": 4, "S": 1 } }
+    ]
+  },
+
+  {
+    "order": 8,
+    "variant": 2,
+    "dimension": "work-environment",
+    "prompt": "Picture the room you work best in. What is it like?",
+    "helper": "Where you actually do good work, not where you think you should.",
+    "options": [
+      { "key": "a", "label": "A workshop or site — somewhere things happen", "fieldWeights": { "technology": 2, "healthcare": 1 }, "riasec": { "R": 5 } },
+      { "key": "b", "label": "Quiet, mine, nobody interrupting", "fieldWeights": { "technology": 2, "finance": 2 }, "riasec": { "I": 4, "C": 1 } },
+      { "key": "c", "label": "A studio with other people making things", "fieldWeights": { "design": 3, "media": 2 }, "riasec": { "A": 4 } },
+      { "key": "d", "label": "Wherever the people are — a desk is incidental", "fieldWeights": { "business": 3, "healthcare": 2 }, "riasec": { "S": 3, "E": 3 } }
+    ]
+  },
+  {
+    "order": 8,
+    "variant": 3,
+    "dimension": "work-environment",
+    "prompt": "Which would wear you down fastest?",
+    "helper": "The thing you could not do for years.",
+    "options": [
+      { "key": "a", "label": "Sitting still at a screen all day", "fieldWeights": { "healthcare": 2, "technology": 1 }, "riasec": { "R": 4 } },
+      { "key": "b", "label": "Constant meetings and interruptions", "fieldWeights": { "technology": 3, "finance": 1 }, "riasec": { "I": 4 } },
+      { "key": "c", "label": "Work with no room to make it your own", "fieldWeights": { "design": 3, "media": 2 }, "riasec": { "A": 4 } },
+      { "key": "d", "label": "Working alone with nobody to talk to", "fieldWeights": { "healthcare": 3, "business": 2 }, "riasec": { "S": 5 } }
+    ]
+  },
+
+  {
+    "order": 9,
+    "variant": 2,
+    "dimension": "learning-preference",
+    "prompt": "A new skill you need for work. How do you actually pick it up?",
+    "helper": "The way that has worked, not the way you admire.",
+    "options": [
+      { "key": "a", "label": "Doing it badly until I am doing it well", "fieldWeights": { "technology": 2, "design": 1 }, "riasec": { "R": 4 } },
+      { "key": "b", "label": "Understanding the theory first, then applying it", "fieldWeights": { "finance": 2, "healthcare": 2 }, "riasec": { "I": 4 } },
+      { "key": "c", "label": "Watching somebody good and copying them", "fieldWeights": { "design": 2, "media": 2 }, "riasec": { "A": 3, "S": 1 } },
+      { "key": "d", "label": "A structured course with a clear order", "fieldWeights": { "finance": 3 }, "riasec": { "C": 4 } }
+    ]
+  },
+  {
+    "order": 9,
+    "variant": 3,
+    "dimension": "learning-preference",
+    "prompt": "You have one month to get good enough at something to be useful. What is your plan?",
+    "helper": "Whatever you would genuinely do.",
+    "options": [
+      { "key": "a", "label": "Build something real with it immediately", "fieldWeights": { "technology": 3 }, "riasec": { "R": 4, "I": 1 } },
+      { "key": "b", "label": "Find the best explanation and work through it", "fieldWeights": { "healthcare": 2, "technology": 2 }, "riasec": { "I": 4 } },
+      { "key": "c", "label": "Find someone doing it and ask to shadow them", "fieldWeights": { "business": 2, "healthcare": 2 }, "riasec": { "S": 4 } },
+      { "key": "d", "label": "Make a schedule and work through it in order", "fieldWeights": { "finance": 3 }, "riasec": { "C": 5 } }
+    ]
+  },
+
+  {
+    "order": 10,
+    "variant": 2,
+    "dimension": "values",
+    "prompt": "Which would make you feel the work had been worth it?",
+    "helper": "The one you would actually be proud of.",
+    "options": [
+      { "key": "a", "label": "Something I built is still being used", "fieldWeights": { "technology": 3 }, "riasec": { "R": 3, "I": 2 } },
+      { "key": "b", "label": "Something I made moved somebody", "fieldWeights": { "design": 3, "media": 3 }, "riasec": { "A": 5 } },
+      { "key": "c", "label": "People are better off because I was there", "fieldWeights": { "healthcare": 4 }, "riasec": { "S": 5 } },
+      { "key": "d", "label": "I built something that stands on its own", "fieldWeights": { "business": 3, "finance": 2 }, "riasec": { "E": 4, "C": 1 } }
+    ]
+  },
+  {
+    "order": 10,
+    "variant": 3,
+    "dimension": "values",
+    "prompt": "Twenty years in, what would you want said about your work?",
+    "helper": "Not the most impressive answer — the one you would want.",
+    "options": [
+      { "key": "a", "label": "It worked, and it kept working", "fieldWeights": { "technology": 3, "finance": 1 }, "riasec": { "R": 3, "C": 2 } },
+      { "key": "b", "label": "Nobody else would have made it that way", "fieldWeights": { "design": 3, "media": 2 }, "riasec": { "A": 5 } },
+      { "key": "c", "label": "They looked after people properly", "fieldWeights": { "healthcare": 4 }, "riasec": { "S": 5 } },
+      { "key": "d", "label": "They saw it before anyone else did", "fieldWeights": { "business": 3, "finance": 2 }, "riasec": { "E": 4, "I": 1 } }
+    ]
+  }
+]

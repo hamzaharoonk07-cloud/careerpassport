@@ -19,6 +19,10 @@ const matchSchema = new mongoose.Schema(
 const quizResultSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+
+    // Exactly which questions this attempt was served. The next attempt reads
+    // this to avoid asking the same ones again.
+    askedQuestions: { type: [mongoose.Schema.Types.ObjectId], ref: 'QuizQuestion', default: [] },
     selectedField: { type: mongoose.Schema.Types.ObjectId, ref: 'CareerField', default: null },
 
     fieldScores: { type: Map, of: Number, default: () => new Map() },

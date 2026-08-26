@@ -91,12 +91,18 @@ export async function seedDatabase({ log = console.log } = {}) {
   log('✅  related careers linked');
 
   // ── Quiz ─────────────────────────────────────────────────────────
-  const questionData = await readJson('questions.json');
+  // The base set plus alternative phrasings of each. One variant per slot is
+  // served per attempt, so a retake asks different questions.
+  const questionData = [
+    ...(await readJson('questions.json')),
+    ...(await readJson('questions.variants.json')),
+  ];
   let optionCount = 0;
 
   for (const q of questionData) {
     const question = await QuizQuestion.create({
       order: q.order,
+      variant: q.variant || 1,
       prompt: q.prompt,
       dimension: q.dimension,
       helper: q.helper || '',

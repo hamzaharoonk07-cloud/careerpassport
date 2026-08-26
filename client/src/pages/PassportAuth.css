@@ -136,7 +136,12 @@
   translate: -50% 0;
   transition: transform var(--dur-5) var(--ease-in-out);
 }
-.pa--open .pa__cover { transform: rotateY(-166deg); }
+/* Open, the cover is decoration lying against the spread — but it sits at
+   z-index 4, above the pages at 2, and stops 14 degrees short of flat. Any
+   part of its projected quad that lands over the form would swallow clicks
+   on whatever is beneath it. It has no interactive content once open, so it
+   stops taking pointer input entirely. */
+.pa--open .pa__cover { transform: rotateY(-166deg); pointer-events: none; }
 
 .pa__cover::before {
   content: '';
@@ -276,7 +281,9 @@
 
 .pa__page {
   position: relative;
-  z-index: 2;
+  /* Above the gutter shadow (z-index 3), so the form is never underneath a
+     decorative overlay. */
+  z-index: 4;
   padding: clamp(var(--sp-5), 3vw, var(--sp-7));
   display: flex;
   flex-direction: column;
@@ -493,7 +500,21 @@
   cursor: pointer;
   transition: border-color 160ms ease, background 160ms ease;
 }
-.pa__type input { position: absolute; opacity: 0; pointer-events: none; }
+/* The input covers the whole card and takes the click itself.
+   It used to be a zero-sized, pointer-events:none box relying on the label
+   to forward activation through the span the pointer actually landed on.
+   That works right up until anything sits between the pointer and the label,
+   and then the option silently refuses to select while looking perfectly
+   normal. Making the control its own hit target removes the indirection. */
+.pa__type input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
 .pa__type-l { font-size: 0.82rem; font-weight: 600; color: var(--text-dark); }
 .pa__type-n { font-size: 0.62rem; line-height: 1.3; color: #6a6559; }
 .pa__type:hover { border-color: rgba(138, 111, 24, 0.5); }

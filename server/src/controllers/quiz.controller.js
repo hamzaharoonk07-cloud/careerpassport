@@ -9,6 +9,7 @@ import {
   JOURNEY_STAGE_LIST,
 } from '../models/index.js';
 import { ApiError, asyncHandler } from '../utils/ApiError.js';
+import { buildCounsel } from '../services/counsel.service.js';
 import { decorateCareer } from '../utils/decorateCareer.js';
 import {
   buildUserProfile,
@@ -16,12 +17,30 @@ import {
   ENGINE_VERSION,
 } from '../services/recommendation.service.js';
 
-/** Applies the salary/demand availability flags to every career inside a result. */
-const decorateResult = (result) =>
-  result && {
-    ...result,
-    matches: (result.matches || []).map((m) => ({ ...m, career: decorateCareer(m.career) })),
+/**
+ * Applies the salary/demand availability flags to every career inside a
+ * result, and attaches the counsel.
+ *
+ * The counsel is computed on read rather than stored. It is a reading of the
+ * ranking, not new evidence — deriving it here means an improvement to the
+ * advice reaches results that already exist, instead of only new ones.
+ */
+const decorateResult = (result) => {
+  if (!result) return result;
+
+  const matches = (result.matches || []).map((m) => ({
+    ...m,
+    career: decorateCareer(m.career),
+  }));
+
+  const profile = {
+    riasecVector: result.riasecVector || {},
+    dominantAxes: result.dominantAxes || [],
+    fieldScores: result.fieldScores || {},
   };
+
+  return { ...result, matches, counsel: buildCounsel(profile, matches) };
+};
 
 /**
  * Serves the question bank to the client.

@@ -138,6 +138,46 @@ export default function Result() {
             <MatchRing score={top.score} animate />
           </div>
 
+          {/* The counsellor's reading of the whole ranking. This sits above the
+              per-match reasons because "how much should I trust this, and what
+              am I actually choosing between" comes before "why this one". */}
+          {result.counsel && (
+            <section className={`counsel counsel--${result.counsel.confidence}`}>
+              <p className="counsel__badge">
+                {result.counsel.confidence === 'clear' && 'Clear result'}
+                {result.counsel.confidence === 'leaning' && 'A lean, not a verdict'}
+                {result.counsel.confidence === 'unsettled' && 'Too close to call'}
+              </p>
+              <h3 className="counsel__headline">{result.counsel.headline}</h3>
+              <p className="counsel__verdict">{result.counsel.verdict}</p>
+
+              {result.counsel.difference && (
+                <div className="counsel__block">
+                  <span className="counsel__k">What you are choosing between</span>
+                  <p>{result.counsel.difference.text}</p>
+                </div>
+              )}
+
+              {result.counsel.firstStep && (
+                <div className="counsel__block">
+                  <span className="counsel__k">Where to start</span>
+                  <p><strong>{result.counsel.firstStep.title}.</strong> {result.counsel.firstStep.detail}</p>
+                </div>
+              )}
+
+              {result.counsel.wouldChangeThis && (
+                <div className="counsel__block">
+                  <span className="counsel__k">What would change this</span>
+                  <p>{result.counsel.wouldChangeThis}</p>
+                </div>
+              )}
+
+              {result.counsel.honestly && (
+                <p className="counsel__honest">{result.counsel.honestly}</p>
+              )}
+            </section>
+          )}
+
           <section className="rs__section">
             <h3 className="rs__section-h">Why this fits you</h3>
             <ul className="rs__reasons">

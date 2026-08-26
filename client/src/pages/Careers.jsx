@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
-import { AskBox } from '../components/brand/AskBox.jsx';
 import { careerService } from '../services/career.service.js';
 import { apiError } from '../services/api.js';
 import { formatSalary } from './Result.jsx';
@@ -100,10 +99,6 @@ export default function Careers() {
           </p>
         </div>
       </header>
-
-      {/* For the person who will not sit through ten questions, or who
-          already knows something about themselves and wants to start there. */}
-      <AskBox />
 
       <div className="bank__filters">
         <input

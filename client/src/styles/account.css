@@ -213,3 +213,45 @@
     width: max-content;
   }
 }
+
+/* ── File picker ─────────────────────────────────────────────────
+   The real <input type="file"> is still here and still does the
+   work — it is visually hidden inside its own label, so the click
+   target, the keyboard behaviour and the accessible name are all
+   the browser's, while the thing on screen belongs to this site. */
+.acct__pick {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 var(--sp-5);
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-600);
+  background: transparent;
+  color: var(--text-mid);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
+}
+.acct__pick:hover { color: var(--gold-400); border-color: var(--gold-500); }
+
+/* Hidden without being removed: display:none would take it out of the
+   accessibility tree and off the keyboard's path. */
+.acct__pick input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+/* The focus ring has to come back on the label, since the input it
+   would normally draw on is now invisible. */
+.acct__pick:focus-within {
+  outline: 2px solid var(--gold-400);
+  outline-offset: 2px;
+}
+.acct__pick:has(input:disabled) { opacity: 0.5; cursor: not-allowed; }
+
+/* Download and Remove were butted together with no gap. */
+.acct__resume-has .atable__acts { gap: var(--sp-4); }

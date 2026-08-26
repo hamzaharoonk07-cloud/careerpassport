@@ -400,14 +400,20 @@ const splitList = (v) =>
               ) : (
                 <p className="field__hint">Nothing uploaded yet.</p>
               )}
-              <input
-                className="field__input"
-                type="file"
-                accept=".pdf,.doc,.docx"
-                onChange={uploadResume}
-                disabled={resumeBusy}
-                aria-label="Upload your resume"
-              />
+              {/* The native control is a grey browser button that ignores
+                  every token on the site. It is still the input doing the
+                  work — hidden, with a real label styled as the button, so
+                  keyboard and screen readers get the standard control and
+                  everyone gets one that matches the page. */}
+              <label className="acct__pick">
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={uploadResume}
+                  disabled={resumeBusy}
+                />
+                <span>{resumeBusy ? 'Uploading…' : user.profile?.resumeName ? 'Replace file' : 'Choose a file'}</span>
+              </label>
               <span className="field__hint">
                 PDF or Word, up to 2 MB. Only you can download it.
               </span>

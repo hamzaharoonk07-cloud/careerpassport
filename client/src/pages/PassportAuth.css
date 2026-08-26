@@ -90,6 +90,14 @@
   transform: rotateX(3deg) scale(1);
   height: auto;
   min-height: var(--pa-h);
+
+  /* Width stops following the ISO ratio once the book is open.
+     1.408:1 is right for a closed cover, but it left each half of the
+     spread around 310px — narrower than the form it has to hold, so the
+     confirm field, the traveller cards and the placeholders all ran past
+     the right edge and were clipped. Open, the book is sized by what is
+     printed on it. The closed cover above still uses the real ratio. */
+  width: min(96vw, 880px);
 }
 
 /* ── Cover ──────────────────────────────────────────────── */

@@ -9,6 +9,8 @@ router.use(requireAuth);
 
 router.get('/', ctrl.listSaved);
 router.post('/', validate(saveCareerSchema), ctrl.saveCareer);
+// A note is written later than the bookmark, so it has its own route.
+router.patch('/:careerId/note', ctrl.updateNote);
 router.delete('/:careerId', ctrl.unsaveCareer);
 
 export default router;

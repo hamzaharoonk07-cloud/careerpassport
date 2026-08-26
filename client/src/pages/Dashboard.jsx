@@ -45,6 +45,7 @@ export default function Dashboard() {
   const [saved, setSaved] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [noteFor, setNoteFor] = useState(null);
 
   const load = () => {
     setLoading(true);
@@ -60,6 +61,15 @@ export default function Dashboard() {
   };
 
   useEffect(load, []);
+
+  const saveNote = async () => {
+    try {
+      await careerService.updateNote(noteFor.career._id, noteFor.draft);
+      setSaved((prev) => prev.map((s) =>
+        s.career._id === noteFor.career._id ? { ...s, note: noteFor.draft } : s));
+      setNoteFor(null);
+    } catch (e) { setError(apiError(e)); }
+  };
 
   const remove = async (careerId) => {
     await careerService.unsave(careerId);
@@ -248,10 +258,24 @@ export default function Dashboard() {
                     </div>
                     <Link to={`/careers/${s.career.slug}`} className="ccard__title">{s.career.title}</Link>
                     <p className="ccard__sum">{s.career.summary}</p>
+                    {/* The note, and the way to write one. A bookmark is
+                        usually made to come back to; the reason for it
+                        arrives later, so it has to be editable in place. */}
+                    {s.note ? (
+                      <p className="ccard__note">{s.note}</p>
+                    ) : null}
+
                     <div className="ccard__foot">
                       <span className={`tag ${s.career.hasSalaryData ? 'tag--gold' : ''}`}>
                         {formatSalary(s.career.salary) || 'Salary not available'}
                       </span>
+                      <button
+                        type="button"
+                        className="alink"
+                        onClick={() => setNoteFor({ career: s.career, draft: s.note || '' })}
+                      >
+                        {s.note ? 'Edit note' : 'Add note'}
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -277,6 +301,35 @@ export default function Dashboard() {
 
       {/* The same closing film the result ends on. A returning traveller
           should reach the same place, not a page that just stops. */}
+      {noteFor && (
+        <div className="amodal" role="dialog" aria-modal="true" aria-label="Note">
+          <button type="button" className="amodal__scrim" onClick={() => setNoteFor(null)} aria-label="Close" />
+          <form className="amodal__box" onSubmit={(e) => { e.preventDefault(); saveNote(); }}>
+            <header className="amodal__head">
+              <h3 className="amodal__title">Note on {noteFor.career.title}</h3>
+            </header>
+            <div className="amodal__body">
+              <label className="af">
+                <span className="af__label">Why you saved it</span>
+                <textarea
+                  className="af__input"
+                  rows={5}
+                  maxLength={400}
+                  value={noteFor.draft}
+                  onChange={(e) => setNoteFor({ ...noteFor, draft: e.target.value })}
+                  placeholder="What made this worth coming back to."
+                />
+                <span className="af__hint">{400 - noteFor.draft.length} characters left.</span>
+              </label>
+            </div>
+            <footer className="amodal__foot">
+              <Button type="button" variant="ghost" onClick={() => setNoteFor(null)}>Cancel</Button>
+              <Button type="submit">Save note</Button>
+            </footer>
+          </form>
+        </div>
+      )}
+
       {top && (
         <ScrollFilm
           src="/videos/briefcase.mp4"

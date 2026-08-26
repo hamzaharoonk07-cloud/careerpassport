@@ -155,3 +155,41 @@
 .acard__reply p { margin-top: 4px; color: var(--text-mid); font-size: var(--fs-sm); line-height: 1.6; }
 
 .hub__mine { margin-top: var(--sp-9); padding-top: var(--sp-6); border-top: 1px solid var(--ink-600); }
+
+/* ── Story timeline ──────────────────────────────────────────────
+   Education → challenges → outcome, down a rail. The rail stops at
+   the last step rather than running past it, so the story reads as
+   finished rather than cut off. */
+.tl { list-style: none; margin: var(--sp-3) 0 0; padding: 0; display: grid; gap: var(--sp-4); }
+.tl__step { position: relative; padding-left: var(--sp-5); }
+.tl__step::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 2px solid var(--gold-500);
+  background: var(--ink-900);
+}
+.tl__step::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 17px;
+  bottom: calc(var(--sp-4) * -1);
+  width: 1px;
+  background: linear-gradient(180deg, var(--gold-500), rgba(201, 162, 39, 0.15));
+}
+.tl__step--end::after { display: none; }
+.tl__step--end::before { background: var(--gold-500); }
+.tl__k {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-low);
+}
+.tl__step p { margin-top: 3px; color: var(--text-mid); font-size: var(--fs-sm); line-height: 1.6; }

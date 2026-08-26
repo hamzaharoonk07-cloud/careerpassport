@@ -15,4 +15,7 @@ export const careerService = {
     api.post('/saved-careers', { careerId, note }).then((r) => r.data),
 
   unsave: (careerId) => api.delete(`/saved-careers/${careerId}`).then((r) => r.data),
+  updateNote: (careerId, note) =>
+    api.patch(`/saved-careers/${careerId}/note`, { note }).then((r) => r.data),
+  similar: (idOrSlug) => api.get(`/careers/${idOrSlug}/similar`).then((r) => r.data.similar),
 };

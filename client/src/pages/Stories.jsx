@@ -111,7 +111,33 @@ export default function Stories() {
                   {s.name}
                   {s.career?.title || s.roleTitle ? ` · ${s.career?.title || s.roleTitle}` : ''}
                 </p>
-                <p className="hub__text hub__text--story">{s.story}</p>
+                {/* Told as a path when the three beats are there, and as a
+                    block when they are not — an older submission should not
+                    look broken because the fields arrived later. */}
+                {s.path || s.challenges || s.outcome ? (
+                  <ol className="tl">
+                    {s.path && (
+                      <li className="tl__step">
+                        <span className="tl__k">Where they started</span>
+                        <p>{s.path}</p>
+                      </li>
+                    )}
+                    {s.challenges && (
+                      <li className="tl__step">
+                        <span className="tl__k">What got in the way</span>
+                        <p>{s.challenges}</p>
+                      </li>
+                    )}
+                    {s.outcome && (
+                      <li className="tl__step tl__step--end">
+                        <span className="tl__k">Where it went</span>
+                        <p>{s.outcome}</p>
+                      </li>
+                    )}
+                  </ol>
+                ) : (
+                  <p className="hub__text hub__text--story">{s.story}</p>
+                )}
               </div>
             </article>
           ))}

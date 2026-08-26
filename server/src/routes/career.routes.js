@@ -6,6 +6,7 @@ const router = Router();
 // Public — the career bank is browsable without an account.
 router.get('/skills', ctrl.listSkills);
 router.get('/', ctrl.listCareers);
+router.get('/:id/similar', ctrl.similarCareers);
 router.get('/:id', ctrl.getCareer);
 
 export default router;

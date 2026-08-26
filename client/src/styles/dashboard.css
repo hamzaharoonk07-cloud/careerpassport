@@ -315,3 +315,16 @@
   margin-top: var(--sp-9);
   border-top: 1px solid rgba(201, 162, 39, 0.18);
 }
+
+/* A note on a bookmark, set apart from the summary it sits under. */
+.ccard__note {
+  margin-top: var(--sp-3);
+  padding-left: var(--sp-3);
+  border-left: 2px solid rgba(201, 162, 39, 0.4);
+  color: var(--text-mid);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  font-style: italic;
+}
+.ccard__foot { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
+.ccard__foot .alink { margin-left: auto; }

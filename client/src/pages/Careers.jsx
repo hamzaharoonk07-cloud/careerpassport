@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
 import { careerService } from '../services/career.service.js';
+import { useRecentlyViewed } from '../hooks/useRecentlyViewed.js';
 import { apiError } from '../services/api.js';
 import { formatSalary } from './Result.jsx';
 
@@ -30,6 +31,7 @@ export default function Careers() {
   const [data, setData] = useState({ careers: [], total: 0, page: 1, pages: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const { recent, clear } = useRecentlyViewed();
 
   const [q, setQ] = useState(params.get('q') || '');
   const debouncedQ = useDebounced(q);
@@ -99,6 +101,26 @@ export default function Careers() {
           </p>
         </div>
       </header>
+
+      {/* Kept on the device, not the server — browsing history is worth not
+          collecting when a bit of localStorage does the job, and it works
+          the same for someone without an account. */}
+      {recent.length > 0 && (
+        <section className="recent">
+          <div className="recent__head">
+            <p className="t-eyebrow">Recently viewed</p>
+            <button type="button" className="alink" onClick={clear}>Clear</button>
+          </div>
+          <div className="recent__row">
+            {recent.map((r) => (
+              <Link key={r.slug} to={`/careers/${r.slug}`} className="recent__chip">
+                <span>{r.title}</span>
+                {r.field && <small>{r.field}</small>}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       <div className="bank__filters">
         <input

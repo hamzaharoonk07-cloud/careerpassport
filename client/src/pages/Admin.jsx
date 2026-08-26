@@ -39,7 +39,7 @@ const TABS = [
 
 /* ── Overview ───────────────────────────────────────────────── */
 
-function Overview({ stats, topMatches, topSaved }) {
+function Overview({ stats, topMatches, topSaved, fb }) {
   if (!stats) return <Empty>Loading…</Empty>;
   return (
     <section className="apanel">
@@ -51,6 +51,67 @@ function Overview({ stats, topMatches, topSaved }) {
           </div>
         ))}
       </div>
+
+      {/* Feedback, grouped rather than listed. Twenty comments say nothing
+          at a glance; the split between bug reports and ideas, and whether
+          the ratings are drifting, is what is worth seeing on arrival. */}
+      {fb && fb.total > 0 && (
+        <div className="apanel__box" style={{ marginTop: 'var(--sp-5)' }}>
+          <h3 className="apanel__title">Feedback analytics</h3>
+          <p className="apanel__sub">
+            {fb.total} submission{fb.total === 1 ? '' : 's'} · {fb.replied} replied to ·
+            average rating {fb.averageRating ?? '—'} out of 5
+          </p>
+
+          <div className="agrid2" style={{ marginTop: 'var(--sp-4)' }}>
+            <div>
+              <span className="dash__rec-k">By type</span>
+              <ul className="adm__list">
+                {fb.byType.map((t) => (
+                  <li key={t.type}>
+                    <b style={{ textTransform: 'capitalize' }}>{t.type}</b>
+                    <span className="t-mono">{t.count} · avg {t.avgRating}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <span className="dash__rec-k">Rating spread</span>
+              <div className="fba">
+                {[5, 4, 3, 2, 1].map((n) => {
+                  const row = fb.byRating.find((r) => r.rating === n);
+                  const count = row?.count || 0;
+                  // Scaled against the busiest bar, not the total, or a
+                  // dominant rating flattens every other row to nothing.
+                  const peak = Math.max(...fb.byRating.map((r) => r.count), 1);
+                  return (
+                    <div className="fba__row" key={n}>
+                      <span className="fba__n">{n}★</span>
+                      <span className="fba__track">
+                        <span className="fba__fill" style={{ width: `${(count / peak) * 100}%` }} />
+                      </span>
+                      <span className="fba__c">{count}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 'var(--sp-4)' }}>
+            <span className="dash__rec-k">Status</span>
+            <ul className="adm__list">
+              {fb.byStatus.map((x) => (
+                <li key={x.status}>
+                  <b style={{ textTransform: 'capitalize' }}>{x.status}</b>
+                  <span className="t-mono">{x.count}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
 
       <div className="agrid2">
         <div className="apanel__box">
@@ -259,11 +320,12 @@ export default function Admin() {
   const [stats, setStats] = useState(null);
   const [topMatches, setTopMatches] = useState([]);
   const [topSaved, setTopSaved] = useState([]);
+  const [fb, setFb] = useState(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
     adminService.stats()
-      .then((d) => { setStats(d.stats); setTopMatches(d.topMatches || []); setTopSaved(d.topSaved || []); })
+      .then((d) => { setStats(d.stats); setTopMatches(d.topMatches || []); setTopSaved(d.topSaved || []); setFb(d.feedbackAnalytics || null); })
       .catch((e) => setError(apiError(e)));
   }, []);
 
@@ -308,7 +370,7 @@ export default function Admin() {
         ))}
       </nav>
 
-      {tab === 'overview' && <Overview stats={stats} topMatches={topMatches} topSaved={topSaved} />}
+      {tab === 'overview' && <Overview stats={stats} topMatches={topMatches} topSaved={topSaved} fb={fb} />}
       {tab === 'careers' && <CareersPanel onError={setError} />}
       {tab === 'quiz' && <QuizPanel onError={setError} />}
       {tab === 'media' && <MediaPanel onError={setError} />}

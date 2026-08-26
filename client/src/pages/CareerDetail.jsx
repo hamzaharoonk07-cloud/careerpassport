@@ -6,6 +6,7 @@ import { FieldIcon } from '../components/brand/FieldIcon.jsx';
 import { SecondOpinion } from '../components/brand/SecondOpinion.jsx';
 import { careerService } from '../services/career.service.js';
 import { quizService } from '../services/quiz.service.js';
+import { useRecentlyViewed } from '../hooks/useRecentlyViewed.js';
 import { apiError } from '../services/api.js';
 import { formatSalary } from './Result.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -38,6 +39,8 @@ export default function CareerDetail() {
   // rather than describing it in a vacuum. Silently absent when they have
   // not taken the quiz — there is nothing to compare against.
   const [result, setResult] = useState(null);
+  const [similar, setSimilar] = useState([]);
+  const { remember } = useRecentlyViewed();
   useEffect(() => {
     if (!isAuthed) return;
     let alive = true;
@@ -48,6 +51,22 @@ export default function CareerDetail() {
   }, [isAuthed]);
 
   const [career, setCareer] = useState(null);
+
+  // These two read `career`, so they have to sit below its declaration.
+  // Placed above it they threw a ReferenceError on every render — a const
+  // is not hoisted the way a var is, and the whole page went blank.
+  useEffect(() => {
+    if (career?.slug) remember(career);
+  }, [career?.slug, remember]);
+
+  useEffect(() => {
+    if (!career?.slug) return;
+    let alive = true;
+    careerService.similar(career.slug)
+      .then((list) => alive && setSimilar(list))
+      .catch(() => { /* suggestions are not worth an error */ });
+    return () => { alive = false; };
+  }, [career?.slug]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [tab, setTab] = useState('brief');
@@ -259,6 +278,30 @@ export default function CareerDetail() {
                 <Link key={r._id} to={`/careers/${r.slug}`} className="dst__related-card">
                   <span className="dst__related-t">{r.title}</span>
                   <span className="dst__related-go" aria-hidden="true">→</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Distinct from "Connecting flights" above, which is a hand-written
+            list on the career itself. This one is computed from the same six
+            traits the quiz measures, so it answers "what else would suit me"
+            rather than "what else is adjacent". */}
+        {similar.length > 0 && (
+          <section className="simil">
+            <p className="t-eyebrow">If this one fits</p>
+            <h2 className="simil__h">These ask for something similar</h2>
+            <p className="simil__lead">
+              Matched on the six traits the quiz measures — not on what other people
+              clicked, which says very little until a site has a lot of traffic.
+            </p>
+            <div className="simil__grid">
+              {similar.map((m) => (
+                <Link key={m.career._id} to={`/careers/${m.career.slug}`} className="simil__card">
+                  <span className="simil__field">{m.career.field?.name}</span>
+                  <span className="simil__title">{m.career.title}</span>
+                  <span className="simil__why">{m.reason}</span>
                 </Link>
               ))}
             </div>

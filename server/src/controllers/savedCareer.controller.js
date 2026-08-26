@@ -55,3 +55,23 @@ export const unsaveCareer = asyncHandler(async (req, res) => {
 
   res.json({ ok: true, message: 'Removed from your saved careers.' });
 });
+
+/**
+ * Update the note on a bookmark.
+ *
+ * Separate from saving, because a note is usually written later — you
+ * bookmark something to come back to, and the reason you bookmarked it
+ * arrives when you do.
+ */
+export const updateNote = asyncHandler(async (req, res) => {
+  const { note = '' } = req.body;
+
+  const saved = await SavedCareer.findOneAndUpdate(
+    { user: req.user._id, career: req.params.careerId },
+    { note: String(note).slice(0, 400) },
+    { new: true }
+  ).populate('career', 'title slug summary field salary');
+
+  if (!saved) throw ApiError.notFound('That is not in your saved careers.');
+  res.json({ ok: true, saved });
+});

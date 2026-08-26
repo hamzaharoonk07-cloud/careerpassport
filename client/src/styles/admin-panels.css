@@ -182,3 +182,13 @@
   .atable__acts { justify-content: flex-start; }
   .aopt { grid-template-columns: 1fr; }
 }
+
+/* ── Feedback rating spread ──────────────────────────────────────
+   Scaled against the busiest bar rather than the total, so a
+   dominant rating does not flatten every other row into nothing. */
+.fba { margin-top: var(--sp-2); display: grid; gap: 5px; }
+.fba__row { display: grid; grid-template-columns: 28px 1fr 28px; gap: var(--sp-2); align-items: center; }
+.fba__n, .fba__c { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-low); }
+.fba__c { text-align: right; }
+.fba__track { display: block; height: 6px; border-radius: 3px; background: rgba(245, 240, 230, 0.08); overflow: hidden; }
+.fba__fill { display: block; height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--gold-500), var(--gold-300)); }

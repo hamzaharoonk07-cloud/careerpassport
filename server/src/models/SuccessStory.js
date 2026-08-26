@@ -15,6 +15,19 @@ const successStorySchema = new mongoose.Schema(
     headline: { type: String, required: true, trim: true, maxlength: 140 },
     story: { type: String, required: true, trim: true, maxlength: 4000 },
 
+    /**
+     * The three beats of a career story, told in order.
+     *
+     * Optional, and separate from `story`. A story submitted as one block
+     * still reads fine; these let one be told as a path — where they
+     * started, what got in the way, and where it ended — which is the
+     * shape the brief asks for and the shape that is actually useful to
+     * somebody deciding.
+     */
+    path: { type: String, trim: true, maxlength: 1200, default: '' },
+    challenges: { type: String, trim: true, maxlength: 1200, default: '' },
+    outcome: { type: String, trim: true, maxlength: 1200, default: '' },
+
     career: { type: mongoose.Schema.Types.ObjectId, ref: 'Career', default: null, index: true },
     // Free text only where there is no matching destination in the bank.
     roleTitle: { type: String, trim: true, default: '' },

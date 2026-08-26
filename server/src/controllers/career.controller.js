@@ -83,3 +83,59 @@ export const listSkills = asyncHandler(async (req, res) => {
 function escapeRegex(str) {
   return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
+
+/**
+ * Careers similar to this one.
+ *
+ * Similarity is the distance between two RIASEC profiles — the same six
+ * numbers the engine already matches people against — so "if you liked
+ * this" means "this asks for the same things of you", not "other people
+ * also clicked it".
+ *
+ * That distinction matters at this size. Collaborative filtering needs a
+ * lot of traffic before it says anything true, and with a handful of users
+ * it mostly recommends whatever is popular. Profile distance works from
+ * the first visitor.
+ */
+export const similarCareers = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const source = await Career.findOne(
+    mongoose.isValidObjectId(id) ? { _id: id } : { slug: id }
+  ).lean();
+  if (!source) throw ApiError.notFound('We do not have a career by that name.');
+
+  const others = await Career.find({ active: true, _id: { $ne: source._id } })
+    .populate('field', 'name slug')
+    .lean();
+
+  const AXES = ['R', 'I', 'A', 'S', 'E', 'C'];
+
+  const scored = others.map((c) => {
+    // Euclidean distance across the six axes, then inverted so a bigger
+    // number means more alike.
+    const d = Math.sqrt(
+      AXES.reduce((sum, k) => sum + ((c.riasec?.[k] ?? 0) - (source.riasec?.[k] ?? 0)) ** 2, 0)
+    );
+    const sameField = String(c.field?._id) === String(source.field);
+    return {
+      career: c,
+      // A shared field is a real signal, but a weak one — two roles in the
+      // same field can want opposite things. It nudges rather than decides.
+      score: 100 - d * 4 + (sameField ? 6 : 0),
+      sameField,
+    };
+  });
+
+  const similar = scored
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 4)
+    .map((m) => ({
+      career: decorateCareer(m.career),
+      reason: m.sameField
+        ? `Also ${m.career.field?.name}, and it asks for a similar mix of traits.`
+        : 'A different field, but it asks for a similar mix of traits.',
+    }));
+
+  res.json({ ok: true, similar });
+});

@@ -75,8 +75,44 @@ export const stats = asyncHandler(async (req, res) => {
     { $limit: 14 },
   ]);
 
+  /* ── Feedback analytics ────────────────────────────────────────
+     Grouped rather than listed. Twenty comments tell an admin nothing at
+     a glance; the split between bug reports and ideas, and whether the
+     ratings are drifting, is the thing worth seeing on arrival. */
+  const [byType, byRating, byStatus, replied] = await Promise.all([
+    Feedback.aggregate([
+      { $group: { _id: '$type', count: { $sum: 1 }, avgRating: { $avg: '$rating' } } },
+      { $sort: { count: -1 } },
+    ]),
+    Feedback.aggregate([
+      { $group: { _id: '$rating', count: { $sum: 1 } } },
+      { $sort: { _id: 1 } },
+    ]),
+    Feedback.aggregate([
+      { $group: { _id: '$status', count: { $sum: 1 } } },
+    ]),
+    Feedback.countDocuments({ 'reply.message': { $ne: '' } }),
+  ]);
+
+  const totalFeedback = byRating.reduce((n, r) => n + r.count, 0);
+  const ratingSum = byRating.reduce((n, r) => n + r._id * r.count, 0);
+
   res.json({
     ok: true,
+    feedbackAnalytics: {
+      total: totalFeedback,
+      replied,
+      // Reported to one decimal, and null rather than NaN when there is
+      // nothing to average — an empty state should read as empty.
+      averageRating: totalFeedback ? Number((ratingSum / totalFeedback).toFixed(1)) : null,
+      byType: byType.map((t) => ({
+        type: t._id,
+        count: t.count,
+        avgRating: Number(t.avgRating.toFixed(1)),
+      })),
+      byRating: byRating.map((r) => ({ rating: r._id, count: r.count })),
+      byStatus: byStatus.map((x) => ({ status: x._id, count: x.count })),
+    },
     stats: {
       users, activeUsers, admins, results, saved, careers, fields, answers,
       media, feedbackNew, stories,

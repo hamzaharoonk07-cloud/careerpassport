@@ -298,3 +298,29 @@ a.nav__pass:hover { color: var(--gold-400); border-right-color: var(--gold-500);
   white-space: nowrap;
 }
 .bank__fork-link:hover { color: var(--gold-300); }
+
+/* ── Recently viewed ─────────────────────────────────────────────
+   Held in localStorage: it survives a reload, never leaves the
+   device, and works for a visitor without an account. */
+.recent { margin: var(--sp-5) 0; }
+.recent__head { display: flex; align-items: baseline; gap: var(--sp-3); }
+.recent__head .alink { margin-left: auto; }
+.recent__row { margin-top: var(--sp-3); display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+.recent__chip {
+  display: grid;
+  gap: 1px;
+  padding: 7px 13px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-600);
+  text-decoration: none;
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+.recent__chip:hover { border-color: var(--gold-500); }
+.recent__chip span { color: var(--text-hi); font-size: var(--fs-sm); }
+.recent__chip small {
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-low);
+}

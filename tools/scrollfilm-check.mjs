@@ -11,7 +11,7 @@
  */
 import assert from 'node:assert/strict';
 
-const DURATION = 15.08;          // journey.mp4, from ffprobe
+const DURATION = 10.0;           // journey.mp4, from ffprobe
 const VIEWPORT = 900;
 const SECTION = VIEWPORT * 9;    // height="900vh" on desktop
 const SCROLLABLE = SECTION - VIEWPORT;

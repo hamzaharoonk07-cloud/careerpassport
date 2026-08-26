@@ -29,6 +29,7 @@ const Careers = lazy(() => import('./pages/Careers.jsx'));
 const CareerDetail = lazy(() => import('./pages/CareerDetail.jsx'));
 const Account = lazy(() => import('./pages/Account.jsx'));
 const Admin = lazy(() => import('./pages/Admin.jsx'));
+const Media = lazy(() => import('./pages/Media.jsx'));
 const Stories = lazy(() => import('./pages/Stories.jsx'));
 const Feedback = lazy(() => import('./pages/Feedback.jsx'));
 
@@ -89,6 +90,7 @@ export default function App() {
               <Route path="/dashboard" element={guard(<Dashboard />)} />
               <Route path="/careers" element={<Careers />} />
               {/* Public: readable and submittable without an account. */}
+              <Route path="/media" element={<Media />} />
               <Route path="/stories" element={<Stories />} />
               <Route path="/feedback" element={<Feedback />} />
               <Route path="/careers/:id" element={<CareerDetail />} />

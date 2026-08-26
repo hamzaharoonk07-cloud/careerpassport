@@ -17,6 +17,8 @@ import '../../styles/app.css';
  */
 const LINKS = [
   { to: '/careers', label: 'Career Bank', auth: false },
+  { to: '/media', label: 'Multimedia', auth: false },
+  { to: '/stories', label: 'Stories', auth: false },
   { to: '/dashboard', label: 'Dashboard', auth: true },
   { to: '/quiz', label: 'Quiz', auth: true },
   { to: '/roadmap', label: 'Roadmap', auth: true },

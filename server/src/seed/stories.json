@@ -1,0 +1,44 @@
+[
+  {
+    "name": "A computer science student, Karachi",
+    "headline": "Picked my degree for the wrong reason and corrected it in second year",
+    "roleTitle": "Software Engineer",
+    "story": "I chose my subjects because everyone in my class was applying for the same thing, and I spent a year assuming the discomfort was normal. The quiz put Investigative and Realistic at the top and I recognised myself immediately — I have always liked taking things apart more than presenting about them. What actually changed things was the flight plan telling me to learn one language properly before touching frameworks. I ignored that for two months, went round in circles, and came back to it. It was right.",
+    "order": 1
+  },
+  {
+    "name": "A graduate, Lahore",
+    "headline": "Two matches were three points apart, and that was the useful part",
+    "roleTitle": "UX Designer",
+    "story": "I expected to be told what to do. Instead the result said design and front-end development were too close to separate, and that the real difference was how much open-ended creative work I wanted in a day. That was a question I could answer, where the percentages were not. I asked a designer if I could sit with her for a week and I knew within two days. I do not think a higher score would have told me anything a week of watching did not.",
+    "order": 2
+  },
+  {
+    "name": "An operations manager, Islamabad",
+    "headline": "Changed direction at thirty-one without starting from zero",
+    "roleTitle": "Data Analyst",
+    "story": "I assumed a change of field meant throwing away eight years. The match came back Data Analyst and the reasoning pointed straight at the part of my job I already liked — working out why two reports disagreed. Most of what the roadmap asked for was evenings and a portfolio, not another degree. The part nobody tells you is that the first six months are slower than you expect and that is not a sign you were wrong.",
+    "order": 3
+  },
+  {
+    "name": "A commerce student, Faisalabad",
+    "headline": "The result I did not want turned out to be the right one",
+    "roleTitle": "Accountant",
+    "story": "I wanted it to say something creative. It said Conventional was my strongest axis by a distance and put accounting first, and I closed the tab annoyed. What brought me back was the line explaining that I fit how the work feels more than the subject matter — that precision and things being exactly right is what I actually enjoy, wherever it shows up. I am doing my ACCA now and I am not pretending to be someone else at work.",
+    "order": 4
+  },
+  {
+    "name": "A biology graduate, Multan",
+    "headline": "Found the healthcare role I did not know existed",
+    "roleTitle": "Healthcare Data Specialist",
+    "story": "I knew I wanted healthcare and assumed that meant medicine or nothing. My Social and Investigative scores were close together and the departures board had roles I had genuinely never heard of. Reading through them was more useful than the match itself — I had been choosing from a list of four jobs I could name, and the list is much longer than that.",
+    "order": 5
+  },
+  {
+    "name": "A self-taught developer, Peshawar",
+    "headline": "Used it to decide what to stop learning",
+    "roleTitle": "DevOps Engineer",
+    "story": "I had been collecting tutorials for two years and shipping nothing. What helped was not the match, it was the six-stage route — seeing that the thing I was avoiding, Linux and the command line, was stage one of the path I actually wanted. Everything I had been doing instead was stage four. I stopped starting new courses and finished one thing.",
+    "order": 6
+  }
+]

@@ -169,6 +169,19 @@ export async function seedDatabase({ log = console.log } = {}) {
   log(`  careers           ${careers.length}  (${withSalary} with salary data, ${careers.length - withSalary} without)`);
   log(`  quiz questions    ${questionData.length}`);
   log(`  quiz options      ${optionCount}`);
+  // ── Success stories ──────────────────────────────────────────────
+  // Composite journeys, attributed by stage and city rather than to invented
+  // individuals. They describe real patterns the engine produces — a close
+  // two-way result, a match somebody did not want, a route that named the
+  // step being avoided — without putting a fabricated person's name to a
+  // testimonial. Seeded only when the collection is empty, so a real
+  // submission is never overwritten.
+  if ((await SuccessStory.countDocuments()) === 0) {
+    const stories = await readJson('stories.json');
+    await SuccessStory.insertMany(stories.map((s) => ({ ...s, published: true })));
+    log(`  stories           ${stories.length}`);
+  }
+
   // ── Owner account ────────────────────────────────────────────────
   // Seeded from the environment so the password never enters the repo.
   // Recreated on every boot, which is what makes it survive the in-memory

@@ -88,9 +88,8 @@ export default function Roadmap() {
 
         <div className="rm__foot">
           <p className="t-mid" style={{ marginBottom: 'var(--sp-4)' }}>
-            That is the flight plan. One thing left in the hold.
+            That is the flight plan. Start at stage one — the rest waits.
           </p>
-          <Button size="lg" to="/briefcase">Open your briefcase</Button>
         </div>
       </div>
     </main>

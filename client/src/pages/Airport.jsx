@@ -91,7 +91,11 @@ export default function Airport() {
 
   const arrive = () => {
     setFlying(false);
-    navigate(`/careers/${selected.career.slug}`, { state: { arrivedByFlight: true } });
+    // The report is the end of the journey, not the middle of it. Before the
+    // quiz existed upstream of the gates this landed on the career page,
+    // which was the only thing there was to show; now the flight has a result
+    // waiting behind it and that is what the traveller came for.
+    navigate('/result', { state: { arrivedByFlight: true, slug: selected.career.slug } });
   };
 
   if (loading) {

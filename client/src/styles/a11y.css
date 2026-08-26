@@ -214,3 +214,38 @@ textarea:focus-visible,
     radial-gradient(70% 60% at 50% 50%, rgba(250, 247, 240, 0.72), rgba(245, 240, 230, 0.90) 78%),
     linear-gradient(180deg, rgba(250, 247, 240, 0.80), rgba(245, 240, 230, 0.92));
 }
+
+/* ── Fixed-material surfaces ─────────────────────────────────
+   A passport page, a boarding pass, a printed card: these are objects,
+   not interface. Their paper is cream in both themes, because paper does
+   not have a dark mode.
+
+   The theme tokens do invert, and correctly so — light mode flips the ink
+   scale and darkens gold so both clear contrast against a pale page. On a
+   surface that is already pale and stays pale, that inversion is exactly
+   wrong: --ink-800 becomes cream, and cream text on cream paper is
+   invisible. It is what hid the traveller-class labels, so the selected
+   option could not be seen and the field read as not selecting at all.
+
+   These surfaces therefore pin the palette they actually need — dark ink,
+   and the gold that was tuned for a pale ground — in both themes. */
+.cin__paper,
+.pa__pages,
+.acct__doc,
+.bpass,
+.pp__book,
+.pp__photo,
+.rs__card {
+  --ink-900: #060911;
+  --ink-800: #0a1128;
+  --ink-700: #0f1b3c;
+  --ink-600: #46506b;
+
+  --text-hi: #10141f;
+  --text-mid: #454b5c;
+  --text-low: #6b7285;
+
+  --gold-500: #8a6f18;
+  --gold-400: #7a6115;
+  --gold-300: #6b5412;
+}

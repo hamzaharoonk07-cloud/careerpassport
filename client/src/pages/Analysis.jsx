@@ -30,12 +30,12 @@ export default function Analysis() {
     advance('analysed');
 
     if (reduced) {
-      navigate('/result', { replace: true });
+      navigate('/airport', { replace: true });
       return undefined;
     }
 
     const timers = STEPS.map((_, i) => setTimeout(() => setDone(i + 1), (i + 1) * STEP_MS));
-    const exit = setTimeout(() => navigate('/result', { replace: true }), STEPS.length * STEP_MS + 420);
+    const exit = setTimeout(() => navigate('/airport', { replace: true }), STEPS.length * STEP_MS + 420);
     return () => { timers.forEach(clearTimeout); clearTimeout(exit); };
   }, [navigate, advance, reduced]);
 

@@ -6,10 +6,24 @@ import { Button } from '../primitives/Button.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import '../../styles/app.css';
 
+/**
+ * The modules, as tabs.
+ *
+ * Everything in the architecture that a visitor can reach. Only three were
+ * listed before and two of those were behind a session, so a logged-out
+ * visitor saw a single link and no way through the site.
+ *
+ * `auth` hides a tab that would only bounce someone to the sign-in page.
+ */
 const LINKS = [
-  { to: '/dashboard', label: 'Dashboard', auth: true },
   { to: '/careers', label: 'Career Bank', auth: false },
+  { to: '/media', label: 'Multimedia', auth: false },
+  { to: '/stories', label: 'Stories', auth: false },
+  { to: '/dashboard', label: 'Dashboard', auth: true },
+  { to: '/quiz', label: 'Quiz', auth: true },
   { to: '/roadmap', label: 'Roadmap', auth: true },
+  { to: '/briefcase', label: 'Briefcase', auth: true },
+  { to: '/feedback', label: 'Feedback', auth: false },
 ];
 
 /**

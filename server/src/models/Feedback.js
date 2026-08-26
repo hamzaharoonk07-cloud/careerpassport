@@ -21,6 +21,16 @@ const feedbackSchema = new mongoose.Schema(
     name: { type: String, trim: true, default: '' },
     email: { type: String, trim: true, lowercase: true, default: '' },
 
+    // The brief asks for categorised feedback: a bug report and a feature
+    // idea need different handling, and lumping them together means neither
+    // gets it.
+    type: {
+      type: String,
+      enum: ['bug', 'suggestion', 'query', 'praise'],
+      default: 'suggestion',
+      index: true,
+    },
+
     rating: { type: Number, min: 1, max: 5, required: true },
     message: { type: String, required: true, trim: true, maxlength: 2000 },
 

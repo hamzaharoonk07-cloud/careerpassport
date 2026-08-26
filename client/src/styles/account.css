@@ -114,3 +114,24 @@
   .acct__grid { grid-template-columns: 1fr; }
   .acct__facts { grid-template-columns: 1fr; }
 }
+
+/* ── Work experience and resume ─────────────────────────────────── */
+.acct__exp { border: none; padding: 0; margin: 0 0 var(--sp-4); display: grid; gap: var(--sp-2); }
+.acct__exp-row { display: grid; grid-template-columns: 1fr 1fr 74px; gap: var(--sp-2); }
+
+.acct__resume { display: grid; gap: var(--sp-2); margin-bottom: var(--sp-4); }
+.acct__resume-has {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-600);
+  flex-wrap: wrap;
+}
+.acct__resume-name { color: var(--text-hi); font-size: var(--fs-sm); word-break: break-all; }
+.acct__resume-has .atable__acts { margin-left: auto; }
+
+@media (max-width: 620px) {
+  .acct__exp-row { grid-template-columns: 1fr; }
+}

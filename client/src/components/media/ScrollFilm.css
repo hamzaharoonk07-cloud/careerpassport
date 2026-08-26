@@ -230,7 +230,12 @@
    overflowing: smaller lead, less air between blocks, and the mark drops
    out — it is decoration, and the buttons are not. */
 @media (max-height: 700px) {
-  .sfilm__mark { display: none; }
+  /* The mark stays. Hiding it did buy space, but sizing the title against
+     viewport height had already freed far more than the copy needed — the
+     hero came to 265px inside a 540px frame — so dropping the logo was
+     paying a cost that no longer bought anything. It just runs smaller. */
+  .sfilm__mark { margin-bottom: var(--sp-3); }
+  .sfilm__mark svg { width: 38px; height: 38px; }
   .sfilm__body { font-size: 0.92rem; line-height: 1.55; }
   .sfilm__copy--hero .sfilm__body { max-width: 46ch; }
   .sfilm__actions { margin-top: var(--sp-4); }

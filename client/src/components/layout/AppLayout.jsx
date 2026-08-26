@@ -17,8 +17,6 @@ import '../../styles/app.css';
  */
 const LINKS = [
   { to: '/careers', label: 'Career Bank', auth: false },
-  { to: '/media', label: 'Multimedia', auth: false },
-  { to: '/stories', label: 'Stories', auth: false },
   { to: '/dashboard', label: 'Dashboard', auth: true },
   { to: '/quiz', label: 'Quiz', auth: true },
   { to: '/roadmap', label: 'Roadmap', auth: true },
@@ -51,9 +49,15 @@ export function AppLayout() {
 
       <header className="nav">
         <div className="wrap nav__inner">
-          <Link to="/" className="nav__brand">
-            <Logo size={30} />
-            <span className="nav__brand-name">PathSeeker</span>
+          {/* Mark, name, and what the product is. A wordmark alone leaves a
+              first-time visitor guessing; the descender line says it once
+              and stops. */}
+          <Link to="/" className="nav__brand" aria-label="PathSeeker — home">
+            <Logo size={34} />
+            <span className="nav__brand-text">
+              <span className="nav__brand-name">PathSeeker</span>
+              <span className="nav__brand-sub">Career Passport</span>
+            </span>
           </Link>
 
           <nav className="nav__links" aria-label="Main">

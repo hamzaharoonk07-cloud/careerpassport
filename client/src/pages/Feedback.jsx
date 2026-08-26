@@ -25,7 +25,6 @@ export default function Feedback() {
   const [rating, setRating] = useState(4);
   const [message, setMessage] = useState('');
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [sent, setSent] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -50,7 +49,7 @@ export default function Feedback() {
         rating,
         message,
         context: window.location.pathname,
-        ...(isAuthed ? {} : { name, email }),
+        ...(isAuthed ? {} : { name }),
       });
       setSent(res.message);
       setMessage('');
@@ -133,15 +132,6 @@ export default function Feedback() {
             <label className="af">
               <span className="af__label">Your name</span>
               <input className="af__input" value={name} onChange={(e) => setName(e.target.value)} />
-            </label>
-            <label className="af">
-              <span className="af__label">Email for a reply</span>
-              <input
-                className="af__input"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
             </label>
           </>
         )}

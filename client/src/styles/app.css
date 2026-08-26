@@ -15,12 +15,35 @@
   backdrop-filter: blur(12px);
 }
 .nav__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-5); width: 100%; }
-.nav__brand { display: flex; align-items: center; gap: var(--sp-3); color: var(--gold-500); }
+.nav__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  color: var(--gold-500);
+  text-decoration: none;
+}
+.nav__brand-text { display: grid; line-height: 1.1; }
 .nav__brand-name {
   font-family: var(--font-display);
-  font-size: 1.15rem;
-  letter-spacing: 0.02em;
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   color: var(--text-hi);
+}
+/* Set in the mono face the boarding passes and the departures board use,
+   so the lockup belongs to the same system as the rest of the site. */
+.nav__brand-sub {
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+}
+
+/* On a phone the descender is the first thing to go — the mark and the
+   name carry the identity on their own. */
+@media (max-width: 480px) {
+  .nav__brand-sub { display: none; }
 }
 .nav__links { display: flex; align-items: center; gap: var(--sp-2); }
 .nav__link {

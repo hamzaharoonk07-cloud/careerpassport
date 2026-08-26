@@ -296,11 +296,13 @@ export default function Result() {
         </div>
         {savingNote && <p className="t-low" style={{ textAlign: 'center', marginTop: 'var(--sp-3)' }}>{savingNote}</p>}
 
-        {/* The case itself, opening as it comes into view. It was a link to
-            another page, which asked for a click before the only part of the
-            report anyone takes away. */}
-        <CaseReveal career={career} score={top.score} />
       </div>
+
+      {/* Outside the wrap on purpose, so it can be full width without the
+          100vw trick — 100vw counts the scrollbar, which pushes the page
+          into horizontal overflow that only looks fine because body clips
+          it. Sitting outside the container needs no trick at all. */}
+      <CaseReveal career={career} score={top.score} />
     </main>
   );
 }

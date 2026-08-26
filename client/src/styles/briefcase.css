@@ -313,16 +313,28 @@
    no full viewport, no page background, and it opens on scroll
    instead of on a press. */
 .bc--inline {
-  min-height: 0;
+  /* Full width and full height. It renders outside the report's wrap, so
+     plain width:100% is enough — no 100vw, which counts the scrollbar and
+     puts the page into horizontal overflow.
+     A case that opens inside a bordered card competes with everything
+     around it; given the whole viewport it becomes the last beat of the
+     page rather than one more panel on it. */
+  position: relative;
+  width: 100%;
   margin-top: var(--sp-9);
+  min-height: 100dvh;
+  display: grid;
+  align-content: center;
   padding: var(--sp-7) var(--sp-4);
-  border-radius: var(--r-lg);
-  border: 1px solid rgba(201, 162, 39, 0.24);
+  border: none;
+  border-top: 1px solid rgba(201, 162, 39, 0.20);
+  border-radius: 0;
   background:
-    radial-gradient(62% 54% at 50% 96%, rgba(201, 162, 39, 0.10), transparent 72%),
-    var(--ink-800);
+    radial-gradient(58% 50% at 50% 90%, rgba(201, 162, 39, 0.13), transparent 72%),
+    linear-gradient(180deg, var(--ink-900), #0a0d16);
 }
-.bc--inline .bc__stage { min-height: 300px; }
+.bc--inline .bc__stage { min-height: clamp(320px, 46vh, 520px); }
+.bc--inline .bc__inner { width: min(100% - 2.5rem, var(--wrap)); margin-inline: auto; }
 .bc__title--inline {
   font-family: var(--font-display);
   font-size: clamp(1.3rem, 2.8vw, 1.9rem);

@@ -95,7 +95,7 @@ export default function Account() {
           <div className="acct__doc-head">
             <span className="acct__doc-mark"><Logo size={30} /></span>
             <div>
-              <p className="acct__doc-auth">Career Passport · Career Authority</p>
+              <p className="acct__doc-auth">PathSeeker · Career Authority</p>
               <p className="acct__doc-no t-mono">{user.passportNumber}</p>
             </div>
             <span className={`acct__badge ${user.role === 'admin' ? 'acct__badge--admin' : ''}`}>

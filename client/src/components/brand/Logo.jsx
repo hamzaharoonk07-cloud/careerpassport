@@ -9,7 +9,7 @@
  *
  * @param {boolean} wordmark  render "CAREER PASSPORT" beneath the mark
  */
-export function Logo({ size = 40, wordmark = false, title = 'Career Passport' }) {
+export function Logo({ size = 40, wordmark = false, title = 'PathSeeker' }) {
   const w = wordmark ? size * 2.6 : size;
   const h = wordmark ? size * 1.5 : size;
 

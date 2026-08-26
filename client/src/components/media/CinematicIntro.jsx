@@ -107,7 +107,7 @@ export function CinematicIntro({ onComplete, soundOn = false, onToggleSound }) {
           {mode === 'poster' && (
             <>
               <p className="t-eyebrow">Career Passport</p>
-              <h1 className="intro__poster-title">Career Passport</h1>
+              <h1 className="intro__poster-title">PathSeeker</h1>
               <p className="intro__poster-note">
                 {reduced
                   ? 'Motion is reduced on this device, so the opening sequence is skipped.'
@@ -147,7 +147,7 @@ function CssPassportOpening() {
         <div className="cin__cover">
           <div className="cin__foil">
             <Logo size={54} />
-            <span className="cin__foil-title">Career Passport</span>
+            <span className="cin__foil-title">PathSeeker</span>
           </div>
         </div>
         <div className="cin__paper">

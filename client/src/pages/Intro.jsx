@@ -66,7 +66,7 @@ export default function Intro() {
             at: 0,
             variant: 'hero',
             mark: <div className="sfilm__mark"><Logo size={54} /></div>,
-            eyebrow: 'Career Passport · Aptech TechWiz',
+            eyebrow: 'PathSeeker · Aptech TechWiz',
             title: <>Every journey<br />needs a document.</>,
             body: 'Most people choose a career the way they choose a queue — by watching what everyone else does. This is the other way. Take the passport, answer honestly, and leave with a destination you can defend.',
             actions: loading ? (

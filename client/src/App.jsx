@@ -2,6 +2,7 @@ import { Suspense, lazy, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
 import { AuthProvider } from './context/AuthContext.jsx';
+import { A11yProvider } from './context/A11yContext.jsx';
 import { JourneyProvider } from './context/JourneyContext.jsx';
 import { ProtectedRoute } from './components/layout/ProtectedRoute.jsx';
 import { AppLayout } from './components/layout/AppLayout.jsx';
@@ -50,7 +51,8 @@ const guard = (el) => <ProtectedRoute>{el}</ProtectedRoute>;
 
 export default function App() {
   return (
-    <AuthProvider>
+    <A11yProvider>
+      <AuthProvider>
       <JourneyProvider>
         <a className="skip-link" href="#main">Skip to content</a>
         <ScrollReset />
@@ -95,5 +97,6 @@ export default function App() {
         </Suspense>
       </JourneyProvider>
     </AuthProvider>
+    </A11yProvider>
   );
 }

@@ -274,7 +274,7 @@ export default function PassportAuth() {
     <main className={`pa ${open ? 'pa--open' : ''} ${phase === 'done' ? 'pa--exit' : ''}`}>
       <SceneVideo src="/videos/terminal.mp4" poster="/images/terminal.jpg" loop />
 
-      <Link to="/" className="pa__back t-eyebrow">← Career Passport</Link>
+      <Link to="/" className="pa__back t-eyebrow">← PathSeeker</Link>
 
       <button
         type="button"

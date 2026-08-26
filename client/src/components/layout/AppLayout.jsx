@@ -1,4 +1,6 @@
-import { NavLink, Link, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { A11yControls } from './A11yControls.jsx';
+import { Breadcrumbs } from './Breadcrumbs.jsx';
 import { Logo } from '../brand/Logo.jsx';
 import { Button } from '../primitives/Button.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
@@ -18,6 +20,7 @@ const LINKS = [
  * lives inside it.
  */
 export function AppLayout() {
+  const { pathname } = useLocation();
   const { user, isAuthed, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -30,11 +33,13 @@ export function AppLayout() {
 
   return (
     <>
+      <a href="#main" className="skip">Skip to content</a>
+
       <header className="nav">
         <div className="wrap nav__inner">
           <Link to="/" className="nav__brand">
             <Logo size={30} />
-            <span className="nav__brand-name">Career Passport</span>
+            <span className="nav__brand-name">PathSeeker</span>
           </Link>
 
           <nav className="nav__links" aria-label="Main">
@@ -69,9 +74,19 @@ export function AppLayout() {
                 <Button size="sm" to="/register">Get a passport</Button>
               </>
             )}
+            <A11yControls />
           </nav>
         </div>
       </header>
+
+      {/* Breadcrumbs sit outside <main> so the trail is not read as part of
+          the page content, and are hidden on the landing page where there is
+          nowhere to have come from. */}
+      {pathname !== '/' && (
+        <div className="wrap app-crumbs">
+          <Breadcrumbs />
+        </div>
+      )}
 
       <main id="main" className="app-main">
         <Outlet />

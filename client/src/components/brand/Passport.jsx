@@ -49,7 +49,7 @@ function PageIdentity({ user, typing }) {
       <div className="pp__rule" />
       {/* The title runs full width. Sitting it beside the photo clips as soon
           as the passport narrows to fit a short viewport. */}
-      <h2 className="pp__h">Career Passport</h2>
+      <h2 className="pp__h">PathSeeker<br />Career Passport</h2>
       <div className="pp__identity">
         <div className="pp__photo" aria-hidden="true">
           {(user?.name || '?').trim().charAt(0).toUpperCase()}
@@ -207,7 +207,7 @@ export function Passport({
             <div>
               <div className="pp__crest"><CompassMark /></div>
               <div className="pp__cover-title">Career<br />Passport</div>
-              <div className="pp__cover-sub">Career Passport</div>
+              <div className="pp__cover-sub">PathSeeker · Career Passport</div>
             </div>
             <div />
             <div className="pp__cover-foot">{user?.passportNumber || 'AWAITING ISSUE'}</div>

@@ -1,0 +1,201 @@
+/* ============================================================
+   Accessibility
+
+   Two controls, both persisted per visitor: a light/dark theme and
+   a font scale. Plus the focus and target rules the rest of the
+   design system assumes but never states.
+   ============================================================ */
+
+/* ── Font scale ──────────────────────────────────────────────
+   Every size in the type scale is in rem, so moving the root size
+   moves all of them together and nothing has to be respecified.
+   Spacing stays in its own units deliberately — scaling the gaps
+   as well makes large text feel sparse rather than bigger. */
+html { font-size: calc(100% * var(--fs-scale, 1)); }
+
+/* ── Light theme ─────────────────────────────────────────────
+   Token overrides only. The cinematic sections keep their dark
+   scrims because they sit over video, where dark text would be
+   unreadable regardless of the visitor's preference. */
+:root[data-theme='light'] {
+  --ink-900: #faf7f0;
+  --ink-800: #f5f0e6;
+  --ink-700: #ede6d6;
+  --ink-600: #ddd3be;
+
+  --text-hi: #10141f;
+  --text-mid: #454b5c;
+  --text-low: #6b7285;
+
+  /* Gold on cream needs to be darker than gold on navy to clear the
+     same contrast bar — the light tints fail against a pale ground. */
+  --gold-500: #8a6f18;
+  --gold-400: #7a6115;
+  --gold-300: #6b5412;
+
+  --sh-1: 0 1px 2px rgba(16, 20, 31, 0.08);
+  --sh-2: 0 6px 18px rgba(16, 20, 31, 0.10);
+  --sh-3: 0 18px 48px rgba(16, 20, 31, 0.14);
+
+  color-scheme: light;
+}
+
+:root[data-theme='light'] body { background: var(--ink-900); color: var(--text-hi); }
+
+/* ── Focus ───────────────────────────────────────────────────
+   A visible focus ring on everything interactive. Keyboard users
+   cannot use a page whose focus is invisible, and :focus-visible
+   keeps it off mouse clicks. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--gold-400);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ── Skip link ───────────────────────────────────────────────
+   First stop for a keyboard user, so the nav can be jumped. */
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--gold-500);
+  color: var(--ink-900);
+  font-weight: 600;
+  border-radius: 0 0 var(--r-md) 0;
+}
+.skip:focus { left: 0; }
+
+/* ── The controls ────────────────────────────────────────────*/
+.a11y { position: relative; display: flex; align-items: center; }
+
+.a11y__panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: var(--z-overlay);
+  width: 232px;
+  padding: var(--sp-4);
+  display: grid;
+  gap: var(--sp-3);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--ink-600);
+  background: var(--surface-nav-solid);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--sh-3);
+}
+.a11y__row { display: flex; align-items: center; gap: var(--sp-3); }
+.a11y__row > :last-child { margin-left: auto; }
+.a11y__k {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-low);
+}
+.a11y__set { display: flex; align-items: center; gap: 4px; }
+.a11y__val {
+  min-width: 44px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--gold-400);
+}
+.a11y__btn--wide { padding: 0 12px; }
+.a11y__note {
+  margin: 0;
+  color: var(--text-low);
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+.a11y__btn {
+  min-width: 34px;
+  min-height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 0 8px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-600);
+  background: transparent;
+  color: var(--text-mid);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
+}
+.a11y__btn:hover:not(:disabled) { color: var(--gold-400); border-color: var(--gold-500); }
+.a11y__btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Breadcrumbs ─────────────────────────────────────────────*/
+.crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 0.78rem; }
+.crumbs__link { color: var(--text-low); text-decoration: none; }
+.crumbs__link:hover { color: var(--gold-400); text-decoration: underline; text-underline-offset: 3px; }
+.crumbs__sep { color: var(--text-low); opacity: 0.6; }
+.crumbs__now { color: var(--text-mid); font-weight: 500; }
+
+/* ── Loading ─────────────────────────────────────────────────*/
+.spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--ink-600);
+  border-top-color: var(--gold-500);
+  animation: spin 720ms linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-row { display: flex; align-items: center; gap: var(--sp-3); color: var(--text-low); font-size: var(--fs-sm); }
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation-duration: 2.4s; }
+}
+
+/* ── Surfaces that sit on footage ────────────────────────────
+   These pages are not documents, they are copy over moving video.
+   Flipping their tokens puts near-black text on a dark plate and it
+   disappears — the light theme has to stop at their edge.
+
+   This is not a light-mode exemption for convenience. There is no
+   legible light treatment for text over a night-time runway; the
+   correct contrast there is light-on-dark whichever theme the
+   visitor prefers, so these keep the dark palette and the rest of
+   the app follows the setting. */
+:root[data-theme='light'] .lp,
+:root[data-theme='light'] .sfilm,
+:root[data-theme='light'] .apt,
+:root[data-theme='light'] .pa,
+:root[data-theme='light'] .bc,
+:root[data-theme='light'] .rm,
+:root[data-theme='light'] .dash,
+:root[data-theme='light'] .cin,
+:root[data-theme='light'] .flight {
+  --ink-900: #060911;
+  --ink-800: #0a1128;
+  --ink-700: #0f1b3c;
+  --ink-600: #16244a;
+  --text-hi: #f5f0e6;
+  --text-mid: #b6bccb;
+  --text-low: #7a8296;
+  --gold-500: #c9a227;
+  --gold-400: #d9b84a;
+  --gold-300: #e8c766;
+  color-scheme: dark;
+}
+
+/* The nav sits above everything and had its colour written in by hand,
+   so it stayed dark while the page went cream. Both themes now name the
+   same two tokens instead. */
+:root {
+  --surface-nav: rgba(6, 9, 17, 0.82);
+  --surface-nav-solid: rgba(6, 9, 17, 0.94);
+}
+:root[data-theme='light'] {
+  --surface-nav: rgba(250, 247, 240, 0.86);
+  --surface-nav-solid: rgba(250, 247, 240, 0.96);
+}

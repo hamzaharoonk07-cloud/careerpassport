@@ -10,7 +10,7 @@ export default function NotFound() {
           There is no page at this address. Every route worth taking starts at the passport.
         </p>
         <div style={{ marginTop: 'var(--sp-6)' }}>
-          <Button to="/">Return to Career Passport</Button>
+          <Button to="/">Return to PathSeeker</Button>
         </div>
       </div>
     </main>

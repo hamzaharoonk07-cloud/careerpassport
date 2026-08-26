@@ -250,7 +250,7 @@ export default function Admin() {
     <div className="page wrap">
       <header className="page__head">
         <div>
-          <p className="t-eyebrow">Administration · Career Passport</p>
+          <p className="t-eyebrow">Administration · PathSeeker</p>
           <h1 className="t-h2 page__title">Control tower</h1>
         </div>
         <Button variant="ghost" to="/dashboard">Back to dashboard</Button>

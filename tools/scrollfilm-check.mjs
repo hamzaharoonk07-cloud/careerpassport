@@ -13,17 +13,19 @@ import assert from 'node:assert/strict';
 
 const DURATION = 15.08;          // journey.mp4, from ffprobe
 const VIEWPORT = 900;
-const SECTION = VIEWPORT * 6.2;  // height="620vh" on desktop
+const SECTION = VIEWPORT * 9;    // height="900vh" on desktop
 const SCROLLABLE = SECTION - VIEWPORT;
 
 const CHAPTERS = [
   { at: 0,    title: 'Hero' },
-  { at: 0.16, title: 'Terminal' },
-  { at: 0.34, title: 'Boarding pass' },
-  { at: 0.52, title: 'Departure' },
-  { at: 0.68, title: 'En route' },
-  { at: 0.82, title: 'Arrival' },
-  { at: 0.93, title: 'Passport' },
+  { at: 0.11, title: 'Departures board' },
+  { at: 0.22, title: 'Boarding pass' },
+  { at: 0.34, title: 'Departure' },
+  { at: 0.47, title: 'En route' },
+  { at: 0.60, title: 'Turbulence' },
+  { at: 0.73, title: 'Arrival' },
+  { at: 0.85, title: 'Who it is for' },
+  { at: 0.94, title: 'Passport' },
 ];
 
 // Component: progress = clamp(-rect.top / scrollable)

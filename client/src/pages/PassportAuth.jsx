@@ -98,6 +98,31 @@ export default function PassportAuth() {
     return () => clearTimeout(t);
   }, [open, reduced]);
 
+  /**
+   * The book leaves 3D once the cover has finished swinging open.
+   *
+   * `transform-style: preserve-3d` is what lets the cover rotate away in
+   * space, and it is also what made the form unclickable: inside a preserve-3d
+   * context the browser hit-tests by depth in that space rather than by
+   * z-index, and every control on the pages sat behind the plane of their own
+   * container. Nothing on the spread could be clicked — not the traveller
+   * class, not the submit button — while everything looked perfectly normal
+   * and hover states still worked.
+   *
+   * The 3D is only needed while the cover is moving. Once it has landed the
+   * book flattens, hit-testing goes back to ordinary stacking, and the form
+   * behaves like a form. The cover is not painted at this point — it has
+   * rotated past its own backface — so flattening changes nothing visible.
+   */
+  const [settled, setSettled] = useState(false);
+  useEffect(() => {
+    if (!open) { setSettled(false); return undefined; }
+    if (reduced) { setSettled(true); return undefined; }
+    // --dur-5 is the cover transition; wait it out plus a frame.
+    const t = setTimeout(() => setSettled(true), 1260);
+    return () => clearTimeout(t);
+  }, [open, reduced]);
+
   const set = (key) => (e) => {
     setForm((f) => ({ ...f, [key]: e.target.value }));
     setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
@@ -212,31 +237,43 @@ export default function PassportAuth() {
 
       {mode === 'register' && (
         <>
-          {/* Class of traveller. Radios rather than a select: three options
-              that change what the rest of the journey emphasises deserve to
-              be visible at a glance, not hidden behind a dropdown. */}
-          <fieldset className="pa__types">
-            <legend className="pf__label">Traveller class</legend>
-            <div className="pa__types-row">
+          {/* Class of traveller. Three options that change what the rest of
+              the journey emphasises, so they are visible at a glance rather
+              than hidden behind a dropdown.
+              
+              Buttons rather than radios in labels. The label-wrapping-a-hidden-
+              input pattern depends on the browser forwarding activation from
+              whatever element the pointer actually landed on to a control that
+              is deliberately invisible, and on nothing being layered in
+              between. When that forwarding failed here the option simply did
+              not select, with no error and no feedback — the hardest kind of
+              bug to see, because the control looks completely normal.
+              
+              A button is its own hit target. A click on it is a click on it.
+              role="radio" in a radiogroup keeps the semantics the same for
+              assistive technology. */}
+          <div className="pa__types">
+            <span className="pf__label" id="traveller-class-label">Traveller class</span>
+            <div className="pa__types-row" role="radiogroup" aria-labelledby="traveller-class-label">
               {ACCOUNT_TYPES.map((t) => (
-                <label
+                <button
                   key={t.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={form.accountType === t.id}
+                  disabled={busy}
                   className={`pa__type ${form.accountType === t.id ? 'pa__type--on' : ''}`}
+                  onClick={() => {
+                    setForm((f) => ({ ...f, accountType: t.id }));
+                    setErrors((prev) => (prev.accountType ? { ...prev, accountType: undefined } : prev));
+                  }}
                 >
-                  <input
-                    type="radio"
-                    name="accountType"
-                    value={t.id}
-                    checked={form.accountType === t.id}
-                    onChange={set('accountType')}
-                    disabled={busy}
-                  />
                   <span className="pa__type-l">{t.label}</span>
                   <span className="pa__type-n">{t.note}</span>
-                </label>
+                </button>
               ))}
             </div>
-          </fieldset>
+          </div>
 
           <div className="pa__row">
             <PField
@@ -271,7 +308,7 @@ export default function PassportAuth() {
   );
 
   return (
-    <main className={`pa ${open ? 'pa--open' : ''} ${phase === 'done' ? 'pa--exit' : ''}`}>
+    <main className={`pa ${open ? 'pa--open' : ''} ${settled ? 'pa--settled' : ''} ${phase === 'done' ? 'pa--exit' : ''}`}>
       <SceneVideo src="/videos/terminal.mp4" poster="/images/terminal.jpg" loop />
 
       <Link to="/" className="pa__back t-eyebrow">← PathSeeker</Link>

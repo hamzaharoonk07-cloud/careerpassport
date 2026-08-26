@@ -143,6 +143,11 @@
    stops taking pointer input entirely. */
 .pa--open .pa__cover { transform: rotateY(-166deg); pointer-events: none; }
 
+/* Out of 3D once the cover has landed — see the note in PassportAuth.jsx.
+   preserve-3d makes the browser hit-test descendants by depth rather than by
+   stacking order, which left every control on the spread unreachable. */
+.pa--settled .pa__book { transform-style: flat; }
+
 .pa__cover::before {
   content: '';
   position: absolute;
@@ -500,26 +505,22 @@
   cursor: pointer;
   transition: border-color 160ms ease, background 160ms ease;
 }
-/* The input covers the whole card and takes the click itself.
-   It used to be a zero-sized, pointer-events:none box relying on the label
-   to forward activation through the span the pointer actually landed on.
-   That works right up until anything sits between the pointer and the label,
-   and then the option silently refuses to select while looking perfectly
-   normal. Making the control its own hit target removes the indirection. */
-.pa__type input {
-  position: absolute;
-  inset: 0;
+/* The card is a button, so it needs the button reset: browsers give it a
+   centred, system-font, bordered box otherwise. */
+.pa__type {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  font: inherit;
+  text-align: left;
   width: 100%;
-  height: 100%;
-  margin: 0;
-  opacity: 0;
-  cursor: pointer;
 }
+.pa__type:disabled { cursor: default; opacity: 0.6; }
+.pa__type:focus-visible { outline: 2px solid #8a6f18; outline-offset: 2px; }
 .pa__type-l { font-size: 0.82rem; font-weight: 600; color: var(--text-dark); }
 .pa__type-n { font-size: 0.62rem; line-height: 1.3; color: #6a6559; }
 .pa__type:hover { border-color: rgba(138, 111, 24, 0.5); }
 .pa__type--on { border-color: #8a6f18; background: rgba(201, 162, 39, 0.12); }
-.pa__type input:focus-visible + .pa__type-l { outline: 2px solid #8a6f18; outline-offset: 2px; }
 
 @media (max-width: 620px) {
   .pa__types-row { grid-template-columns: 1fr; }

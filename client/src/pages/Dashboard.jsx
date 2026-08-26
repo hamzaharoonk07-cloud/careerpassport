@@ -84,6 +84,8 @@ export default function Dashboard() {
         <div className="dash__stub">
           <span className="dash__stub-k">Passport</span>
           <span className="dash__stub-v">{user?.passportNumber || '—'}</span>
+          <span className="dash__stub-k" style={{ marginTop: 'var(--sp-2)' }}>Class</span>
+          <span className="dash__badge">{user?.accountType || 'student'}</span>
           <span className="dash__stub-k" style={{ marginTop: 'var(--sp-2)' }}>Status</span>
           <span className="dash__badge">{top ? 'Arrived' : 'Not checked in'}</span>
         </div>

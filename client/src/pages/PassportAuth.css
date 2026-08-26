@@ -455,3 +455,30 @@
 
 /* Controls sit above the 3D canvas, which fills the stage. */
 .pa__opencta { position: relative; z-index: 3; }
+
+/* ── Traveller class ─────────────────────────────────────
+   Three radios styled as cards. A select would hide the choice
+   behind a tap, and this is the field that decides what the rest
+   of the journey emphasises. */
+.pa__types { border: none; padding: 0; margin: 0; }
+.pa__types-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 5px; }
+.pa__type {
+  position: relative;
+  display: grid;
+  gap: 1px;
+  padding: 7px 8px;
+  border: 1px solid rgba(16, 20, 31, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+.pa__type input { position: absolute; opacity: 0; pointer-events: none; }
+.pa__type-l { font-size: 0.82rem; font-weight: 600; color: var(--ink-800); }
+.pa__type-n { font-size: 0.62rem; line-height: 1.3; color: #6a6559; }
+.pa__type:hover { border-color: rgba(138, 111, 24, 0.5); }
+.pa__type--on { border-color: #8a6f18; background: rgba(201, 162, 39, 0.12); }
+.pa__type input:focus-visible + .pa__type-l { outline: 2px solid #8a6f18; outline-offset: 2px; }
+
+@media (max-width: 620px) {
+  .pa__types-row { grid-template-columns: 1fr; }
+}

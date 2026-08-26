@@ -103,7 +103,7 @@ export const listUsers = asyncHandler(async (req, res) => {
 
   const [users, total] = await Promise.all([
     User.find(filter)
-      .select('name email passportNumber role profile journeyStage createdAt lastLoginAt latestResult')
+      .select('name email passportNumber role accountType profile journeyStage createdAt lastLoginAt latestResult')
       .populate({ path: 'latestResult', select: 'topMatch takenAt', populate: { path: 'topMatch', select: 'title slug' } })
       .sort({ createdAt: -1 })
       .skip((pageNum - 1) * perPage)
@@ -121,7 +121,7 @@ export const getUser = asyncHandler(async (req, res) => {
   if (!mongoose.isValidObjectId(id)) throw ApiError.notFound('No such user.');
 
   const user = await User.findById(id)
-    .select('name email passportNumber role profile journeyStage createdAt lastLoginAt selectedField')
+    .select('name email passportNumber role accountType profile journeyStage createdAt lastLoginAt selectedField')
     .populate('selectedField', 'slug name')
     .lean();
 

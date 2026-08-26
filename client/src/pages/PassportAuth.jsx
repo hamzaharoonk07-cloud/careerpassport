@@ -34,7 +34,21 @@ const PField = forwardRef(function PField({ id, label, error, half = false, hint
 
 const EMPTY_REGISTER = {
   name: '', email: '', password: '', confirmPassword: '', education: '', age: '',
+  accountType: 'student',
 };
+
+/**
+ * The three kinds of traveller.
+ *
+ * This is not the authorisation role — that stays 'user' or 'admin' on the
+ * server. It changes what the passport asks for and what the dashboard
+ * leads with.
+ */
+const ACCOUNT_TYPES = [
+  { id: 'student', label: 'Student', note: 'Still studying' },
+  { id: 'graduate', label: 'Graduate', note: 'Finished, deciding' },
+  { id: 'professional', label: 'Professional', note: 'Working, considering a change' },
+];
 
 /**
  * The passport IS the auth interface.
@@ -124,6 +138,7 @@ export default function PassportAuth() {
           confirmPassword: form.confirmPassword,
           education: form.education || undefined,
           age: form.age ? Number(form.age) : undefined,
+          accountType: form.accountType,
         });
       } else {
         await login({ email: form.email, password: form.password });
@@ -197,6 +212,32 @@ export default function PassportAuth() {
 
       {mode === 'register' && (
         <>
+          {/* Class of traveller. Radios rather than a select: three options
+              that change what the rest of the journey emphasises deserve to
+              be visible at a glance, not hidden behind a dropdown. */}
+          <fieldset className="pa__types">
+            <legend className="pf__label">Traveller class</legend>
+            <div className="pa__types-row">
+              {ACCOUNT_TYPES.map((t) => (
+                <label
+                  key={t.id}
+                  className={`pa__type ${form.accountType === t.id ? 'pa__type--on' : ''}`}
+                >
+                  <input
+                    type="radio"
+                    name="accountType"
+                    value={t.id}
+                    checked={form.accountType === t.id}
+                    onChange={set('accountType')}
+                    disabled={busy}
+                  />
+                  <span className="pa__type-l">{t.label}</span>
+                  <span className="pa__type-n">{t.note}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
           <div className="pa__row">
             <PField
               id="education" label="Education" half

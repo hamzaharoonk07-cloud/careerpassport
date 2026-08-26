@@ -133,13 +133,13 @@ function UsersPanel({ onError, currentUserId }) {
       />
 
       <div className="adm__table">
-        <div className="adm__head"><span>Passport</span><span>Name</span><span>Email</span><span>Stage</span><span>Role</span><span>Joined</span></div>
+        <div className="adm__head"><span>Passport</span><span>Name</span><span>Email</span><span>Class</span><span>Role</span><span>Joined</span></div>
         {users.map((u) => (
           <button type="button" className="adm__row" key={u._id} onClick={() => open(u._id)}>
             <span className="adm__pass">{u.passportNumber}</span>
             <span className="adm__name">{u.name}</span>
             <span className="adm__email">{u.email}</span>
-            <span className="adm__stage">{u.journeyStage?.replace('-', ' ')}</span>
+            <span className="adm__stage">{u.accountType || '—'}</span>
             <span className={`adm__role ${u.role === 'admin' ? 'adm__role--admin' : ''}`}>{u.role}</span>
             <span className="adm__stage">{fmtDate(u.createdAt)}</span>
           </button>

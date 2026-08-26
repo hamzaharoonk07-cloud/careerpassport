@@ -36,6 +36,14 @@ export const registerSchema = z
       .max(100, 'Please enter a valid age')
       .optional()
       .nullable(),
+
+    // Which of the three kinds of traveller this is. Defaulted rather than
+    // required so an older client, or a request that omits it, still
+    // registers — the account is simply treated as a student until they say
+    // otherwise on their profile.
+    accountType: z.enum(['student', 'graduate', 'professional']).default('student'),
+
+    interests: z.array(z.string().trim().max(60)).max(20).optional(),
   })
   .refine((d) => d.password === d.confirmPassword, {
     message: 'Passwords do not match',
@@ -56,6 +64,22 @@ export const updateProfileSchema = z.object({
       age: z.coerce.number().int().min(13).max(100).optional().nullable(),
       location: z.string().trim().max(120).optional(),
       skills: z.array(z.string().trim().min(1).max(60)).max(40).optional(),
+      interests: z.array(z.string().trim().min(1).max(60)).max(20).optional(),
+      workExperience: z
+        .array(
+          z.object({
+            title: z.string().trim().max(120).optional().or(z.literal('')),
+            organisation: z.string().trim().max(120).optional().or(z.literal('')),
+            years: z.coerce.number().min(0).max(60).optional().nullable(),
+            summary: z.string().trim().max(400).optional().or(z.literal('')),
+          })
+        )
+        .max(10)
+        .optional(),
     })
     .optional(),
+
+  // Travellers can correct this later — someone who registered as a student
+  // and has since graduated should not need a new account.
+  accountType: z.enum(['student', 'graduate', 'professional']).optional(),
 });

@@ -16,9 +16,39 @@ const profileSchema = new mongoose.Schema(
     currentRole: { type: String, trim: true, maxlength: 120, default: '' },
     location: { type: String, trim: true, maxlength: 120, default: '' },
     skills: { type: [String], default: [] },
+    interests: { type: [String], default: [] },
+
+    // Only meaningful for graduates and professionals; students leave it empty
+    // rather than being asked to invent something.
+    workExperience: {
+      type: [
+        {
+          _id: false,
+          title: { type: String, trim: true, maxlength: 120, default: '' },
+          organisation: { type: String, trim: true, maxlength: 120, default: '' },
+          years: { type: Number, min: 0, max: 60, default: null },
+          summary: { type: String, trim: true, maxlength: 400, default: '' },
+        },
+      ],
+      default: [],
+    },
+
+    // A path to an uploaded file, not the file itself.
+    resumeUrl: { type: String, trim: true, default: '' },
+    resumeName: { type: String, trim: true, default: '' },
   },
   { _id: false }
 );
+
+/**
+ * What kind of traveller this is.
+ *
+ * Kept separate from `role`, which is the authorisation gate and only ever
+ * holds 'user' or 'admin'. Merging the two would mean every permission check
+ * had to know about students, and every new account type would be a chance to
+ * accidentally widen access.
+ */
+export const ACCOUNT_TYPES = ['student', 'graduate', 'professional'];
 
 const userSchema = new mongoose.Schema(
   {
@@ -35,6 +65,7 @@ const userSchema = new mongoose.Schema(
     passwordHash: { type: String, required: true, select: false },
     passportNumber: { type: String, unique: true, index: true },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    accountType: { type: String, enum: ACCOUNT_TYPES, default: 'student', index: true },
     profile: { type: profileSchema, default: () => ({}) },
 
     // Where the user got to in the cinematic journey, so a refresh resumes.

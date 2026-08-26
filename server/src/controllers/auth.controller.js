@@ -15,6 +15,7 @@ const publicUser = (user) => ({
   email: user.email,
   passportNumber: user.passportNumber,
   role: user.role,
+  accountType: user.accountType,
   profile: user.profile,
   journeyStage: user.journeyStage,
   selectedField: user.selectedField,
@@ -23,7 +24,7 @@ const publicUser = (user) => ({
 });
 
 export const register = asyncHandler(async (req, res) => {
-  const { name, email, password, education, age } = req.body;
+  const { name, email, password, education, age, accountType, interests } = req.body;
 
   const existing = await User.findOne({ email });
   if (existing) throw ApiError.conflict('An account with that email already exists.', { email: 'Already registered' });
@@ -36,7 +37,12 @@ export const register = asyncHandler(async (req, res) => {
     // Configured owner addresses register straight into the admin role.
     // Everyone else gets the model default.
     ...(isAdminEmail(email) ? { role: 'admin' } : {}),
-    profile: { education: education || '', age: age ?? null },
+    accountType: accountType || 'student',
+    profile: {
+      education: education || '',
+      age: age ?? null,
+      interests: interests || [],
+    },
   });
 
   setAuthCookies(res, user);

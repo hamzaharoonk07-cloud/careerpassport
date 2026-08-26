@@ -3,8 +3,9 @@ import { ApiError, asyncHandler } from '../utils/ApiError.js';
 import { publicUser } from './auth.controller.js';
 
 export const updateProfile = asyncHandler(async (req, res) => {
-  const { name, profile } = req.body;
+  const { name, profile, accountType } = req.body;
   if (name) req.user.name = name;
+  if (accountType) req.user.accountType = accountType;
   if (profile) Object.assign(req.user.profile, profile);
   await req.user.save();
   res.json({ ok: true, user: publicUser(req.user) });

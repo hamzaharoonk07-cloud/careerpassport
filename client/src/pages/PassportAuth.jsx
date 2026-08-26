@@ -308,7 +308,7 @@ export default function PassportAuth() {
   );
 
   return (
-    <main className={`pa ${open ? 'pa--open' : ''} ${settled ? 'pa--settled' : ''} ${phase === 'done' ? 'pa--exit' : ''}`}>
+    <main className={`pa ${open ? 'pa--open' : ''} ${settled ? 'pa--settled' : ''} ${phase === 'stamping' || phase === 'done' ? 'pa--stamping' : ''} ${phase === 'done' ? 'pa--exit' : ''}`}>
       <SceneVideo src="/videos/terminal.mp4" poster="/images/terminal.jpg" loop />
 
       <Link to="/" className="pa__back t-eyebrow">← PathSeeker</Link>
@@ -347,7 +347,7 @@ export default function PassportAuth() {
                   <div className="pa__stamp" role="status" aria-label="Admitted">
                     <span className="pa__shock" aria-hidden="true" />
                     <EntryStamp
-                      size={150}
+                      size={168}
                       status="ADMITTED"
                       port="KARACHI · JINNAH INTL"
                       seed={(user?.passportNumber || '').length}

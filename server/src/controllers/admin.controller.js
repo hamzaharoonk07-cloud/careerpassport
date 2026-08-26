@@ -171,3 +171,62 @@ export const setRole = asyncHandler(async (req, res) => {
   if (!user) throw ApiError.notFound('No such user.');
   res.json({ ok: true, user });
 });
+
+/**
+ * Delete a user account and everything personal attached to it.
+ *
+ * Three guards, all of which matter more than the delete itself:
+ *
+ *   1. You cannot delete yourself. An admin removing their own account
+ *      mid-session leaves a live token for a user that no longer exists.
+ *
+ *   2. You cannot delete the last administrator. Nobody would be able to
+ *      reach the panel again, and there is no recovery path from that.
+ *
+ *   3. Their data goes with them. Results, answers and bookmarks are
+ *      personal and are removed. Feedback is kept but detached — an
+ *      administrator may be part-way through acting on a bug report, and
+ *      the report is about the product, not the person. Their name and
+ *      email are cleared from it either way.
+ */
+export const deleteUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (String(id) === String(req.user._id)) {
+    throw ApiError.badRequest('You cannot delete your own account from here.');
+  }
+
+  const user = await User.findById(id);
+  if (!user) throw ApiError.notFound('No such user.');
+
+  if (user.role === 'admin') {
+    const admins = await User.countDocuments({ role: 'admin' });
+    if (admins <= 1) {
+      throw ApiError.badRequest(
+        'That is the only administrator left. Promote somebody else first, or nobody can reach this panel again.'
+      );
+    }
+  }
+
+  const [results, answers, saved] = await Promise.all([
+    QuizResult.deleteMany({ user: user._id }),
+    QuizAnswer.deleteMany({ user: user._id }),
+    SavedCareer.deleteMany({ user: user._id }),
+  ]);
+
+  // Kept, but no longer identifiable.
+  await Feedback.updateMany(
+    { user: user._id },
+    { $set: { user: null, name: '', email: '' } }
+  );
+
+  await user.deleteOne();
+
+  res.json({
+    ok: true,
+    message:
+      `Deleted ${user.email}, with ${results.deletedCount} result${results.deletedCount === 1 ? '' : 's'}, ` +
+      `${answers.deletedCount} answer${answers.deletedCount === 1 ? '' : 's'} and ` +
+      `${saved.deletedCount} bookmark${saved.deletedCount === 1 ? '' : 's'}. Any feedback they left was kept but anonymised.`,
+  });
+});

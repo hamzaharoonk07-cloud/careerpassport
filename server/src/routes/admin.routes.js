@@ -14,6 +14,7 @@ router.get('/stats', ctrl.stats);
 router.get('/users', ctrl.listUsers);
 router.get('/users/:id', ctrl.getUser);
 router.patch('/users/:id/role', ctrl.setRole);
+router.delete('/users/:id', ctrl.deleteUser);
 
 /* ── Career profiles ──────────────────────────────────────────── */
 router.get('/careers', content.listCareers);

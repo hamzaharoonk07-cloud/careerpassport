@@ -4,7 +4,7 @@ import { Button } from '../components/primitives/Button.jsx';
 import { CareersPanel } from '../components/admin/CareersPanel.jsx';
 import { QuizPanel } from '../components/admin/QuizPanel.jsx';
 import { MediaPanel, FeedbackPanel, StoriesPanel } from '../components/admin/ContentPanels.jsx';
-import { Empty } from '../components/admin/ui.jsx';
+import { Confirm, Empty } from '../components/admin/ui.jsx';
 import { adminService } from '../services/admin.service.js';
 import { apiError } from '../services/api.js';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -90,6 +90,9 @@ function UsersPanel({ onError, currentUserId }) {
   const [page, setPage] = useState(1);
   const [q, setQ] = useState('');
   const [detail, setDetail] = useState(null);
+  const [removing, setRemoving] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState('');
 
   const load = useCallback(async (opts = {}) => {
     try {
@@ -114,6 +117,18 @@ function UsersPanel({ onError, currentUserId }) {
     } catch (e) { onError(apiError(e)); }
   };
 
+  const remove = async () => {
+    setBusy(true);
+    try {
+      const res = await adminService.deleteUser(removing._id);
+      // Repeated verbatim: it names exactly what went with the account.
+      setNotice(res.message);
+      setRemoving(null);
+      setDetail(null);
+      await load();
+    } catch (e) { onError(apiError(e)); } finally { setBusy(false); }
+  };
+
   return (
     <section className="apanel">
       <header className="apanel__head">
@@ -122,6 +137,8 @@ function UsersPanel({ onError, currentUserId }) {
           <p className="apanel__sub">{total} registered.</p>
         </div>
       </header>
+
+      {notice && <p className="anotice" role="status">{notice}</p>}
 
       <input
         className="af__input apanel__search"
@@ -172,6 +189,14 @@ function UsersPanel({ onError, currentUserId }) {
               >
                 {detail.user.role === 'admin' ? 'Demote to user' : 'Promote to admin'}
               </Button>
+              <Button
+                size="sm"
+                variant="danger"
+                onClick={() => setRemoving(detail.user)}
+                disabled={String(detail.user._id) === String(currentUserId)}
+              >
+                Delete account
+              </Button>
               <Button size="sm" variant="ghost" onClick={() => setDetail(null)}>Close</Button>
             </div>
           </div>
@@ -204,6 +229,16 @@ function UsersPanel({ onError, currentUserId }) {
             ) : <Empty>Nothing saved.</Empty>}
           </div>
         </section>
+      )}
+
+      {removing && (
+        <Confirm
+          title={`Delete ${removing.name}`}
+          body={`${removing.email} and everything personal attached to it — quiz results, answers and bookmarks — will be removed permanently. Any feedback they left is kept but anonymised, since it is about the product rather than the person. This cannot be undone.`}
+          onCancel={() => setRemoving(null)}
+          onConfirm={remove}
+          busy={busy}
+        />
       )}
     </section>
   );

@@ -15,6 +15,7 @@ export const adminService = {
   users: (params) => api.get('/admin/users', { params }).then((r) => r.data),
   user: (id) => api.get(`/admin/users/${id}`).then((r) => r.data),
   setRole: (id, role) => api.patch(`/admin/users/${id}/role`, { role }).then((r) => r.data),
+  deleteUser: (id) => api.delete(`/admin/users/${id}`).then((r) => r.data),
 
   /* ── Career profiles ──────────────────────────────────────── */
   careers: (params) => api.get('/admin/careers', { params }).then((r) => r.data),

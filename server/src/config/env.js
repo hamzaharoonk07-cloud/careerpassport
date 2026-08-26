@@ -17,7 +17,18 @@ export const env = {
   nodeEnv: process.env.NODE_ENV || 'development',
   isProd: process.env.NODE_ENV === 'production',
   port: Number(process.env.PORT) || 5000,
-  clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+  /**
+   * Where the browser is allowed to call this API from.
+   *
+   * On Vercel the site and the API share an origin, so CORS is not doing
+   * any work — but the middleware still compares against this value, and a
+   * localhost default would reject every real request. VERCEL_URL is
+   * injected by the platform and names the deployment, so it is the correct
+   * fallback there.
+   */
+  clientOrigin:
+    process.env.CLIENT_ORIGIN ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:5173'),
 
   mongoUri: process.env.MONGO_URI || '',
   mongoDbName: process.env.MONGO_DB_NAME || 'pathseeker',

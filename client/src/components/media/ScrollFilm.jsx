@@ -209,15 +209,25 @@ export function ScrollFilm({
     };
   }, [scrubbable, ready, narrow]);
 
+  /**
+   * One chapter's copy.
+   *
+   * The parts arrive in order — label, then heading, then the substance,
+   * then the actions — rather than the whole block appearing at once. A
+   * block that swaps in wholesale reads as a slideshow; staggering it
+   * reads as the page telling you something.
+   */
   const Copy = ({ c, i }) => (
     <div className={`sfilm__copy ${c.variant ? `sfilm__copy--${c.variant}` : ''}`}>
-      {c.mark}
-      <p className="t-eyebrow">{c.eyebrow}</p>
+      {c.mark && <span className="sfilm__in" style={{ '--in': '0ms' }}>{c.mark}</span>}
+      <p className="t-eyebrow sfilm__in" style={{ '--in': '60ms' }}>{c.eyebrow}</p>
       {i === 0
-        ? <h1 className="sfilm__title">{c.title}</h1>
-        : <h2 className="sfilm__title">{c.title}</h2>}
-      <p className="sfilm__body">{c.body}</p>
-      {c.actions && <div className="sfilm__actions">{c.actions}</div>}
+        ? <h1 className="sfilm__title sfilm__in" style={{ '--in': '140ms' }}>{c.title}</h1>
+        : <h2 className="sfilm__title sfilm__in" style={{ '--in': '140ms' }}>{c.title}</h2>}
+      <p className="sfilm__body sfilm__in" style={{ '--in': '260ms' }}>{c.body}</p>
+      {c.actions && (
+        <div className="sfilm__actions sfilm__in" style={{ '--in': '380ms' }}>{c.actions}</div>
+      )}
     </div>
   );
 

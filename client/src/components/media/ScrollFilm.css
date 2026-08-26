@@ -41,7 +41,19 @@
 .sfilm__copy {
   max-width: 46ch;
   margin-right: auto;
+}
+
+/* Each part of a chapter arrives on its own beat. The delay comes in as
+   --in from the component, so the order lives next to the markup it
+   describes rather than being spread across a stylesheet. */
+.sfilm__in {
+  display: block;
   animation: ps-rise var(--dur-4) var(--ease-out) both;
+  animation-delay: var(--in, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sfilm__in { animation: none; }
 }
 
 .sfilm__mark { color: var(--gold-500); margin-bottom: var(--sp-4); }

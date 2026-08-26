@@ -120,3 +120,29 @@ With it set to `client`, Vercel treats that folder as the whole
 repository: the build output resolves one level too deep and every route
 404s, `api/` sits outside the root so the backend never deploys, and the
 root `vercel.json` is never read.
+
+## If seeding fails with `querySrv ECONNREFUSED`
+
+The `mongodb+srv://` scheme resolves the cluster through a DNS SRV record,
+and some ISP resolvers never answer that query. It is not a credential or
+firewall problem, and the same string works fine from Vercel.
+
+Point Node at a public resolver for the run:
+
+```bash
+cat > dnsfix.mjs <<'EOF'
+import dns from 'node:dns';
+dns.setServers(['8.8.8.8', '1.1.1.1']);
+EOF
+NODE_OPTIONS="--import ./dnsfix.mjs" MONGO_URI="<your Atlas string>" npm run seed
+```
+
+## The built-in admin account is not seeded in production
+
+`admin@pathseeker.app` / `admin1234` is created only outside production,
+because that password is in `seed.js` and this repository is public.
+
+On a live database, seed.js skips it and administrators come from
+`ADMIN_EMAILS` — register normally with a listed address and the role is
+granted on registration — or from `OWNER_EMAIL` / `OWNER_PASSWORD`, which
+are read from the environment rather than from a committed file.

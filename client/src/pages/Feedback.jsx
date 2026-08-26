@@ -120,11 +120,11 @@ export default function Feedback() {
         {!isAuthed && (
           <>
             <label className="af">
-              <span className="af__label">Your name (optional)</span>
+              <span className="af__label">Your name</span>
               <input className="af__input" value={name} onChange={(e) => setName(e.target.value)} />
             </label>
             <label className="af">
-              <span className="af__label">Email, if you want a reply (optional)</span>
+              <span className="af__label">Email for a reply</span>
               <input
                 className="af__input"
                 type="email"

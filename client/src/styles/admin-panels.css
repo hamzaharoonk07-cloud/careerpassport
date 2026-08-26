@@ -61,15 +61,6 @@
   background: var(--ink-800);
 }
 
-.anotice {
-  margin-bottom: var(--sp-4);
-  padding: var(--sp-3) var(--sp-4);
-  border-radius: var(--r-md);
-  border: 1px solid rgba(201, 162, 39, 0.34);
-  background: rgba(201, 162, 39, 0.10);
-  color: var(--gold-300);
-  font-size: var(--fs-sm);
-}
 
 .agrid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--sp-4); margin-top: var(--sp-5); }
 .agrid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--sp-3); }
@@ -183,104 +174,6 @@
 }
 .aopt__key { font-family: var(--font-mono); color: var(--gold-400); text-transform: uppercase; }
 .aopt__label { color: var(--text-mid); }
-
-/* ── Forms ───────────────────────────────────────────────────── */
-.af { display: grid; gap: 5px; margin-bottom: var(--sp-4); }
-.af__label {
-  font-family: var(--font-mono);
-  font-size: 0.56rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-low);
-}
-.af__input {
-  width: 100%;
-  min-height: 42px;
-  padding: 0.5rem 0.7rem;
-  border-radius: var(--r-md);
-  border: 1px solid var(--ink-600);
-  background: var(--ink-900);
-  color: var(--text-hi);
-  font-family: inherit;
-  font-size: var(--fs-sm);
-}
-.af__input:focus-visible { outline: 2px solid var(--gold-500); outline-offset: 1px; }
-.af__input--bad { border-color: #a05555; }
-textarea.af__input { min-height: auto; resize: vertical; line-height: 1.6; }
-.af__hint { color: var(--text-low); font-size: 0.74rem; line-height: 1.5; }
-.af__err { color: #d98a8a; font-size: 0.74rem; }
-
-.acheck { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-4); color: var(--text-mid); font-size: var(--fs-sm); }
-.acheck input { width: 18px; height: 18px; accent-color: var(--gold-500); }
-
-.aweights { display: grid; gap: 6px; margin-bottom: var(--sp-4); }
-.aweights__row { display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: var(--sp-2); }
-.aweights__cell { display: grid; gap: 3px; }
-.aweights__cell span {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-low);
-}
-.aweights__cell input {
-  width: 100%;
-  min-height: 38px;
-  padding: 0.3rem 0.5rem;
-  border-radius: var(--r-md);
-  border: 1px solid var(--ink-600);
-  background: var(--ink-900);
-  color: var(--text-hi);
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
-  text-align: center;
-}
-
-/* ── Modal ───────────────────────────────────────────────────── */
-.amodal { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: var(--sp-4); }
-.amodal__scrim { position: absolute; inset: 0; background: rgba(6, 9, 17, 0.78); border: none; cursor: pointer; }
-.amodal__box {
-  position: relative;
-  width: min(100%, 560px);
-  max-height: 88vh;
-  display: flex;
-  flex-direction: column;
-  border-radius: var(--r-lg);
-  border: 1px solid var(--ink-600);
-  background: var(--ink-800);
-  box-shadow: var(--sh-3);
-}
-.amodal__box--wide { width: min(100%, 760px); }
-.amodal__head {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-3);
-  padding: var(--sp-4) var(--sp-5);
-  border-bottom: 1px solid var(--ink-600);
-}
-.amodal__title { font-size: 1rem; font-weight: 600; color: var(--text-hi); }
-.amodal__x {
-  margin-left: auto;
-  width: 32px;
-  height: 32px;
-  display: grid;
-  place-items: center;
-  background: none;
-  border: none;
-  color: var(--text-low);
-  font-size: 1.4rem;
-  line-height: 1;
-  cursor: pointer;
-}
-.amodal__x:hover { color: var(--text-hi); }
-.amodal__body { padding: var(--sp-5); overflow-y: auto; }
-.amodal__foot {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--sp-3);
-  padding: var(--sp-4) var(--sp-5);
-  border-top: 1px solid var(--ink-600);
-}
 
 /* Stacked rows below the point where the columns stop fitting. */
 @media (max-width: 860px) {

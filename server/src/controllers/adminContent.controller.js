@@ -319,12 +319,22 @@ export const listFeedback = asyncHandler(async (req, res) => {
 });
 
 export const updateFeedback = asyncHandler(async (req, res) => {
-  const { status } = req.body;
-  const item = await Feedback.findByIdAndUpdate(
-    req.params.id,
-    { status },
-    { new: true, runValidators: true }
-  );
+  const { status, reply } = req.body;
+
+  const update = {};
+  if (status) update.status = status;
+
+  // Replying marks it answered, so an admin cannot leave a reply sitting in
+  // the "new" column and lose track of what has been dealt with.
+  if (typeof reply === 'string' && reply.trim()) {
+    update.reply = { message: reply.trim(), at: new Date(), by: req.user._id };
+    update.status = status || 'resolved';
+  }
+
+  const item = await Feedback.findByIdAndUpdate(req.params.id, update, {
+    new: true,
+    runValidators: true,
+  });
   if (!item) throw ApiError.notFound('No such feedback.');
   res.json({ ok: true, item });
 });

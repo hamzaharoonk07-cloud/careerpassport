@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '../components/primitives/Button.jsx';
 import { publicService } from '../services/public.service.js';
 import { apiError } from '../services/api.js';
@@ -29,6 +29,16 @@ export default function Feedback() {
   const [sent, setSent] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [mine, setMine] = useState([]);
+
+  // Your own submissions and any answers to them. Without this an
+  // administrator replies into a void — the reply exists but the person who
+  // asked never sees it.
+  const loadMine = () => {
+    if (!isAuthed) return;
+    publicService.myFeedback().then(setMine).catch(() => { /* not fatal */ });
+  };
+  useEffect(loadMine, [isAuthed]);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -44,6 +54,7 @@ export default function Feedback() {
       });
       setSent(res.message);
       setMessage('');
+      loadMine();
     } catch (err) {
       setError(apiError(err));
     } finally {
@@ -143,6 +154,36 @@ export default function Feedback() {
           </Button>
         </div>
       </form>
+
+      {isAuthed && mine.length > 0 && (
+        <section className="hub__mine">
+          <h2 className="apanel__title">What you have sent</h2>
+          <p className="apanel__sub">Replies from an administrator appear here.</p>
+
+          <div className="acards" style={{ marginTop: 'var(--sp-4)' }}>
+            {mine.map((f) => (
+              <article className="acard" key={f._id}>
+                <div className="acard__top">
+                  <span className="atag">{f.type}</span>
+                  <span className="acard__rating">{'★'.repeat(f.rating)}</span>
+                  <span className={`atag ${f.status === 'new' ? '' : 'atag--on'}`}>{f.status}</span>
+                </div>
+                <p className="acard__body">{f.message}</p>
+                {f.reply?.message ? (
+                  <div className="acard__reply">
+                    <span className="af__label">Reply from PathSeeker</span>
+                    <p>{f.reply.message}</p>
+                  </div>
+                ) : (
+                  <p className="af__hint" style={{ marginTop: 'var(--sp-3)' }}>
+                    No reply yet.
+                  </p>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

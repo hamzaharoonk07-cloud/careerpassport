@@ -143,3 +143,15 @@
   max-width: 78ch;
 }
 .hub__samples strong { color: var(--gold-400); font-weight: 600; }
+
+/* An administrator's answer, on both sides of the exchange. */
+.acard__reply {
+  margin-top: var(--sp-3);
+  padding: var(--sp-3);
+  border-left: 2px solid var(--gold-500);
+  background: rgba(201, 162, 39, 0.06);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+}
+.acard__reply p { margin-top: 4px; color: var(--text-mid); font-size: var(--fs-sm); line-height: 1.6; }
+
+.hub__mine { margin-top: var(--sp-9); padding-top: var(--sp-6); border-top: 1px solid var(--ink-600); }

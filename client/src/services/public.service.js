@@ -12,4 +12,5 @@ export const publicService = {
   stories: (params) => api.get('/stories', { params }).then((r) => r.data.stories),
   submitStory: (body) => api.post('/stories', body).then((r) => r.data),
   submitFeedback: (body) => api.post('/feedback', body).then((r) => r.data),
+  myFeedback: () => api.get('/feedback/mine').then((r) => r.data.feedback),
 };

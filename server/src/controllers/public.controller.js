@@ -99,3 +99,20 @@ export const submitFeedback = asyncHandler(async (req, res) => {
 
   res.status(201).json({ ok: true, message: 'Thank you — this reaches an administrator.' });
 });
+
+/**
+ * Your own feedback, with any reply.
+ *
+ * Without this an administrator can answer into a void — the reply exists
+ * but the person who asked never sees it. Scoped to the session, so it can
+ * only ever return what this account submitted.
+ */
+export const myFeedback = asyncHandler(async (req, res) => {
+  const feedback = await Feedback.find({ user: req.user._id })
+    .select('type rating message status reply createdAt')
+    .sort({ createdAt: -1 })
+    .limit(50)
+    .lean();
+
+  res.json({ ok: true, feedback });
+});

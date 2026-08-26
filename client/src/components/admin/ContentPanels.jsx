@@ -118,6 +118,7 @@ export function MediaPanel({ onError }) {
 
 export function FeedbackPanel({ onError }) {
   const [items, setItems] = useState([]);
+  const [replying, setReplying] = useState(null);
   const [removing, setRemoving] = useState(null);
   const [busy, setBusy] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -145,6 +146,15 @@ export function FeedbackPanel({ onError }) {
     } catch (e) { onError(apiError(e)); } finally { setBusy(false); }
   };
 
+  const sendReply = async () => {
+    setBusy(true);
+    try {
+      await adminService.updateFeedback(replying._id, { reply: replying.draft });
+      setReplying(null);
+      await load();
+    } catch (e) { onError(apiError(e)); } finally { setBusy(false); }
+  };
+
   return (
     <section className="apanel">
       <header className="apanel__head">
@@ -168,6 +178,13 @@ export function FeedbackPanel({ onError }) {
                 <span className="atable__dim">{fmt(f.createdAt)}</span>
               </div>
               <p className="acard__body">{f.message}</p>
+
+              {f.reply?.message && (
+                <div className="acard__reply">
+                  <span className="af__label">Your reply</span>
+                  <p>{f.reply.message}</p>
+                </div>
+              )}
               <div className="acard__foot">
                 <span className="atable__dim">
                   {f.user?.name || f.name || 'Anonymous'}
@@ -177,12 +194,39 @@ export function FeedbackPanel({ onError }) {
                 <span className="atable__acts">
                   {f.status !== 'reviewed' && <button type="button" className="alink" onClick={() => setStatus(f, 'reviewed')}>Mark reviewed</button>}
                   {f.status !== 'resolved' && <button type="button" className="alink" onClick={() => setStatus(f, 'resolved')}>Resolve</button>}
+                  <button type="button" className="alink" onClick={() => setReplying({ ...f, draft: f.reply?.message || '' })}>
+                    {f.reply?.message ? 'Edit reply' : 'Reply'}
+                  </button>
                   <button type="button" className="alink alink--bad" onClick={() => setRemoving(f)}>Delete</button>
                 </span>
               </div>
             </article>
           ))}
         </div>
+      )}
+
+      {replying && (
+        <Modal
+          title="Reply to feedback"
+          onClose={() => setReplying(null)}
+          onSubmit={sendReply}
+          submitLabel="Send reply"
+          busy={busy}
+        >
+          <p className="af__hint" style={{ marginBottom: 'var(--sp-4)' }}>
+            <strong>They wrote:</strong> {replying.message}
+          </p>
+          <Field
+            label="Your reply"
+            as="textarea"
+            rows={5}
+            value={replying.draft}
+            onChange={(e) => setReplying({ ...replying, draft: e.target.value })}
+            hint={replying.user
+              ? 'They will see this on the feedback page when signed in.'
+              : 'This submission has no account attached, so nobody will see the reply. Use the email they left, if any.'}
+          />
+        </Modal>
       )}
 
       {removing && (

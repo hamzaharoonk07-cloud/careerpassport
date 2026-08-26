@@ -37,6 +37,19 @@ const feedbackSchema = new mongoose.Schema(
     // Where in the journey it was left, so patterns are visible.
     context: { type: String, trim: true, default: '' },
 
+    /**
+     * An administrator's answer.
+     *
+     * Kept on the feedback rather than in a separate thread: one reply is
+     * what this needs, and a conversation would want notifications,
+     * unread state and moderation that nothing here asks for yet.
+     */
+    reply: {
+      message: { type: String, trim: true, maxlength: 2000, default: '' },
+      at: { type: Date, default: null },
+      by: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+    },
+
     status: {
       type: String,
       enum: ['new', 'reviewed', 'resolved'],

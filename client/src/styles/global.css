@@ -1,6 +1,7 @@
 @import './tokens.css';
 @import './motion.css';
 @import './a11y.css';
+@import './print.css';
 @import './forms.css';
 
 /* ── Reset ──────────────────────────────────────────────── */

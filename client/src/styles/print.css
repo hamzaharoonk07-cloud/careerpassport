@@ -1,0 +1,112 @@
+/* ============================================================
+   Print
+
+   Turns the passport into a document worth keeping. The browser's
+   own print-to-PDF does the export, so there is no library, no
+   upload, nothing to install, and it works offline — the file is
+   produced on the reader's machine and never leaves it.
+
+   Everything that is chrome on screen is furniture on paper:
+   navigation, videos, buttons and backgrounds all come out.
+   ============================================================ */
+
+@media print {
+  /* Ink on paper, whatever theme the screen was in. */
+  :root,
+  :root[data-theme='light'],
+  :root[data-theme='dark'] {
+    --ink-900: #ffffff;
+    --ink-800: #ffffff;
+    --ink-700: #f2f2f2;
+    --ink-600: #cccccc;
+    --text-hi: #000000;
+    --text-mid: #222222;
+    --text-low: #555555;
+    --gold-500: #8a6f18;
+    --gold-400: #7a6115;
+    --gold-300: #6b5412;
+  }
+
+  html, body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+  }
+
+  /* Screen furniture that means nothing on paper. */
+  .nav,
+  .tabbar,
+  .skip,
+  .a11y,
+  .crumbs,
+  .sfilm,
+  .dash__film,
+  .rs__film,
+  .sv,
+  .dash__bg,
+  video,
+  .acct__form,
+  .btn,
+  button {
+    display: none !important;
+  }
+
+  /* Backgrounds cost ink and add nothing. */
+  * {
+    background-image: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  .page { padding: 0 !important; }
+  .wrap, .wrap-narrow { width: 100% !important; max-width: none !important; }
+
+  /* The passport itself, as the document. */
+  .acct__grid { display: block !important; }
+  .acct__doc {
+    border: 1.5pt solid #8a6f18 !important;
+    border-radius: 4pt;
+    padding: 16pt !important;
+    page-break-inside: avoid;
+  }
+  .acct__facts { display: block !important; }
+  .acct__facts > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12pt;
+    padding: 4pt 0;
+    border-bottom: 0.5pt solid #ddd;
+    page-break-inside: avoid;
+  }
+  .acct__facts dt { color: #555 !important; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.08em; }
+  .acct__facts dd { color: #000 !important; text-align: right; }
+
+  .acct__chips { justify-content: flex-end; }
+  .acct__chips span {
+    border: 0.5pt solid #8a6f18 !important;
+    background: none !important;
+    color: #6b5412 !important;
+  }
+
+  /* Links print their destination, since a printed link is otherwise a
+     dead end — but not for internal routes, where the path is noise. */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    color: #555;
+  }
+
+  /* Saved careers and their notes, which is the other thing worth
+     taking away. */
+  .bank__grid { display: block !important; }
+  .ccard {
+    border: 0.5pt solid #ccc !important;
+    padding: 8pt !important;
+    margin-bottom: 6pt;
+    page-break-inside: avoid;
+  }
+
+  /* Never split a heading from what it introduces. */
+  h1, h2, h3 { page-break-after: avoid; color: #000 !important; }
+  @page { margin: 14mm; }
+}

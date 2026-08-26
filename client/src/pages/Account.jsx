@@ -168,7 +168,13 @@ const splitList = (v) =>
           <p className="t-eyebrow">Account · Travel document</p>
           <h1 className="t-h2 page__title">{user.name}</h1>
         </div>
-        <Button variant="ghost" to="/dashboard">Back to dashboard</Button>
+        <div className="row" style={{ gap: 'var(--sp-3)', flexWrap: 'wrap' }}>
+          {/* The browser's own print-to-PDF does the export. No library, no
+              upload, and the file is produced on their machine rather than
+              being generated somewhere and sent back. */}
+          <Button variant="secondary" onClick={() => window.print()}>Save as PDF</Button>
+          <Button variant="ghost" to="/dashboard">Back to dashboard</Button>
+        </div>
       </header>
 
       <div className="acct__grid">
@@ -190,8 +196,53 @@ const splitList = (v) =>
             <div><dt>Email</dt><dd className="t-mono">{user.email}</dd></div>
             <div><dt>Password</dt><dd className="t-mono">••••••••</dd></div>
             <div><dt>Issued</dt><dd>{fmtDate(user.createdAt)}</dd></div>
+            <div><dt>Class</dt><dd style={{ textTransform: 'capitalize' }}>{user.accountType || 'student'}</dd></div>
             <div><dt>Education</dt><dd>{user.profile?.education || <em className="t-low">Not recorded</em>}</dd></div>
             <div><dt>Age</dt><dd>{user.profile?.age ?? <em className="t-low">Not recorded</em>}</dd></div>
+            <div><dt>Location</dt><dd>{user.profile?.location || <em className="t-low">Not recorded</em>}</dd></div>
+            <div><dt>Current role</dt><dd>{user.profile?.currentRole || <em className="t-low">Not recorded</em>}</dd></div>
+
+            {/* Everything the edit panel can change is printed here, or the
+                form writes to fields the document never shows. */}
+            <div>
+              <dt>Skills</dt>
+              <dd>
+                {user.profile?.skills?.length
+                  ? <span className="acct__chips">{user.profile.skills.map((k) => <span key={k}>{k}</span>)}</span>
+                  : <em className="t-low">Not recorded</em>}
+              </dd>
+            </div>
+            <div>
+              <dt>Interests</dt>
+              <dd>
+                {user.profile?.interests?.length
+                  ? <span className="acct__chips">{user.profile.interests.map((k) => <span key={k}>{k}</span>)}</span>
+                  : <em className="t-low">Not recorded</em>}
+              </dd>
+            </div>
+            <div>
+              <dt>Experience</dt>
+              <dd>
+                {user.profile?.workExperience?.length ? (
+                  <span className="acct__exp-list">
+                    {user.profile.workExperience.map((w, i) => (
+                      <span key={i}>
+                        {w.title}{w.organisation ? ` · ${w.organisation}` : ''}
+                        {w.years ? ` · ${w.years} yr${w.years === 1 ? '' : 's'}` : ''}
+                      </span>
+                    ))}
+                  </span>
+                ) : <em className="t-low">Not recorded</em>}
+              </dd>
+            </div>
+            <div>
+              <dt>Resume</dt>
+              <dd>
+                {user.profile?.resumeName
+                  ? <a href="/api/users/me/resume" className="acct__file">{user.profile.resumeName}</a>
+                  : <em className="t-low">Not uploaded</em>}
+              </dd>
+            </div>
             <div><dt>Journey stage</dt><dd style={{ textTransform: 'capitalize' }}>{user.journeyStage?.replace('-', ' ')}</dd></div>
             <div>
               <dt>Destination</dt>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
 import { Decide } from '../components/brand/Decide.jsx';
+import { CaseReveal } from '../components/brand/CaseReveal.jsx';
 import { Reveal } from '../components/motion/Reveal.jsx';
 import { quizService } from '../services/quiz.service.js';
 import { careerService } from '../services/career.service.js';
@@ -295,20 +296,10 @@ export default function Result() {
         </div>
         {savingNote && <p className="t-low" style={{ textAlign: 'center', marginTop: 'var(--sp-3)' }}>{savingNote}</p>}
 
-        {/* The briefcase, at the end of the report rather than behind a nav
-            link. Everything above is reading; this is the thing they leave
-            with, and it reveals as you reach it. */}
-        <Reveal className="rs__case">
-          <p className="t-eyebrow">One thing left</p>
-          <h3 className="rs__case-h">Take it with you</h3>
-          <p className="rs__case-p">
-            Your destination, the reasoning behind it and the route in — packed into
-            something you can carry out of here.
-          </p>
-          <div style={{ marginTop: 'var(--sp-5)' }}>
-            <Button size="lg" to="/briefcase">Open your briefcase</Button>
-          </div>
-        </Reveal>
+        {/* The case itself, opening as it comes into view. It was a link to
+            another page, which asked for a click before the only part of the
+            report anyone takes away. */}
+        <CaseReveal career={career} score={top.score} />
       </div>
     </main>
   );

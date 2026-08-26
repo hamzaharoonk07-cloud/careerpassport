@@ -307,3 +307,27 @@
 /* The generated opening clip sits over the CSS case, matched to its footprint
    so the transition between the two reads as the same object. */
 .bc__video { z-index: 7; border-radius: 10px; }
+
+/* ── Inline on the result page ───────────────────────────────────
+   The same case, sitting inside a report rather than owning a page:
+   no full viewport, no page background, and it opens on scroll
+   instead of on a press. */
+.bc--inline {
+  min-height: 0;
+  margin-top: var(--sp-9);
+  padding: var(--sp-7) var(--sp-4);
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(201, 162, 39, 0.24);
+  background:
+    radial-gradient(62% 54% at 50% 96%, rgba(201, 162, 39, 0.10), transparent 72%),
+    var(--ink-800);
+}
+.bc--inline .bc__stage { min-height: 300px; }
+.bc__title--inline {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.8vw, 1.9rem);
+  font-weight: 600;
+  color: var(--text-hi);
+  margin-top: var(--sp-2);
+}
+.bc--inline .bc__video { border-radius: var(--r-md); }

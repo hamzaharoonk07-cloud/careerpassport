@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
 import { Decide } from '../components/brand/Decide.jsx';
-import { CaseReveal } from '../components/brand/CaseReveal.jsx';
+import { ScrollFilm } from '../components/media/ScrollFilm.jsx';
 import { Reveal } from '../components/motion/Reveal.jsx';
 import { quizService } from '../services/quiz.service.js';
 import { careerService } from '../services/career.service.js';
@@ -298,11 +298,43 @@ export default function Result() {
 
       </div>
 
-      {/* Outside the wrap on purpose, so it can be full width without the
-          100vw trick — 100vw counts the scrollbar, which pushes the page
-          into horizontal overflow that only looks fine because body clips
-          it. Sitting outside the container needs no trick at all. */}
-      <CaseReveal career={career} score={top.score} />
+      {/* The same scroll-scrubbed film the landing page uses, pointed at the
+          case opening. Scrolling drives the lid rather than triggering it, so
+          the last beat of the report reads like the first beat of the site.
+          Outside the wrap so it is full width without the 100vw trick. */}
+      <ScrollFilm
+        src="/videos/briefcase.mp4"
+        poster="/images/briefcase.jpg"
+        height="320vh"
+        className="rs__film"
+        chapters={[
+          {
+            at: 0,
+            eyebrow: 'One thing left',
+            title: 'Everything you decided today',
+            body: 'Your destination, the reasoning behind it, and the route in — packed into something you can carry out of here.',
+          },
+          {
+            at: 0.42,
+            eyebrow: 'Opening',
+            title: career.title,
+            body: `${top.score}% match · ${career.field?.name}. The case is yours; so is the decision.`,
+          },
+          {
+            at: 0.78,
+            variant: 'close',
+            eyebrow: 'Take it with you',
+            title: 'Your future is worth carrying.',
+            body: 'The full case holds your saved careers, your notes and the six-stage flight plan.',
+            actions: (
+              <>
+                <Button size="lg" to="/briefcase">Open your briefcase</Button>
+                <Button variant="secondary" size="lg" to="/roadmap">See the route</Button>
+              </>
+            ),
+          },
+        ]}
+      />
     </main>
   );
 }

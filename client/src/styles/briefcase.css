@@ -307,39 +307,3 @@
 /* The generated opening clip sits over the CSS case, matched to its footprint
    so the transition between the two reads as the same object. */
 .bc__video { z-index: 7; border-radius: 10px; }
-
-/* ── Inline on the result page ───────────────────────────────────
-   The same case, sitting inside a report rather than owning a page:
-   no full viewport, no page background, and it opens on scroll
-   instead of on a press. */
-.bc--inline {
-  /* Full width and full height. It renders outside the report's wrap, so
-     plain width:100% is enough — no 100vw, which counts the scrollbar and
-     puts the page into horizontal overflow.
-     A case that opens inside a bordered card competes with everything
-     around it; given the whole viewport it becomes the last beat of the
-     page rather than one more panel on it. */
-  position: relative;
-  width: 100%;
-  margin-top: var(--sp-9);
-  min-height: 100dvh;
-  display: grid;
-  align-content: center;
-  padding: var(--sp-7) var(--sp-4);
-  border: none;
-  border-top: 1px solid rgba(201, 162, 39, 0.20);
-  border-radius: 0;
-  background:
-    radial-gradient(58% 50% at 50% 90%, rgba(201, 162, 39, 0.13), transparent 72%),
-    linear-gradient(180deg, var(--ink-900), #0a0d16);
-}
-.bc--inline .bc__stage { min-height: clamp(320px, 46vh, 520px); }
-.bc--inline .bc__inner { width: min(100% - 2.5rem, var(--wrap)); margin-inline: auto; }
-.bc__title--inline {
-  font-family: var(--font-display);
-  font-size: clamp(1.3rem, 2.8vw, 1.9rem);
-  font-weight: 600;
-  color: var(--text-hi);
-  margin-top: var(--sp-2);
-}
-.bc--inline .bc__video { border-radius: var(--r-md); }

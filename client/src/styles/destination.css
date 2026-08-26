@@ -416,3 +416,13 @@
   color: var(--text-mid);
   line-height: 1.7;
 }
+
+/* The closing film on the result page. Full width because it renders
+   outside the report's wrap, and darker than the landing film so the
+   report above it stays the brighter thing. */
+.rs__film { margin-top: var(--sp-9); border-top: 1px solid rgba(201, 162, 39, 0.18); }
+.rs__film .sfilm__scrim {
+  background:
+    radial-gradient(72% 60% at 30% 52%, rgba(6, 9, 17, 0.86), transparent 74%),
+    linear-gradient(180deg, rgba(6, 9, 17, 0.70), transparent 26%, transparent 54%, rgba(6, 9, 17, 0.90));
+}

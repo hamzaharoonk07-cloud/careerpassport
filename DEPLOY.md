@@ -110,3 +110,13 @@ that account, before the site is public.
 
 **Video is about 19 MB.** Vercel serves it from its edge and the files are
 cached immutably, so it is paid for once per region rather than per visit.
+
+## If the build fails with "Missing script: vercel-build"
+
+Vercel's **Root Directory** is set to a subfolder. Settings → Build and
+Deployment → Root Directory must be empty (`./`), not `client`.
+
+With it set to `client`, Vercel treats that folder as the whole
+repository: `client/dist` resolves to `client/client/dist` and every route
+404s, `api/` sits outside the root so the backend never deploys, and the
+root `vercel.json` is never read.

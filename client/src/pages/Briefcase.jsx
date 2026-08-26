@@ -161,7 +161,7 @@ export default function Briefcase() {
 
             <div className="bc__actions">
               <Button size="lg" to="/dashboard">Go to your dashboard</Button>
-              <Button variant="secondary" to="/careers">Explore the career bank</Button>
+              <Button variant="secondary" to="/careers">See all destinations</Button>
             </div>
           </div>
         )}

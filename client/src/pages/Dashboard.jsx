@@ -102,7 +102,7 @@ export default function Dashboard() {
             {top
               ? <Button to="/result">Full result</Button>
               : <Button to="/airport">Start the journey</Button>}
-            <Button variant="secondary" to="/careers">Career bank</Button>
+            <Button variant="secondary" to="/careers">Departures board</Button>
           </div>
         </div>
       </header>
@@ -182,8 +182,8 @@ export default function Dashboard() {
             {error && <p className="t-low">{error}</p>}
             {saved.length === 0 ? (
               <div className="dash__empty">
-                <p>Nothing saved yet. Anything you save from the career bank lands here.</p>
-                <Button variant="secondary" to="/careers">Browse careers</Button>
+                <p>Nothing saved yet. Anything you save from the departures board lands here.</p>
+                <Button variant="secondary" to="/careers">See all destinations</Button>
               </div>
             ) : (
               <div className="bank__grid" style={{ marginTop: 0 }}>

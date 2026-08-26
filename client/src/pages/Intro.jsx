@@ -44,7 +44,11 @@ export default function Intro() {
   }
 
   const destinations = counts ? `${counts.careers} destinations` : 'every destination in the bank';
-  const browseLabel = counts ? `Browse ${counts.careers} careers without an account →` : 'Browse careers without an account →';
+  // Says what the visitor gets, not what they do. "Browse careers" sat
+  // outside the airport world and left two unlabelled doors side by side.
+  const browseLabel = counts
+    ? `Just looking? See all ${counts.careers} destinations →`
+    : 'Just looking? See every destination →';
 
   return (
     <main className="lp">
@@ -70,7 +74,7 @@ export default function Intro() {
             ) : isAuthed ? (
               <>
                 <Button size="lg" onClick={() => navigate(resumeRoute)}>Continue your journey</Button>
-                <Button variant="secondary" size="lg" to="/careers">Browse careers</Button>
+                <Button variant="secondary" size="lg" to="/careers">See all destinations</Button>
                 <p className="sfilm__note">
                   Welcome back, {user.name.split(' ')[0]}. Passport <strong>{user.passportNumber}</strong>.
                 </p>

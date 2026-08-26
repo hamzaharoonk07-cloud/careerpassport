@@ -258,3 +258,20 @@ a.nav__pass {
   transition: color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
 }
 a.nav__pass:hover { color: var(--gold-400); border-right-color: var(--gold-500); }
+
+/* The fork on the departures page: two doors, each labelled by what the
+   visitor gets rather than what they do. Without this, "search" and "take
+   the quiz" sit side by side with nothing saying which is which. */
+.bank__fork {
+  margin-top: var(--sp-4);
+  color: var(--text-low);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+}
+.bank__fork-link {
+  color: var(--gold-400);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+.bank__fork-link:hover { color: var(--gold-300); }

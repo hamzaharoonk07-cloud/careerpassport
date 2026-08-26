@@ -16,7 +16,7 @@ function useDebounced(value, ms = 320) {
 }
 
 /**
- * The career bank.
+ * The departures hall — every destination in the bank.
  *
  * Search, field filter and skill filter all run server-side against MongoDB —
  * the client never holds the full list, so this stays fast as the bank grows.
@@ -80,12 +80,22 @@ export default function Careers() {
     <div className="page wrap">
       <header className="page__head">
         <div>
-          <p className="t-eyebrow">Career bank</p>
-          <h1 className="t-h2 page__title">Every route on the map</h1>
+          {/* Keeps the SRS name visible — the architecture calls this module
+              the Career Bank, and it should be findable by that name — while
+              the departures framing carries the airport metaphor. */}
+          <p className="t-eyebrow">Career Bank · Departures · Karachi</p>
+          <h1 className="t-h2 page__title">Every destination on the board</h1>
+          {/* The count is read from the database rather than written into the
+              copy. It said "thirty-six" here while the bank held thirty-eight,
+              which is exactly the kind of number that goes stale silently. */}
           <p className="t-lead" style={{ marginTop: 'var(--sp-4)' }}>
-            Thirty-six careers across six fields, each with the skills it needs, what to
-            learn first, and a six-stage route in. Search it, or take the quiz and let it
-            point somewhere.
+            {data.total ? `${data.total} destinations` : 'Every destination'} across{' '}
+            {fields.length || 'six'} route groups — the skills each one needs, what to learn
+            first, and a six-stage route in.
+          </p>
+          <p className="bank__fork">
+            Know what you are looking for? Search the board below.{' '}
+            <Link to="/register" className="bank__fork-link">Not sure? Take the passport quiz →</Link>
           </p>
         </div>
       </header>

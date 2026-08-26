@@ -7,6 +7,7 @@ import {
   Feedback,
   SuccessStory,
   MediaItem,
+  SavedCareer,
 } from '../models/index.js';
 import { ApiError, asyncHandler } from '../utils/ApiError.js';
 
@@ -144,8 +145,20 @@ export const deleteCareer = asyncHandler(async (req, res) => {
     });
   }
 
+  // Anyone who bookmarked it keeps a row pointing at nothing otherwise. The
+  // saved-careers endpoint happens to filter those out, so it does not show
+  // as a broken page — it shows as a bookmark that silently vanished, and
+  // the row sits in the database forever.
+  const orphaned = await SavedCareer.deleteMany({ career: career._id });
+
   await career.deleteOne();
-  res.json({ ok: true, retired: false, message: 'Career deleted.' });
+  res.json({
+    ok: true,
+    retired: false,
+    message: orphaned.deletedCount
+      ? `Career deleted, along with ${orphaned.deletedCount} saved bookmark${orphaned.deletedCount === 1 ? '' : 's'}.`
+      : 'Career deleted.',
+  });
 });
 
 /* ══════════════════════════════════════════════════════════════

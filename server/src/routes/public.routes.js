@@ -6,6 +6,10 @@ const router = Router();
 
 // Reading is open to everyone; submissions attach an account when there is
 // one, but do not require it.
+// Ask in your own words. No session needed — someone deciding whether to
+// register should be able to ask first.
+router.post('/ask', ctrl.ask);
+
 router.get('/media', ctrl.listMedia);
 router.get('/stories', ctrl.listStories);
 router.post('/stories', optionalAuth, ctrl.submitStory);

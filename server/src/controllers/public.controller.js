@@ -1,4 +1,6 @@
-import { Feedback, SuccessStory, MediaItem } from '../models/index.js';
+import { Feedback, SuccessStory, MediaItem, Career } from '../models/index.js';
+import { askCareers } from '../services/ask.service.js';
+import { decorateCareer } from '../utils/decorateCareer.js';
 import { ApiError, asyncHandler } from '../utils/ApiError.js';
 
 /**
@@ -115,4 +117,41 @@ export const myFeedback = asyncHandler(async (req, res) => {
     .lean();
 
   res.json({ ok: true, feedback });
+});
+
+/* ── Ask in your own words ────────────────────────────────────── */
+
+/**
+ * Match careers from free text.
+ *
+ * Open to everyone: someone weighing up whether to register should be able
+ * to ask first. Nothing is stored — this reads the question, answers it, and
+ * forgets it.
+ */
+export const ask = asyncHandler(async (req, res) => {
+  const { text } = req.body;
+
+  if (!text || !String(text).trim()) {
+    throw ApiError.badRequest('Tell us what you like or dislike.', { text: 'Required' });
+  }
+  if (String(text).length > 600) {
+    throw ApiError.badRequest('Keep it under 600 characters.', { text: 'Too long' });
+  }
+
+  const careers = await Career.find({ active: true })
+    .populate('field', 'name slug')
+    .lean();
+
+  const { matches, read } = askCareers(String(text), careers);
+
+  res.json({
+    ok: true,
+    matches: matches.map((m) => ({ ...m, career: decorateCareer(m.career) })),
+    read: {
+      understood: read.matchedTerms,
+      avoiding: read.avoidedTerms,
+      // Said plainly so a poor answer is legible rather than mysterious.
+      hadSignal: read.signal > 0,
+    },
+  });
 });

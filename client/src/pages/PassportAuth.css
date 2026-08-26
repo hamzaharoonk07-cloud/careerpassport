@@ -13,9 +13,13 @@
      cannot be reached. `safe` drops back to start-alignment in that case. */
   align-content: safe center;
   padding: var(--sp-6) var(--sp-4);
-  /* Only the horizontal axis is clipped. The 3D transforms throw a little
-     width, but the page must stay free to scroll down to a tall spread. */
-  overflow-x: hidden;
+  /* No overflow property here at all, deliberately.
+     `overflow-x: hidden` cannot leave the other axis `visible` — CSS
+     computes it to `auto` — which quietly made this element the scroll
+     container instead of the document. With no fixed height it could not
+     scroll either, so a spread taller than the viewport had its foot cut
+     off and nothing would move. The horizontal clip the 3D transforms need
+     lives on `body` instead, where it does not capture the page. */
   isolation: isolate;
   transition: opacity var(--dur-4) var(--ease-out), transform var(--dur-4) var(--ease-out);
 }
@@ -212,6 +216,8 @@
 }
 
 /* ── Inside spread ──────────────────────────────────────── */
+/* Absolute while the book is shut, so the cover can swing over a spread
+   that occupies no space of its own. */
 .pa__pages {
   position: absolute;
   inset: 0;
@@ -481,4 +487,22 @@
 
 @media (max-width: 620px) {
   .pa__types-row { grid-template-columns: 1fr; }
+}
+
+/* ── Open: the spread has to carry its own height ─────────────
+   While absolute, the pages contribute nothing to the book's box, so
+   `height: auto` on an open book collapsed straight back to its floor —
+   and `overflow: hidden` then cut whatever did not fit. On a short
+   laptop that removed the bottom of the form, including the "Already
+   have a passport? Sign in" link, with nothing to scroll to because the
+   overflow was clipped rather than laid out.
+
+   In the open state they flow instead: the spread sizes the book, the
+   book sizes the page, and the page scrolls if it must. */
+.pa--open .pa__pages {
+  position: relative;
+  inset: auto;
+  overflow: visible;
+  contain: none;
+  min-height: var(--pa-h);
 }

@@ -14,6 +14,13 @@ html {
 
 body {
   min-height: 100dvh;
+  /* `clip`, not `hidden`.
+     `overflow-x: hidden` forces the other axis to compute as `auto`, which
+     turns whatever carries it into a scroll container — on body that stole
+     the scroll from the viewport and the page stopped scrolling entirely.
+     `clip` trims the overflow without creating a scroller and leaves
+     overflow-y genuinely `visible`. */
+  overflow-x: clip;
   font-family: var(--font-body);
   font-size: var(--fs-body);
   line-height: var(--lh-body);

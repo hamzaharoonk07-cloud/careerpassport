@@ -98,6 +98,11 @@ export async function seedDatabase({ log = console.log } = {}) {
   const questionData = [
     ...(await readJson('questions.json')),
     ...(await readJson('questions.variants.json')),
+    // Field-targeted slots 11-25. See the header of the generator note in
+    // questions.field.json: they are weighted from the RIASEC spread of the
+    // careers actually in this database, so they discriminate rather than
+    // just adding length.
+    ...(await readJson('questions.field.json')),
   ];
   let optionCount = 0;
 

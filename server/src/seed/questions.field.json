@@ -1,0 +1,796 @@
+[
+  {
+    "order": 11,
+    "dimension": "work-environment",
+    "prompt": "A whole workday you would not resent. Which one?",
+    "helper": "Pick the day you would not have to talk yourself into.",
+    "options": [
+      {
+        "key": "a",
+        "label": "Long uninterrupted stretches with a hard problem and no meetings",
+        "fieldWeights": {
+          "technology": 4,
+          "finance": 2
+        },
+        "riasec": {
+          "I": 4,
+          "C": 2
+        }
+      },
+      {
+        "key": "b",
+        "label": "Making something look and feel right, revising until it does",
+        "fieldWeights": {
+          "design": 4,
+          "media": 2
+        },
+        "riasec": {
+          "A": 5
+        }
+      },
+      {
+        "key": "c",
+        "label": "Back to back with people who need something from you",
+        "fieldWeights": {
+          "healthcare": 4,
+          "business": 2
+        },
+        "riasec": {
+          "S": 5
+        }
+      },
+      {
+        "key": "d",
+        "label": "Chasing a deal, a pitch, a target with a number attached",
+        "fieldWeights": {
+          "business": 4,
+          "finance": 2
+        },
+        "riasec": {
+          "E": 5
+        }
+      }
+    ]
+  },
+  {
+    "order": 12,
+    "dimension": "problem-solving",
+    "prompt": "Something has gone wrong and nobody knows why yet. What do you reach for first?",
+    "helper": "Not what is correct. What you actually do first.",
+    "options": [
+      {
+        "key": "a",
+        "label": "The logs and the data - I want to reproduce it",
+        "fieldWeights": {
+          "technology": 4,
+          "finance": 1
+        },
+        "riasec": {
+          "I": 4,
+          "R": 2
+        }
+      },
+      {
+        "key": "b",
+        "label": "The checklist and the procedure, worked through in order",
+        "fieldWeights": {
+          "finance": 3,
+          "healthcare": 3
+        },
+        "riasec": {
+          "C": 5
+        }
+      },
+      {
+        "key": "c",
+        "label": "The people affected - I want to hear what they saw",
+        "fieldWeights": {
+          "healthcare": 3,
+          "business": 2
+        },
+        "riasec": {
+          "S": 4,
+          "E": 1
+        }
+      },
+      {
+        "key": "d",
+        "label": "A whiteboard - I want to redraw the whole thing differently",
+        "fieldWeights": {
+          "design": 3,
+          "media": 2
+        },
+        "riasec": {
+          "A": 4,
+          "I": 1
+        }
+      }
+    ]
+  },
+  {
+    "order": 13,
+    "dimension": "creativity",
+    "prompt": "A free week and a budget to make one thing. Which do you make?",
+    "helper": "Something you would actually finish, not something that sounds good.",
+    "options": [
+      {
+        "key": "a",
+        "label": "A working tool that does one job well",
+        "fieldWeights": {
+          "technology": 4
+        },
+        "riasec": {
+          "R": 3,
+          "I": 3
+        }
+      },
+      {
+        "key": "b",
+        "label": "A short film, an article, an episode - something with an audience",
+        "fieldWeights": {
+          "media": 5
+        },
+        "riasec": {
+          "A": 4,
+          "E": 2
+        }
+      },
+      {
+        "key": "c",
+        "label": "A product people find beautiful and obvious to use",
+        "fieldWeights": {
+          "design": 5
+        },
+        "riasec": {
+          "A": 5
+        }
+      },
+      {
+        "key": "d",
+        "label": "A model that predicts something nobody else predicted",
+        "fieldWeights": {
+          "finance": 4,
+          "technology": 2
+        },
+        "riasec": {
+          "I": 4,
+          "C": 3
+        }
+      }
+    ]
+  },
+  {
+    "order": 14,
+    "dimension": "communication",
+    "prompt": "You understand something complicated. How do you get it across?",
+    "helper": "Think of the last time you actually had to.",
+    "options": [
+      {
+        "key": "a",
+        "label": "Sit with one person until it clicks for them",
+        "fieldWeights": {
+          "healthcare": 4,
+          "business": 1
+        },
+        "riasec": {
+          "S": 5
+        }
+      },
+      {
+        "key": "b",
+        "label": "Write it down properly so it holds up without me",
+        "fieldWeights": {
+          "technology": 2,
+          "finance": 3
+        },
+        "riasec": {
+          "C": 4,
+          "I": 2
+        }
+      },
+      {
+        "key": "c",
+        "label": "Draw it - the picture does the explaining",
+        "fieldWeights": {
+          "design": 4,
+          "media": 2
+        },
+        "riasec": {
+          "A": 4
+        }
+      },
+      {
+        "key": "d",
+        "label": "Stand up in front of the room and carry it",
+        "fieldWeights": {
+          "business": 4,
+          "media": 3
+        },
+        "riasec": {
+          "E": 5
+        }
+      }
+    ]
+  },
+  {
+    "order": 15,
+    "dimension": "values",
+    "prompt": "Which would bother you most, a year into a job?",
+    "helper": "The one that would actually make you start looking.",
+    "options": [
+      {
+        "key": "a",
+        "label": "Work that never gets precise enough to be right or wrong",
+        "fieldWeights": {
+          "finance": 4,
+          "technology": 2
+        },
+        "riasec": {
+          "C": 4,
+          "I": 2
+        }
+      },
+      {
+        "key": "b",
+        "label": "Never meeting anyone my work affects",
+        "fieldWeights": {
+          "healthcare": 4,
+          "business": 2
+        },
+        "riasec": {
+          "S": 5
+        }
+      },
+      {
+        "key": "c",
+        "label": "Producing things I find ugly and cannot change",
+        "fieldWeights": {
+          "design": 5,
+          "media": 2
+        },
+        "riasec": {
+          "A": 5
+        }
+      },
+      {
+        "key": "d",
+        "label": "No room to grow it, sell it, or run it myself",
+        "fieldWeights": {
+          "business": 5
+        },
+        "riasec": {
+          "E": 5
+        }
+      }
+    ]
+  },
+  {
+    "order": 16,
+    "dimension": "strengths",
+    "prompt": "What do people come to you for, without being asked twice?",
+    "helper": "What they actually come for, not what you wish they did.",
+    "options": [
+      {
+        "key": "a",
+        "label": "Working out why something is broken",
+        "fieldWeights": {
+          "technology": 4,
+          "healthcare": 1
+        },
+        "riasec": {
+          "I": 4,
+          "R": 2
+        }
+      },
+      {
+        "key": "b",
+        "label": "Keeping the numbers, the records and the details straight",
+        "fieldWeights": {
+          "finance": 5
+        },
+        "riasec": {
+          "C": 5
+        }
+      },
+      {
+        "key": "c",
+        "label": "Making the thing look right before it goes out",
+        "fieldWeights": {
+          "design": 4,
+          "media": 2
+        },
+        "riasec": {
+          "A": 5
+        }
+      },
+      {
+        "key": "d",
+        "label": "Calming a situation down and getting people talking",
+        "fieldWeights": {
+          "healthcare": 3,
+          "business": 3
+        },
+        "riasec": {
+          "S": 4,
+          "E": 2
+        }
+      }
+    ]
+  },
+  {
+    "order": 17,
+    "dimension": "technical-interest",
+    "prompt": "Which of these would you happily read about at midnight?",
+    "helper": "The one you have actually fallen down a hole about.",
+    "options": [
+      {
+        "key": "a",
+        "label": "How a system handles a million requests without falling over",
+        "fieldWeights": {
+          "technology": 5
+        },
+        "riasec": {
+          "I": 4,
+          "R": 2
+        }
+      },
+      {
+        "key": "b",
+        "label": "Why a body reacts to a drug the way it does",
+        "fieldWeights": {
+          "healthcare": 5
+        },
+        "riasec": {
+          "I": 4,
+          "S": 2
+        }
+      },
+      {
+        "key": "c",
+        "label": "Why one layout works and a nearly identical one does not",
+        "fieldWeights": {
+          "design": 3,
+          "media": 3
+        },
+        "riasec": {
+          "A": 4,
+          "E": 2
+        }
+      },
+      {
+        "key": "d",
+        "label": "How a market moved before anyone had the news",
+        "fieldWeights": {
+          "finance": 5
+        },
+        "riasec": {
+          "I": 3,
+          "C": 3,
+          "E": 2
+        }
+      }
+    ]
+  },
+  {
+    "order": 18,
+    "dimension": "business-interest",
+    "prompt": "A small business you know is losing money. What pulls at you?",
+    "helper": "The part you would want to get your hands on.",
+    "options": [
+      {
+        "key": "a",
+        "label": "The books - where exactly is it leaking",
+        "fieldWeights": {
+          "finance": 5
+        },
+        "riasec": {
+          "C": 5,
+          "I": 2
+        }
+      },
+      {
+        "key": "b",
+        "label": "The offer - who is it for, and why are they not buying",
+        "fieldWeights": {
+          "business": 5
+        },
+        "riasec": {
+          "E": 5
+        }
+      },
+      {
+        "key": "c",
+        "label": "How it looks and reads - it is putting people off",
+        "fieldWeights": {
+          "design": 4,
+          "media": 3
+        },
+        "riasec": {
+          "A": 4
+        }
+      },
+      {
+        "key": "d",
+        "label": "The workflow - the same job is being done three times",
+        "fieldWeights": {
+          "technology": 3,
+          "finance": 2
+        },
+        "riasec": {
+          "C": 4,
+          "R": 2
+        }
+      }
+    ]
+  },
+  {
+    "order": 19,
+    "dimension": "learning-preference",
+    "prompt": "New field, no experience. How do you actually get good?",
+    "helper": "How you have learned things before, not how you are told to.",
+    "options": [
+      {
+        "key": "a",
+        "label": "Build something broken and fix it until it works",
+        "fieldWeights": {
+          "technology": 4
+        },
+        "riasec": {
+          "R": 4,
+          "I": 2
+        }
+      },
+      {
+        "key": "b",
+        "label": "Shadow someone doing it and copy what they do",
+        "fieldWeights": {
+          "healthcare": 4,
+          "business": 2
+        },
+        "riasec": {
+          "S": 4,
+          "R": 1
+        }
+      },
+      {
+        "key": "c",
+        "label": "Study the structure properly before touching anything",
+        "fieldWeights": {
+          "finance": 4,
+          "technology": 1
+        },
+        "riasec": {
+          "C": 4,
+          "I": 3
+        }
+      },
+      {
+        "key": "d",
+        "label": "Make bad versions fast until one stops being bad",
+        "fieldWeights": {
+          "design": 4,
+          "media": 3
+        },
+        "riasec": {
+          "A": 5
+        }
+      }
+    ]
+  },
+  {
+    "order": 20,
+    "dimension": "work-environment",
+    "prompt": "How much of your week should be decided before it starts?",
+    "helper": "Be honest about which one you find restful.",
+    "options": [
+      {
+        "key": "a",
+        "label": "Almost all of it - I want the day to be knowable",
+        "fieldWeights": {
+          "finance": 4,
+          "healthcare": 2
+        },
+        "riasec": {
+          "C": 5
+        }
+      },
+      {
+        "key": "b",
+        "label": "About half - a spine, with room to chase what comes up",
+        "fieldWeights": {
+          "technology": 3,
+          "business": 2
+        },
+        "riasec": {
+          "I": 3,
+          "E": 2
+        }
+      },
+      {
+        "key": "c",
+        "label": "Very little - I do my best work when it is open",
+        "fieldWeights": {
+          "media": 4,
+          "design": 3
+        },
+        "riasec": {
+          "A": 5
+        }
+      },
+      {
+        "key": "d",
+        "label": "Whatever the people in front of me need that day",
+        "fieldWeights": {
+          "healthcare": 4,
+          "business": 2
+        },
+        "riasec": {
+          "S": 5
+        }
+      }
+    ]
+  },
+  {
+    "order": 21,
+    "dimension": "values",
+    "prompt": "Pick the win that would actually feel like one.",
+    "helper": "The one you would tell someone about that evening.",
+    "options": [
+      {
+        "key": "a",
+        "label": "Someone is measurably better off, and told you so",
+        "fieldWeights": {
+          "healthcare": 5
+        },
+        "riasec": {
+          "S": 5
+        }
+      },
+      {
+        "key": "b",
+        "label": "The thing you built is being used, and it holds",
+        "fieldWeights": {
+          "technology": 5
+        },
+        "riasec": {
+          "R": 3,
+          "I": 3
+        }
+      },
+      {
+        "key": "c",
+        "label": "Something you made got a reaction out of strangers",
+        "fieldWeights": {
+          "media": 4,
+          "design": 3
+        },
+        "riasec": {
+          "A": 5,
+          "E": 2
+        }
+      },
+      {
+        "key": "d",
+        "label": "You closed it, and the number was yours",
+        "fieldWeights": {
+          "business": 4,
+          "finance": 3
+        },
+        "riasec": {
+          "E": 5
+        }
+      }
+    ]
+  },
+  {
+    "order": 22,
+    "dimension": "problem-solving",
+    "prompt": "The brief is vague and the deadline is real. What is your first move?",
+    "helper": "First move, not best practice.",
+    "options": [
+      {
+        "key": "a",
+        "label": "Pin it down - I cannot start until the question is exact",
+        "fieldWeights": {
+          "finance": 3,
+          "technology": 3
+        },
+        "riasec": {
+          "C": 4,
+          "I": 3
+        }
+      },
+      {
+        "key": "b",
+        "label": "Start making things and let the brief find itself",
+        "fieldWeights": {
+          "design": 4,
+          "media": 3
+        },
+        "riasec": {
+          "A": 5
+        }
+      },
+      {
+        "key": "c",
+        "label": "Go and ask the people who will have to use it",
+        "fieldWeights": {
+          "healthcare": 3,
+          "business": 3
+        },
+        "riasec": {
+          "S": 4,
+          "E": 2
+        }
+      },
+      {
+        "key": "d",
+        "label": "Decide it myself, commit, and defend the decision",
+        "fieldWeights": {
+          "business": 5
+        },
+        "riasec": {
+          "E": 5
+        }
+      }
+    ]
+  },
+  {
+    "order": 23,
+    "dimension": "strengths",
+    "prompt": "Which of these are you unusually willing to sit through?",
+    "helper": "The tedium you can tolerate says more than the parts you enjoy.",
+    "options": [
+      {
+        "key": "a",
+        "label": "Reconciling two things that should match and do not",
+        "fieldWeights": {
+          "finance": 5
+        },
+        "riasec": {
+          "C": 5
+        }
+      },
+      {
+        "key": "b",
+        "label": "Reading documentation until the behaviour makes sense",
+        "fieldWeights": {
+          "technology": 5
+        },
+        "riasec": {
+          "I": 4,
+          "C": 2
+        }
+      },
+      {
+        "key": "c",
+        "label": "The twentieth revision of something nearly right",
+        "fieldWeights": {
+          "design": 5,
+          "media": 2
+        },
+        "riasec": {
+          "A": 5
+        }
+      },
+      {
+        "key": "d",
+        "label": "A long conversation with someone who is upset",
+        "fieldWeights": {
+          "healthcare": 5
+        },
+        "riasec": {
+          "S": 5
+        }
+      }
+    ]
+  },
+  {
+    "order": 24,
+    "dimension": "interests",
+    "prompt": "Which problem would you want your name on solving?",
+    "helper": "Not the noblest one. The one you would stay late for.",
+    "options": [
+      {
+        "key": "a",
+        "label": "Care that reaches people who currently get none",
+        "fieldWeights": {
+          "healthcare": 5
+        },
+        "riasec": {
+          "S": 5,
+          "I": 2
+        }
+      },
+      {
+        "key": "b",
+        "label": "Software everyone relies on and nobody has to think about",
+        "fieldWeights": {
+          "technology": 5
+        },
+        "riasec": {
+          "I": 4,
+          "R": 2
+        }
+      },
+      {
+        "key": "c",
+        "label": "Money decisions ordinary people can actually understand",
+        "fieldWeights": {
+          "finance": 4,
+          "business": 2
+        },
+        "riasec": {
+          "C": 4,
+          "E": 2
+        }
+      },
+      {
+        "key": "d",
+        "label": "Stories and images that change what people believe",
+        "fieldWeights": {
+          "media": 5,
+          "design": 2
+        },
+        "riasec": {
+          "A": 5,
+          "E": 2
+        }
+      }
+    ]
+  },
+  {
+    "order": 25,
+    "dimension": "work-environment",
+    "prompt": "Ten years in, which sentence would you want to be true?",
+    "helper": "Answer for the life, not the title.",
+    "options": [
+      {
+        "key": "a",
+        "label": "I am the person they call when it is genuinely hard",
+        "fieldWeights": {
+          "technology": 4,
+          "healthcare": 2
+        },
+        "riasec": {
+          "I": 4,
+          "R": 2
+        }
+      },
+      {
+        "key": "b",
+        "label": "I built something that exists because I made it exist",
+        "fieldWeights": {
+          "business": 4,
+          "media": 2
+        },
+        "riasec": {
+          "E": 5
+        }
+      },
+      {
+        "key": "c",
+        "label": "My work is recognisable as mine",
+        "fieldWeights": {
+          "design": 5,
+          "media": 3
+        },
+        "riasec": {
+          "A": 5
+        }
+      },
+      {
+        "key": "d",
+        "label": "People trust me with what matters, and I have never let it slip",
+        "fieldWeights": {
+          "finance": 4,
+          "healthcare": 3
+        },
+        "riasec": {
+          "C": 5,
+          "S": 2
+        }
+      }
+    ]
+  }
+]

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
 import { SceneVideo } from '../components/media/SceneVideo.jsx';
@@ -84,6 +84,8 @@ export default function Airport() {
     setTimeout(() => passRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
   };
 
+  useEffect(() => { setPage(0); }, [showAll]);
+
   const board = () => {
     advance('boarded');
     setFlying(true);
@@ -140,6 +142,30 @@ export default function Airport() {
   // A result row with no matches would satisfy `landed` while having nothing
   // to show, so the arrival itself is what the terminal branches on.
   const arrival = landed?.matches?.[0] || null;
+  const [showAll, setShowAll] = useState(false);
+
+  /**
+   * The gates the quiz actually pointed at.
+   *
+   * Thirty-eight destinations is a directory. Once the questions have been
+   * answered we know which field the traveller leans toward and how each
+   * career inside it scored, so the board shows that field, best match first.
+   * The rest are still reachable - a match is a starting point, not a verdict,
+   * and someone who wants to look at everything should be able to.
+   */
+  const gateCareers = useMemo(() => {
+    if (!arrival || showAll) return careers;
+    const field = arrival.career.field?.slug;
+    if (!field) return careers;
+    const scored = new Map((landed?.matches || []).map((m) => [m.career.slug, m.score]));
+    const inField = careers.filter((c) => c.field?.slug === field);
+    // If the field somehow holds nothing, showing an empty board would be
+    // worse than showing everything.
+    if (!inField.length) return careers;
+    return [...inField].sort(
+      (a, b) => (scored.get(b.slug) ?? -1) - (scored.get(a.slug) ?? -1) || a.title.localeCompare(b.title)
+    );
+  }, [careers, arrival, landed, showAll]);
 
   if (flying) {
     return (
@@ -209,8 +235,16 @@ export default function Airport() {
               {' · '}
               {arrival.score}% match
             </p>
+            <p className="t-mid" style={{ marginTop: 'var(--sp-4)' }}>
+              {showAll
+                ? 'Showing every destination on the board.'
+                : `The board below is showing ${arrival.career.field?.name || 'your'} gates, best match first.`}
+            </p>
             <div className="row" style={{ flexWrap: 'wrap', marginTop: 'var(--sp-5)' }}>
               <Button to="/result">See your result</Button>
+              <Button variant="ghost" onClick={() => setShowAll((v) => !v)}>
+                {showAll ? 'Show my matched gates' : 'Show all destinations'}
+              </Button>
               <Button variant="ghost" to={`/careers/${arrival.career.slug}`}>
                 Open this career
               </Button>
@@ -244,7 +278,7 @@ export default function Airport() {
         ) : (
         <div className="apt__grid">
           <DepartureBoard
-            careers={careers}
+            careers={gateCareers}
             onSelect={select}
             selectedSlug={selected?.career.slug || null}
             page={page}

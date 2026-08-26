@@ -83,3 +83,20 @@ export const updateProfileSchema = z.object({
   // and has since graduated should not need a new account.
   accountType: z.enum(['student', 'graduate', 'professional']).optional(),
 });
+
+export const forgotPasswordSchema = z.object({ email });
+
+export const resetPasswordSchema = z
+  .object({
+    email,
+    code: z
+      .string({ required_error: 'Enter the code from your email' })
+      .trim()
+      .regex(/^\d{6}$/, 'The code is six digits'),
+    password,
+    confirmPassword: z.string({ required_error: 'Please confirm your password' }),
+  })
+  .refine((d) => d.password === d.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });

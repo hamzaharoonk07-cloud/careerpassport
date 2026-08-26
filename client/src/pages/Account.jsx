@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
 import { Logo } from '../components/brand/Logo.jsx';
+import { EntryStamp } from '../components/brand/EntryStamp.jsx';
 import { api, apiError } from '../services/api.js';
 import { quizService } from '../services/quiz.service.js';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -193,6 +194,25 @@ const splitList = (v) =>
               {user.role === 'admin' ? 'Administrator' : 'Traveller'}
             </span>
           </div>
+
+          {/* Stamped on arrival, the way a passport is. It only appears
+              once they have actually flown — an unstamped page is the
+              honest state for someone who has not taken the quiz, and it
+              gives the stamp something to mean when it arrives. */}
+          {top && (
+            <div className="acct__stamp" role="img"
+                 aria-label={`Arrival stamp: ${top.career.title}, ${fmtDate(result.takenAt)}`}>
+              <EntryStamp
+                size={150}
+                country="PATHSEEKER · CAREER AUTHORITY"
+                port={(top.career.field?.name || 'DESTINATION').toUpperCase()}
+                status="ARRIVED"
+                date={result.takenAt}
+                colour="#8a2f2f"
+                seed={(user.passportNumber || '').length}
+              />
+            </div>
+          )}
 
           <dl className="acct__facts">
             <div><dt>Full name</dt><dd>{user.name}</dd></div>

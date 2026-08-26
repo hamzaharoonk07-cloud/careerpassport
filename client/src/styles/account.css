@@ -181,3 +181,35 @@
   border-radius: var(--r-lg);
   padding: var(--sp-5);
 }
+
+/* ── Arrival stamp ───────────────────────────────────────────────
+   Sits over the document's lower right, rotated off-square and
+   partly transparent, the way a real one lands: pressed onto the
+   page rather than laid out on it. Behind the text so it never
+   competes with a fact somebody is trying to read. */
+.acct__doc { position: relative; }
+.acct__stamp {
+  position: absolute;
+  right: var(--sp-4);
+  bottom: var(--sp-4);
+  z-index: 0;
+  opacity: 0.34;
+  transform: rotate(-11deg);
+  pointer-events: none;
+}
+/* Everything in the document sits above the stamp, not just the facts
+   list. Lifting only .acct__facts left the trait bars — a sibling with
+   no stacking of its own — underneath it, and the stamp came down
+   across the axis numbers. */
+.acct__doc > *:not(.acct__stamp) { position: relative; z-index: 1; }
+
+/* On a narrow document it would sit on top of the facts, so it goes
+   under them in flow instead of over them. */
+@media (max-width: 720px) {
+  .acct__stamp {
+    position: static;
+    transform: rotate(-6deg);
+    margin: var(--sp-4) auto 0;
+    width: max-content;
+  }
+}

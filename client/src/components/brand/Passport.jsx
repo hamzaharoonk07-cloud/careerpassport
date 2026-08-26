@@ -45,7 +45,7 @@ function PageIdentity({ user, typing }) {
 
   return (
     <>
-      <div className="pp__eyebrow">Islamic Republic · Career Authority</div>
+      <div className="pp__eyebrow">PathSeeker · Career Authority</div>
       <div className="pp__rule" />
       {/* The title runs full width. Sitting it beside the photo clips as soon
           as the passport narrows to fit a short viewport. */}

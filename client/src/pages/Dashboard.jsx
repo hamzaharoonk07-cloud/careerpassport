@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
 import { SceneVideo } from '../components/media/SceneVideo.jsx';
+import { ScrollFilm } from '../components/media/ScrollFilm.jsx';
 import { quizService } from '../services/quiz.service.js';
 import { careerService } from '../services/career.service.js';
 import { apiError } from '../services/api.js';
@@ -136,6 +137,50 @@ export default function Dashboard() {
             )}
           </Board>
 
+          {/* ── The counsel, in full ──────────────────────
+              It lived only on /result, which meant a returning traveller
+              saw a percentage and no reasoning — the part that actually
+              helps them decide was one click away and easy to miss. */}
+          {result?.counsel && (
+            <Board
+              title="What this means"
+              note={
+                result.counsel.confidence === 'clear' ? 'Clear result'
+                  : result.counsel.confidence === 'leaning' ? 'A lean'
+                  : 'Too close to call'
+              }
+              wide
+            >
+              <h3 className="dash__counsel-h">{result.counsel.headline}</h3>
+              <p className="dash__counsel-p">{result.counsel.verdict}</p>
+
+              {result.counsel.difference && (
+                <div className="dash__counsel-block">
+                  <span className="dash__rec-k">What you are choosing between</span>
+                  <p>{result.counsel.difference.text}</p>
+                </div>
+              )}
+
+              {result.counsel.firstStep && (
+                <div className="dash__counsel-block">
+                  <span className="dash__rec-k">Where to start</span>
+                  <p><strong>{result.counsel.firstStep.title}.</strong> {result.counsel.firstStep.detail}</p>
+                </div>
+              )}
+
+              {result.counsel.wouldChangeThis && (
+                <div className="dash__counsel-block">
+                  <span className="dash__rec-k">What would change this</span>
+                  <p>{result.counsel.wouldChangeThis}</p>
+                </div>
+              )}
+
+              {result.counsel.honestly && (
+                <p className="dash__counsel-honest">{result.counsel.honestly}</p>
+              )}
+            </Board>
+          )}
+
           {/* ── Instruments: trait profile ───────────────── */}
           {result && (
             <Board title="Instruments" note="Holland codes">
@@ -228,6 +273,38 @@ export default function Dashboard() {
             </div>
           </Board>
         </div>
+      )}
+
+      {/* The same closing film the result ends on. A returning traveller
+          should reach the same place, not a page that just stops. */}
+      {top && (
+        <ScrollFilm
+          src="/videos/briefcase.mp4"
+          poster="/images/briefcase.jpg"
+          height="300vh"
+          className="dash__film"
+          chapters={[
+            {
+              at: 0,
+              eyebrow: 'Your case',
+              title: 'Everything you have decided so far',
+              body: 'Your destination, the reasoning behind it, and the route in.',
+            },
+            {
+              at: 0.45,
+              eyebrow: 'Opening',
+              title: top.career.title,
+              body: `${top.score}% match · ${top.career.field?.name}.`,
+            },
+            {
+              at: 0.8,
+              variant: 'close',
+              eyebrow: 'Take it with you',
+              title: 'Your future is worth carrying.',
+              body: 'Saved careers, your notes and the six-stage flight plan.',
+            },
+          ]}
+        />
       )}
     </div>
   );

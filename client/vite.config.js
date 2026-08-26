@@ -15,6 +15,18 @@ export default defineConfig({
       '/api': { target: 'http://localhost:5000', changeOrigin: true },
     },
   },
+  // `vite preview` does not inherit server.proxy, so the built app served
+  // this way sent /api straight at the static server and got a 404 back —
+  // the page rendered fine and only the login failed, which reads as broken
+  // auth rather than a missing proxy.
+  preview: {
+    host: true,
+    port: 4173,
+    proxy: {
+      '/api': { target: 'http://localhost:5000', changeOrigin: true },
+    },
+  },
+
   build: {
     target: 'es2020',
     cssCodeSplit: true,

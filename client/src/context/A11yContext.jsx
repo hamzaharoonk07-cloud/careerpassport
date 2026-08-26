@@ -31,9 +31,15 @@ const write = (key, value) => {
 function initialTheme() {
   const stored = read(KEY_THEME);
   if (stored === 'light' || stored === 'dark') return stored;
-  // No stored choice — follow the system. The site is designed dark, so that
-  // is the fallback when the query is unavailable.
-  if (window.matchMedia?.('(prefers-color-scheme: light)').matches) return 'light';
+
+  // Dark unless the visitor asks otherwise — deliberately not following the
+  // system.
+  //
+  // Most phones ship set to light, so following the preference meant nearly
+  // every mobile visitor landed in the theme this design handles worst:
+  // cream panels against video-backed pages that have to stay dark, with the
+  // seam between them on show. The site is built dark; light is a setting
+  // someone chooses, not the default they get handed.
   return 'dark';
 }
 
@@ -56,15 +62,6 @@ export function A11yProvider({ children }) {
     write(KEY_SCALE, String(fontScale));
   }, [fontScale]);
 
-  // Keep following the system until the visitor states a preference.
-  useEffect(() => {
-    if (read(KEY_THEME)) return undefined;
-    const mq = window.matchMedia?.('(prefers-color-scheme: light)');
-    if (!mq) return undefined;
-    const onChange = (e) => setTheme(e.matches ? 'light' : 'dark');
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
-  }, []);
 
   const value = useMemo(() => {
     const i = FONT_STEPS.indexOf(fontScale);

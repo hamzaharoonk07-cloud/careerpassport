@@ -247,3 +247,51 @@
   /* Last resort: the supporting line goes so the call to action survives. */
   .sfilm__copy--hero .sfilm__body { display: none; }
 }
+
+/* ── Portrait phones ─────────────────────────────────────────────
+   `object-fit: cover` scales a 16:9 clip to fill a portrait frame,
+   which means it fills the height and throws away most of the width
+   — a 390x844 viewport crops a 1600-wide frame down to about a
+   third of it. That is the "zoomed in" look: not a scale bug, a
+   choice of fit that only works in landscape.
+
+   So on a portrait phone the film stops being a full-bleed
+   background and becomes a band at the top with the copy beneath
+   it on solid ground. Nothing is cropped, and the text is on a
+   surface built for reading rather than over moving footage. */
+@media (max-width: 760px) and (orientation: portrait) {
+  .sfilm__pin {
+    display: grid;
+    grid-template-rows: 42vh 1fr;
+    align-items: stretch;
+    background: var(--ink-900);
+  }
+
+  .sfilm__video {
+    position: relative;
+    inset: auto;
+    height: 42vh;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* The scrim only needs to sit over the band now. */
+  .sfilm__scrim {
+    height: 42vh;
+    background: linear-gradient(180deg, rgba(6, 9, 17, 0.42), transparent 46%, rgba(6, 9, 17, 0.72));
+  }
+
+  .sfilm__inner {
+    display: grid;
+    align-content: start;
+    padding-top: var(--sp-5);
+    overflow-y: auto;
+  }
+
+  .sfilm__copy { max-width: none; }
+  .sfilm__copy--hero .sfilm__title { font-size: clamp(1.7rem, 7.5vw, 2.4rem); }
+  .sfilm__title { font-size: clamp(1.4rem, 6vw, 2rem); }
+  .sfilm__body { font-size: 0.92rem; }
+  .sfilm__mark { margin-bottom: var(--sp-2); }
+  .sfilm__rail, .sfilm__scroll { display: none; }
+}

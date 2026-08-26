@@ -3,7 +3,9 @@ import { Link, useParams } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
 import { SceneVideo } from '../components/media/SceneVideo.jsx';
 import { FieldIcon } from '../components/brand/FieldIcon.jsx';
+import { SecondOpinion } from '../components/brand/SecondOpinion.jsx';
 import { careerService } from '../services/career.service.js';
+import { quizService } from '../services/quiz.service.js';
 import { apiError } from '../services/api.js';
 import { formatSalary } from './Result.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -31,6 +33,19 @@ const TABS = [
 export default function CareerDetail() {
   const { id } = useParams();
   const { isAuthed } = useAuth();
+
+  // Their own result, so this page can say something about *this* career
+  // rather than describing it in a vacuum. Silently absent when they have
+  // not taken the quiz — there is nothing to compare against.
+  const [result, setResult] = useState(null);
+  useEffect(() => {
+    if (!isAuthed) return;
+    let alive = true;
+    quizService.latestResult()
+      .then((r) => alive && setResult(r))
+      .catch(() => { /* no result yet */ });
+    return () => { alive = false; };
+  }, [isAuthed]);
 
   const [career, setCareer] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -133,6 +148,11 @@ export default function CareerDetail() {
 
       {/* Panels */}
       <div className="wrap dst__body">
+        {/* Asked before the tabs, not after: someone reading about a career
+            that is not their match has a reason, and the question is worth
+            putting to them while they are still deciding. */}
+        <SecondOpinion result={result} career={career} />
+
         <div className="dst__tabs" role="tablist" aria-label="Career details">
           {TABS.map((t) => (
             <button

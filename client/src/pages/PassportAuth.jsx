@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
-import { StateEmblem } from '../components/brand/StateEmblem.jsx';
+import { Logo } from '../components/brand/Logo.jsx';
 import { EntryStamp } from '../components/brand/EntryStamp.jsx';
 import { SceneVideo } from '../components/media/SceneVideo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -290,8 +290,8 @@ export default function PassportAuth() {
           {/* ── Inside pages ─────────────────────────────── */}
           <div className="pa__pages">
             <div className="pa__page pa__page--left">
-              <div className="pa__crest"><StateEmblem size={42} /></div>
-              <p className="pa__doc">Islamic Republic of Pakistan · Career Authority</p>
+              <div className="pa__crest"><Logo size={42} /></div>
+              <p className="pa__doc">PathSeeker · Career Authority</p>
               <h1 className="pa__h">
                 {mode === 'register' ? 'Passport Application' : 'Present Your Passport'}
               </h1>
@@ -349,10 +349,10 @@ export default function PassportAuth() {
             <span className="pa__sheen" aria-hidden="true" />
             <div className="pa__foil">
               <div className="pa__foil-country">
-                <span className="pa__foil-country-sm">Islamic Republic of</span>
+                <span className="pa__foil-country-sm">PathSeeker</span>
                 <span className="pa__foil-country-lg">Pakistan</span>
               </div>
-              <div className="pa__foil-crest"><StateEmblem size={78} /></div>
+              <div className="pa__foil-crest"><Logo size={78} /></div>
               <div className="pa__foil-urdu" lang="ur">اسلامی جمہوریہ پاکستان</div>
               <div className="pa__foil-title">
                 <span>Passport</span>

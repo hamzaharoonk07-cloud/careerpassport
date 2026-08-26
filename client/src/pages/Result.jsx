@@ -326,12 +326,7 @@ export default function Result() {
             eyebrow: 'Take it with you',
             title: 'Your future is worth carrying.',
             body: 'The full case holds your saved careers, your notes and the six-stage flight plan.',
-            actions: (
-              <>
-                <Button size="lg" to="/briefcase">Open your briefcase</Button>
-                <Button variant="secondary" size="lg" to="/roadmap">See the route</Button>
-              </>
-            ),
+            actions: <Button variant="secondary" size="lg" to="/roadmap">See the route</Button>,
           },
         ]}
       />

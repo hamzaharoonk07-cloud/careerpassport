@@ -54,7 +54,11 @@ export default function PassportAuth() {
   // /login and /register carry no :mode param — the path itself is the mode.
   const routeMode =
     paramMode || (location.pathname.includes('register') ? 'register' : 'login');
-  const { register, login } = useAuth();
+  // `user` is read when the entry stamp renders, to seed its ink variation
+  // from the passport number. It has to be destructured here: `user?.x` on an
+  // identifier that was never declared is a ReferenceError, not undefined, so
+  // omitting it took down the whole tree the moment a login succeeded.
+  const { register, login, user } = useAuth();
   const reduced = useReducedMotion();
 
   const [mode, setMode] = useState(routeMode === 'register' ? 'register' : 'login');

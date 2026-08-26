@@ -6,6 +6,9 @@ import {
   QuizResult,
   QuizAnswer,
   SavedCareer,
+  MediaItem,
+  Feedback,
+  SuccessStory,
 } from '../models/index.js';
 import { ApiError, asyncHandler } from '../utils/ApiError.js';
 
@@ -21,7 +24,15 @@ import { ApiError, asyncHandler } from '../utils/ApiError.js';
 
 /** Headline counts for the dashboard. */
 export const stats = asyncHandler(async (req, res) => {
-  const [users, admins, results, saved, careers, fields, answers] = await Promise.all([
+  // "Active" is a window, not a flag: someone who signed in within the last
+  // 30 days. lastLoginAt is already stamped on every login, so this needs no
+  // new bookkeeping.
+  const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+
+  const [
+    users, admins, results, saved, careers, fields, answers,
+    activeUsers, media, feedbackNew, stories,
+  ] = await Promise.all([
     User.countDocuments(),
     User.countDocuments({ role: 'admin' }),
     QuizResult.countDocuments(),
@@ -29,6 +40,10 @@ export const stats = asyncHandler(async (req, res) => {
     Career.countDocuments({ active: true }),
     CareerField.countDocuments({ active: true }),
     QuizAnswer.countDocuments(),
+    User.countDocuments({ lastLoginAt: { $gte: since } }),
+    MediaItem.countDocuments({ active: true }),
+    Feedback.countDocuments({ status: 'new' }),
+    SuccessStory.countDocuments({ published: true }),
   ]);
 
   // Which destinations people actually land on — the one genuinely
@@ -36,6 +51,17 @@ export const stats = asyncHandler(async (req, res) => {
   const topMatches = await QuizResult.aggregate([
     { $match: { topMatch: { $ne: null } } },
     { $group: { _id: '$topMatch', count: { $sum: 1 } } },
+    { $sort: { count: -1 } },
+    { $limit: 8 },
+    { $lookup: { from: 'careers', localField: '_id', foreignField: '_id', as: 'career' } },
+    { $unwind: '$career' },
+    { $project: { _id: 0, count: 1, title: '$career.title', slug: '$career.slug' } },
+  ]);
+
+  // What people bookmark, as distinct from what they were matched to. The
+  // two diverge, and the gap is the interesting part.
+  const topSaved = await SavedCareer.aggregate([
+    { $group: { _id: '$career', count: { $sum: 1 } } },
     { $sort: { count: -1 } },
     { $limit: 8 },
     { $lookup: { from: 'careers', localField: '_id', foreignField: '_id', as: 'career' } },
@@ -51,8 +77,12 @@ export const stats = asyncHandler(async (req, res) => {
 
   res.json({
     ok: true,
-    stats: { users, admins, results, saved, careers, fields, answers },
+    stats: {
+      users, activeUsers, admins, results, saved, careers, fields, answers,
+      media, feedbackNew, stories,
+    },
     topMatches,
+    topSaved,
     signupsByDay: signupsByDay.reverse(),
   });
 });

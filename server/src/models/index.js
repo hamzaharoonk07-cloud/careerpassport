@@ -6,3 +6,6 @@ export { default as QuizOption, FIELD_KEYS, RIASEC_KEYS } from './QuizOption.js'
 export { default as QuizAnswer } from './QuizAnswer.js';
 export { default as QuizResult } from './QuizResult.js';
 export { default as SavedCareer } from './SavedCareer.js';
+export { Feedback } from './Feedback.js';
+export { SuccessStory } from './SuccessStory.js';
+export { MediaItem } from './MediaItem.js';

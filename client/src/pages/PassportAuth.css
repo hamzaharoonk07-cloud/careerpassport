@@ -322,11 +322,18 @@
   max-width: 34ch;
 }
 
-/* Embossed dry seal on the left page */
-.pa__seal {
+/* Embossed dry seal on the left page, and the ring the stamp lands in.
+   The wrapper carries the spacing the seal used to, so the rest of the page
+   sits exactly where it did. */
+.pa__sealwrap {
+  position: relative;
   margin: var(--sp-6) 0 auto;
   width: 108px;
   height: 108px;
+}
+.pa__seal {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   border: 2px dashed rgba(16, 20, 31, 0.14);
   background:
@@ -438,9 +445,12 @@
    The artwork lives in EntryStamp.jsx; this only places it on the
    page and drives the impact. */
 .pa__stamp {
+  /* Centred on the dry seal, and a little larger than it, the way a real
+     stamp overlaps the ring it is aimed at rather than sitting inside it. */
   position: absolute;
-  right: 7%;
-  bottom: 10%;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
   z-index: 7;
   display: grid;
   place-items: center;
@@ -473,7 +483,7 @@
   .pa__page--left { display: none; }
   .pa__cover { left: 0; width: 100%; translate: 0 0; }
   .pa--open .pa__cover { transform: rotateY(-166deg); }
-  .pa__stamp { right: 6%; bottom: 6%; width: clamp(120px, 34%, 160px); }
+  .pa__stamp { scale: 0.8; }
   .pa__back, .pa__sound { top: var(--sp-4); }
   .pa__back { left: var(--sp-4); }
   .pa__sound { right: var(--sp-4); }

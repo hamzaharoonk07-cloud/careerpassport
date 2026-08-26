@@ -338,7 +338,23 @@ export default function PassportAuth() {
                   : 'Sign in and your document picks up exactly where you left it.'}
               </p>
 
-              <div className="pa__seal" aria-hidden="true" />
+              {/* The dry seal is where the stamp lands. It is a printed
+                  ring waiting for ink, so the stamp is centred on it rather
+                  than dropped in a corner of the spread. */}
+              <div className="pa__sealwrap">
+                <div className="pa__seal" aria-hidden="true" />
+                {(phase === 'stamping' || phase === 'done') && (
+                  <div className="pa__stamp" role="status" aria-label="Admitted">
+                    <span className="pa__shock" aria-hidden="true" />
+                    <EntryStamp
+                      size={150}
+                      status="ADMITTED"
+                      port="KARACHI · JINNAH INTL"
+                      seed={(user?.passportNumber || '').length}
+                    />
+                  </div>
+                )}
+              </div>
 
               <p className="pa__switch">
                 {mode === 'register' ? 'Already have a passport?' : 'No passport yet?'}{' '}
@@ -372,18 +388,6 @@ export default function PassportAuth() {
             <div className="pa__verify" role="status">
               <span className="pa__verify-ring" aria-hidden="true" />
               <span className="pa__verify-text">Verifying your details…</span>
-            </div>
-          )}
-
-          {(phase === 'stamping' || phase === 'done') && (
-            <div className="pa__stamp">
-              <span className="pa__shock" aria-hidden="true" />
-              <EntryStamp
-                size={210}
-                status="ADMITTED"
-                port="KARACHI · JINNAH INTL"
-                seed={(user?.passportNumber || '').length}
-              />
             </div>
           )}
 

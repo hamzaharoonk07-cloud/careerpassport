@@ -128,3 +128,18 @@
 }
 .hub__star--on { color: var(--gold-400); }
 .hub__star:hover { color: var(--gold-300); }
+
+/* Seeded stories are illustrations. Saying so is not a disclaimer for its
+   own sake — an invented testimonial presented as real is the one thing
+   this project refuses everywhere else. */
+.hub__samples {
+  margin-top: var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-600);
+  color: var(--text-low);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  max-width: 78ch;
+}
+.hub__samples strong { color: var(--gold-400); font-weight: 600; }

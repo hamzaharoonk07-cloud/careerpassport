@@ -70,6 +70,17 @@ export default function Stories() {
         </Button>
       </header>
 
+      {/* Said plainly rather than left to be inferred: seeded stories are
+          illustrations, not real people, and they disappear the moment an
+          administrator deletes them. */}
+      {stories.some((s) => s.isSample) && (
+        <p className="hub__samples">
+          Some entries below are marked <strong>Example</strong>. They illustrate what a
+          story looks like — they are not real submissions, and an administrator can remove
+          them once genuine ones arrive.
+        </p>
+      )}
+
       {sent && <p className="anotice" role="status">{sent}</p>}
       {error && <div className="auth__alert" role="alert">{error}</div>}
 
@@ -105,7 +116,9 @@ export default function Stories() {
           {stories.map((s) => (
             <article className="hub__card hub__card--story" key={s._id}>
               <div className="hub__body">
-                <span className="hub__kind">{s.career?.field?.name || 'Career'}</span>
+                <span className="hub__kind">
+                  {s.isSample ? 'Example' : (s.career?.field?.name || 'Career')}
+                </span>
                 <h2 className="hub__title">{s.headline}</h2>
                 <p className="hub__who">
                   {s.name}

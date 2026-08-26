@@ -21,6 +21,15 @@ const successStorySchema = new mongoose.Schema(
 
     imageUrl: { type: String, trim: true, default: '' },
 
+    /**
+     * Seeded illustrative content, not a real person's account.
+     *
+     * The page labels these so nobody mistakes them for genuine
+     * testimonials, and an admin can clear them all once real submissions
+     * arrive. A story left by an actual user never carries this.
+     */
+    isSample: { type: Boolean, default: false },
+
     // Nothing a user submits is visible until this is set.
     published: { type: Boolean, default: false, index: true },
     order: { type: Number, default: 0 },

@@ -1,0 +1,73 @@
+{
+  "media": [
+    {
+      "title": "Inside the terminal: how PathSeeker works",
+      "description": "A walk through the journey — passport, departures board, quiz, and the flight plan you leave with.",
+      "kind": "video",
+      "url": "/videos/terminal.mp4",
+      "thumbnailUrl": "/images/terminal.jpg",
+      "order": 1
+    },
+    {
+      "title": "What the boarding pass actually records",
+      "description": "Your passport number, the gate you chose, and why the match is tied to both.",
+      "kind": "video",
+      "url": "/videos/boarding.mp4",
+      "thumbnailUrl": "/images/boarding.jpg",
+      "order": 2
+    },
+    {
+      "title": "Ten questions at altitude",
+      "description": "Why the quiz asks what it asks, and what each answer is measuring.",
+      "kind": "video",
+      "url": "/videos/cabin.mp4",
+      "thumbnailUrl": "/images/cabin.jpg",
+      "order": 3
+    },
+    {
+      "title": "Arrival: reading your result honestly",
+      "description": "What a percentage means, when two matches are too close to call, and what to do next.",
+      "kind": "video",
+      "url": "/videos/landing.mp4",
+      "thumbnailUrl": "/images/landing.jpg",
+      "order": 4
+    },
+    {
+      "title": "Holland codes explained",
+      "description": "The six traits behind every match — Realistic, Investigative, Artistic, Social, Enterprising, Conventional — and what each looks like in a working day.",
+      "kind": "document",
+      "url": "https://www.onetonline.org/find/descriptor/browse/1.B.1",
+      "order": 5
+    },
+    {
+      "title": "O*NET occupational database",
+      "description": "The public research database behind most modern career-interest tools. Useful for checking any role you are offered here.",
+      "kind": "link",
+      "url": "https://www.onetonline.org/",
+      "order": 6
+    }
+  ],
+  "stories": [
+    {
+      "name": "Sample: a student",
+      "headline": "Chose computer science after the quiz put Investigative first",
+      "roleTitle": "Software Engineer",
+      "story": "I had picked my subjects for the wrong reason — everyone in my class was applying for the same thing. The quiz put Investigative and Realistic at the top and I recognised myself in it immediately: I liked taking things apart more than presenting about them. The flight plan told me to learn one language properly before touching frameworks, which I ignored for two months and then came back to. It was right.",
+      "order": 1
+    },
+    {
+      "name": "Sample: a graduate",
+      "headline": "Two matches were within three points, and that was the useful part",
+      "roleTitle": "UX Designer",
+      "story": "The result would not pick between design and front-end development, and instead of hiding that it told me the real difference was how much open-ended creative work I wanted in a day. That was a question I could actually answer. I shadowed a designer for a week and knew within two days.",
+      "order": 2
+    },
+    {
+      "name": "Sample: a professional",
+      "headline": "Changed direction at thirty-one without starting over",
+      "roleTitle": "Data Analyst",
+      "story": "I assumed a change meant throwing away eight years in operations. The match came back Data Analyst and the reasoning pointed at the part of my job I already liked — finding out why the numbers disagreed. Most of what the roadmap asked for was evenings, not a degree.",
+      "order": 3
+    }
+  ]
+}

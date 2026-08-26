@@ -12,6 +12,8 @@ import {
   QuizAnswer,
   QuizResult,
   SavedCareer,
+  MediaItem,
+  SuccessStory,
 } from '../models/index.js';
 import { env } from '../config/env.js';
 
@@ -167,6 +169,27 @@ export async function seedDatabase({ log = console.log } = {}) {
   log(`  careers           ${careers.length}  (${withSalary} with salary data, ${careers.length - withSalary} without)`);
   log(`  quiz questions    ${questionData.length}`);
   log(`  quiz options      ${optionCount}`);
+  // ── Showcase content ─────────────────────────────────────────────
+  // The multimedia centre and stories hub are empty until somebody adds to
+  // them, and an empty page tells a visitor nothing about what the section
+  // is for. Media points at real assets in this project or public
+  // references; the stories are flagged isSample and labelled on the page,
+  // because inventing testimonials and presenting them as real people would
+  // be exactly the fabricated content this project refuses everywhere else.
+  const showcase = await readJson('showcase.json');
+
+  if ((await MediaItem.countDocuments()) === 0) {
+    await MediaItem.insertMany(showcase.media);
+    log(`  media items       ${showcase.media.length}`);
+  }
+
+  if ((await SuccessStory.countDocuments()) === 0) {
+    await SuccessStory.insertMany(
+      showcase.stories.map((s) => ({ ...s, isSample: true, published: true }))
+    );
+    log(`  sample stories    ${showcase.stories.length}`);
+  }
+
   // ── Owner account ────────────────────────────────────────────────
   // Seeded from the environment so the password never enters the repo.
   // Recreated on every boot, which is what makes it survive the in-memory

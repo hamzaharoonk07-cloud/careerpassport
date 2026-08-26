@@ -141,25 +141,60 @@ export async function seedDatabase({ log = console.log } = {}) {
       profile: { education: 'BS Computer Science', location: 'Karachi' },
     });
     log(`✅  demo account created — ${demoEmail} / demo1234`);
+    if (env.isProd) {
+      // Deliberate: judges need a way in without registering, and this
+      // account holds no privileges. Worth stating plainly all the same.
+      log('    (its password is public — it is an ordinary user, with no admin rights)');
+    }
   } else {
     log(`ℹ️   demo account already exists — ${demoEmail}`);
   }
 
   // ── Admin account ────────────────────────────────────────────────
-  // Without one, the admin panel exists but nobody can open it.
+  // Without one, the admin panel exists but nobody can open it — so on a
+  // development machine this is seeded with a known password and the panel
+  // is reachable with no setup at all.
+  //
+  // It is refused in production, because that password is in seed.js and
+  // seed.js is in a public repository. Seeding it on a live site would hand
+  // anyone who reads the source full administrative access: editing and
+  // retiring careers, deleting user accounts, reading every piece of
+  // feedback. A convenience for local work becomes a public admin login the
+  // moment the database is a real one.
+  //
+  // Production admins come from ADMIN_EMAILS instead: register normally with
+  // one of those addresses and the role is granted on registration and
+  // reasserted on every boot. OWNER_EMAIL / OWNER_PASSWORD, applied below,
+  // is the other route, and takes its password from the environment rather
+  // than from a committed file.
   const adminEmail = 'admin@pathseeker.app';
-  let admin = await User.findOne({ email: adminEmail });
-  if (!admin) {
-    admin = await User.create({
-      name: 'Pass Seeker Admin',
-      email: adminEmail,
-      passwordHash: await User.hashPassword('admin1234'),
-      role: 'admin',
-    });
-    log(`✅  admin account created — ${adminEmail} / admin1234`);
+  if (env.isProd) {
+    const existingAdmin = await User.findOne({ email: adminEmail });
+    if (existingAdmin) {
+      // Seeded before this guard existed, against what is now a live
+      // database. Saying so is the point — it is a live credential.
+      log(`⚠️   ${adminEmail} exists in this database with a password that is public in the repository.`);
+      log('    Change it or delete that account.');
+    } else {
+      log(`ℹ️   skipped the built-in admin account (its password is public — production admins come from ADMIN_EMAILS)`);
+    }
+    if (!env.adminEmails.length && !env.owner.email) {
+      log('⚠️   no ADMIN_EMAILS and no OWNER_EMAIL are set, so nobody can open the admin panel.');
+    }
   } else {
-    if (admin.role !== 'admin') { admin.role = 'admin'; await admin.save(); }
-    log(`ℹ️   admin account already exists — ${adminEmail}`);
+    let admin = await User.findOne({ email: adminEmail });
+    if (!admin) {
+      admin = await User.create({
+        name: 'Pass Seeker Admin',
+        email: adminEmail,
+        passwordHash: await User.hashPassword('admin1234'),
+        role: 'admin',
+      });
+      log(`✅  admin account created — ${adminEmail} / admin1234`);
+    } else {
+      if (admin.role !== 'admin') { admin.role = 'admin'; await admin.save(); }
+      log(`ℹ️   admin account already exists — ${adminEmail}`);
+    }
   }
 
   // ── Summary ──────────────────────────────────────────────────────

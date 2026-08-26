@@ -157,7 +157,7 @@ const splitList = (v) =>
     }
   };
 
-  if (!user) return <div className="page wrap"><p className="t-low">Loading…</p></div>;
+  if (!user) return <div className="page wrap acct"><p className="t-low">Loading…</p></div>;
 
   const top = result?.matches?.[0];
 
@@ -165,8 +165,11 @@ const splitList = (v) =>
     <div className="page wrap acct">
       <header className="page__head">
         <div>
-          <p className="t-eyebrow">Account · Travel document</p>
-          <h1 className="t-h2 page__title">{user.name}</h1>
+          {/* The name is printed on the document below. Repeating it here
+              at heading size cost a third of the fold and said nothing the
+              passport does not say better. */}
+          <p className="t-eyebrow">Account</p>
+          <h1 className="t-h3 page__title">Your passport</h1>
         </div>
         <div className="row" style={{ gap: 'var(--sp-3)', flexWrap: 'wrap' }}>
           {/* The browser's own print-to-PDF does the export. No library, no

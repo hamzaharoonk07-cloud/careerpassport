@@ -138,20 +138,46 @@
 
 /* Skills and interests, as stamps on the document rather than a run-on line. */
 .acct__chips { display: flex; flex-wrap: wrap; gap: 5px; }
+/* Ink for a cream document, not for a dark panel.
+   These were set in --gold-300, which is the light tint meant to read
+   against navy. On the passport's cream paper it came out as pale gold
+   on pale cream and the interests looked like they had not rendered at
+   all. Dark gold on a warm tint is the same family, the right way up. */
 .acct__chips span {
-  padding: 2px 8px;
+  padding: 2px 9px;
   border-radius: var(--r-pill);
-  border: 1px solid rgba(201, 162, 39, 0.35);
-  background: rgba(201, 162, 39, 0.10);
-  font-size: 0.74rem;
-  color: var(--gold-300);
+  border: 1px solid rgba(138, 111, 24, 0.45);
+  background: rgba(201, 162, 39, 0.16);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #6b5412;
 }
 .acct__exp-list { display: grid; gap: 2px; }
 .acct__exp-list span { font-size: var(--fs-sm); }
 .acct__file {
-  color: var(--gold-400);
+  color: #7a6115;
   text-decoration: underline;
   text-underline-offset: 3px;
   word-break: break-all;
 }
-.acct__file:hover { color: var(--gold-300); }
+.acct__file:hover { color: #4f3d0d; }
+
+/* ── Density ─────────────────────────────────────────────────────
+   The passport is a fifteen-row document. At the page's default
+   rhythm only four rows cleared the fold, which made a dense
+   document read as an empty one. This is tuned for reading a
+   record, not for a landing page. */
+.acct { padding-block: var(--sp-5) var(--sp-8); }
+.acct .page__head { align-items: center; margin-bottom: var(--sp-5); }
+.acct .page__title { margin-top: 2px; }
+
+.acct__facts > div { padding: var(--sp-2) 0; }
+.acct__facts dt { margin-bottom: 1px; }
+
+/* The cream document and the dark editor were two unrelated objects
+   side by side. Matching their radius, border weight and inner
+   rhythm makes them read as two halves of one thing. */
+.acct__doc, .acct__form-card {
+  border-radius: var(--r-lg);
+  padding: var(--sp-5);
+}

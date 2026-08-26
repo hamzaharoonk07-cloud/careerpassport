@@ -38,15 +38,18 @@ export function useReveal({ threshold = 0.18, rootMargin = '0px 0px -8% 0px' } =
     );
     observer.observe(el);
 
-    // If the element is already on screen when it mounts, the observer will
-    // report it on the next frame — but if anything goes wrong, this fires.
+    // The net, and it has to be unconditional.
+    //
+    // It used to reveal only if the element happened to be on screen when
+    // the timer fired, once. That is not a failsafe: if the observer never
+    // reports — a hidden document does not run the rendering lifecycle, so
+    // callbacks are never delivered — the element stays at opacity 0 for the
+    // life of the page and the content is simply gone. Position is the
+    // observer's job; this one exists for when the observer is not working
+    // at all, so it reveals regardless.
     const failsafe = setTimeout(() => {
-      const r = el.getBoundingClientRect();
-      const onScreen = r.top < window.innerHeight && r.bottom > 0;
-      if (onScreen) {
-        setSeen(true);
-        observer.disconnect();
-      }
+      setSeen(true);
+      observer.disconnect();
     }, FAILSAFE_MS);
 
     return () => {

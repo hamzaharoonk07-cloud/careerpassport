@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
+import { Decide } from '../components/brand/Decide.jsx';
+import { Reveal } from '../components/motion/Reveal.jsx';
 import { quizService } from '../services/quiz.service.js';
 import { careerService } from '../services/career.service.js';
 import { apiError } from '../services/api.js';
@@ -257,6 +259,15 @@ export default function Result() {
           </section>
         </article>
 
+        {/* Only worth showing when there is a genuine second option. A
+            comparison against something scoring far lower is not a decision,
+            it is padding. */}
+        {result.matches[1] && top.score - result.matches[1].score <= 12 && (
+          <Reveal>
+            <Decide first={top} second={result.matches[1]} />
+          </Reveal>
+        )}
+
         {/* Runners-up — the result is a ranking, not a verdict */}
         {others.length > 0 && (
           <section className="rs__others">
@@ -283,6 +294,21 @@ export default function Result() {
           <Button variant="ghost" to={`/careers/${career.slug}`}>Full career profile</Button>
         </div>
         {savingNote && <p className="t-low" style={{ textAlign: 'center', marginTop: 'var(--sp-3)' }}>{savingNote}</p>}
+
+        {/* The briefcase, at the end of the report rather than behind a nav
+            link. Everything above is reading; this is the thing they leave
+            with, and it reveals as you reach it. */}
+        <Reveal className="rs__case">
+          <p className="t-eyebrow">One thing left</p>
+          <h3 className="rs__case-h">Take it with you</h3>
+          <p className="rs__case-p">
+            Your destination, the reasoning behind it and the route in — packed into
+            something you can carry out of here.
+          </p>
+          <div style={{ marginTop: 'var(--sp-5)' }}>
+            <Button size="lg" to="/briefcase">Open your briefcase</Button>
+          </div>
+        </Reveal>
       </div>
     </main>
   );

@@ -281,7 +281,6 @@ export default function Dashboard() {
         <ScrollFilm
           src="/videos/briefcase.mp4"
           portraitSrc="/videos/briefcase-portrait.mp4"
-        portraitSrc="/videos/briefcase-portrait.mp4"
           poster="/images/briefcase.jpg"
           height="300vh"
           className="dash__film"

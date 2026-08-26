@@ -156,25 +156,19 @@ textarea:focus-visible,
   .spinner { animation-duration: 2.4s; }
 }
 
-/* ── Surfaces that sit on footage ────────────────────────────
-   These pages are not documents, they are copy over moving video.
-   Flipping their tokens puts near-black text on a dark plate and it
-   disappears — the light theme has to stop at their edge.
+/* ── The index stays dark ────────────────────────────────────
+   The landing film is copy sitting directly on moving footage for
+   its whole height. There is no legible light treatment for text
+   over a night-time runway, so it keeps the dark palette whichever
+   theme the visitor prefers.
 
-   This is not a light-mode exemption for convenience. There is no
-   legible light treatment for text over a night-time runway; the
-   correct contrast there is light-on-dark whichever theme the
-   visitor prefers, so these keep the dark palette and the rest of
-   the app follows the setting. */
+   Every other page follows the setting. The ones that carry video
+   as a background rather than as their subject — the dashboard, the
+   passport, the terminal — get a light scrim below instead, so the
+   plate reads as paper texture rather than fighting the text. */
 :root[data-theme='light'] .lp,
 :root[data-theme='light'] .sfilm,
-:root[data-theme='light'] .apt,
-:root[data-theme='light'] .pa,
-:root[data-theme='light'] .bc,
-:root[data-theme='light'] .rm,
-:root[data-theme='light'] .dash,
-:root[data-theme='light'] .cin,
-:root[data-theme='light'] .flight {
+:root[data-theme='light'] .cin {
   --ink-900: #060911;
   --ink-800: #0a1128;
   --ink-700: #0f1b3c;
@@ -198,4 +192,25 @@ textarea:focus-visible,
 :root[data-theme='light'] {
   --surface-nav: rgba(250, 247, 240, 0.86);
   --surface-nav-solid: rgba(250, 247, 240, 0.96);
+}
+
+/* Video-backed pages, in light mode.
+   Their plates stay, but under a light wash rather than a dark one,
+   so dark type has a pale ground to sit on instead of footage. */
+:root[data-theme='light'] .dash::before {
+  background:
+    radial-gradient(130% 68% at 8% 112%, rgba(201, 162, 39, 0.10), transparent 58%),
+    linear-gradient(180deg, rgba(250, 247, 240, 0.93), rgba(245, 240, 230, 0.96) 62%);
+}
+:root[data-theme='light'] .dash__bg { opacity: 0.35; }
+:root[data-theme='light'] .dash__strip,
+:root[data-theme='light'] .dash__board { background: rgba(255, 255, 255, 0.88); }
+
+:root[data-theme='light'] .pa .sv__scrim,
+:root[data-theme='light'] .apt .sv__scrim,
+:root[data-theme='light'] .rm .sv__scrim,
+:root[data-theme='light'] .bc .sv__scrim {
+  background:
+    radial-gradient(70% 60% at 50% 50%, rgba(250, 247, 240, 0.72), rgba(245, 240, 230, 0.90) 78%),
+    linear-gradient(180deg, rgba(250, 247, 240, 0.80), rgba(245, 240, 230, 0.92));
 }

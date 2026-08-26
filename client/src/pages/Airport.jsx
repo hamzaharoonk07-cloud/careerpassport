@@ -7,6 +7,7 @@ import { BoardingPass } from '../components/brand/BoardingPass.jsx';
 import { FlightSequence } from '../components/brand/FlightSequence.jsx';
 import { FieldIcon } from '../components/brand/FieldIcon.jsx';
 import { careerService } from '../services/career.service.js';
+import { quizService } from '../services/quiz.service.js';
 import { apiError } from '../services/api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useJourney } from '../context/JourneyContext.jsx';
@@ -43,11 +44,22 @@ export default function Airport() {
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState(null);   // { career, index }
   const [flying, setFlying] = useState(false);
+  // The last flight this traveller completed, or null if they have not flown.
+  const [landed, setLanded] = useState(null);
   const passRef = useRef(null);
 
   useEffect(() => {
     advance('station');
     let alive = true;
+
+    // Where this traveller last landed. The endpoint answers 404 before the
+    // first quiz, which is the ordinary case rather than a fault — a null
+    // result simply means the board still shows departures.
+    quizService
+      .latestResult()
+      .then((r) => { if (alive) setLanded(r); })
+      .catch(() => { if (alive) setLanded(null); });
+
     careerService
       .list({ limit: 60 })
       .then((res) => {
@@ -121,6 +133,10 @@ export default function Airport() {
     );
   }
 
+  // A result row with no matches would satisfy `landed` while having nothing
+  // to show, so the arrival itself is what the terminal branches on.
+  const arrival = landed?.matches?.[0] || null;
+
   if (flying) {
     return (
       <FlightSequence
@@ -141,9 +157,14 @@ export default function Airport() {
         <header className="apt__head">
           <div>
             <p className="t-eyebrow">Passport {user?.passportNumber} · cleared for travel</p>
-            <h1 className="apt__welcome">Welcome to your journey</h1>
+            <h1 className="apt__welcome">
+              {arrival ? 'Welcome back' : 'Welcome to your journey'}
+            </h1>
             <p className="apt__loc">
-              <span aria-hidden="true">📍</span> International Terminal · Karachi, Pakistan
+              <span aria-hidden="true">📍</span>{' '}
+              {arrival
+                ? `Arrivals · ${arrival.career.title}`
+                : 'International Terminal · Karachi, Pakistan'}
             </p>
           </div>
         </header>
@@ -155,9 +176,16 @@ export default function Airport() {
               type="button"
               className="apt__action"
               onClick={() => {
-                if (a.key === 'explore') document.querySelector('.board3')?.scrollIntoView({ behavior: 'smooth' });
+                if (a.key === 'explore') {
+                  // Before the quiz there is no board to scroll to.
+                  if (arrival) document.querySelector('.board3')?.scrollIntoView({ behavior: 'smooth' });
+                  else navigate('/quiz');
+                }
                 if (a.key === 'journey') navigate('/dashboard');
-                if (a.key === 'pass') passRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (a.key === 'pass') {
+                  if (arrival) passRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  else navigate('/quiz');
+                }
                 if (a.key === 'profile') navigate('/dashboard');
               }}
             >
@@ -168,6 +196,48 @@ export default function Airport() {
           ))}
         </div>
 
+        {arrival && (
+          <section className="apt__landed">
+            <p className="t-eyebrow">Where you landed</p>
+            <h2 className="apt__landed-title">{arrival.career.title}</h2>
+            <p className="apt__landed-sub">
+              {arrival.career.field?.name}
+              {' · '}
+              {arrival.score}% match
+            </p>
+            <div className="row" style={{ flexWrap: 'wrap', marginTop: 'var(--sp-5)' }}>
+              <Button to="/result">See your result</Button>
+              <Button variant="ghost" to={`/careers/${arrival.career.slug}`}>
+                Open this career
+              </Button>
+            </div>
+          </section>
+        )}
+
+        {!arrival ? (
+          /*
+           * The board stays closed until the questions are answered.
+           *
+           * Thirty-eight gates shown to someone who has not told us anything
+           * about themselves is a list, not guidance — they would pick by the
+           * job title they already recognised, which is the exact habit this
+           * product exists to interrupt. Answer first, and the gates mean
+           * something when they open.
+           */
+          <section className="apt__checkin">
+            <p className="t-eyebrow">Check in</p>
+            <h2 className="apt__landed-title">Before the gates open</h2>
+            <p className="t-lead" style={{ marginTop: 'var(--sp-4)' }}>
+              The board is showing no destinations for you yet. Answer the
+              questions about what you actually enjoy, and it fills with the
+              gates that fit you rather than all thirty-eight at once.
+            </p>
+            <div className="row" style={{ flexWrap: 'wrap', marginTop: 'var(--sp-5)' }}>
+              <Button size="lg" to="/quiz">Answer the questions</Button>
+              <Button variant="ghost" to="/careers">Browse the career bank instead</Button>
+            </div>
+          </section>
+        ) : (
         <div className="apt__grid">
           <DepartureBoard
             careers={careers}
@@ -193,6 +263,7 @@ export default function Airport() {
             )}
           </div>
         </div>
+        )}
       </div>
     </main>
   );

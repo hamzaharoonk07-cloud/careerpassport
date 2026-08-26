@@ -16,6 +16,11 @@ import '../../styles/app.css';
  * `auth` hides a tab that would only bounce someone to the sign-in page.
  */
 const LINKS = [
+  // The terminal is the hub of the journey, but until now it was only
+  // reachable by walking the flow forward from the passport. Someone who
+  // left mid-journey and came back had no way to return to it, and someone
+  // who had already flown had no way to look at where they landed.
+  { to: '/airport', label: 'Terminal', auth: true },
   { to: '/careers', label: 'Career Bank', auth: false },
   { to: '/media', label: 'Multimedia', auth: false },
   { to: '/stories', label: 'Stories', auth: false },

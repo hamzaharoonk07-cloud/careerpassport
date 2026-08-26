@@ -204,10 +204,18 @@ export function rankCareers(profile, careers, chosenFieldSlug = null, limit = 8)
     const fieldFit = clamp((profile.fieldScores[fieldSlug] || 0) / 100);
     const isChosenField = Boolean(chosenFieldSlug && fieldSlug === chosenFieldSlug);
 
-    const raw =
-      WEIGHTS.riasec * riasecFit +
-      WEIGHTS.field * fieldFit +
-      WEIGHTS.chosenField * (isChosenField ? 1 : 0);
+    // When the traveller never picked a field, the chosen-field term cannot
+    // be earned by anybody, so leaving it in the denominator would take ten
+    // points off every career alike. The order would survive but the numbers
+    // would not: a 78% match would print as 68%, and a percentage is read as
+    // a statement about fit, not as a rank. Drop the term and share its
+    // weight between the two that were actually measured.
+    const raw = chosenFieldSlug
+      ? WEIGHTS.riasec * riasecFit +
+        WEIGHTS.field * fieldFit +
+        WEIGHTS.chosenField * (isChosenField ? 1 : 0)
+      : (WEIGHTS.riasec * riasecFit + WEIGHTS.field * fieldFit) /
+        (WEIGHTS.riasec + WEIGHTS.field);
 
     return {
       career: career._id,

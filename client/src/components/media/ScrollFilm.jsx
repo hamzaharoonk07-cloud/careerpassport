@@ -32,6 +32,7 @@ export function ScrollFilm({
   src,
   mobileSrc,
   mobileSrcHq,
+  portraitSrc,
   poster,
   chapters = [],
   height = '600vh',
@@ -274,7 +275,15 @@ export function ScrollFilm({
   // The same cut everywhere, so a phone gets the desktop experience rather
   // than an approximation of it. Only a connection that has asked to save
   // data drops to the lighter file.
-  const playSrc = narrow && thrifty ? (mobileSrc || src) : src;
+  // A portrait phone gets a cut framed for it. Handing it the landscape
+  // master means `object-fit: cover` throws away two thirds of the width,
+  // which is what reads as being zoomed in.
+  const portrait = narrow && typeof window !== 'undefined'
+    && window.matchMedia?.('(orientation: portrait)').matches;
+
+  const playSrc = narrow && thrifty
+    ? (mobileSrc || src)
+    : (portrait && portraitSrc) || src;
   const trackHeight = narrow ? '420vh' : height;
 
   return (

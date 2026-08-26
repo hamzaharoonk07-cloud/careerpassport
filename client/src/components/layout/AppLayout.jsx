@@ -21,7 +21,6 @@ const LINKS = [
   { to: '/stories', label: 'Stories', auth: false },
   { to: '/dashboard', label: 'Dashboard', auth: true },
   { to: '/roadmap', label: 'Roadmap', auth: true },
-  { to: '/briefcase', label: 'Briefcase', auth: true },
   { to: '/feedback', label: 'Feedback', auth: false },
 ];
 

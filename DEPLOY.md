@@ -117,6 +117,6 @@ Vercel's **Root Directory** is set to a subfolder. Settings → Build and
 Deployment → Root Directory must be empty (`./`), not `client`.
 
 With it set to `client`, Vercel treats that folder as the whole
-repository: `client/dist` resolves to `client/client/dist` and every route
+repository: the build output resolves one level too deep and every route
 404s, `api/` sits outside the root so the backend never deploys, and the
 root `vercel.json` is never read.

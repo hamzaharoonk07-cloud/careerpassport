@@ -28,6 +28,17 @@ export default defineConfig({
   },
 
   build: {
+    // Written to the repository root rather than client/dist.
+    //
+    // Vercel's Vite preset looks for a directory called `dist` next to the
+    // build command, and a project-level Output Directory setting overrides
+    // whatever vercel.json says — so `client/dist` was built successfully
+    // and then reported missing. Emitting where the platform already looks
+    // removes the disagreement instead of trying to win it from settings.
+    outDir: '../dist',
+    // Vite refuses to clear a directory outside its root without this, so
+    // stale files from an earlier build would otherwise be served forever.
+    emptyOutDir: true,
     target: 'es2020',
     cssCodeSplit: true,
     rollupOptions: {

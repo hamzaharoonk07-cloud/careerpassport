@@ -154,70 +154,42 @@ export function ScrollFilm({
   useEffect(() => {
     if (!scrubbable || !ready) return undefined;
 
-    /* ── Phones: play, do not scrub ───────────────────────────────
-       Seeking is what made this drag. Even rate-limited, every seek asks
-       a phone decoder to jump to an arbitrary frame and rebuild from the
-       nearest keyframe, and the file had to carry a keyframe every six
-       frames to make that bearable — which spent the bitrate on keyframes
-       instead of picture, so it looked poor as well as running badly.
+    /* ── One path, everywhere ──────────────────────────────────────
+       Phones scrub the same file the desktop does.
 
-       Scrolling instead drives ordinary forward playback: the video runs
-       while the finger moves and pauses when it stops. Decoding forward is
-       what the hardware is built for. Position is only corrected when the
-       film has drifted well away from the scroll position — scrolling back
-       up, mostly, since video cannot play backwards — and that correction
-       is throttled hard.
+       What makes the desktop smooth is not its size, it is the encode: a
+       keyframe every six frames, so any seek decodes at most six frames.
+       Neither mobile attempt before this had that combination — the first
+       asked for sixty seeks a second, the second played a 2560px file whose
+       detail a phone screen cannot even show. Both were doing more work
+       than the desktop, not less.
 
-       The mobile cut is 720p with a normal GOP now: better picture, and
-       nothing seeks it frame by frame. */
-    if (narrow) {
-      const IDLE_MS = 170;      // finger considered lifted
-      const DRIFT = 0.22;       // fraction of the film before resyncing
-      const RESYNC_GAP = 700;   // ms between corrections
-      let lastResync = 0;
-
-      const tickMobile = (now) => {
-        const v = videoRef.current;
-        if (v && v.duration) {
-          const moving = now - lastScroll.current < IDLE_MS;
-
-          if (moving) {
-            if (v.paused) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
-          } else if (!v.paused) {
-            v.pause();
-          }
-
-          const at = v.currentTime / v.duration;
-          if (
-            Math.abs(at - target.current) > DRIFT &&
-            now - lastResync > RESYNC_GAP &&
-            !v.seeking
-          ) {
-            lastResync = now;
-            try { v.currentTime = target.current * v.duration; } catch { /* busy */ }
-          }
-
-          const cs = chaptersRef.current;
-          if (cs.length) {
-            const i = cs.reduce((acc, c, idx) => (target.current >= c.at ? idx : acc), 0);
-            setChapter((prev) => (prev === i ? prev : i));
-          }
-        }
-        raf.current = requestAnimationFrame(tickMobile);
-      };
-
-      raf.current = requestAnimationFrame(tickMobile);
-      return () => cancelAnimationFrame(raf.current);
-    }
+       So: same file, same scrub, rate-limited to what a phone decoder can
+       actually serve, and never queueing a seek while one is in flight. */
+    const minGap = narrow ? 33 : 0;        // ms between seeks (~30fps)
+    const epsilon = narrow ? 0.03 : 0.02;  // seconds worth ignoring
+    let lastSeek = 0;
 
     /* ── Pointer devices: true scrub, one seek per frame ─────────── */
+    // Off-screen, there is nothing to drive. Without this the loop keeps
+    // seeking a video nobody can see for the whole rest of the page, which
+    // on a phone is a decoder running flat out behind the content.
+    let onScreen = true;
+    const io = new IntersectionObserver(
+      ([e]) => { onScreen = e.isIntersecting; },
+      { rootMargin: '10% 0px' }
+    );
+    if (sectionRef.current) io.observe(sectionRef.current);
+
     const tick = (now) => {
       const v = videoRef.current;
-      if (v && v.duration) {
+      if (v && v.duration && onScreen) {
         current.current += (target.current - current.current) * 0.12;
         const t = current.current * v.duration;
         // Seeking to a value the decoder already sits on wastes a frame.
-        if (!v.seeking && Math.abs(v.currentTime - t) > 0.02) {
+        const due = now - lastSeek >= minGap;
+        if (due && !v.seeking && Math.abs(v.currentTime - t) > epsilon) {
+          lastSeek = now;
           try { v.currentTime = t; } catch { /* decoder busy; try next frame */ }
         }
         const cs = chaptersRef.current;
@@ -230,7 +202,10 @@ export function ScrollFilm({
     };
 
     raf.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf.current);
+    return () => {
+      cancelAnimationFrame(raf.current);
+      io.disconnect();
+    };
   }, [scrubbable, ready, narrow]);
 
   const Copy = ({ c, i }) => (
@@ -296,9 +271,10 @@ export function ScrollFilm({
   // asked to save data, or is on a measured connection, still gets the 720p
   // file: shipping 5 MB to someone on 3G is not a quality decision, it is a
   // bill.
-  const playSrc = narrow
-    ? (thrifty ? mobileSrc : (mobileSrcHq || mobileSrc)) || src
-    : src;
+  // The same cut everywhere, so a phone gets the desktop experience rather
+  // than an approximation of it. Only a connection that has asked to save
+  // data drops to the lighter file.
+  const playSrc = narrow && thrifty ? (mobileSrc || src) : src;
   const trackHeight = narrow ? '420vh' : height;
 
   return (

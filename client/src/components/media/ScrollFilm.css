@@ -49,7 +49,7 @@
 .sfilm__title {
   margin-top: var(--sp-3);
   font-family: var(--font-display);
-  font-size: clamp(2rem, 5.2vw, 3.8rem);
+  font-size: clamp(1.5rem, min(5.2vw, 6.5vh), 3.8rem);
   font-weight: 600;
   line-height: 1.04;
   letter-spacing: -0.018em;
@@ -84,9 +84,16 @@
   font-weight: 600;
 }
 
-/* The opening frame carries the page's masthead, so it runs larger. */
+/* The opening frame carries the page's masthead, so it runs larger.
+   Sized against the viewport's height as well as its width: on a laptop
+   at 542px tall the width-only clamp resolved to 86px, which put the
+   copy at 745px inside a 542px pinned frame and pushed the buttons out
+   through `overflow: hidden`. `min()` lets whichever axis is tighter
+   win. */
 .sfilm__copy--hero { max-width: 52ch; }
-.sfilm__copy--hero .sfilm__title { font-size: clamp(2.6rem, 7vw, 5.4rem); }
+.sfilm__copy--hero .sfilm__title {
+  font-size: clamp(2rem, min(7vw, 8.5vh), 5.4rem);
+}
 
 /* The closing frame is the handover to the passport — centred, so it reads
    as an ending rather than another chapter. */
@@ -215,4 +222,23 @@
       radial-gradient(90% 60% at 50% 62%, rgba(6, 9, 17, 0.80), transparent 76%),
       linear-gradient(180deg, rgba(6, 9, 17, 0.70), transparent 22%, transparent 48%, rgba(6, 9, 17, 0.90));
   }
+}
+
+/* ── Short viewports ─────────────────────────────────────────────
+   A pinned frame cannot scroll, so anything that does not fit is simply
+   lost. Below roughly a laptop's height the copy tightens rather than
+   overflowing: smaller lead, less air between blocks, and the mark drops
+   out — it is decoration, and the buttons are not. */
+@media (max-height: 700px) {
+  .sfilm__mark { display: none; }
+  .sfilm__body { font-size: 0.92rem; line-height: 1.55; }
+  .sfilm__copy--hero .sfilm__body { max-width: 46ch; }
+  .sfilm__actions { margin-top: var(--sp-4); }
+  .sfilm__title { margin-top: var(--sp-2); }
+  .sfilm__note { font-size: 0.78rem; }
+}
+
+@media (max-height: 560px) {
+  /* Last resort: the supporting line goes so the call to action survives. */
+  .sfilm__copy--hero .sfilm__body { display: none; }
 }

@@ -37,12 +37,14 @@
   --info: #3b6e8f;
 
   /* ── Typography ───────────────────────────────────────── */
-  /* Sora for display: geometric, confident, reads as modern aviation rather
-     than editorial. Outfit for body — warmer and less anonymous than Inter.
+  /* Plus Jakarta Sans for display, Inter for body — the pairing from
+     physiosync-pk.vercel.app. Jakarta carries more character than a neutral
+     grotesque at headline size, and Inter is built for interface text at
+     small sizes, which is most of this product.
      IBM Plex Mono stays: it is the right face for a machine-readable zone,
      a boarding pass and a departures board, which is most of this product. */
-  --font-display: 'Sora', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-body: 'Outfit', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
 
   --fs-hero: clamp(2.6rem, 5.6vw, 5rem);

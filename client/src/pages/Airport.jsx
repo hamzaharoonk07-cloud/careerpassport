@@ -46,6 +46,7 @@ export default function Airport() {
   const [flying, setFlying] = useState(false);
   // The last flight this traveller completed, or null if they have not flown.
   const [landed, setLanded] = useState(null);
+  const [showAll, setShowAll] = useState(false);
   const passRef = useRef(null);
 
   useEffect(() => {
@@ -100,6 +101,39 @@ export default function Airport() {
     navigate('/result', { state: { arrivedByFlight: true, slug: selected.career.slug } });
   };
 
+
+  // A result row with no matches would satisfy `landed` while having nothing
+  // to show, so the arrival itself is what the terminal branches on.
+  const arrival = landed?.matches?.[0] || null;
+
+  /**
+   * The gates the quiz actually pointed at.
+   *
+   * Thirty-eight destinations is a directory. Once the questions have been
+   * answered we know which field the traveller leans toward and how each
+   * career inside it scored, so the board shows that field, best match first.
+   * The rest are still reachable - a match is a starting point, not a verdict,
+   * and someone who wants to look at everything should be able to.
+   */
+  const gateCareers = useMemo(() => {
+    if (!arrival || showAll) return careers;
+    const field = arrival.career.field?.slug;
+    if (!field) return careers;
+    const scored = new Map((landed?.matches || []).map((m) => [m.career.slug, m.score]));
+    const inField = careers.filter((c) => c.field?.slug === field);
+    // If the field somehow holds nothing, showing an empty board would be
+    // worse than showing everything.
+    if (!inField.length) return careers;
+    return [...inField].sort(
+      (a, b) => (scored.get(b.slug) ?? -1) - (scored.get(a.slug) ?? -1) || a.title.localeCompare(b.title)
+    );
+  }, [careers, arrival, landed, showAll]);
+
+  // Everything above this line runs on every render. React counts hooks by
+  // call order, so a hook placed below one of the early returns is called on
+  // some renders and not others, and the component tears itself down as soon
+  // as the data arrives. The gate list and its state have to live up here.
+
   if (loading) {
     return (
       <main className="apt">
@@ -139,33 +173,7 @@ export default function Airport() {
     );
   }
 
-  // A result row with no matches would satisfy `landed` while having nothing
-  // to show, so the arrival itself is what the terminal branches on.
-  const arrival = landed?.matches?.[0] || null;
-  const [showAll, setShowAll] = useState(false);
 
-  /**
-   * The gates the quiz actually pointed at.
-   *
-   * Thirty-eight destinations is a directory. Once the questions have been
-   * answered we know which field the traveller leans toward and how each
-   * career inside it scored, so the board shows that field, best match first.
-   * The rest are still reachable - a match is a starting point, not a verdict,
-   * and someone who wants to look at everything should be able to.
-   */
-  const gateCareers = useMemo(() => {
-    if (!arrival || showAll) return careers;
-    const field = arrival.career.field?.slug;
-    if (!field) return careers;
-    const scored = new Map((landed?.matches || []).map((m) => [m.career.slug, m.score]));
-    const inField = careers.filter((c) => c.field?.slug === field);
-    // If the field somehow holds nothing, showing an empty board would be
-    // worse than showing everything.
-    if (!inField.length) return careers;
-    return [...inField].sort(
-      (a, b) => (scored.get(b.slug) ?? -1) - (scored.get(a.slug) ?? -1) || a.title.localeCompare(b.title)
-    );
-  }, [careers, arrival, landed, showAll]);
 
   if (flying) {
     return (

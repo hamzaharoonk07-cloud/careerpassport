@@ -304,6 +304,7 @@ export default function Result() {
           Outside the wrap so it is full width without the 100vw trick. */}
       <ScrollFilm
         src="/videos/briefcase.mp4"
+        portraitSrc="/videos/briefcase-portrait.mp4"
         poster="/images/briefcase.jpg"
         height="320vh"
         className="rs__film"

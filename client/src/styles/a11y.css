@@ -6,13 +6,6 @@
    design system assumes but never states.
    ============================================================ */
 
-/* ── Font scale ──────────────────────────────────────────────
-   Every size in the type scale is in rem, so moving the root size
-   moves all of them together and nothing has to be respecified.
-   Spacing stays in its own units deliberately — scaling the gaps
-   as well makes large text feel sparse rather than bigger. */
-html { font-size: calc(100% * var(--fs-scale, 1)); }
-
 /* ── Light theme ─────────────────────────────────────────────
    Token overrides only. The cinematic sections keep their dark
    scrims because they sit over video, where dark text would be

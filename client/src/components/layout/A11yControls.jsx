@@ -4,15 +4,15 @@ import { useA11y } from '../../context/A11yContext.jsx';
 /**
  * Display settings, behind one button.
  *
- * Four controls sitting open in the nav crowded it and competed with the
- * actual navigation. They live in a small panel now — one "Aa" affordance
- * that is still obvious, without four permanent buttons beside the links.
+ * Controls sitting open in the nav crowded it and competed with the actual
+ * navigation. They live in a small panel now — one "Aa" affordance that is
+ * still obvious, without permanent buttons beside the links.
  *
  * Escape closes it and an outside click dismisses it, because a panel that
  * traps you is worse than no panel.
  */
 export function A11yControls() {
-  const { theme, fontScale, toggleTheme, biggerText, smallerText, canGrow, canShrink } = useA11y();
+  const { theme, toggleTheme } = useA11y();
   const [open, setOpen] = useState(false);
   const wrapRef = useRef(null);
 
@@ -44,33 +44,6 @@ export function A11yControls() {
 
       {open && (
         <div className="a11y__panel" role="group" aria-label="Display settings">
-          <div className="a11y__row">
-            <span className="a11y__k">Text size</span>
-            <div className="a11y__set">
-              <button
-                type="button"
-                className="a11y__btn"
-                onClick={smallerText}
-                disabled={!canShrink}
-                aria-label="Decrease text size"
-              >
-                A−
-              </button>
-              {/* Announced, not just drawn — the number is the only feedback
-                  that the press did anything. */}
-              <span className="a11y__val" aria-live="polite">{Math.round(fontScale * 100)}%</span>
-              <button
-                type="button"
-                className="a11y__btn"
-                onClick={biggerText}
-                disabled={!canGrow}
-                aria-label="Increase text size"
-              >
-                A+
-              </button>
-            </div>
-          </div>
-
           <div className="a11y__row">
             <span className="a11y__k">Theme</span>
             <button

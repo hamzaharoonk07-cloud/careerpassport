@@ -52,8 +52,17 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
 const RAW = path.join(ROOT, 'media/higgsfield/raw');
-const OUT_VIDEO = path.join(ROOT, 'client/public/videos');
-const OUT_IMAGE = path.join(ROOT, 'client/public/images');
+
+/* Output roots are overridable so a full run can be proved against a scratch
+   directory instead of overwriting the shipped set. Verifying the pipeline by
+   running it over the real assets means rewriting every tracked binary, which
+   is a lot of git history to spend on a rehearsal. */
+const OUT_VIDEO = process.env.PS_OUT_VIDEO
+  ? path.resolve(process.env.PS_OUT_VIDEO)
+  : path.join(ROOT, 'client/public/videos');
+const OUT_IMAGE = process.env.PS_OUT_IMAGE
+  ? path.resolve(process.env.PS_OUT_IMAGE)
+  : path.join(ROOT, 'client/public/images');
 
 const kb = (bytes) => `${Math.round(bytes / 1024)} KB`;
 const sizeOf = async (f) => { try { return (await stat(f)).size; } catch { return 0; } };

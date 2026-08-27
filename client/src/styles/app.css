@@ -69,6 +69,10 @@
    It sat in the thumb zone at the bottom before, which is the better place
    to reach but the worse place to find: on the journey pages it is the only
    navigation there is, and a bar below the fold reads as absent. */
+/* Named, because four page roots have to reserve exactly this much space and
+   a number repeated in five places drifts the first time one of them moves. */
+:root { --tabbar-h: 57px; }
+
 .tabbar {
   position: fixed;
   left: 0;
@@ -133,17 +137,21 @@
   .nav__links { display: none; }
   .tabbar { display: flex; }
 
-  /* Room for the bar, now at the top. The journey pages sit outside the shell
-     and carry the same bar, so their roots need the same clearance or their
-     opening line starts underneath it. Inside the shell the bar sits below
-     the brand header, so the breadcrumbs and main move down by its height. */
-  .app-crumbs,
-  .apt,
-  .qz,
-  .an,
-  .pp {
-    padding-top: 60px;
-  }
+  /* Room for the bar, now at the top.
+     Qualified with `body` on purpose. These roots all set their own
+     `padding-block` in their own sheets — `.app-crumbs` further down this
+     file, `.qz` in quiz.css, `.apt` in airport.css — and a bare class here
+     loses to any of them on source order alone, which is exactly what
+     happened: the breadcrumbs and the first line of every journey page slid
+     up underneath the bar. One extra element in the selector outranks all of
+     them regardless of which sheet is bundled last.
+     The existing top padding is added back rather than replaced, so the
+     pages keep the breathing room they were designed with. */
+  body .app-crumbs { padding-top: calc(var(--tabbar-h) + var(--sp-4)); }
+  body .apt,
+  body .an,
+  body .pp { padding-top: calc(var(--tabbar-h) + var(--sp-4)); }
+  body .qz { padding-top: calc(var(--tabbar-h) + var(--sp-6)); }
 }
 
 /* ── Breadcrumbs ────────────────────────────────────────────────

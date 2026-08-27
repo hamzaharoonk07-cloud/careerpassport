@@ -6,7 +6,7 @@ import { apiError } from '../services/api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import '../styles/hub.css';
 
-const EMPTY = { name: '', headline: '', story: '', roleTitle: '' };
+const EMPTY = { name: '', headline: '', story: '', roleTitle: '', imageUrl: '' };
 
 /**
  * Success stories.
@@ -25,6 +25,25 @@ export default function Stories() {
   const [form, setForm] = useState(null);
   const [sent, setSent] = useState('');
   const [busy, setBusy] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  /* A picture with the story. Uploaded first, then carried on the submission
+     as a URL — so an image and a story arrive as one moderated record. */
+  const pickImage = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError('');
+    try {
+      const res = await publicService.uploadFile(file);
+      setForm((f) => ({ ...f, imageUrl: res.url }));
+    } catch (err) {
+      setError(apiError(err));
+    } finally {
+      setUploading(false);
+      e.target.value = '';
+    }
+  };
 
   useEffect(() => {
     careerService.listFields().then(setFields).catch(() => {});
@@ -196,6 +215,26 @@ export default function Stories() {
                   ? 'It will be linked to your passport.'
                   : 'You are not signed in, so it will be posted under the name you gave.'}
               </p>
+            <div className="af">
+                <span className="af__label">Photograph (optional)</span>
+                <label className="acct__pick">
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/gif"
+                    onChange={pickImage}
+                    disabled={uploading}
+                  />
+                  <span>{uploading ? 'Uploading…' : form.imageUrl ? 'Replace image' : 'Choose an image'}</span>
+                </label>
+                {form.imageUrl && (
+                  <img
+                    src={form.imageUrl}
+                    alt=""
+                    style={{ marginTop: 'var(--sp-2)', maxHeight: 120, borderRadius: 'var(--r-md)' }}
+                  />
+                )}
+                <span className="af__hint">Up to 2 MB. You need an account to upload.</span>
+              </div>
             </div>
             <footer className="amodal__foot">
               <Button type="button" variant="ghost" onClick={() => setForm(null)}>Cancel</Button>

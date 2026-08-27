@@ -43,6 +43,26 @@ export default function Media() {
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState('');
   const [formError, setFormError] = useState('');
+  const [uploading, setUploading] = useState(false);
+
+  /* Upload fills in the URL field rather than replacing it: the centre stores
+     links either way, so a file and a link end up as the same kind of record
+     and the moderation queue does not have to care which it was. */
+  const pickFile = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setFormError('');
+    try {
+      const res = await publicService.uploadFile(file);
+      setForm((f) => ({ ...f, url: res.url, kind: res.kind, title: f.title || file.name.replace(/\.[^.]+$/, '') }));
+    } catch (err) {
+      setFormError(apiError(err));
+    } finally {
+      setUploading(false);
+      e.target.value = '';
+    }
+  };
 
   const submit = async (e) => {
     e.preventDefault();
@@ -185,6 +205,18 @@ export default function Media() {
                 {/* The centre stores links rather than files, so this is the
                     whole item. The server accepts http and https only. */}
                 <span className="af__hint">A full https:// address to something already online.</span>
+                <label className="acct__pick" style={{ marginTop: 'var(--sp-2)' }}>
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm"
+                    onChange={pickFile}
+                    disabled={uploading}
+                  />
+                  <span>{uploading ? 'Uploading…' : 'or upload a file'}</span>
+                </label>
+                <span className="af__hint">
+                  Images up to 2 MB, video up to 12 MB. You need an account to upload.
+                </span>
               </div>
 
               <div className="af">

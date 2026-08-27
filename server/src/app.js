@@ -3,12 +3,16 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import mongoose from 'mongoose';
 
 import { env } from './config/env.js';
 import { apiLimiter } from './middleware/rateLimit.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
 import apiRoutes from './routes/index.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export function createApp() {
   const app = express();
@@ -25,10 +29,17 @@ export function createApp() {
    * set their own ceiling; everything else keeps the tight default, because a
    * JSON body larger than 100kb anywhere else is a mistake or an attack.
    */
-  const UPLOAD_PATHS = new Set(['/api/users/me/photo', '/api/users/me/resume']);
+  const UPLOAD_PATHS = new Set(['/api/users/me/photo', '/api/users/me/resume', '/api/users/me/upload']);
   const json100 = express.json({ limit: '100kb' });
   app.use((req, res, next) => (UPLOAD_PATHS.has(req.path) ? next() : json100(req, res, next)));
   app.use(express.urlencoded({ extended: true, limit: '100kb' }));
+  // Uploaded story and multimedia files. `nosniff` so the browser honours the
+  // type verified on the way in rather than guessing a new one.
+  app.use('/uploads/media', express.static(
+    path.resolve(__dirname, '../uploads/media'),
+    { setHeaders: (res) => res.setHeader('X-Content-Type-Options', 'nosniff'), maxAge: '7d' }
+  ));
+
   app.use(cookieParser());
   if (!env.isProd) app.use(morgan('dev'));
   app.use('/api', apiLimiter);

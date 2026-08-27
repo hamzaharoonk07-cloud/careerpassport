@@ -1,0 +1,74 @@
+[
+  {
+    "careerSlug": "software-engineer",
+    "title": "A week as a Software Engineer",
+    "description": "What the job is when the novelty wears off: reading more code than you write, and owning what you ship.",
+    "kind": "video",
+    "url": "/videos/cabin.mp4",
+    "thumbnailUrl": "/images/cabin.jpg",
+    "order": 1
+  },
+  {
+    "careerSlug": "devops-engineer",
+    "title": "DevOps: from a git push to production",
+    "description": "Following one change all the way out — the pipeline, the deploy, and what happens when it goes wrong at 2am.",
+    "kind": "video",
+    "url": "/videos/takeoff.mp4",
+    "thumbnailUrl": "/images/takeoff.jpg",
+    "order": 2
+  },
+  {
+    "careerSlug": "data-scientist",
+    "title": "Data Science without the hype",
+    "description": "Most of it is cleaning and framing the question. The modelling is the short part.",
+    "kind": "video",
+    "url": "/videos/cruise.mp4",
+    "thumbnailUrl": "/images/cruise.jpg",
+    "order": 3
+  },
+  {
+    "careerSlug": "cybersecurity-analyst",
+    "title": "Cybersecurity: finding it first",
+    "description": "Thinking like the person trying to get in, and writing the report that gets the hole closed.",
+    "kind": "video",
+    "url": "/videos/gate.mp4",
+    "thumbnailUrl": "/images/gate.jpg",
+    "order": 4
+  },
+  {
+    "careerSlug": "cloud-engineer",
+    "title": "Cloud Engineering, explained",
+    "description": "The infrastructure everything else sits on, and why the bill is part of the design.",
+    "kind": "video",
+    "url": "/videos/arrival.mp4",
+    "thumbnailUrl": "/images/arrival.jpg",
+    "order": 5
+  },
+  {
+    "careerSlug": "journalist",
+    "title": "Journalism: the deadline is the job",
+    "description": "Finding out what is true, then publishing it before the deadline — and standing behind it afterwards.",
+    "kind": "video",
+    "url": "/videos/boarding.mp4",
+    "thumbnailUrl": "/images/boarding.jpg",
+    "order": 6
+  },
+  {
+    "careerSlug": "actuary",
+    "title": "Actuary: pricing risk",
+    "description": "Mathematics applied to things that have not happened yet, for insurance and pensions.",
+    "kind": "video",
+    "url": "/videos/terminal.mp4",
+    "thumbnailUrl": "/images/terminal.jpg",
+    "order": 7
+  },
+  {
+    "careerSlug": "ai-ml-engineer",
+    "title": "ML Engineering: models that survive contact with users",
+    "description": "Getting a model into production and keeping it honest once real data reaches it.",
+    "kind": "video",
+    "url": "/videos/landing.mp4",
+    "thumbnailUrl": "/images/landing.jpg",
+    "order": 8
+  }
+]

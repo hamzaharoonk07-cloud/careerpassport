@@ -44,9 +44,9 @@ npm run seed
 ## The journey
 
 ```
-Landing → Register / Login → Passport + VERIFIED stamp → Career Station
-   → Career Train → Field selection → Quiz → Analysis → Result
-   → Roadmap → Briefcase → Dashboard
+Landing → Register / Login → Passport + VERIFIED stamp → Terminal
+   → Departures board → Field selection → Quiz → Analysis → Result
+   → Roadmap → Dashboard
 ```
 
 Every stage is skippable, resumable, and survives a page refresh — journey
@@ -65,9 +65,9 @@ score = 0.60 × RIASEC cosine similarity
       + 0.10 × the field the user chose on the train
 ```
 
-Each of the 40 quiz options carries two vectors: **field weights** (which of the
+Each of the 180 quiz options carries two vectors: **field weights** (which of the
 six fields it points at) and a **Holland/RIASEC vector** (Realistic,
-Investigative, Artistic, Social, Enterprising, Conventional). Each of the 36
+Investigative, Artistic, Social, Enterprising, Conventional). Each of the 38
 careers carries its own RIASEC vector. Matching is cosine similarity between the
 two.
 
@@ -94,7 +94,7 @@ information only.
 
 ## On the data
 
-The 36 careers are seeded with skills, learning areas, six-stage roadmaps,
+The 38 careers are seeded with skills, learning areas, six-stage roadmaps,
 demand levels and salary bands.
 
 > **The salary figures are indicative estimates, not sourced data.** Every one
@@ -116,21 +116,26 @@ client/
   src/
     components/   primitives · brand · motion · media · layout
     context/      AuthContext · JourneyContext
-    hooks/        useAuth · useReveal · useCountUp · useTypewriter · useReducedMotion
-    pages/        14 route components
+    hooks/        useReveal · useCountUp · useTypewriter · useReducedMotion
+                  useRecentlyViewed · useHiResVideo
+    pages/        18 route components
     services/     api (axios + silent refresh) · career · quiz
-    styles/       tokens · global · forms · motion · passport · station · quiz · briefcase · app
+    styles/       tokens · global · forms · motion · a11y · passport · quiz · app
+                  airport · dashboard · destination · hub · account · admin · print
 
 server/
   src/
     config/       env · db
     models/       User · CareerField · Career · QuizQuestion · QuizOption
-                  QuizAnswer · QuizResult · SavedCareer
-    controllers/  auth · user · career · quiz · savedCareer
+                  QuizAnswer · QuizResult · SavedCareer · MediaItem
+                  SuccessStory · Feedback
+    controllers/  auth · user · career · quiz · savedCareer · public
+                  admin · resume · photo · mediaUpload
     services/     recommendation.service.js   ← the engine
     middleware/   auth · validate · rateLimit · errorHandler
     validators/   zod schemas
-    seed/         careerFields · careers.part1/2 · questions · seed.js
+    seed/         careerFields · careers.part1/2 · questions · stories
+                  media · seed.js
   tests/
 ```
 
@@ -145,6 +150,12 @@ server/
 | `/api/quiz` | questions · `submit` |
 | `/api/results` | `me` · `me/all` · `:id` |
 | `/api/saved-careers` | list · save · unsave |
+| `/api/media` | list · `POST` submit (moderated) |
+| `/api/stories` | list · `POST` submit (moderated) |
+| `/api/feedback` | `POST` submit · `me` |
+| `/api/ask` | free-text career matching, no account needed |
+| `/api/users/me` | `photo` · `resume` · `upload` |
+| `/api/admin` | careers · media · stories · feedback · questions |
 
 ## Security
 
@@ -165,7 +176,55 @@ field is a fixed mask — not the value and not a length hint.
 - Lean Mongo reads, indexes on every query path
 - The opening cinematic is CSS — the app has no hard dependency on any video file
 
+## Contributed content
+
+Visitors can submit a success story or an item for the multimedia centre, with
+an image or a clip attached. **Nothing a visitor submits is ever visible until
+an administrator publishes it** — the server writes `published: false` /
+`active: false` itself rather than reading a flag from the request, so a
+submission cannot publish itself.
+
+Uploads are checked against their **magic bytes**, not their file extension: an
+extension is a claim, the leading bytes are evidence. SVG is refused outright —
+it is a document that can carry script, and uploads are served back from our own
+origin. Files are stored under a random name, never the one the browser sent.
+
+| | limit |
+|---|---|
+| Passport photograph | 1 MB · JPG, PNG, WebP |
+| Story / multimedia image | 2 MB · JPG, PNG, WebP, GIF |
+| Multimedia video | 12 MB · MP4, WebM |
+| Resume | 2 MB · PDF, DOC, DOCX — only the owner can download it |
+
+## Media pipeline
+
+`tools/encode-media.mjs` turns the 2560×1440 masters in `media/higgsfield/raw/`
+into everything the site serves. Every output is declared in a manifest with the
+source it comes from and the treatment it gets; `--check` verifies the shipped
+files still match without writing anything.
+
+Three tiers, because one file cannot serve every screen:
+
+- **1080p + WebM** — the floor, and a 1:1 match for a 1920-wide display.
+- **1440p (`-2k`)** — served only where `innerWidth × devicePixelRatio ≥ 2000`,
+  and never on a Save-Data connection. Measured with VMAF against the master:
+  1440p/crf28 scores 92.3 against 89.6 for 1080p/crf26, and costs ~40% more
+  bytes. 1440p/crf30 scores the *same* as 1080p/crf26 — the extra pixels get
+  spent back on compression, so there is no free version of 2K.
+- **540×960 (`-portrait`)** — a 16:9 plate filling a 390×800 phone with
+  `object-fit: cover` keeps only 27% of the frame. The portrait cuts raise that
+  to 87%.
+
+Scroll-driven films are excluded from the 2K tier deliberately: seeking decodes
+up to six frames per seek, which is 8.6M pixels at 900p against 22M at 1440p.
+Resolution is the one thing a scrubbed film cannot afford.
+
 ## Accessibility
+
+Light and dark themes, dark by default — the site is built dark, and light is a
+setting someone chooses rather than one they are handed. Contrast is verified
+rather than assumed: every route is swept in **both themes** and clears WCAG AA
+(4.5:1 for text, 3:1 for large text).
 
 `prefers-reduced-motion` is honoured everywhere — reduced motion means fewer
 animations, never less content. 44 px minimum touch targets, visible focus

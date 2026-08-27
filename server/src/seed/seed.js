@@ -222,6 +222,34 @@ export async function seedDatabase({ log = console.log } = {}) {
     log(`  stories           ${stories.length}`);
   }
 
+  // The multimedia centre had management and a front door but nothing behind
+  // it, so it read as broken rather than empty. These point at clips already
+  // shipped in client/public/videos — real files, not placeholders. Seeded
+  // only when the collection is empty, so a real submission is never
+  // overwritten, and active because an administrator put them there.
+  if ((await MediaItem.countDocuments()) === 0) {
+    const media = await readJson('media.json');
+
+    // Each item is about a real destination in the bank, so the centre can be
+    // filtered by career rather than being a loose pile of clips. Resolved by
+    // slug here rather than by hardcoded id, which would not survive a reseed.
+    const bySlug = new Map(
+      (await Career.find({}).select('slug').lean()).map((c) => [c.slug, c._id])
+    );
+
+    const rows = media.map(({ careerSlug, ...m }) => ({
+      ...m,
+      career: bySlug.get(careerSlug) || null,
+      active: true,
+    }));
+
+    const orphaned = media.filter((m) => !bySlug.has(m.careerSlug)).map((m) => m.careerSlug);
+    if (orphaned.length) log(`  ⚠  media referencing unknown careers: ${orphaned.join(', ')}`);
+
+    await MediaItem.insertMany(rows);
+    log(`  media items       ${rows.length}`);
+  }
+
   // ── Owner account ────────────────────────────────────────────────
   // Seeded from the environment so the password never enters the repo.
   // Recreated on every boot, which is what makes it survive the in-memory

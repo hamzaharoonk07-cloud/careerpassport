@@ -3,6 +3,7 @@ import express from 'express';
 import * as ctrl from '../controllers/user.controller.js';
 import * as resume from '../controllers/resume.controller.js';
 import * as photo from '../controllers/photo.controller.js';
+import { uploadMediaFile } from '../controllers/mediaUpload.controller.js';
 import { validate } from '../middleware/validate.js';
 import { requireAuth } from '../middleware/auth.js';
 import { updateProfileSchema } from '../validators/auth.schema.js';
@@ -25,5 +26,9 @@ router.delete('/me/resume', resume.deleteResume);
 router.post('/me/photo', express.json({ limit: '2mb' }), photo.uploadPhoto);
 router.get('/me/photo', photo.getPhoto);
 router.delete('/me/photo', photo.deletePhoto);
+
+// Store a file and hand back its URL. It publishes nothing on its own — the
+// caller submits the returned URL through the normal moderated route.
+router.post('/me/upload', express.json({ limit: '18mb' }), uploadMediaFile);
 
 export default router;

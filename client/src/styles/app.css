@@ -77,25 +77,62 @@
   background: var(--surface-nav-solid);
   backdrop-filter: blur(12px);
   padding-bottom: env(safe-area-inset-bottom, 0);
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+.tabbar::-webkit-scrollbar { display: none; }
+
+/* Signed in there are eight of these. Dividing a 390px phone by eight
+   left 48px a tab, which is narrower than the word "Multimedia" and
+   below a 44px touch target once padding is counted. They keep their
+   natural width now and the bar scrolls sideways instead. */
 .tabbar__link {
-  flex: 1;
+  flex: 1 0 auto;
+  min-width: 76px;
   min-height: 56px;
+  padding-inline: var(--sp-3);
   display: grid;
   place-items: center;
   gap: 3px;
   font-size: 0.62rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  white-space: nowrap;
   color: var(--text-low);
 }
 .tabbar__link--on { color: var(--gold-400); }
 
-@media (max-width: 760px) {
+/* ── Where the desktop nav gives way ─────────────────────────────
+   Signed in, the link row is seven tabs plus the passport number, a
+   log-out button and the type control: about 940px of intrinsic
+   width, and 1120px once the brand lockup is counted. The wrap is
+   `viewport - 2.5rem`, so anything under about 1160px could not fit
+   it — but the row only used to disappear at 760px. In the 400px
+   band between the two, the tail of the nav ran past the wrap and
+   `overflow-x: clip` on the body silently cut it off: on a 1024px
+   laptop the log-out button was simply not on screen.
+
+   Two steps now. From 1024–1200px the row compresses — the passport
+   number goes (it is a link to the account page, which is also
+   reachable from the tab bar and the dashboard), padding and gaps
+   tighten. Below 1024px the thumb-reachable tab bar takes over. */
+@media (max-width: 1200px) {
+  .nav__links { gap: 2px; }
+  .nav__link { padding: 0.5rem 0.6rem; font-size: 0.82rem; }
+  .nav__pass { display: none; }
+}
+
+@media (max-width: 1024px) {
   .nav__links { display: none; }
   .tabbar { display: flex; }
   .app-main { padding-bottom: 76px; }
 }
+
+/* ── Breadcrumbs ────────────────────────────────────────────────
+   The trail itself is styled in a11y.css; its wrapper never was, so
+   the row sat flush against the underside of the nav bar with no
+   room of its own. */
+.app-crumbs { padding-block: var(--sp-4) var(--sp-2); }
 
 /* ── Page frame ─────────────────────────────────────────── */
 .page { padding-block: var(--sp-7) var(--sp-9); min-height: calc(100dvh - var(--nav-h)); }
@@ -166,10 +203,15 @@
 
 
 /* ── Career bank ────────────────────────────────────────── */
+/* The two selects hold "All fields" and "All skills". On a fractional
+   track they grew with the viewport — around 400px each on a wide
+   screen for a nine-character label — and left the search box, which
+   is the control people actually type into, looking like a peer. They
+   are capped now; the search takes the slack. */
 .bank__filters {
   margin-top: var(--sp-6);
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(150px, 220px) minmax(150px, 220px);
   gap: var(--sp-3);
 }
 .bank__count { margin-top: var(--sp-4); color: var(--text-low); font-size: var(--fs-sm); }

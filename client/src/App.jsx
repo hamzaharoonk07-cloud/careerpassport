@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
 import { AuthProvider } from './context/AuthContext.jsx';
@@ -6,6 +6,7 @@ import { A11yProvider } from './context/A11yContext.jsx';
 import { JourneyProvider } from './context/JourneyContext.jsx';
 import { ProtectedRoute } from './components/layout/ProtectedRoute.jsx';
 import { AppLayout } from './components/layout/AppLayout.jsx';
+import { FlightLoader } from './components/brand/FlightLoader.jsx';
 
 import Intro from './pages/Intro.jsx';
 import NotFound from './pages/NotFound.jsx';
@@ -14,7 +15,7 @@ import NotFound from './pages/NotFound.jsx';
  * Route-level code splitting.
  *
  * A visitor who only browses the career bank never downloads the quiz engine,
- * the briefcase, or the dashboard. Only the landing page is in the main bundle.
+ * the result, or the dashboard. Only the landing page is in the main bundle.
  */
 const PassportAuth = lazy(() => import('./pages/PassportAuth.jsx'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword.jsx'));
@@ -24,7 +25,6 @@ const Quiz = lazy(() => import('./pages/Quiz.jsx'));
 const Analysis = lazy(() => import('./pages/Analysis.jsx'));
 const Result = lazy(() => import('./pages/Result.jsx'));
 const Roadmap = lazy(() => import('./pages/Roadmap.jsx'));
-const Briefcase = lazy(() => import('./pages/Briefcase.jsx'));
 const Dashboard = lazy(() => import('./pages/Dashboard.jsx'));
 const Careers = lazy(() => import('./pages/Careers.jsx'));
 const CareerDetail = lazy(() => import('./pages/CareerDetail.jsx'));
@@ -34,11 +34,51 @@ const Media = lazy(() => import('./pages/Media.jsx'));
 const Stories = lazy(() => import('./pages/Stories.jsx'));
 const Feedback = lazy(() => import('./pages/Feedback.jsx'));
 
-function Loading() {
+/**
+ * Route loading, held open until the climb finishes.
+ *
+ * Suspense swaps its fallback for the page the instant a chunk resolves,
+ * which cuts the loader off mid-climb — the arrival is the whole point of
+ * showing it, so losing it makes the loader worse than none.
+ *
+ * The overlay therefore lives outside the boundary and outlasts it: the
+ * fallback's only job is to report that a chunk is in flight. When it
+ * unmounts, the page beneath has mounted but is still covered, and the
+ * overlay runs to cruise before clearing.
+ */
+function Beacon({ onStart, onEnd }) {
+  useEffect(() => {
+    onStart();
+    return onEnd;
+    // Mount and unmount only: the callbacks are stable refs from the parent.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return null;
+}
+
+function RouteLoading({ children }) {
+  // idle → nothing showing · flying → chunk in flight · landing → chunk in,
+  // overlay finishing the climb over the top of it.
+  const [phase, setPhase] = useState('idle');
+
+  const onStart = useCallback(() => setPhase('flying'), []);
+  const onEnd = useCallback(() => setPhase((p) => (p === 'flying' ? 'landing' : p)), []);
+
   return (
-    <div className="center-screen">
-      <p className="t-low">Loading…</p>
-    </div>
+    <>
+      <Suspense fallback={<Beacon onStart={onStart} onEnd={onEnd} />}>
+        {children}
+      </Suspense>
+
+      {phase !== 'idle' && (
+        <div className="fload-cover">
+          <FlightLoader
+            done={phase === 'landing'}
+            onComplete={() => setPhase('idle')}
+          />
+        </div>
+      )}
+    </>
   );
 }
 
@@ -60,7 +100,7 @@ export default function App() {
       <JourneyProvider>
         <a className="skip-link" href="#main">Skip to content</a>
         <ScrollReset />
-        <Suspense fallback={<Loading />}>
+        <RouteLoading>
           <Routes>
             {/* ── The cinematic journey — full-bleed, no chrome ── */}
             <Route path="/" element={<Intro />} />
@@ -82,7 +122,6 @@ export default function App() {
             <Route path="/train" element={<Navigate to="/airport" replace />} />
             <Route path="/quiz" element={guard(<Quiz />)} />
             <Route path="/analysis" element={guard(<Analysis />)} />
-            <Route path="/briefcase" element={guard(<Briefcase />)} />
 
             {/* ── The product — inside the app shell ── */}
             <Route element={<AppLayout />}>
@@ -103,7 +142,7 @@ export default function App() {
 
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </Suspense>
+        </RouteLoading>
       </JourneyProvider>
     </AuthProvider>
     </A11yProvider>

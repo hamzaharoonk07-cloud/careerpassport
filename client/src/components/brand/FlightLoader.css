@@ -1,0 +1,112 @@
+/* ============================================================
+   Flight loader — the wait, as a climb out
+
+   A flight path with the aircraft on it and an altimeter beside it.
+   Sized in rem so the accessibility text control moves it too.
+   ============================================================ */
+
+/* ── The cover ───────────────────────────────────────────────
+   Sits over a page that has already mounted, so the climb can finish
+   instead of being cut off the moment its chunk lands. Opaque, because
+   its whole job is to keep the content underneath from showing early. */
+.fload-cover {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-cinema);
+  display: grid;
+  place-items: center;
+  background: var(--ink-900);
+}
+
+/* Sized against the viewport, not the parent.
+   `.center-screen` centres its child with `place-items: center`, which makes
+   the grid item shrink to its content — and a percentage width measured
+   against that collapses the track to the width of the label above it, which
+   then wraps. `vw` is always a definite length, so the path keeps its full
+   run wherever the loader is dropped. */
+.fload {
+  width: 420px;
+  max-width: calc(100vw - 3rem);
+  display: grid;
+  gap: var(--sp-4);
+  justify-items: center;
+}
+
+.fload__label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-500);
+}
+
+/* ── The path ────────────────────────────────────────────────
+   Tall enough to hold the aircraft without the layout jumping when
+   it moves; the line itself is drawn by the children. */
+.fload__track {
+  position: relative;
+  width: 100%;
+  height: 26px;
+}
+
+/* The route ahead: a dashed line, the way one is drawn on a chart. */
+.fload__path,
+.fload__flown {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 2px;
+  transform: translateY(-50%);
+  border-radius: var(--r-pill);
+}
+.fload__path {
+  right: 0;
+  background-image: linear-gradient(90deg, var(--ink-600) 0 6px, transparent 6px 12px);
+  background-size: 12px 2px;
+}
+
+/* The route flown: solid, and gold, so the two read as before and after
+   rather than as two different bars. */
+.fload__flown {
+  background: linear-gradient(90deg, var(--gold-500), var(--gold-300));
+  box-shadow: 0 0 12px rgba(201, 162, 39, 0.45);
+  transition: width 120ms linear;
+}
+
+.fload__plane {
+  position: absolute;
+  top: 50%;
+  /* Nose-up, and centred on the head of the flown segment. Rotating a
+     glyph that points north by 45deg puts it on a climb along the line. */
+  transform: translate(-50%, -50%) rotate(45deg);
+  color: var(--gold-300);
+  filter: drop-shadow(0 0 8px rgba(201, 162, 39, 0.5));
+  transition: left 120ms linear;
+  will-change: left;
+}
+
+/* ── The altimeter ───────────────────────────────────────────
+   Tabular figures, or the number jitters sideways as it climbs. */
+.fload__alt {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-hi);
+}
+.fload__alt-n { font-size: 1.5rem; font-weight: 600; letter-spacing: 0.02em; }
+.fload__alt-u {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-low);
+}
+
+/* Nothing here animates on its own — the component stops driving the
+   climb under reduced motion — but the transitions would still ease a
+   determinate value, so they go too. */
+@media (prefers-reduced-motion: reduce) {
+  .fload__flown,
+  .fload__plane { transition: none; }
+}

@@ -31,7 +31,6 @@ import './ScrollFilm.css';
 export function ScrollFilm({
   src,
   mobileSrc,
-  mobileSrcHq,
   portraitSrc,
   poster,
   chapters = [],
@@ -273,18 +272,19 @@ export function ScrollFilm({
   /* ── Scrubbed film ───────────────────────────────────────────────── */
   const active = chapters[chapter];
 
-  // A phone gets its own cut, and a shorter track: 620vh of thumb-work is a
-  // long way to drag on a small screen.
+  // A phone gets a shorter track: 620vh of thumb-work is a long way to drag on
+  // a small screen.
   //
-  // The 2K cut is the default on a phone — modern handsets run at a device
-  // pixel ratio of 3, so a 720p plate is genuinely soft on them. It is only
-  // affordable because this branch plays rather than seeks. Anyone who has
-  // asked to save data, or is on a measured connection, still gets the 720p
-  // file: shipping 5 MB to someone on 3G is not a quality decision, it is a
-  // bill.
-  // The same cut everywhere, so a phone gets the desktop experience rather
-  // than an approximation of it. Only a connection that has asked to save
-  // data drops to the lighter file.
+  // No 2K tier on this branch, and that is the deliberate part. The plates
+  // elsewhere on the site carry one, because they play linearly and a hardware
+  // decoder handles a single 1440p stream without noticing. This film seeks
+  // instead, and seeking is priced per pixel: with a keyframe every six frames
+  // a seek decodes up to six frames, which is 8.6M pixels at 900p and 22M at
+  // 1440p. Multiply by the seek rate and 2K is several hundred million pixels
+  // a second of decode for a plate sitting behind a scrim and moving. That is
+  // where a scroll film starts to drag, and no encode setting removes it —
+  // resolution is the one thing this branch genuinely cannot afford.
+  //
   // A portrait phone gets a cut framed for it. Handing it the landscape
   // master means `object-fit: cover` throws away two thirds of the width,
   // which is what reads as being zoomed in.

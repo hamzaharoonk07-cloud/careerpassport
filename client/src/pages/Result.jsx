@@ -9,7 +9,12 @@ import { careerService } from '../services/career.service.js';
 import { apiError } from '../services/api.js';
 import { useCountUp } from '../hooks/useCountUp.js';
 import { useJourney } from '../context/JourneyContext.jsx';
+import { FlightLoader, useLanding } from '../components/brand/FlightLoader.jsx';
 import '../styles/quiz.css';
+/* The counsel block on this page is styled by `.counsel*` in destination.css.
+   Decide and SecondOpinion pull the same sheet in, but both are conditional —
+   a single strong match renders neither, and the counsel lost its styling. */
+import '../styles/destination.css';
 
 /**
  * Formats a salary band from the database.
@@ -82,14 +87,16 @@ export default function Result() {
     try {
       const res = await careerService.save(top.career._id);
       setSaved(true);
-      setSavingNote(res.message || 'Saved to your briefcase.');
+      setSavingNote(res.message || 'Saved to your watchlist.');
     } catch (err) {
       setSavingNote(apiError(err));
     }
   };
 
-  if (loading) {
-    return <main className="rs"><div className="center-screen"><p className="t-low">Fetching your result…</p></div></main>;
+  // Hold the loader until its climb resolves, then show the page.
+  const { held, landing } = useLanding(loading);
+  if (held) {
+    return <main className="rs"><div className="center-screen"><FlightLoader label="Fetching your result" {...landing} /></div></main>;
   }
 
   if (error || !result?.matches?.length) {

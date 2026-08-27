@@ -122,7 +122,11 @@
   padding: 2px;
   font-size: 1.5rem;
   line-height: 1;
-  color: var(--ink-600);
+  /* The unrated state was `--ink-600`, which is a surface token rather than
+     a text one: navy on the dark theme, and cream-on-cream at 1.39:1 on the
+     light one, where the empty stars simply were not there. A rating control
+     has to show how many stars it has before you touch it. */
+  color: var(--text-low);
   cursor: pointer;
   transition: color var(--dur-2) var(--ease-out);
 }
@@ -193,3 +197,13 @@
   color: var(--text-low);
 }
 .tl__step p { margin-top: 3px; color: var(--text-mid); font-size: var(--fs-sm); line-height: 1.6; }
+
+/* Inline link inside body copy — "Remembered it? Sign in instead."
+   Had no rule at all, so it inherited the paragraph colour and was
+   indistinguishable from the sentence around it. */
+.hub__link {
+  color: var(--gold-400);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.hub__link:hover { color: var(--gold-300); }

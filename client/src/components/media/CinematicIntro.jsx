@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from '../../hooks/useReducedMotion.js';
+import { useHiResVideo, hiResSrc } from '../../hooks/useHiResVideo.js';
 import { Logo } from '../brand/Logo.jsx';
 import './CinematicIntro.css';
 
@@ -24,11 +25,17 @@ const FALLBACK_DURATION = 5200;
  */
 export function CinematicIntro({ onComplete, soundOn = false, onToggleSound }) {
   const reduced = useReducedMotion();
+  const wantsHiRes = useHiResVideo();
   const videoRef = useRef(null);
   const doneRef = useRef(false);
 
   const [mode, setMode] = useState('probing'); // probing | video | fallback | poster
   const [fading, setFading] = useState(false);
+  // The probe only ever confirms the 1080p file. If the 2K sibling is missing
+  // for this clip, step down to the confirmed one rather than throwing the
+  // whole cinematic away for a resolution preference.
+  const [hiResFailed, setHiResFailed] = useState(false);
+  const hiRes = wantsHiRes && !hiResFailed;
 
   /** Runs exactly once no matter which path triggers it. */
   const finish = () => {
@@ -87,7 +94,11 @@ export function CinematicIntro({ onComplete, soundOn = false, onToggleSound }) {
         <video
           ref={videoRef}
           className="intro__video"
-          src={VIDEO_SRC}
+          /* Full-screen and the first thing anyone sees, so it is the plate
+             that most rewards the 2K cut on a display that can show it. It
+             uses a plain `src` rather than a source list because the probe
+             above has already established the file is really there. */
+          src={hiRes ? hiResSrc(VIDEO_SRC) : VIDEO_SRC}
           poster={POSTER_SRC}
           autoPlay
           muted={!soundOn}
@@ -95,7 +106,7 @@ export function CinematicIntro({ onComplete, soundOn = false, onToggleSound }) {
           preload="metadata"
           disablePictureInPicture
           onEnded={finish}
-          onError={() => setMode('fallback')}
+          onError={() => (hiRes ? setHiResFailed(true) : setMode('fallback'))}
         />
       )}
 

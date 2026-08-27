@@ -17,7 +17,6 @@ const LABELS = {
   quiz: 'Quiz',
   result: 'Result',
   roadmap: 'Flight plan',
-  briefcase: 'Your case',
   account: 'Account',
   admin: 'Control tower',
   login: 'Sign in',

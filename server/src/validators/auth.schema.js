@@ -43,7 +43,17 @@ export const registerSchema = z
     // otherwise on their profile.
     accountType: z.enum(['student', 'graduate', 'professional']).default('student'),
 
-    interests: z.array(z.string().trim().max(60)).max(20).optional(),
+    // The rest of the passport, asked for at the desk rather than left for
+    // the visitor to find on their profile later. All optional, for the same
+    // reason as education above: nothing here is worth blocking a
+    // registration over.
+    currentRole: z.string().trim().max(120).optional().or(z.literal('')),
+    location: z.string().trim().max(120).optional().or(z.literal('')),
+
+    // Sent as free text from the form and split on commas, the same way the
+    // profile page does it, so the two entry points agree.
+    skills: z.array(z.string().trim().min(1).max(60)).max(40).optional(),
+    interests: z.array(z.string().trim().min(1).max(60)).max(20).optional(),
   })
   .refine((d) => d.password === d.confirmPassword, {
     message: 'Passwords do not match',

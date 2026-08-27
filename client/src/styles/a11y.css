@@ -25,11 +25,16 @@ html { font-size: calc(100% * var(--fs-scale, 1)); }
 
   --text-hi: #10141f;
   --text-mid: #454b5c;
-  --text-low: #6b7285;
+  /* #6b7285 measured 4.49:1 on cream and 4.23:1 on the cream card — the
+     breadcrumbs, the passport number in the nav and every form hint sat
+     just under the bar. */
+  --text-low: #646b7c;
 
   /* Gold on cream needs to be darker than gold on navy to clear the
-     same contrast bar — the light tints fail against a pale ground. */
-  --gold-500: #8a6f18;
+     same contrast bar — the light tints fail against a pale ground.
+     #8a6f18 was itself a hair under at 4.49:1, both as eyebrow text and
+     as the skip link's ground. */
+  --gold-500: #856a16;
   --gold-400: #7a6115;
   --gold-300: #6b5412;
 
@@ -175,7 +180,7 @@ textarea:focus-visible,
   --ink-600: #16244a;
   --text-hi: #f5f0e6;
   --text-mid: #b6bccb;
-  --text-low: #7a8296;
+  --text-low: #848c9f;
   --gold-500: #c9a227;
   --gold-400: #d9b84a;
   --gold-300: #e8c766;
@@ -206,6 +211,19 @@ textarea:focus-visible,
 :root[data-theme='light'] .dash__strip,
 :root[data-theme='light'] .dash__board { background: rgba(255, 255, 255, 0.88); }
 
+/* The quiz and the result open with a navy glow at the top of the page —
+   a spotlight on a dark stage. `--ink-900` inverts with the theme so the
+   body of the gradient follows along, but the glow itself is a literal
+   navy and stayed put, printing a dark smudge across the top of a cream
+   page like a stain on the paper. Light mode gets the same gesture in
+   its own palette: a warm lift off the cream rather than a hole in it. */
+:root[data-theme='light'] .qz {
+  background: radial-gradient(60% 44% at 50% 0%, rgba(201, 162, 39, 0.16), var(--ink-900) 72%);
+}
+:root[data-theme='light'] .rs {
+  background: radial-gradient(58% 40% at 50% 0%, rgba(201, 162, 39, 0.18), var(--ink-900) 70%);
+}
+
 :root[data-theme='light'] .pa .sv__scrim,
 :root[data-theme='light'] .apt .sv__scrim,
 :root[data-theme='light'] .rm .sv__scrim,
@@ -214,6 +232,54 @@ textarea:focus-visible,
     radial-gradient(70% 60% at 50% 50%, rgba(250, 247, 240, 0.72), rgba(245, 240, 230, 0.90) 78%),
     linear-gradient(180deg, rgba(250, 247, 240, 0.80), rgba(245, 240, 230, 0.92));
 }
+
+/* ── Always-dark surfaces ────────────────────────────────────
+   The mirror image of the block below, and the same class of bug.
+
+   A departures board is a backlit panel; the terminal's action tiles and
+   the flight-plan waypoints are cut from the same material. All three
+   write their ground as a literal navy rather than as a token, so light
+   mode flipped the ink scale underneath them and left the surface where
+   it was: dark type on a dark board.
+
+   Measured in light mode before this rule, against a 4.5:1 requirement —
+   roadmap waypoint body 1.29:1, its heading 1.64:1, departures rows
+   1.43:1, the terminal tiles' subtitles 1.52:1. Not marginal; unreadable.
+
+   The fix is not to lighten surfaces that are meant to be dark. It is to
+   pin the dark palette on them so their text goes pale again, exactly as
+   the landing film does. */
+:root[data-theme='light'] .board3,
+:root[data-theme='light'] .apt__action,
+:root[data-theme='light'] .fplan__card {
+  --ink-900: #060911;
+  --ink-800: #0a1128;
+  --ink-700: #0f1b3c;
+  --ink-600: #16244a;
+
+  --text-hi: #f5f0e6;
+  --text-mid: #b6bccb;
+  --text-low: #848c9f;
+
+  --gold-500: #c9a227;
+  --gold-400: #d9b84a;
+  --gold-300: #e8c766;
+
+  color-scheme: dark;
+}
+
+/* Pinning the palette is only half of it. All three grounds are
+   translucent — they are meant to let a night-time plate through — and
+   over cream they composite to a mid grey instead of navy, which leaves
+   pale text on a surface that is no longer dark. `--text-low` on the
+   terminal tiles still measured 1.9:1 with the palette pinned and the
+   ground left alone.
+   In light mode the plate behind them is washed pale anyway, so there is
+   nothing left worth showing through: the grounds go effectively opaque
+   and the pinned palette becomes true again. */
+:root[data-theme='light'] .board3 { background: rgba(6, 9, 17, 0.95); }
+:root[data-theme='light'] .apt__action { background: rgba(10, 17, 40, 0.94); }
+:root[data-theme='light'] .fplan__card { background: rgba(10, 17, 40, 0.95); }
 
 /* ── Fixed-material surfaces ─────────────────────────────────
    A passport page, a boarding pass, a printed card: these are objects,
@@ -243,9 +309,15 @@ textarea:focus-visible,
 
   --text-hi: #10141f;
   --text-mid: #454b5c;
-  --text-low: #6b7285;
+  --text-low: #646b7c;
 
-  --gold-500: #8a6f18;
+  --gold-500: #856a16;
   --gold-400: #7a6115;
   --gold-300: #6b5412;
+
+  /* Same reasoning as the gold above, for the one semantic colour that
+     appears on paper: the result page's counsel badge. The global
+     `--success` is lifted for dark grounds and reaches only 3.06:1 on
+     cream; this is the darker green that clears the bar on the page. */
+  --success: #286b4e;
 }

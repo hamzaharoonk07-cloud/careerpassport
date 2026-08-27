@@ -240,6 +240,19 @@
   border: 1px solid rgba(201, 162, 39, 0.30);
   background: rgba(201, 162, 39, 0.06);
 }
+/* Three confidence levels, three readings.
+   Only `--unsettled` was ever written, so "clear result" and "a lean, not a
+   verdict" both fell through to the gold base and came out identical — the
+   block announced a confidence it then styled the same way as its opposite.
+   Green settles, gold hesitates, grey shrugs. */
+.counsel--clear {
+  border-color: rgba(63, 155, 115, 0.38);
+  background: rgba(63, 155, 115, 0.07);
+}
+.counsel--leaning {
+  border-color: rgba(201, 162, 39, 0.34);
+  background: rgba(201, 162, 39, 0.07);
+}
 .counsel--unsettled { border-color: rgba(182, 188, 203, 0.32); background: rgba(182, 188, 203, 0.06); }
 
 .counsel__badge {
@@ -249,6 +262,7 @@
   text-transform: uppercase;
   color: var(--gold-400);
 }
+.counsel--clear .counsel__badge { color: var(--success); }
 .counsel--unsettled .counsel__badge { color: var(--text-mid); }
 
 .counsel__headline {

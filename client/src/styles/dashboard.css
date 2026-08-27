@@ -251,11 +251,18 @@
 .dash__leg-t { font-weight: 600; color: var(--text-hi); font-size: 0.95rem; }
 .dash__leg-d { margin-top: 2px; color: var(--text-mid); font-size: var(--fs-sm); line-height: 1.55; }
 
-/* ── Passenger record ────────────────────────────────────── */
+/* ── Passenger record ────────────────────────────────────────────
+   This board spans the full grid, so a space-between row threw the
+   label to the far left and the value to the far right — on a wide
+   screen, "NAME" and "Demo Traveller" ended up more than a thousand
+   pixels apart with nothing in between to carry the eye across.
+   A fixed label column keeps the pair adjacent while the hairline
+   still runs the whole width of the board. */
 .dash__rec-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(120px, 190px) minmax(0, 1fr);
   gap: var(--sp-4);
+  align-items: baseline;
   padding: var(--sp-3) 0;
   border-bottom: 1px solid rgba(22, 36, 74, 0.8);
 }
@@ -267,7 +274,11 @@
   text-transform: uppercase;
   color: var(--text-low);
 }
-.dash__rec-v { color: var(--text-hi); font-size: var(--fs-sm); text-align: right; word-break: break-word; }
+.dash__rec-v { color: var(--text-hi); font-size: var(--fs-sm); word-break: break-word; }
+
+@media (max-width: 520px) {
+  .dash__rec-row { grid-template-columns: 1fr; gap: 2px; }
+}
 
 /* ── Empty states ────────────────────────────────────────── */
 .dash__empty { display: grid; gap: var(--sp-4); justify-items: start; color: var(--text-mid); }

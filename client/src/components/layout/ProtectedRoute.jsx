@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
+import { FlightLoader, useLanding } from '../brand/FlightLoader.jsx';
 
 /**
  * Gates the journey behind a session.
@@ -11,10 +12,12 @@ export function ProtectedRoute({ children }) {
   const { isAuthed, loading } = useAuth();
   const location = useLocation();
 
-  if (loading) {
+  // Hold the loader until its climb resolves, then show the page.
+  const { held, landing } = useLanding(loading);
+  if (held) {
     return (
       <div className="center-screen">
-        <p className="t-low">Checking your passport…</p>
+        <FlightLoader label="Checking your passport" {...landing} />
       </div>
     );
   }

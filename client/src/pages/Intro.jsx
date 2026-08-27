@@ -63,7 +63,6 @@ export default function Intro() {
         src="/videos/journey.mp4"
         mobileSrc="/videos/journey-m.mp4"
         portraitSrc="/videos/journey-portrait.mp4"
-        mobileSrcHq="/videos/journey-2k.mp4"
         poster="/images/journey.jpg"
         height="900vh"
         chapters={[
@@ -128,7 +127,7 @@ export default function Intro() {
             at: 0.73,
             eyebrow: 'Step 06 · Arrival',
             title: 'You land somewhere, with the reasoning.',
-            body: 'A career, why it fits in sentences you can argue with, a side-by-side against the runner-up, and a six-stage route from where you are now to doing the job. Bookmark anything and it is waiting in your case when you come back.',
+            body: 'A career, why it fits in sentences you can argue with, a side-by-side against the runner-up, and a six-stage route from where you are now to doing the job. Bookmark anything and it is waiting in your watchlist when you come back.',
           },
           {
             at: 0.85,

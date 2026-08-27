@@ -7,6 +7,7 @@ import { useJourney } from '../context/JourneyContext.jsx';
 import '../styles/quiz.css';
 import '../styles/airport.css';
 import { SceneVideo } from '../components/media/SceneVideo.jsx';
+import { FlightLoader, useLanding } from '../components/brand/FlightLoader.jsx';
 
 /**
  * The six-stage roadmap for the user's top career.
@@ -32,8 +33,10 @@ export default function Roadmap() {
     return () => { alive = false; };
   }, [advance]);
 
-  if (loading) {
-    return <main className="rm" style={{ position: 'relative', isolation: 'isolate' }}><div className="center-screen"><p className="t-low">Loading your roadmap…</p></div></main>;
+  // Hold the loader until its climb resolves, then show the page.
+  const { held, landing } = useLanding(loading);
+  if (held) {
+    return <main className="rm" style={{ position: 'relative', isolation: 'isolate' }}><div className="center-screen"><FlightLoader label="Plotting your route" {...landing} /></div></main>;
   }
 
   if (error || !result?.matches?.length) {

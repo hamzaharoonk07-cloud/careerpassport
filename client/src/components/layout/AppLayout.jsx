@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { NavLink, Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { A11yControls } from './A11yControls.jsx';
 import { Breadcrumbs } from './Breadcrumbs.jsx';
@@ -47,6 +48,16 @@ export function AppLayout() {
   };
 
   const visible = LINKS.filter((l) => !l.auth || isAuthed);
+
+  /* Signed in, the tab bar holds eight destinations — more than a phone can
+     show at a legible size, so it scrolls sideways. That leaves the tab you
+     are actually on able to sit off-screen, which is the one thing a tab bar
+     must never do. Bring it back into view whenever the route changes. */
+  const tabbarRef = useRef(null);
+  useEffect(() => {
+    const on = tabbarRef.current?.querySelector('.tabbar__link--on');
+    on?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+  }, [pathname]);
 
   return (
     <>
@@ -116,7 +127,7 @@ export function AppLayout() {
       </main>
 
       {/* Thumb-reachable navigation on small screens */}
-      <nav className="tabbar" aria-label="Main">
+      <nav className="tabbar" aria-label="Main" ref={tabbarRef}>
         {visible.map((l) => (
           <NavLink
             key={l.to}

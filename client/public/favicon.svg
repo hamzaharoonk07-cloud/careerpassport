@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!--
+    PathSeeker, reduced to what survives at 16px.
+
+    The full <Logo> carries a shield, a globe, a compass needle and three
+    stars. At favicon size those collapse into a smudge, so this keeps only
+    the two shapes that carry the identity: the navy passport and the gold
+    arrow rising off it. Same palette as the design tokens.
+  -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0e2b8"/>
+      <stop offset="40%" stop-color="#e8c766"/>
+      <stop offset="100%" stop-color="#c9a227"/>
+    </linearGradient>
+    <linearGradient id="n" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2a4b9b"/>
+      <stop offset="100%" stop-color="#0f1b3c"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Dark ground, so the mark holds its shape on a light browser tab too. -->
+  <rect width="100" height="100" rx="22" fill="#060911"/>
+
+  <!-- The passport -->
+  <rect x="18" y="16" width="46" height="64" rx="7" fill="url(#n)"/>
+  <rect x="24" y="22" width="34" height="52" rx="4" fill="none" stroke="url(#g)" stroke-width="2.4" opacity="0.55"/>
+
+  <!-- The rising arrow — thick enough to read when this is 16 pixels wide -->
+  <path d="M40 78 Q56 60 80 26" stroke="url(#g)" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <path d="M88 18 L64 24 L82 38 Z" fill="url(#g)"/>
+</svg>

@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+/* `.opinion*` is defined in destination.css — see the note in Decide.jsx. */
+import '../../styles/destination.css';
 
 const AXIS_NAMES = {
   R: 'Realistic', I: 'Investigative', A: 'Artistic',

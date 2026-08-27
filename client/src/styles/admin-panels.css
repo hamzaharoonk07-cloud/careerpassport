@@ -6,129 +6,19 @@
    obvious affordances, nothing decorative competing with the data.
    ============================================================ */
 
-/* ── Tabs ────────────────────────────────────────────────────── */
-.atabs {
-  display: flex;
-  gap: 2px;
-  margin-top: var(--sp-6);
-  border-bottom: 1px solid var(--ink-600);
-  overflow-x: auto;
-}
-.atab {
-  position: relative;
-  padding: var(--sp-3) var(--sp-4);
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  color: var(--text-mid);
-  font-size: var(--fs-sm);
-  font-weight: 500;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
-}
-.atab:hover { color: var(--text-hi); }
-.atab--on { color: var(--gold-400); border-bottom-color: var(--gold-500); }
-.atab__dot {
-  margin-left: 6px;
-  padding: 1px 6px;
-  border-radius: var(--r-pill);
-  background: var(--gold-500);
-  color: var(--ink-900);
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  font-weight: 600;
-}
-
-/* ── Panel ───────────────────────────────────────────────────── */
-.apanel { margin-top: var(--sp-6); }
-.apanel__head {
-  display: flex;
-  align-items: flex-end;
-  gap: var(--sp-4);
-  flex-wrap: wrap;
-  margin-bottom: var(--sp-4);
-}
-.apanel__title { font-size: 1.05rem; font-weight: 600; color: var(--text-hi); }
-.apanel__sub { margin-top: 4px; color: var(--text-low); font-size: var(--fs-sm); max-width: 68ch; line-height: 1.55; }
-.apanel__head > :last-child { margin-left: auto; }
-.apanel__search { margin-bottom: var(--sp-4); max-width: 380px; }
-.apanel__empty { padding: var(--sp-6) 0; color: var(--text-low); font-size: var(--fs-sm); }
-.apanel__box {
-  padding: var(--sp-5);
-  border-radius: var(--r-lg);
-  border: 1px solid var(--ink-600);
-  background: var(--ink-800);
-}
-
+/* Tabs, panels, tables, tags, record cards and `.alink` used to live here.
+   They are shared with the feedback, account, career-bank, dashboard and
+   password-reset pages, none of which import this sheet — so they rendered
+   unstyled everywhere except /admin. They now sit in forms.css, which
+   global.css imports. Only genuinely admin-only rules remain below. */
 
 .agrid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--sp-4); margin-top: var(--sp-5); }
 .agrid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--sp-3); }
 
-/* ── Tables ──────────────────────────────────────────────────── */
-.atable { border: 1px solid var(--ink-600); border-radius: var(--r-lg); overflow: hidden; }
-.atable__head,
-.atable__row { display: grid; gap: var(--sp-4); align-items: center; padding: var(--sp-3) var(--sp-4); }
-.atable__head {
-  font-family: var(--font-mono);
-  font-size: 0.56rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-low);
-  background: rgba(201, 162, 39, 0.05);
-  border-bottom: 1px solid var(--ink-600);
-}
-.atable__row { border-bottom: 1px solid rgba(22, 36, 74, 0.7); font-size: var(--fs-sm); }
-.atable__row:last-child { border-bottom: none; }
-.atable__row:hover { background: rgba(201, 162, 39, 0.04); }
-
+/* Column templates for the admin tables. The `.atable` base is in forms.css. */
 .atable__row--media  { grid-template-columns: minmax(0,1.4fr) 90px minmax(0,1.6fr) 90px 150px; }
 .atable__row--story  { grid-template-columns: minmax(0,1fr) minmax(0,1.6fr) minmax(0,1fr) 100px 190px; }
 .atable__row--career { grid-template-columns: minmax(0,1.5fr) minmax(0,1fr) 130px minmax(0,1fr) 90px 130px; }
-
-.atable__strong { color: var(--text-hi); font-weight: 600; }
-.atable__dim { color: var(--text-low); }
-.atable__mono { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-mid); }
-.atable__trunc { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.atable__acts { display: flex; gap: var(--sp-3); justify-content: flex-end; }
-
-.alink {
-  background: none;
-  border: none;
-  padding: 0;
-  color: var(--gold-400);
-  font-size: var(--fs-sm);
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.alink:hover { color: var(--gold-300); }
-.alink--bad { color: #d98a8a; }
-.alink--bad:hover { color: #e8a0a0; }
-
-.atag {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 3px;
-  border: 1px solid var(--ink-600);
-  background: rgba(245, 240, 230, 0.04);
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--text-low);
-}
-.atag--on { border-color: rgba(201, 162, 39, 0.42); background: rgba(201, 162, 39, 0.12); color: var(--gold-300); }
-
-/* ── Cards (feedback) ────────────────────────────────────────── */
-.acards { display: grid; gap: var(--sp-3); }
-.acard { padding: var(--sp-4); border: 1px solid var(--ink-600); border-radius: var(--r-lg); background: var(--ink-800); }
-.acard__top { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
-.acard__rating { color: var(--gold-400); letter-spacing: 2px; }
-.acard__rating-off { color: var(--ink-600); }
-.acard__body { margin-top: var(--sp-3); color: var(--text-mid); line-height: 1.62; font-size: var(--fs-sm); }
-.acard__foot { margin-top: var(--sp-3); display: flex; gap: var(--sp-4); flex-wrap: wrap; align-items: center; font-size: var(--fs-sm); }
-.acard__foot > :last-child { margin-left: auto; }
 
 /* ── Questions ───────────────────────────────────────────────── */
 .aqs { display: grid; gap: var(--sp-3); }
@@ -175,11 +65,9 @@
 .aopt__key { font-family: var(--font-mono); color: var(--gold-400); text-transform: uppercase; }
 .aopt__label { color: var(--text-mid); }
 
-/* Stacked rows below the point where the columns stop fitting. */
+/* Stacked rows below the point where the columns stop fitting.
+   The `.atable` half of this lives with the table base in forms.css. */
 @media (max-width: 860px) {
-  .atable__head { display: none; }
-  .atable__row { grid-template-columns: 1fr !important; gap: var(--sp-2); }
-  .atable__acts { justify-content: flex-start; }
   .aopt { grid-template-columns: 1fr; }
 }
 

@@ -4,6 +4,7 @@ import { Button } from '../components/primitives/Button.jsx';
 import { quizService } from '../services/quiz.service.js';
 import { apiError } from '../services/api.js';
 import { useJourney } from '../context/JourneyContext.jsx';
+import { FlightLoader, useLanding } from '../components/brand/FlightLoader.jsx';
 import '../styles/quiz.css';
 
 const DRAFT_KEY = 'pathseeker.quiz.draft';
@@ -130,10 +131,12 @@ export default function Quiz() {
     [questions, answers]
   );
 
-  if (loading) {
+  // Hold the loader until its climb resolves, then show the page.
+  const { held, landing } = useLanding(loading);
+  if (held) {
     return (
       <main className="qz">
-        <div className="wrap-narrow center-screen"><p className="t-low">Preparing your questions…</p></div>
+        <div className="wrap-narrow center-screen"><FlightLoader label="Preparing your questions" {...landing} /></div>
       </main>
     );
   }

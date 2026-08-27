@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from '../../hooks/useReducedMotion.js';
+import { useHiResVideo, hiResSrc } from '../../hooks/useHiResVideo.js';
 import './SceneVideo.css';
 
 /**
@@ -25,8 +26,10 @@ export function SceneVideo({
   overlay = true,
   className = '',
   fit = 'cover',
+  hiRes = true,
 }) {
   const reduced = useReducedMotion();
+  const wantsHiRes = useHiResVideo() && hiRes;
   const videoRef = useRef(null);
   const [state, setState] = useState('probing'); // probing | playing | fallback
 
@@ -84,6 +87,7 @@ export function SceneVideo({
       {state === 'playing' && (
         <video
           ref={videoRef}
+          key={wantsHiRes ? 'hi' : 'sd'}
           className="sv__video"
           style={{ objectFit: fit }}
           poster={poster}
@@ -96,7 +100,14 @@ export function SceneVideo({
           onEnded={onEnded}
           onError={() => setState('fallback')}
         >
-          {/* WebM first: roughly 30% smaller on the same source, and every
+          {/* On a display with the pixels to show it, the 1440p cut goes first.
+              It is H.264 only, so it sits above the WebM rather than beside it;
+              if the file is not there the browser walks on to the next source
+              by itself, which is what makes the tier safe to add clip by clip
+              rather than all at once. */}
+          {wantsHiRes && <source src={hiResSrc(src)} type="video/mp4" />}
+
+          {/* WebM next: roughly 30% smaller on the same source, and every
               browser that understands it prefers it. The mp4 is the floor. */}
           <source src={src.replace(/\.mp4$/, '.webm')} type="video/webm" />
           <source src={src} type="video/mp4" />

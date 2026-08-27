@@ -27,11 +27,17 @@
   /* ── Text ─────────────────────────────────────────────── */
   --text-hi: #f5f0e6;
   --text-mid: #b6bccb;
-  --text-low: #7a8296;
+  /* Lifted from #7a8296. The old value cleared 4.5:1 on the page ground but
+     not on the raised panels — 4.25:1 on the terminal's action tiles — and
+     those are where most of the low-emphasis text actually lives. This is the
+     smallest step that clears AA on the lightest ground it sits on. */
+  --text-low: #848c9f;
   --text-dark: #10141f;
 
   /* ── Semantic ─────────────────────────────────────────── */
-  --success: #2e7d5b;
+  /* Lifted from #2e7d5b, which reached only 3.65:1 against the departures
+     board — the one place this colour is used as text ("ON TIME"). */
+  --success: #3f9b73;
   --warn: #b4791f;
   --danger: #a63a32;
   --info: #3b6e8f;
@@ -109,7 +115,7 @@
 .surface-light {
   --text-hi: var(--text-dark);
   --text-mid: #4a5164;
-  --text-low: #767d90;
+  --text-low: #646b7c;
   --sh-1: 0 1px 2px rgba(16, 20, 31, 0.08);
   --sh-2: 0 6px 18px rgba(16, 20, 31, 0.1);
   --sh-3: 0 18px 48px rgba(16, 20, 31, 0.14);

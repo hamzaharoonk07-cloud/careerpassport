@@ -108,8 +108,14 @@ provider at the marked place in `server/src/controllers/auth.controller.js`.
 is in the repository, and the repository is public. Change it, or delete
 that account, before the site is public.
 
-**Video is about 19 MB.** Vercel serves it from its edge and the files are
-cached immutably, so it is paid for once per region rather than per visit.
+**Video is about 38 MB on disk, but no visitor downloads that.** Roughly 13 MB
+of it is the `-2k` tier: 1440p cuts of the ten background plates, fetched only
+by displays with more than 2000 physical pixels across and never on a
+Save-Data or slow connection. A 1080p laptop or any phone pulls the same
+~25 MB of 1080p and WebM the site has always shipped, and only ever the
+handful of clips on the pages it actually visits. Vercel serves all of it from
+its edge, cached immutably, so each file is paid for once per region rather
+than per visit.
 
 ## If the build fails with "Missing script: vercel-build"
 

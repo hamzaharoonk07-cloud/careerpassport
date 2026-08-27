@@ -26,7 +26,10 @@ const publicUser = (user) => ({
 });
 
 export const register = asyncHandler(async (req, res) => {
-  const { name, email, password, education, age, accountType, interests } = req.body;
+  const {
+    name, email, password, accountType,
+    education, age, currentRole, location, skills, interests,
+  } = req.body;
 
   const existing = await User.findOne({ email });
   if (existing) throw ApiError.conflict('An account with that email already exists.', { email: 'Already registered' });
@@ -43,6 +46,9 @@ export const register = asyncHandler(async (req, res) => {
     profile: {
       education: education || '',
       age: age ?? null,
+      currentRole: currentRole || '',
+      location: location || '',
+      skills: skills || [],
       interests: interests || [],
     },
   });

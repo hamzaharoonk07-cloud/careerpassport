@@ -31,7 +31,7 @@ export const saveCareer = asyncHandler(async (req, res) => {
 
   try {
     const saved = await SavedCareer.create({ user: req.user._id, career: career._id, note });
-    res.status(201).json({ ok: true, saved, message: `${career.title} saved to your briefcase.` });
+    res.status(201).json({ ok: true, saved, message: `${career.title} saved to your watchlist.` });
   } catch (err) {
     // The unique index on (user, career) is the real guard; this just makes it a friendly response.
     if (err.code === 11000) {

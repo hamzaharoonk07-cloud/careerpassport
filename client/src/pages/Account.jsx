@@ -6,6 +6,7 @@ import { EntryStamp } from '../components/brand/EntryStamp.jsx';
 import { api, apiError } from '../services/api.js';
 import { quizService } from '../services/quiz.service.js';
 import { useAuth } from '../context/AuthContext.jsx';
+import { FlightLoader, useLanding } from '../components/brand/FlightLoader.jsx';
 import '../styles/account.css';
 
 const AXIS_NAME = {
@@ -38,7 +39,9 @@ export default function Account() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!user) return;
+    // Hold the loader until its climb resolves, then show the page.
+    const { held, landing } = useLanding(!user);
+    if (held) return;
     setForm({
       name: user.name || '',
       education: user.profile?.education || '',
@@ -158,7 +161,7 @@ const splitList = (v) =>
     }
   };
 
-  if (!user) return <div className="page wrap acct"><p className="t-low">Loading…</p></div>;
+  if (!user) return <div className="page wrap acct center-screen"><FlightLoader label="Opening your passport" {...landing} /></div>;
 
   const top = result?.matches?.[0];
 

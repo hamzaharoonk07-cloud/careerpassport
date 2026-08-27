@@ -13,6 +13,12 @@ import { playChime, playStamp } from '../utils/sound.js';
 import './PassportAuth.css';
 
 /** One field inside the passport. Labelled like a real document. */
+/** Comma-separated text to a clean array; undefined when nothing was typed. */
+const toList = (text) => {
+  const items = text.split(',').map((t) => t.trim()).filter(Boolean);
+  return items.length ? items : undefined;
+};
+
 const PField = forwardRef(function PField({ id, label, error, half = false, hint, ...rest }, ref) {
   return (
     <div className={`pf ${half ? 'pf--half' : ''}`}>
@@ -34,6 +40,7 @@ const PField = forwardRef(function PField({ id, label, error, half = false, hint
 
 const EMPTY_REGISTER = {
   name: '', email: '', password: '', confirmPassword: '', education: '', age: '',
+  currentRole: '', location: '', skills: '', interests: '',
   accountType: 'student',
 };
 
@@ -163,6 +170,10 @@ export default function PassportAuth() {
           confirmPassword: form.confirmPassword,
           education: form.education || undefined,
           age: form.age ? Number(form.age) : undefined,
+          currentRole: form.currentRole || undefined,
+          location: form.location || undefined,
+          skills: toList(form.skills),
+          interests: toList(form.interests),
           accountType: form.accountType,
         });
       } else {
@@ -287,6 +298,34 @@ export default function PassportAuth() {
               placeholder="21" disabled={busy} hint="Optional"
             />
           </div>
+
+          {/* The rest of the passport. It used to be collected only on the
+              account page, which meant every new traveller landed with a
+              half-filled document and had to go and find the form. Still
+              optional — none of it gates registration. */}
+          <div className="pa__row">
+            <PField
+              id="currentRole" label="Current role" half
+              value={form.currentRole} onChange={set('currentRole')} error={errors.currentRole}
+              placeholder="Student" disabled={busy} hint="Optional"
+            />
+            <PField
+              id="location" label="Location" half
+              value={form.location} onChange={set('location')} error={errors.location}
+              placeholder="Karachi" disabled={busy} hint="Optional"
+            />
+          </div>
+
+          <PField
+            id="skills" label="Skills"
+            value={form.skills} onChange={set('skills')} error={errors.skills}
+            placeholder="React, SQL, public speaking" disabled={busy} hint="Separated by commas"
+          />
+          <PField
+            id="interests" label="Interests"
+            value={form.interests} onChange={set('interests')} error={errors.interests}
+            placeholder="AI, fintech, product design" disabled={busy} hint="Separated by commas"
+          />
         </>
       )}
 

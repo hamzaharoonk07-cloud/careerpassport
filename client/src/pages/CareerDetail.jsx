@@ -10,6 +10,7 @@ import { useRecentlyViewed } from '../hooks/useRecentlyViewed.js';
 import { apiError } from '../services/api.js';
 import { formatSalary } from './Result.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
+import { FlightLoader, useLanding } from '../components/brand/FlightLoader.jsx';
 import '../styles/airport.css';
 import '../styles/destination.css';
 
@@ -94,7 +95,9 @@ export default function CareerDetail() {
     }
   };
 
-  if (loading) return <div className="page wrap"><p className="t-low">Landing…</p></div>;
+  // Hold the loader until its climb resolves, then show the page.
+  const { held, landing } = useLanding(loading);
+  if (held) return <div className="page wrap center-screen"><FlightLoader label="Landing" {...landing} /></div>;
 
   if (error || !career) {
     return (
@@ -155,7 +158,7 @@ export default function CareerDetail() {
           <div className="dst__actions">
             {isAuthed && (
               <Button onClick={save} disabled={Boolean(saveState)}>
-                {saveState ? 'Saved ✓' : 'Save to my briefcase'}
+                {saveState ? 'Saved ✓' : 'Save to my watchlist'}
               </Button>
             )}
             <Button variant="secondary" to="/quiz">Check my match</Button>

@@ -11,6 +11,7 @@ import { quizService } from '../services/quiz.service.js';
 import { apiError } from '../services/api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useJourney } from '../context/JourneyContext.jsx';
+import { FlightLoader, useLanding } from '../components/brand/FlightLoader.jsx';
 import '../styles/airport.css';
 
 /** The four terminal actions from the brief. */
@@ -134,10 +135,12 @@ export default function Airport() {
   // some renders and not others, and the component tears itself down as soon
   // as the data arrives. The gate list and its state have to live up here.
 
-  if (loading) {
+  // Hold the loader until its climb resolves, then show the page.
+  const { held, landing } = useLanding(loading);
+  if (held) {
     return (
       <main className="apt">
-        <div className="center-screen"><p className="t-low">Opening the terminal…</p></div>
+        <div className="center-screen"><FlightLoader label="Opening the terminal" {...landing} /></div>
       </main>
     );
   }

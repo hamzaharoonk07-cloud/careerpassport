@@ -1,5 +1,11 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+/* The `.decide*` rules live in destination.css. This component is used on the
+   result page as well as the career detail page, and only the latter imported
+   that sheet — so the comparison rendered as unstyled stacked text for anyone
+   who reached the result without having opened a career first. A component
+   that owns classes has to carry the sheet that defines them. */
+import '../../styles/destination.css';
 
 const AXES = ['R', 'I', 'A', 'S', 'E', 'C'];
 

@@ -58,3 +58,32 @@ export function useHiResVideo() {
 export function hiResSrc(src) {
   return src.replace(/\.mp4$/, '-2k.mp4');
 }
+
+/**
+ * Is this a phone held upright?
+ *
+ * The plates are 16:9 and fill their box with `object-fit: cover`. In a
+ * 390x800 portrait viewport that keeps 27% of the frame — the middle strip,
+ * blown up to fill the height — which is why the video looks zoomed in on a
+ * phone. It is not scaled up; it is cropped almost to nothing.
+ *
+ * Portrait cuts are framed for the shape instead, so the composition survives.
+ * Same once-on-mount rule as the tier above: re-deciding on every orientation
+ * change would restart the clip, and a plate that jumps back to frame one when
+ * the phone is tilted is worse than one framed for landscape.
+ */
+export function usePortraitVideo() {
+  const [portrait, setPortrait] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    setPortrait(window.matchMedia('(max-width: 760px) and (orientation: portrait)').matches);
+  }, []);
+
+  return portrait;
+}
+
+/** `/videos/terminal.mp4` → `/videos/terminal-portrait.mp4`. */
+export function portraitSrc(src) {
+  return src.replace(/\.mp4$/, '-portrait.mp4');
+}

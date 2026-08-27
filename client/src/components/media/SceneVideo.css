@@ -35,3 +35,18 @@
     radial-gradient(70% 60% at 50% 50%, rgba(6, 9, 17, 0.32), rgba(6, 9, 17, 0.72) 78%),
     linear-gradient(180deg, rgba(6, 9, 17, 0.55), transparent 26%, transparent 62%, rgba(6, 9, 17, 0.75));
 }
+
+/* On a tall screen the same scrim reads far heavier than it does on a
+   desktop. The radial is sized in percentages of the box, so `70% 60%`
+   covers roughly 273x480 of an 800-tall phone: everything above and below
+   that sits on the dark 0.72 stop, and the bottom of the linear pass adds
+   0.75 on top. Around two fifths of the screen ends up at near-full scrim,
+   which is what makes the plate look switched off rather than dim.
+   Portrait gets a radial shaped for its own proportions instead. */
+@media (max-width: 760px) and (orientation: portrait) {
+  .sv__scrim {
+    background:
+      radial-gradient(120% 78% at 50% 46%, rgba(6, 9, 17, 0.24), rgba(6, 9, 17, 0.62) 88%),
+      linear-gradient(180deg, rgba(6, 9, 17, 0.5), transparent 22%, transparent 68%, rgba(6, 9, 17, 0.7));
+  }
+}

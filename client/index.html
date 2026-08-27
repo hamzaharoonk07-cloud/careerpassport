@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#060911" />
 
-    <!-- Vector, so the mark stays crisp at every tab, bookmark and pinned
-         size from one file. Taken by Chrome, Edge, Firefox and Safari 16+;
-         anything older simply shows its default rather than breaking.
-         If you want raster fallbacks, export 32px and 180px PNGs from
-         favicon.svg and add `icon` and `apple-touch-icon` links here. -->
+    <!-- Vector first, so the mark stays crisp at every tab, bookmark and
+         pinned size from one file. The PNGs are for what the SVG does not
+         reach: older browsers that ignore an SVG favicon, and iOS, which
+         wants a square raster for a home-screen bookmark and will otherwise
+         screenshot the page. Regenerate both with tools/make-favicons.mjs
+         whenever favicon.svg changes. -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta
       name="description"
       content="PathSeeker. Discover the career that fits you, and the road that gets you there."

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from '../../hooks/useReducedMotion.js';
-import { useHiResVideo, hiResSrc } from '../../hooks/useHiResVideo.js';
+import { useHiResVideo, hiResSrc, usePortraitVideo, portraitSrc } from '../../hooks/useHiResVideo.js';
 import './SceneVideo.css';
 
 /**
@@ -30,6 +30,7 @@ export function SceneVideo({
 }) {
   const reduced = useReducedMotion();
   const wantsHiRes = useHiResVideo() && hiRes;
+  const wantsPortrait = usePortraitVideo();
   const videoRef = useRef(null);
   const [state, setState] = useState('probing'); // probing | playing | fallback
 
@@ -87,7 +88,7 @@ export function SceneVideo({
       {state === 'playing' && (
         <video
           ref={videoRef}
-          key={wantsHiRes ? 'hi' : 'sd'}
+          key={`${wantsHiRes ? 'hi' : 'sd'}-${wantsPortrait ? 'p' : 'l'}`}
           className="sv__video"
           style={{ objectFit: fit }}
           poster={poster}
@@ -100,7 +101,13 @@ export function SceneVideo({
           onEnded={onEnded}
           onError={() => setState('fallback')}
         >
-          {/* On a display with the pixels to show it, the 1440p cut goes first.
+          {/* A phone held upright takes the cut framed for it, ahead of
+              everything else: on a tall screen `object-fit: cover` keeps
+              barely a quarter of a 16:9 frame, and no amount of resolution
+              fixes a crop. */}
+          {wantsPortrait && <source src={portraitSrc(src)} type="video/mp4" />}
+
+          {/* On a display with the pixels to show it, the 1440p cut goes next.
               It is H.264 only, so it sits above the WebM rather than beside it;
               if the file is not there the browser walks on to the next source
               by itself, which is what makes the tier safe to add clip by clip

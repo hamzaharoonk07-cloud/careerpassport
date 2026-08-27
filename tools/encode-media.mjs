@@ -124,6 +124,30 @@ const MANIFEST = [
     out: 'journey-m', from: 'journey.mp4', kind: 'cut',
     vf: 'scale=-2:720', crf: 32,
   },
+
+  // ── Portrait plates ─────────────────────────────────────────────────
+  // The films had portrait cuts; the plates behind the ordinary pages did
+  // not, and `object-fit: cover` on a 16:9 source in a 390x800 phone keeps
+  // 27% of the frame — measured, not guessed. That is what reads as the
+  // video being zoomed in: it is not scaled up, it is cropped to a strip
+  // down the middle.
+  //
+  // 540x960 rather than a full-height crop: a phone cannot resolve more
+  // behind a scrim, and ten of these at 1080 would cost more than the 2K
+  // tier for every desktop visitor put together.
+  ...['terminal', 'cabin', 'gate', 'arrival', 'cruise', 'stamp', 'passport-intro', 'takeoff', 'boarding']
+    .map((name) => ({
+      out: `${name}-portrait`, from: `${name}.mp4`, kind: 'cut',
+      vf: 'crop=ih*9/16:ih,scale=540:960', crf: 30,
+    })),
+
+  // Trimmed to match its landscape sibling — the flight sequence chains on
+  // `ended`, and a portrait viewer must not sit on the landing four seconds
+  // longer than everyone else.
+  {
+    out: 'landing-portrait', from: 'landing.mp4', kind: 'cut', trim: 6,
+    vf: 'crop=ih*9/16:ih,scale=540:960', crf: 30,
+  },
 ];
 
 /** Which outputs carry a poster. Only the ones a component names as one. */

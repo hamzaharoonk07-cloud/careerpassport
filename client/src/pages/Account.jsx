@@ -39,9 +39,7 @@ export default function Account() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Hold the loader until its climb resolves, then show the page.
-    const { held, landing } = useLanding(!user);
-    if (held) return;
+    if (!user) return;
     setForm({
       name: user.name || '',
       education: user.profile?.education || '',
@@ -74,6 +72,66 @@ export default function Account() {
    * someone picking a 40 MB scan is told immediately instead of waiting for
    * an upload that was always going to be refused.
    */
+  /* The photograph is cache-busted on every change: the URL is fixed
+     (/api/users/me/photo) so a replacement would otherwise keep showing the
+     previous image until a hard reload. */
+  // Hold the loader until its climb resolves, then show the page. A hook, so
+  // it belongs in the component body — never inside an effect or after a
+  // conditional return.
+  const { held, landing } = useLanding(!user);
+
+  const [photoBusy, setPhotoBusy] = useState(false);
+  const [photoStamp, setPhotoStamp] = useState(() => Date.now());
+  const [photoMissing, setPhotoMissing] = useState(false);
+
+  const uploadPhoto = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 1024 * 1024) {
+      setError('That image is over 1 MB. Try a smaller one.');
+      e.target.value = '';
+      return;
+    }
+
+    setPhotoBusy(true);
+    setError('');
+    setNote('');
+    try {
+      const data = await new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result);
+        fr.onerror = () => reject(new Error('That image could not be read.'));
+        fr.readAsDataURL(file);
+      });
+      const res = await api.post('/users/me/photo', { filename: file.name, data });
+      patchUser(res.data.user);
+      setPhotoStamp(Date.now());
+      setPhotoMissing(false);
+      setNote('Photograph added to your passport.');
+    } catch (err) {
+      setError(apiError(err));
+    } finally {
+      setPhotoBusy(false);
+      e.target.value = '';
+    }
+  };
+
+  const removePhoto = async () => {
+    setPhotoBusy(true);
+    setError('');
+    try {
+      const res = await api.delete('/users/me/photo');
+      patchUser(res.data.user);
+      setPhotoStamp(Date.now());
+      setNote('Photograph removed.');
+    } catch (err) {
+      setError(apiError(err));
+    } finally {
+      setPhotoBusy(false);
+    }
+  };
+
   const uploadResume = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -161,7 +219,13 @@ const splitList = (v) =>
     }
   };
 
-  if (!user) return <div className="page wrap acct center-screen"><FlightLoader label="Opening your passport" {...landing} /></div>;
+  if (held) {
+    return (
+      <div className="page wrap acct center-screen">
+        <FlightLoader label="Opening your passport" {...landing} />
+      </div>
+    );
+  }
 
   const top = result?.matches?.[0];
 
@@ -216,6 +280,24 @@ const splitList = (v) =>
               />
             </div>
           )}
+
+          {/* The photograph, where a passport actually carries one.
+              `photoMissing` covers the record pointing at a file that is no
+              longer on disk: without it the browser draws its own broken-image
+              icon and the alt text inside the frame, which looks like a fault
+              rather than an empty slot. */}
+          <div className="acct__photo">
+            {user.profile?.photoUrl && !photoMissing ? (
+              <img
+                className="acct__photo-img"
+                src={`/api/users/me/photo?v=${photoStamp}`}
+                alt="Your passport photograph"
+                onError={() => setPhotoMissing(true)}
+              />
+            ) : (
+              <span className="acct__photo-empty" aria-hidden="true">No photo</span>
+            )}
+          </div>
 
           <dl className="acct__facts">
             <div><dt>Full name</dt><dd>{user.name}</dd></div>
@@ -385,6 +467,29 @@ const splitList = (v) =>
                 </button>
               </fieldset>
             )}
+
+            <div className="acct__resume">
+              <span className="field__label">Passport photograph</span>
+              <label className="acct__pick">
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={uploadPhoto}
+                  disabled={photoBusy}
+                />
+                <span>
+                  {photoBusy ? 'Uploading…' : user.profile?.photoUrl ? 'Replace photo' : 'Choose a photo'}
+                </span>
+              </label>
+              {user.profile?.photoUrl && (
+                <button type="button" className="alink alink--bad" onClick={removePhoto} disabled={photoBusy}>
+                  Remove photo
+                </button>
+              )}
+              <span className="field__hint">
+                JPG, PNG or WebP, up to 1 MB. Shown only on your own passport.
+              </span>
+            </div>
 
             <div className="acct__resume">
               <span className="field__label">Resume</span>

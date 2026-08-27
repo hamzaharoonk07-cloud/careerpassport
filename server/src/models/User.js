@@ -36,6 +36,11 @@ const profileSchema = new mongoose.Schema(
     // A path to an uploaded file, not the file itself.
     resumeUrl: { type: String, trim: true, default: '' },
     resumeName: { type: String, trim: true, default: '' },
+
+    // The passport photograph. `photoUrl` is the stored filename, derived
+    // from the account id — never from what the client called the file.
+    photoUrl: { type: String, trim: true, default: '' },
+    photoName: { type: String, trim: true, default: '' },
   },
   { _id: false }
 );

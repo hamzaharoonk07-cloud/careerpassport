@@ -2,6 +2,7 @@ import { Router } from 'express';
 import express from 'express';
 import * as ctrl from '../controllers/user.controller.js';
 import * as resume from '../controllers/resume.controller.js';
+import * as photo from '../controllers/photo.controller.js';
 import { validate } from '../middleware/validate.js';
 import { requireAuth } from '../middleware/auth.js';
 import { updateProfileSchema } from '../validators/auth.schema.js';
@@ -18,5 +19,11 @@ router.patch('/me/field', validate(selectFieldSchema), ctrl.selectField);
 router.post('/me/resume', express.json({ limit: '3mb' }), resume.uploadResume);
 router.get('/me/resume', resume.downloadResume);
 router.delete('/me/resume', resume.deleteResume);
+
+// The passport photograph. Same shape as the resume above: base64 in JSON,
+// verified by magic bytes, stored under the account id.
+router.post('/me/photo', express.json({ limit: '2mb' }), photo.uploadPhoto);
+router.get('/me/photo', photo.getPhoto);
+router.delete('/me/photo', photo.deletePhoto);
 
 export default router;

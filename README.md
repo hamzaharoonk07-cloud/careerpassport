@@ -62,7 +62,7 @@ API, nothing random.
 ```
 score = 0.60 × RIASEC cosine similarity
       + 0.30 × field affinity from the quiz
-      + 0.10 × the field the user chose on the train
+      + 0.10 × the field the user chose at the gate
 ```
 
 Each of the 180 quiz options carries two vectors: **field weights** (which of the
@@ -243,26 +243,26 @@ The smoke tests need the API running (`npm run dev`).
 
 ## The cinematics
 
-Five Higgsfield clips, one per journey stage, generated keyframe-first
-(MiniMax H3 at 2K from an approved Soul 2 still) and encoded for the web:
+Fourteen Higgsfield masters at 2560×1440, one per beat of the journey, encoded
+for the web by the pipeline above. The plates play; two of them are scrubbed by
+the scrollbar rather than played.
 
-| Scene | Clip | mp4 | webm |
-|---|---|---|---|
-| Landing hero | `passport-intro` | 804 KB | 619 KB |
-| Passport + stamp | `stamp` | 853 KB | 543 KB |
-| Career Station | `station` | 1099 KB | 1040 KB |
-| Career Train | `train-interior` | 875 KB | 615 KB |
-| Briefcase finale | `briefcase` | 737 KB | 537 KB |
+| Role | Clips |
+|---|---|
+| Landing film (scrubbed) | `journey` — plus `-m` and `-portrait` cuts |
+| Terminal, gates, cabin | `terminal` · `gate` · `cabin` |
+| Flight sequence | `boarding` · `takeoff` · `cruise` · `landing` · `arrival` |
+| Passport and stamp | `passport-intro` · `stamp` |
+| Closing film (scrubbed) | `briefcase` — plus a `-portrait` cut |
 
-Masters stay untouched in `media/higgsfield/raw/`. To re-encode after adding
-or replacing one:
+Every one ships at 1080p with a WebM sibling, a 1440p `-2k` cut, a 540×960
+`-portrait` cut and a poster. Masters stay untouched in
+`media/higgsfield/raw/`.
 
 ```bash
-node tools/encode-media.mjs
+node tools/encode-media.mjs           # rebuild everything in the manifest
+node tools/encode-media.mjs --check   # verify what ships, write nothing
 ```
-
-That scales to 1080p, writes H.264 + VP9, extracts a poster from the first
-frame, and warns about anything over the 800 KB budget.
 
 **Video is a layer, never a dependency.** `SceneVideo` probes the file and
 checks its `content-type` — a host answering a missing path with `index.html`
@@ -279,6 +279,15 @@ other case: file missing, slow connection, data saver, or reduced motion. Delete
 - **Fonts load from Google Fonts.** Self-hosted WOFF2 subsets would remove a
   third-party render-blocking dependency — worth doing before a live demo on
   venue wifi.
-- **Mobile is untested on real hardware.** The responsive CSS and breakpoints
-  are written, but everything has been verified on desktop only.
-- No admin panel and no PDF export — both were scoped out deliberately.
+- **Mobile is verified in the browser, not on real hardware.** Layouts,
+  breakpoints, the portrait video cuts and the top tab bar have all been
+  measured at 390 px, but nothing has been opened on an actual phone.
+- **The free-text matcher at `/api/ask` has no UI.** It works — it reads
+  negation, explains itself and admits when a sentence gave it nothing — but
+  nothing in the client calls it. It also matches on substrings, so short
+  signal words hit inside longer ones (`art` inside `apart`); fix that before
+  surfacing it.
+- **The multimedia centre ships empty.** The submission form and moderation
+  queue work; there is simply no seeded content, because the repository holds
+  no photographs of the professions and placeholder imagery would have been
+  claiming something untrue.

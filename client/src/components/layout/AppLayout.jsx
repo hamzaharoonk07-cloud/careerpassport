@@ -81,6 +81,10 @@ export function AppLayout() {
         </div>
       </header>
 
+      {/* Small-screen navigation, shared with the journey pages outside this
+          shell. Directly after the header so reading order matches the screen. */}
+      <TabBar underNav />
+
       {/* Breadcrumbs sit outside <main> so the trail is not read as part of
           the page content, and are hidden on the landing page where there is
           nowhere to have come from. */}
@@ -94,9 +98,6 @@ export function AppLayout() {
         <Outlet />
       </main>
 
-      {/* Thumb-reachable navigation on small screens. Shared with the
-          journey pages, which sit outside this shell. */}
-      <TabBar />
     </>
   );
 }

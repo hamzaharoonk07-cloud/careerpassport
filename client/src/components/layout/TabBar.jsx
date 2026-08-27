@@ -34,7 +34,7 @@ export const LINKS = [
  * The bar hides itself above 1024px, so rendering it on a cinematic page
  * costs that page nothing on a desktop.
  */
-export function TabBar() {
+export function TabBar({ underNav = false }) {
   const { pathname } = useLocation();
   const { isAuthed, logout } = useAuth();
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ export function TabBar() {
   }, [pathname]);
 
   return (
-    <nav className="tabbar" aria-label="Main" ref={ref}>
+    <nav className={`tabbar ${underNav ? 'tabbar--under-nav' : ''}`} aria-label="Main" ref={ref}>
       {visible.map((l) => (
         <NavLink
           key={l.to}

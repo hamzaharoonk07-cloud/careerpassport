@@ -65,21 +65,28 @@
   margin-right: var(--sp-1);
 }
 
-/* Mobile tab bar — primary actions in the thumb zone */
+/* Mobile tab bar — pinned to the top of the screen.
+   It sat in the thumb zone at the bottom before, which is the better place
+   to reach but the worse place to find: on the journey pages it is the only
+   navigation there is, and a bar below the fold reads as absent. */
 .tabbar {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0;
+  top: 0;
   z-index: var(--z-nav);
   display: none;
-  border-top: 1px solid var(--ink-600);
+  border-bottom: 1px solid var(--ink-600);
   background: var(--surface-nav-solid);
   backdrop-filter: blur(12px);
-  padding-bottom: env(safe-area-inset-bottom, 0);
+  padding-top: env(safe-area-inset-top, 0);
   overflow-x: auto;
   scrollbar-width: none;
 }
+
+/* Inside the app shell the brand header already holds the top of the screen,
+   so the bar tucks under it rather than over it. */
+.tabbar--under-nav { top: var(--nav-h); }
 .tabbar::-webkit-scrollbar { display: none; }
 
 /* Signed in there are eight of these. Dividing a 390px phone by eight
@@ -126,16 +133,16 @@
   .nav__links { display: none; }
   .tabbar { display: flex; }
 
-  /* Room for the bar. `.app-main` covers everything inside the shell; the
-     journey pages sit outside it and now carry the same bar, so their roots
-     need the same clearance or it lands on top of their own controls — the
-     quiz's Back and Next sit exactly where the bar does. */
-  .app-main,
+  /* Room for the bar, now at the top. The journey pages sit outside the shell
+     and carry the same bar, so their roots need the same clearance or their
+     opening line starts underneath it. Inside the shell the bar sits below
+     the brand header, so the breadcrumbs and main move down by its height. */
+  .app-crumbs,
   .apt,
   .qz,
   .an,
   .pp {
-    padding-bottom: 76px;
+    padding-top: 60px;
   }
 }
 

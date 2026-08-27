@@ -35,6 +35,13 @@ export function FlightLoader({ label = 'Climbing out', progress, done = false, o
   const raf = useRef(null);
   const finished = useRef(false);
 
+  // The frame loop owns these nodes and the current position; React only
+  // renders when something it is responsible for actually changes.
+  const flownRef = useRef(null);
+  const planeRef = useRef(null);
+  const altRef = useRef(null);
+  const pRef = useRef(determinate ? progress : 0);
+
   // Kept in a ref as well as state: the animation loop below reads it every
   // frame and must not be torn down and restarted when it changes, or the
   // climb visibly stutters at the moment of handover.
@@ -45,12 +52,18 @@ export function FlightLoader({ label = 'Climbing out', progress, done = false, o
   completeRef.current = onComplete;
 
   useEffect(() => {
-    if (determinate) { setP(Math.min(1, Math.max(0, progress))); return undefined; }
+    if (determinate) {
+      const v = Math.min(1, Math.max(0, progress));
+      pRef.current = v;
+      setP(v);
+      return undefined;
+    }
 
     // Reduced motion gets the readout without the climb: straight to cruise,
     // held long enough to be seen, then handover.
     if (reduced) {
-      setP(done ? 1 : 0.7);
+      pRef.current = done ? 1 : 0.7;
+      setP(pRef.current);
       if (done && !finished.current) {
         finished.current = true;
         const t = setTimeout(() => completeRef.current?.(), LEVEL_OFF);
@@ -70,32 +83,63 @@ export function FlightLoader({ label = 'Climbing out', progress, done = false, o
       bail = setTimeout(() => {
         if (finished.current) return;
         finished.current = true;
+        pRef.current = 1;
         setP(1);
         completeRef.current?.();
       }, 1200);
     }
 
+    /* The bar is moved directly, not through React.
+       It used to call setState on every animation frame, which re-rendered
+       the whole component sixty times a second, and the moved elements also
+       carried a 120ms CSS transition. Between them the transition never got
+       to finish before the next frame restarted it, so the plane arrived in
+       small visible steps instead of gliding — the animation was fighting
+       itself. The frame loop writes the two styles straight onto the nodes
+       now, and React is only told when the *rounded* altitude changes, which
+       is a few times a second rather than sixty. */
     let alive = true;
+    let pos = pRef.current;
+    let shownFeet = -1;
+
+    const paint = () => {
+      const pct = `${pos * 100}%`;
+      if (flownRef.current) flownRef.current.style.width = pct;
+      if (planeRef.current) planeRef.current.style.left = pct;
+
+      const feet = Math.round((pos * CRUISE_FT) / 100) * 100;
+      if (feet !== shownFeet) {
+        shownFeet = feet;
+        if (altRef.current) altRef.current.textContent = feet.toLocaleString('en-US');
+      }
+    };
+
     const tick = () => {
       if (!alive) return;
-      setP((prev) => {
-        // Climbing: the step shrinks with the distance left, so the bar moves
-        // quickly while there is runway and crawls near the top — which is how
-        // a real wait feels.
-        if (!doneRef.current) return prev + (0.92 - prev) * 0.018;
 
+      // Climbing: the step shrinks with the distance left, so the bar moves
+      // quickly while there is runway and crawls near the top — which is how
+      // a real wait feels.
+      if (!doneRef.current) {
+        pos += (0.92 - pos) * 0.018;
+      } else {
         // Levelling off: close the remaining gap fast enough to feel like a
         // resolution rather than a second wait.
-        const next = prev + (1 - prev) * 0.12;
-        if (next >= 0.999 && !finished.current) {
+        pos += (1 - pos) * 0.12;
+        if (pos >= 0.999 && !finished.current) {
+          pos = 1;
           finished.current = true;
+          setP(1); // one render, so the label can say "Cruising altitude"
           setTimeout(() => completeRef.current?.(), LEVEL_OFF);
-          return 1;
         }
-        return next;
-      });
+      }
+
+      pRef.current = pos;
+      paint();
       raf.current = requestAnimationFrame(tick);
     };
+
+    paint();
     raf.current = requestAnimationFrame(tick);
     return () => { alive = false; cancelAnimationFrame(raf.current); clearTimeout(bail); };
   }, [determinate, progress, reduced, done]);
@@ -120,11 +164,11 @@ export function FlightLoader({ label = 'Climbing out', progress, done = false, o
 
       <div className="fload__track">
         <span className="fload__path" />
-        <span className="fload__flown" style={{ width: `${p * 100}%` }} />
+        <span className="fload__flown" ref={flownRef} style={{ width: `${p * 100}%` }} />
         {/* The plane rides the head of the flown segment. `left` is a
             percentage of the track and the translate re-centres it, so it
             stays on the line at both ends instead of overhanging them. */}
-        <span className="fload__plane" style={{ left: `${p * 100}%` }} aria-hidden="true">
+        <span className="fload__plane" ref={planeRef} style={{ left: `${p * 100}%` }} aria-hidden="true">
           <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
             <path d="M21 14.5 13.5 12V5.5a1.5 1.5 0 0 0-3 0V12L3 14.5v2l7.5-2v4L8 20.5V22l4-1.2 4 1.2v-1.5L13.5 18.5v-4l7.5 2z" />
           </svg>
@@ -132,7 +176,7 @@ export function FlightLoader({ label = 'Climbing out', progress, done = false, o
       </div>
 
       <p className="fload__alt">
-        <span className="fload__alt-n">{feet.toLocaleString('en-US')}</span>
+        <span className="fload__alt-n" ref={altRef}>{feet.toLocaleString('en-US')}</span>
         <span className="fload__alt-u">ft</span>
       </p>
     </div>

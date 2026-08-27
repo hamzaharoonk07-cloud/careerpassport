@@ -16,7 +16,18 @@ export function createApp() {
   app.set('trust proxy', 1);
   app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
   app.use(cors({ origin: env.clientOrigin, credentials: true }));
-  app.use(express.json({ limit: '100kb' }));
+  /**
+   * 100kb everywhere except the two upload endpoints.
+   *
+   * This parser runs before any route, so it was rejecting a file upload with
+   * 413 long before the 2mb parser on the route itself was reached: a base64
+   * photograph over about 73KB never got past here. The uploads opt out and
+   * set their own ceiling; everything else keeps the tight default, because a
+   * JSON body larger than 100kb anywhere else is a mistake or an attack.
+   */
+  const UPLOAD_PATHS = new Set(['/api/users/me/photo', '/api/users/me/resume']);
+  const json100 = express.json({ limit: '100kb' });
+  app.use((req, res, next) => (UPLOAD_PATHS.has(req.path) ? next() : json100(req, res, next)));
   app.use(express.urlencoded({ extended: true, limit: '100kb' }));
   app.use(cookieParser());
   if (!env.isProd) app.use(morgan('dev'));

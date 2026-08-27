@@ -582,3 +582,50 @@
   contain: none;
   min-height: var(--pa-h);
 }
+
+/* ── Password reveal ─────────────────────────────────────────────
+   A password box you cannot read back is where most sign-up typos
+   live, and a confirm field only ever says the two disagree — never
+   which one is wrong. */
+.pf__wrap { position: relative; display: block; }
+.pf__wrap--secret .pf__input { padding-right: 3.6rem; }
+
+.pf__reveal {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px 2px;
+  background: none;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8a7333;
+  cursor: pointer;
+  transition: color var(--dur-2) var(--ease-out);
+}
+.pf__reveal:hover { color: #6b5412; }
+
+/* ── The clerk turns away ────────────────────────────────────────
+   Their sign-up has a mascot that covers its eyes while you type a
+   password. The same courtesy, told in this product's own language:
+   the dry seal on the facing page shutters itself for as long as a
+   secret is being written, and opens again when it is not.
+
+   Decoration only — the seal carries no information — so there is
+   nothing to announce and nothing lost when it is not shown. */
+.pa__page--left .pa__seal {
+  transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out), filter var(--dur-3) var(--ease-out);
+}
+.pa__page--private .pa__seal {
+  opacity: 0.18;
+  transform: scale(0.94) rotate(-8deg);
+  filter: blur(1.5px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pa__page--left .pa__seal { transition: opacity var(--dur-2) linear; }
+  .pa__page--private .pa__seal { transform: none; filter: none; }
+}

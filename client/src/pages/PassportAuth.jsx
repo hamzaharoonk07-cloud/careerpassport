@@ -19,19 +19,44 @@ const toList = (text) => {
   return items.length ? items : undefined;
 };
 
-const PField = forwardRef(function PField({ id, label, error, half = false, hint, ...rest }, ref) {
+const PField = forwardRef(function PField({ id, label, error, half = false, hint, type, ...rest }, ref) {
+  // A password field you cannot read back is where most sign-up typos live,
+  // and the confirm box only tells you the two disagree, never which is
+  // wrong. The toggle is per-field rather than global: revealing one should
+  // not reveal the other on a shared screen.
+  const [shown, setShown] = useState(false);
+  const isSecret = type === 'password';
+
   return (
     <div className={`pf ${half ? 'pf--half' : ''}`}>
       <label className="pf__label" htmlFor={id}>{label}</label>
-      <input
-        ref={ref}
-        id={id}
-        name={id}
-        className="pf__input"
-        aria-invalid={error ? 'true' : undefined}
-        aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined}
-        {...rest}
-      />
+
+      <span className={`pf__wrap ${isSecret ? 'pf__wrap--secret' : ''}`}>
+        <input
+          ref={ref}
+          id={id}
+          name={id}
+          type={isSecret && shown ? 'text' : type}
+          className="pf__input"
+          aria-invalid={error ? 'true' : undefined}
+          aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined}
+          {...rest}
+        />
+        {isSecret && (
+          <button
+            type="button"
+            className="pf__reveal"
+            onClick={() => setShown((v) => !v)}
+            aria-pressed={shown}
+            aria-label={shown ? 'Hide password' : 'Show password'}
+            title={shown ? 'Hide password' : 'Show password'}
+            tabIndex={-1}
+          >
+            {shown ? 'Hide' : 'Show'}
+          </button>
+        )}
+      </span>
+
       {hint && !error && <span className="pf__hint" id={`${id}-hint`}>{hint}</span>}
       {error && <span className="pf__err" id={`${id}-err`}>{error}</span>}
     </div>
@@ -86,6 +111,10 @@ export default function PassportAuth() {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(EMPTY_REGISTER);
   const [errors, setErrors] = useState({});
+  // True while a password box has focus. The dry seal on the facing page
+  // covers itself for as long as it is — the clerk turning away while you
+  // write, rather than a mascot mugging at the camera.
+  const [secret, setSecret] = useState(false);
   const [alert, setAlert] = useState('');
   const [phase, setPhase] = useState('idle'); // idle | verifying | stamping | done
   const [muted, setMuted] = useState(true);
@@ -229,11 +258,13 @@ export default function PassportAuth() {
         <div className="pa__row">
           <PField
             id="password" label="Password" type="password"
+              onFocus={() => setSecret(true)} onBlur={() => setSecret(false)}
             value={form.password} onChange={set('password')} error={errors.password}
             autoComplete="new-password" placeholder="Min. 8 characters" disabled={busy}
           />
           <PField
             id="confirmPassword" label="Confirm" type="password"
+            onFocus={() => setSecret(true)} onBlur={() => setSecret(false)}
             value={form.confirmPassword} onChange={set('confirmPassword')}
             error={errors.confirmPassword} autoComplete="new-password" disabled={busy}
           />
@@ -241,6 +272,7 @@ export default function PassportAuth() {
       ) : (
         <PField
           id="password" label="Password" type="password"
+              onFocus={() => setSecret(true)} onBlur={() => setSecret(false)}
           value={form.password} onChange={set('password')} error={errors.password}
           autoComplete="current-password" disabled={busy}
         />
@@ -365,7 +397,7 @@ export default function PassportAuth() {
         <div className="pa__book">
           {/* ── Inside pages ─────────────────────────────── */}
           <div className="pa__pages">
-            <div className="pa__page pa__page--left">
+            <div className={`pa__page pa__page--left ${secret ? 'pa__page--private' : ''}`}>
               <div className="pa__crest"><Logo size={42} /></div>
               <p className="pa__doc">PathSeeker · Career Authority</p>
               <h1 className="pa__h">

@@ -12,6 +12,7 @@ import { apiError } from '../services/api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useJourney } from '../context/JourneyContext.jsx';
 import { FlightLoader, useLanding } from '../components/brand/FlightLoader.jsx';
+import { TabBar } from '../components/layout/TabBar.jsx';
 import '../styles/airport.css';
 
 /** The four terminal actions from the brief. */
@@ -314,6 +315,7 @@ export default function Airport() {
         </div>
         )}
       </div>
+      <TabBar />
     </main>
-  );
+);
 }

@@ -5,6 +5,7 @@ import { quizService } from '../services/quiz.service.js';
 import { apiError } from '../services/api.js';
 import { useJourney } from '../context/JourneyContext.jsx';
 import { FlightLoader, useLanding } from '../components/brand/FlightLoader.jsx';
+import { TabBar } from '../components/layout/TabBar.jsx';
 import '../styles/quiz.css';
 
 const DRAFT_KEY = 'pathseeker.quiz.draft';
@@ -255,6 +256,7 @@ export default function Quiz() {
           )}
         </nav>
       </div>
+      <TabBar />
     </main>
-  );
+);
 }

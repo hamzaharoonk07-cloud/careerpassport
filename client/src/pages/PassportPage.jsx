@@ -6,6 +6,7 @@ import { Button } from '../components/primitives/Button.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useJourney } from '../context/JourneyContext.jsx';
 import { useReducedMotion } from '../hooks/useReducedMotion.js';
+import { TabBar } from '../components/layout/TabBar.jsx';
 import './PassportPage.css';
 
 /**
@@ -101,6 +102,7 @@ export default function PassportPage() {
           )}
         </footer>
       </div>
+      <TabBar />
     </main>
-  );
+);
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useJourney } from '../context/JourneyContext.jsx';
 import { useReducedMotion } from '../hooks/useReducedMotion.js';
+import { TabBar } from '../components/layout/TabBar.jsx';
 import '../styles/quiz.css';
 
 /**
@@ -59,6 +60,7 @@ export default function Analysis() {
           ))}
         </ol>
       </div>
+      <TabBar />
     </main>
-  );
+);
 }

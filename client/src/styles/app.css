@@ -125,7 +125,18 @@
 @media (max-width: 1024px) {
   .nav__links { display: none; }
   .tabbar { display: flex; }
-  .app-main { padding-bottom: 76px; }
+
+  /* Room for the bar. `.app-main` covers everything inside the shell; the
+     journey pages sit outside it and now carry the same bar, so their roots
+     need the same clearance or it lands on top of their own controls — the
+     quiz's Back and Next sit exactly where the bar does. */
+  .app-main,
+  .apt,
+  .qz,
+  .an,
+  .pp {
+    padding-bottom: 76px;
+  }
 }
 
 /* ── Breadcrumbs ────────────────────────────────────────────────

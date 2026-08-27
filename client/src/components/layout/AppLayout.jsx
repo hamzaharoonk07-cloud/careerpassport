@@ -1,34 +1,11 @@
-import { useEffect, useRef } from 'react';
 import { NavLink, Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { A11yControls } from './A11yControls.jsx';
+import { TabBar, LINKS } from './TabBar.jsx';
 import { Breadcrumbs } from './Breadcrumbs.jsx';
 import { Logo } from '../brand/Logo.jsx';
 import { Button } from '../primitives/Button.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import '../../styles/app.css';
-
-/**
- * The modules, as tabs.
- *
- * Everything in the architecture that a visitor can reach. Only three were
- * listed before and two of those were behind a session, so a logged-out
- * visitor saw a single link and no way through the site.
- *
- * `auth` hides a tab that would only bounce someone to the sign-in page.
- */
-const LINKS = [
-  // The terminal is the hub of the journey, but until now it was only
-  // reachable by walking the flow forward from the passport. Someone who
-  // left mid-journey and came back had no way to return to it, and someone
-  // who had already flown had no way to look at where they landed.
-  { to: '/airport', label: 'Terminal', auth: true },
-  { to: '/careers', label: 'Career Bank', auth: false },
-  { to: '/media', label: 'Multimedia', auth: false },
-  { to: '/stories', label: 'Stories', auth: false },
-  { to: '/dashboard', label: 'Dashboard', auth: true },
-  { to: '/roadmap', label: 'Roadmap', auth: true },
-  { to: '/feedback', label: 'Feedback', auth: false },
-];
 
 /**
  * The shell for the non-cinematic half of the product.
@@ -49,15 +26,6 @@ export function AppLayout() {
 
   const visible = LINKS.filter((l) => !l.auth || isAuthed);
 
-  /* Signed in, the tab bar holds eight destinations — more than a phone can
-     show at a legible size, so it scrolls sideways. That leaves the tab you
-     are actually on able to sit off-screen, which is the one thing a tab bar
-     must never do. Bring it back into view whenever the route changes. */
-  const tabbarRef = useRef(null);
-  useEffect(() => {
-    const on = tabbarRef.current?.querySelector('.tabbar__link--on');
-    on?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
-  }, [pathname]);
 
   return (
     <>
@@ -126,23 +94,9 @@ export function AppLayout() {
         <Outlet />
       </main>
 
-      {/* Thumb-reachable navigation on small screens */}
-      <nav className="tabbar" aria-label="Main" ref={tabbarRef}>
-        {visible.map((l) => (
-          <NavLink
-            key={l.to}
-            to={l.to}
-            className={({ isActive }) => `tabbar__link ${isActive ? 'tabbar__link--on' : ''}`}
-          >
-            {l.label}
-          </NavLink>
-        ))}
-        {isAuthed ? (
-          <button type="button" className="tabbar__link" onClick={signOut}>Log out</button>
-        ) : (
-          <NavLink to="/login" className="tabbar__link">Sign in</NavLink>
-        )}
-      </nav>
+      {/* Thumb-reachable navigation on small screens. Shared with the
+          journey pages, which sit outside this shell. */}
+      <TabBar />
     </>
   );
 }

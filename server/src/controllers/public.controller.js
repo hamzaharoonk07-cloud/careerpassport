@@ -32,6 +32,57 @@ export const listMedia = asyncHandler(async (req, res) => {
   res.json({ ok: true, media });
 });
 
+/**
+ * A visitor's contribution to the multimedia centre.
+ *
+ * The counterpart to submitStory, and it follows the same rule: the
+ * submission never sets its own status. `active: false` is written here
+ * rather than taken from the body, so nothing appears in the centre until an
+ * admin turns it on from the panel that already manages these.
+ *
+ * The URL is checked rather than trusted, and this is the one place in the
+ * product where that matters most: unlike a story, which is text, a media
+ * item's URL is handed straight to a `<video src>`, an `<img src>` or an
+ * anchor. A `javascript:` or `data:` URL there is script execution on
+ * someone else's page. Only http and https are accepted, parsed rather than
+ * pattern-matched — a regex over URLs is a losing game.
+ */
+const SUBMITTABLE_KINDS = new Set(['video', 'image', 'document', 'link']);
+
+export const submitMedia = asyncHandler(async (req, res) => {
+  const { title, description, kind, url } = req.body;
+
+  if (!title?.trim()) throw ApiError.badRequest('A title is required.', { title: 'Required' });
+  if (!SUBMITTABLE_KINDS.has(kind)) {
+    throw ApiError.badRequest('Choose what kind of item this is.', { kind: 'Pick a type' });
+  }
+
+  let parsed;
+  try {
+    parsed = new URL(String(url || '').trim());
+  } catch {
+    throw ApiError.badRequest('That does not look like a link.', { url: 'Enter a full https:// address' });
+  }
+  if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+    throw ApiError.badRequest('Links must start with http or https.', { url: 'Only http and https are accepted' });
+  }
+
+  const created = await MediaItem.create({
+    title: title.trim(),
+    description: (description || '').trim(),
+    kind,
+    url: parsed.href,
+    submittedBy: req.user?._id || null,
+    active: false,
+  });
+
+  res.status(201).json({
+    ok: true,
+    item: { id: created._id },
+    message: 'Thank you — an administrator reviews it before it appears in the centre.',
+  });
+});
+
 /* ── Success stories ──────────────────────────────────────────── */
 
 export const listStories = asyncHandler(async (req, res) => {

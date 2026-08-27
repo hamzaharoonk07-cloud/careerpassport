@@ -107,13 +107,16 @@ const MANIFEST = [
   // player keeps the 2K sibling the same length as the 1080p one — they
   // drifted apart the first time this tier was built, and a hi-res visitor
   // sat on the landing four seconds longer than everyone else.
-  { out: 'landing', from: 'landing.mp4', kind: 'plate', trim: 6 },
+  // crf 29 rather than the plate default: this one was graded darker than
+  // the rest and holds up at a higher crf, which is how it was originally
+  // encoded. Verified against the shipped file rather than assumed.
+  { out: 'landing', from: 'landing.mp4', kind: 'plate', trim: 6, crf: 29 },
 
   // ── Scrubbed films ──────────────────────────────────────────────────
   { out: 'journey',   from: 'journey.mp4',        kind: 'scrub', height: 900, crf: 29 },
   // Named for the shot, not the file: the shipped briefcase film is the
   // *opening* master. Confirmed frame-for-frame, not assumed.
-  { out: 'briefcase', from: 'briefcase-open.mp4', kind: 'scrub', height: 720, crf: 29 },
+  { out: 'briefcase', from: 'briefcase-open.mp4', kind: 'scrub', height: 720, crf: 28 },
 
   // ── Hand-shaped cuts ────────────────────────────────────────────────
   // Portrait crops. Handing a phone the landscape master means
@@ -121,17 +124,17 @@ const MANIFEST = [
   // reads as being zoomed in. Crop to 9:16 from the centre first.
   {
     out: 'journey-portrait', from: 'journey.mp4', kind: 'cut',
-    vf: 'crop=ih*9/16:ih,scale=608:1080', gop: 6, crf: 30,
+    vf: 'crop=ih*9/16:ih,scale=608:1080', gop: 6, crf: 28,
   },
   {
     out: 'briefcase-portrait', from: 'briefcase-open.mp4', kind: 'cut',
-    vf: 'crop=ih*9/16:ih,scale=540:960', gop: 6, crf: 30,
+    vf: 'crop=ih*9/16:ih,scale=540:960', gop: 6, crf: 28,
   },
   // The stacked (non-scrubbing) fallback plays this rather than seeking it,
   // so it wants ordinary keyframe spacing and a fifth of the size.
   {
     out: 'journey-m', from: 'journey.mp4', kind: 'cut',
-    vf: 'scale=-2:720', crf: 32,
+    vf: 'scale=-2:720', crf: 30,
   },
 
   // ── Portrait plates ─────────────────────────────────────────────────

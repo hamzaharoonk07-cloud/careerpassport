@@ -11,6 +11,9 @@ const router = Router();
 router.post('/ask', ctrl.ask);
 
 router.get('/media', ctrl.listMedia);
+// Same shape as stories: anyone may send something in, an account is attached
+// when there is one, and nothing is visible until an admin approves it.
+router.post('/media', optionalAuth, ctrl.submitMedia);
 router.get('/stories', ctrl.listStories);
 router.post('/stories', optionalAuth, ctrl.submitStory);
 router.post('/feedback', optionalAuth, ctrl.submitFeedback);

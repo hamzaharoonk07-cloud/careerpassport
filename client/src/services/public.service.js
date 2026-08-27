@@ -10,6 +10,7 @@ import { api } from './api.js';
 export const publicService = {
   media: (params) => api.get('/media', { params }).then((r) => r.data.media),
   stories: (params) => api.get('/stories', { params }).then((r) => r.data.stories),
+  submitMedia: (body) => api.post('/media', body).then((r) => r.data),
   submitStory: (body) => api.post('/stories', body).then((r) => r.data),
   submitFeedback: (body) => api.post('/feedback', body).then((r) => r.data),
   myFeedback: () => api.get('/feedback/mine').then((r) => r.data.feedback),

@@ -27,7 +27,23 @@ const mediaItemSchema = new mongoose.Schema(
     field: { type: mongoose.Schema.Types.ObjectId, ref: 'CareerField', default: null, index: true },
 
     order: { type: Number, default: 0 },
+
+    /**
+     * The visibility gate, and the moderation queue with it.
+     *
+     * Defaults true because an admin adding an item is publishing it. A
+     * public submission sets it false explicitly — see submitMedia — so
+     * nothing a visitor sends appears in the centre until it is reviewed,
+     * the same rule success stories already follow.
+     */
     active: { type: Boolean, default: true, index: true },
+
+    /**
+     * Who sent it in, when it came from the public form. Null for anything
+     * an admin created, and null for an anonymous submission: the point is
+     * attribution and an audit trail where one exists, not a requirement.
+     */
+    submittedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null, index: true },
   },
   { timestamps: true }
 );

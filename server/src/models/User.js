@@ -33,13 +33,23 @@ const profileSchema = new mongoose.Schema(
       default: [],
     },
 
-    // A path to an uploaded file, not the file itself.
-    resumeUrl: { type: String, trim: true, default: '' },
+    /**
+     * Uploaded files: what is on file, not the file itself.
+     *
+     * The bytes live in the `Upload` collection, keyed by account and kind.
+     * These two pairs are the summary the passport page needs without
+     * fetching a payload — `*Type` is the verified MIME type and doubles as
+     * the "is there one?" flag, `*Name` is what the file was called and is
+     * shown, never used to build a path.
+     *
+     * They were `resumeUrl` and `photoUrl` while uploads were files on disk.
+     * Nothing is a URL any more, and a field that lies about what it holds
+     * is how the next person writes a path-join against it.
+     */
+    resumeType: { type: String, trim: true, default: '' },
     resumeName: { type: String, trim: true, default: '' },
 
-    // The passport photograph. `photoUrl` is the stored filename, derived
-    // from the account id — never from what the client called the file.
-    photoUrl: { type: String, trim: true, default: '' },
+    photoType: { type: String, trim: true, default: '' },
     photoName: { type: String, trim: true, default: '' },
   },
   { _id: false }

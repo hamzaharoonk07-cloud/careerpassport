@@ -1,12 +1,6 @@
-import { createWriteStream, createReadStream } from 'node:fs';
-import { mkdir, stat, unlink } from 'node:fs/promises';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { ApiError, asyncHandler } from '../utils/ApiError.js';
 import { publicUser } from './auth.controller.js';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const UPLOAD_DIR = path.resolve(__dirname, '../../uploads/photos');
+import Upload from '../models/Upload.js';
 
 /** 1 MB. This is displayed at 96px on a passport page, not printed. */
 const MAX_BYTES = 1024 * 1024;
@@ -16,7 +10,7 @@ const MAX_BYTES = 1024 * 1024;
  *
  * The same rule the resume upload follows: the extension is a claim, not
  * evidence. Each type is checked against its magic bytes, so a script renamed
- * to .png is rejected before it is written — and this one is served back with
+ * to .png is rejected before it is stored — and this one is served back with
  * an image content type, which makes accepting an unverified file worse here
  * than it is for a download.
  *
@@ -38,6 +32,9 @@ const startsWith = (buf, bytes) => bytes.every((b, i) => buf[i] === b);
  * Sent as base64 in JSON rather than multipart, matching the resume endpoint
  * so there is one upload shape in the product rather than two. The ceiling is
  * enforced on the decoded bytes, since base64 inflates by a third.
+ *
+ * The verified bytes go into the database — see `models/Upload.js` for why
+ * they are not written to disk.
  */
 export const uploadPhoto = asyncHandler(async (req, res) => {
   const { filename, data } = req.body;
@@ -78,27 +75,15 @@ export const uploadPhoto = asyncHandler(async (req, res) => {
     });
   }
 
-  await mkdir(UPLOAD_DIR, { recursive: true });
+  // Upsert, so replacing a photograph overwrites the old row rather than
+  // leaving an orphan no query will ever reach.
+  await Upload.findOneAndUpdate(
+    { user: req.user._id, kind: 'photo' },
+    { data: buf, contentType: accepted.mime, filename: String(filename).slice(0, 120), size: buf.length },
+    { upsert: true, new: true, setDefaultsOnInsert: true }
+  );
 
-  // Named from the account id, never from user input — a filename from the
-  // client is a path traversal waiting to happen.
-  const stored = `${req.user._id}.${ext}`;
-
-  // A previous photo in a different format would otherwise be orphaned on
-  // disk and keep being served by the old extension.
-  const previous = req.user.profile?.photoUrl;
-  if (previous && previous !== stored) {
-    await unlink(path.join(UPLOAD_DIR, previous)).catch(() => { /* already gone */ });
-  }
-
-  await new Promise((resolve, reject) => {
-    const out = createWriteStream(path.join(UPLOAD_DIR, stored));
-    out.on('error', reject);
-    out.on('finish', resolve);
-    out.end(buf);
-  });
-
-  req.user.profile.photoUrl = stored;
+  req.user.profile.photoType = accepted.mime;
   req.user.profile.photoName = String(filename).slice(0, 120);
   await req.user.save();
 
@@ -111,34 +96,22 @@ export const uploadPhoto = asyncHandler(async (req, res) => {
  * Inline rather than as an attachment, because this one is meant to be looked
  * at — but with sniffing disabled and a Content-Type taken from the verified
  * magic bytes, not from anything the client said. Only the owner can fetch
- * it: the path comes from the session, never from the request.
+ * it: the lookup is keyed on the session's user id, never on the request.
  */
 export const getPhoto = asyncHandler(async (req, res) => {
-  const stored = req.user.profile?.photoUrl;
-  if (!stored) throw ApiError.notFound('No photograph on file.');
+  const file = await Upload.findOne({ user: req.user._id, kind: 'photo' }).select('+data');
+  if (!file) throw ApiError.notFound('No photograph on file.');
 
-  const ext = stored.split('.').pop();
-  const full = path.join(UPLOAD_DIR, `${req.user._id}.${ext}`);
-
-  try {
-    await stat(full);
-  } catch {
-    throw ApiError.notFound('No photograph on file.');
-  }
-
-  res.setHeader('Content-Type', ACCEPTED[ext]?.mime || 'application/octet-stream');
+  res.setHeader('Content-Type', file.contentType);
   res.setHeader('X-Content-Type-Options', 'nosniff');
   // Private: this is one person's face, and it must not sit in a shared cache.
   res.setHeader('Cache-Control', 'private, max-age=0, must-revalidate');
-  createReadStream(full).pipe(res);
+  res.end(file.data);
 });
 
 export const deletePhoto = asyncHandler(async (req, res) => {
-  const stored = req.user.profile?.photoUrl;
-  if (stored) {
-    await unlink(path.join(UPLOAD_DIR, stored)).catch(() => { /* already gone */ });
-  }
-  req.user.profile.photoUrl = '';
+  await Upload.deleteOne({ user: req.user._id, kind: 'photo' });
+  req.user.profile.photoType = '';
   req.user.profile.photoName = '';
   await req.user.save();
   res.json({ ok: true, user: publicUser(req.user) });

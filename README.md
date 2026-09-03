@@ -143,7 +143,7 @@ server/
 
 | Group | Routes |
 |---|---|
-| `/api/auth` | `register` `login` `logout` `refresh` `me` |
+| `/api/auth` | `register` `login` `logout` `refresh` `me` · `forgot-password` `reset-password` |
 | `/api/users` | `me` `me/journey` `me/field` |
 | `/api/careers` | list (search · field · skill · paging) · `:id` · `skills` |
 | `/api/career-fields` | list |
@@ -163,6 +163,14 @@ bcrypt at 12 rounds · JWT access (15 m) + refresh (7 d) in httpOnly, SameSite,
 Secure cookies · silent refresh with request replay · zod validation on every
 route · helmet · CORS locked to the client origin · rate limiting on auth ·
 server-side role checks · secrets in `.env` only.
+
+Password reset sends a six-digit code by email over SMTP. The code is stored
+bcrypt-hashed, expires in 15 minutes, allows five attempts and is never in a
+response — an endpoint that hands back its own reset code is not a reset, it
+is a bypass. Mail failures are logged but never change the reply, because a
+caller who can tell a delivery failure from an unknown address can enumerate
+the user table. With no SMTP configured the code goes to the server log and
+the log says plainly that nothing was sent.
 
 The quiz's scoring weights are stripped before the questions reach the browser.
 Passwords are never returned by any endpoint, and the passport's "Access Key"

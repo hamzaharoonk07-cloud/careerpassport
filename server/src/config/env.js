@@ -65,11 +65,34 @@ export const env = {
     password: process.env.OWNER_PASSWORD || '',
   },
 
+  /**
+   * Outgoing mail, over SMTP so it is not tied to one provider.
+   *
+   * Every provider worth using speaks SMTP — Gmail, Brevo, Resend, Mailtrap
+   * — so the same four values point at any of them and switching is a
+   * change of environment, not of code. `from` falls back to the login
+   * address because most providers reject a From they do not own.
+   *
+   * With `host` empty there is no mail configured, and the reset flow says
+   * so in the log rather than pretending the message went out.
+   */
+  mail: {
+    host: (process.env.SMTP_HOST || '').trim(),
+    port: Number(process.env.SMTP_PORT) || 587,
+    user: (process.env.SMTP_USER || '').trim(),
+    pass: process.env.SMTP_PASS || '',
+    from: (process.env.MAIL_FROM || process.env.SMTP_USER || '').trim(),
+  },
+
   adminEmails: (process.env.ADMIN_EMAILS || '')
     .split(',')
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean),
 };
+
+/** Is there a mail provider configured? */
+export const mailConfigured = () =>
+  Boolean(env.mail.host && env.mail.user && env.mail.pass && env.mail.from);
 
 /** Is this address one of the configured owners? */
 export const isAdminEmail = (email) =>

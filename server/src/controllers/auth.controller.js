@@ -8,7 +8,8 @@ import {
   verifyRefreshToken,
   REFRESH_COOKIE,
 } from '../utils/tokens.js';
-import { isAdminEmail, env } from '../config/env.js';
+import { isAdminEmail, env, mailConfigured } from '../config/env.js';
+import { sendMail, resetCodeMessage } from '../services/mail.service.js';
 
 /** The only shape of a user that ever leaves the server. */
 const publicUser = (user) => ({
@@ -128,10 +129,16 @@ const MAX_RESET_ATTEMPTS = 5;
  * Always answers the same way, whether or not the address is registered.
  * Saying "no such account" turns this endpoint into a way to test which
  * emails exist, which is worth more to an attacker than the reset itself.
+ * The same rule governs mail: a provider outage, a rejected recipient and
+ * an unknown address all produce one response, because a caller who can
+ * tell those apart can enumerate the user table.
  *
- * There is no mail service wired up, so the code is written to the server
- * log in development. It is never returned in the response — an endpoint
- * that hands back its own reset code is not a reset, it is a bypass.
+ * The code is never in the response. An endpoint that hands back its own
+ * reset code is not a reset, it is a bypass.
+ *
+ * With no SMTP configured the code goes to the server log instead, so the
+ * flow can still be demonstrated on a laptop — but it says plainly that
+ * nothing was sent rather than letting a silent no-op read as success.
  */
 export const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
@@ -146,12 +153,27 @@ export const forgotPassword = asyncHandler(async (req, res) => {
     };
     await user.save();
 
-    if (!env.isProd) {
-      console.log(`
-  Password reset code for ${email}: ${code}  (valid 15 minutes)
-`);
+    const minutes = Math.round(RESET_TTL_MS / 60000);
+
+    if (mailConfigured()) {
+      const { subject, text, html } = resetCodeMessage({ name: user.name, code, minutes });
+      const result = await sendMail({ to: user.email, subject, text, html });
+
+      // Logged, never surfaced. The user is told the same thing either way,
+      // so this line is the only place a failure is visible — without it a
+      // dead SMTP password looks exactly like a delivered message.
+      if (!result.sent) {
+        console.error(`Reset mail to ${email} failed: ${result.reason}`);
+        if (!env.isProd) console.log(`  Reset code for ${email}: ${code}  (valid ${minutes} minutes)`);
+      }
+    } else {
+      // No provider configured. Say so once, clearly, rather than leaving
+      // someone to wonder why the message never arrives.
+      console.warn(
+        `No SMTP configured — reset code for ${email} was NOT emailed. Set SMTP_HOST, SMTP_USER, SMTP_PASS and MAIL_FROM to send it.`
+      );
+      if (!env.isProd) console.log(`  Reset code for ${email}: ${code}  (valid ${minutes} minutes)`);
     }
-    // In production this is where the mail or SMS would be sent.
   }
 
   res.json({

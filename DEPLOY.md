@@ -80,6 +80,18 @@ first.
    Paste them into `SMTP_PASS` **without the spaces**. Google shows the code
    once and never again.
 
+Then check it before you rely on it:
+
+```bash
+node server/tools/mail-check.mjs                  # settings and login
+node server/tools/mail-check.mjs you@gmail.com    # ...and send a real one
+```
+
+It names the part that is wrong rather than leaving you to guess. The reset
+endpoint cannot do that — it answers identically whatever happens, so that
+nobody can use it to discover which addresses are registered — which is
+exactly why this script exists separately.
+
 Any SMTP provider works, not just Gmail — the four values point at whichever
 one you use. Brevo and Resend are the usual alternatives if Gmail's ~500
 messages a day is ever a limit, which at this size it will not be.

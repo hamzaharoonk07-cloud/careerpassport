@@ -5,6 +5,7 @@
   "type": "module",
   "main": "src/index.js",
   "scripts": {
+    "mail:check": "node tools/mail-check.mjs",
     "dev": "node --watch src/index.js",
     "start": "node src/index.js",
     "seed": "node src/seed/seed.js",

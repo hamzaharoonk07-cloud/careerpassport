@@ -48,15 +48,6 @@ database does. A deployment needs a real one.
    | `JWT_REFRESH_SECRET` | see below (must differ from the access secret) |
    | `NODE_ENV` | `production` |
    | `ADMIN_EMAILS` | `hamzaharoonk07@gmail.com` |
-   | `SMTP_HOST` | `smtp.gmail.com` |
-   | `SMTP_PORT` | `587` |
-   | `SMTP_USER` | your Gmail address |
-   | `SMTP_PASS` | the App Password from step 3 below |
-   | `MAIL_FROM` | the same Gmail address |
-
-   Without the last five, the app runs fine but the password reset code is
-   never delivered — it is written to the function log instead, and the log
-   says so.
 
    Generate each secret with:
 
@@ -67,34 +58,6 @@ database does. A deployment needs a real one.
    Do not reuse the values from `server/.env`. Those have been on a
    development machine and in a terminal history; a deployment should start
    with secrets that have never left it.
-
-### Getting the mail password (about 3 minutes)
-
-Gmail will not accept your normal password from an application. You need a
-16-character **App Password**, and that needs 2-step verification switched on
-first.
-
-1. Turn on 2-step verification at <https://myaccount.google.com/security>
-2. Go to <https://myaccount.google.com/apppasswords>
-3. Name it anything — "PathSeeker" — and copy the 16 characters it shows.
-   Paste them into `SMTP_PASS` **without the spaces**. Google shows the code
-   once and never again.
-
-Then check it before you rely on it:
-
-```bash
-node server/tools/mail-check.mjs                  # settings and login
-node server/tools/mail-check.mjs you@gmail.com    # ...and send a real one
-```
-
-It names the part that is wrong rather than leaving you to guess. The reset
-endpoint cannot do that — it answers identically whatever happens, so that
-nobody can use it to discover which addresses are registered — which is
-exactly why this script exists separately.
-
-Any SMTP provider works, not just Gmail — the four values point at whichever
-one you use. Brevo and Resend are the usual alternatives if Gmail's ~500
-messages a day is ever a limit, which at this size it will not be.
 
 5. **Deploy.**
 

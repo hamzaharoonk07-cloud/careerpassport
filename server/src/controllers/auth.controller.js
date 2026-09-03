@@ -1,5 +1,3 @@
-import crypto from 'node:crypto';
-import bcrypt from 'bcryptjs';
 import { User } from '../models/index.js';
 import { ApiError, asyncHandler } from '../utils/ApiError.js';
 import {
@@ -8,8 +6,7 @@ import {
   verifyRefreshToken,
   REFRESH_COOKIE,
 } from '../utils/tokens.js';
-import { isAdminEmail, env, mailConfigured } from '../config/env.js';
-import { sendMail, resetCodeMessage } from '../services/mail.service.js';
+import { isAdminEmail, env } from '../config/env.js';
 
 /** The only shape of a user that ever leaves the server. */
 const publicUser = (user) => ({
@@ -115,111 +112,3 @@ export const refresh = asyncHandler(async (req, res) => {
 });
 
 export { publicUser };
-
-/* ══════════════════════════════════════════════════════════════
-   Password reset
-   ══════════════════════════════════════════════════════════════ */
-
-const RESET_TTL_MS = 15 * 60 * 1000;
-const MAX_RESET_ATTEMPTS = 5;
-
-/**
- * Start a reset.
- *
- * Always answers the same way, whether or not the address is registered.
- * Saying "no such account" turns this endpoint into a way to test which
- * emails exist, which is worth more to an attacker than the reset itself.
- * The same rule governs mail: a provider outage, a rejected recipient and
- * an unknown address all produce one response, because a caller who can
- * tell those apart can enumerate the user table.
- *
- * The code is never in the response. An endpoint that hands back its own
- * reset code is not a reset, it is a bypass.
- *
- * With no SMTP configured the code goes to the server log instead, so the
- * flow can still be demonstrated on a laptop — but it says plainly that
- * nothing was sent rather than letting a silent no-op read as success.
- */
-export const forgotPassword = asyncHandler(async (req, res) => {
-  const { email } = req.body;
-  const user = await User.findOne({ email });
-
-  if (user) {
-    const code = String(crypto.randomInt(0, 1_000_000)).padStart(6, '0');
-    user.passwordReset = {
-      codeHash: await User.hashPassword(code),
-      expiresAt: new Date(Date.now() + RESET_TTL_MS),
-      attempts: 0,
-    };
-    await user.save();
-
-    const minutes = Math.round(RESET_TTL_MS / 60000);
-
-    if (mailConfigured()) {
-      const { subject, text, html } = resetCodeMessage({ name: user.name, code, minutes });
-      const result = await sendMail({ to: user.email, subject, text, html });
-
-      // Logged, never surfaced. The user is told the same thing either way,
-      // so this line is the only place a failure is visible — without it a
-      // dead SMTP password looks exactly like a delivered message.
-      if (!result.sent) {
-        console.error(`Reset mail to ${email} failed: ${result.reason}`);
-        if (!env.isProd) console.log(`  Reset code for ${email}: ${code}  (valid ${minutes} minutes)`);
-      }
-    } else {
-      // No provider configured. Say so once, clearly, rather than leaving
-      // someone to wonder why the message never arrives.
-      console.warn(
-        `No SMTP configured — reset code for ${email} was NOT emailed. Set SMTP_HOST, SMTP_USER, SMTP_PASS and MAIL_FROM to send it.`
-      );
-      if (!env.isProd) console.log(`  Reset code for ${email}: ${code}  (valid ${minutes} minutes)`);
-    }
-  }
-
-  res.json({
-    ok: true,
-    message: 'If that address has an account, a six-digit code is on its way. It expires in 15 minutes.',
-  });
-});
-
-/**
- * Finish a reset.
- *
- * On success every existing session is invalidated by bumping
- * refreshTokenVersion — if the account was taken over, changing the
- * password has to log the intruder out, not leave their refresh token live.
- */
-export const resetPassword = asyncHandler(async (req, res) => {
-  const { email, code, password } = req.body;
-
-  const user = await User.findOne({ email }).select(
-    '+passwordReset.codeHash +passwordReset.expiresAt +passwordReset.attempts'
-  );
-
-  const invalid = () =>
-    ApiError.badRequest('That code is not valid, or it has expired.', { code: 'Check the code' });
-
-  if (!user || !user.passwordReset?.codeHash) throw invalid();
-  if (!user.passwordReset.expiresAt || user.passwordReset.expiresAt < new Date()) throw invalid();
-
-  if (user.passwordReset.attempts >= MAX_RESET_ATTEMPTS) {
-    // Burn the code rather than leaving it to be ground down.
-    user.passwordReset = { codeHash: null, expiresAt: null, attempts: 0 };
-    await user.save();
-    throw ApiError.badRequest('Too many attempts. Request a new code.', { code: 'Start again' });
-  }
-
-  const match = await bcrypt.compare(code, user.passwordReset.codeHash);
-  if (!match) {
-    user.passwordReset.attempts += 1;
-    await user.save();
-    throw invalid();
-  }
-
-  user.passwordHash = await User.hashPassword(password);
-  user.passwordReset = { codeHash: null, expiresAt: null, attempts: 0 };
-  user.refreshTokenVersion += 1;
-  await user.save();
-
-  res.json({ ok: true, message: 'Password changed. Sign in with your new password.' });
-});

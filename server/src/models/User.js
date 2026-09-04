@@ -80,18 +80,6 @@ const userSchema = new mongoose.Schema(
 
     refreshTokenVersion: { type: Number, default: 0 },
 
-    /**
-     * Password reset.
-     *
-     * The code is stored hashed, never in plain text — a leaked database
-     * should not hand over live reset codes. `attempts` caps guessing: six
-     * digits is only a million combinations, which is nothing to a script.
-     */
-    passwordReset: {
-      codeHash: { type: String, default: null, select: false },
-      expiresAt: { type: Date, default: null, select: false },
-      attempts: { type: Number, default: 0, select: false },
-    },
     lastLoginAt: { type: Date },
   },
   {

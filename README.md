@@ -274,6 +274,13 @@ other case: file missing, slow connection, data saver, or reduced motion. Delete
 
 ## Known gaps
 
+- **There is no password recovery.** A forgotten password cannot be reset
+  from the site. Delivering a code needs a mail provider and live
+  credentials, which this project should not be carrying to support one
+  button — so the feature was removed rather than left half-working, and
+  recovery means asking an administrator. Adding it back is a route, a
+  controller and an SMTP account.
+
 - **Salary data is estimated, not sourced.** See above. This is the one thing to
   fix before real use.
 - **Fonts load from Google Fonts.** Self-hosted WOFF2 subsets would remove a

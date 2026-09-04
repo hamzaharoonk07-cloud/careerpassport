@@ -9,4 +9,3 @@ export { default as SavedCareer } from './SavedCareer.js';
 export { Feedback } from './Feedback.js';
 export { SuccessStory } from './SuccessStory.js';
 export { MediaItem } from './MediaItem.js';
-export { default as Upload } from './Upload.js';

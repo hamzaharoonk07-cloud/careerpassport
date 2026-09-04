@@ -18,6 +18,7 @@ import NotFound from './pages/NotFound.jsx';
  * the result, or the dashboard. Only the landing page is in the main bundle.
  */
 const PassportAuth = lazy(() => import('./pages/PassportAuth.jsx'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword.jsx'));
 const PassportPage = lazy(() => import('./pages/PassportPage.jsx'));
 const Airport = lazy(() => import('./pages/Airport.jsx'));
 const Quiz = lazy(() => import('./pages/Quiz.jsx'));
@@ -132,6 +133,7 @@ export default function App() {
               <Route path="/media" element={<Media />} />
               <Route path="/stories" element={<Stories />} />
               <Route path="/feedback" element={<Feedback />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/careers/:id" element={<CareerDetail />} />
               <Route path="/account" element={guard(<Account />)} />
               {/* The API enforces the admin role; this route only hides the page. */}

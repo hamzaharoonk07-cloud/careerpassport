@@ -287,7 +287,7 @@ const splitList = (v) =>
               icon and the alt text inside the frame, which looks like a fault
               rather than an empty slot. */}
           <div className="acct__photo">
-            {user.profile?.photoType && !photoMissing ? (
+            {user.profile?.photoUrl && !photoMissing ? (
               <img
                 className="acct__photo-img"
                 src={`/api/users/me/photo?v=${photoStamp}`}
@@ -478,10 +478,10 @@ const splitList = (v) =>
                   disabled={photoBusy}
                 />
                 <span>
-                  {photoBusy ? 'Uploading…' : user.profile?.photoType ? 'Replace photo' : 'Choose a photo'}
+                  {photoBusy ? 'Uploading…' : user.profile?.photoUrl ? 'Replace photo' : 'Choose a photo'}
                 </span>
               </label>
-              {user.profile?.photoType && (
+              {user.profile?.photoUrl && (
                 <button type="button" className="alink alink--bad" onClick={removePhoto} disabled={photoBusy}>
                   Remove photo
                 </button>

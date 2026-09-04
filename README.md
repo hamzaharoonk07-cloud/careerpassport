@@ -128,7 +128,7 @@ server/
     config/       env · db
     models/       User · CareerField · Career · QuizQuestion · QuizOption
                   QuizAnswer · QuizResult · SavedCareer · MediaItem
-                  SuccessStory · Feedback · Upload
+                  SuccessStory · Feedback
     controllers/  auth · user · career · quiz · savedCareer · public
                   admin · resume · photo · mediaUpload
     services/     recommendation.service.js   ← the engine
@@ -195,24 +195,6 @@ origin. Files are stored under a random name, never the one the browser sent.
 | Story / multimedia image | 2 MB · JPG, PNG, WebP, GIF |
 | Multimedia video | 12 MB · MP4, WebM |
 | Resume | 2 MB · PDF, DOC, DOCX — only the owner can download it |
-
-### Where a file is kept
-
-The passport photograph and the resume are stored **in the database**, in an
-`Upload` collection keyed by account and kind, and served back by the two
-routes that own them.
-
-They used to be written under `server/uploads/`, which works on a laptop and
-cannot work in production: a Vercel function's filesystem is read-only apart
-from `/tmp`, so every upload failed with `EROFS` before a byte was written.
-`/tmp` is not the fix either — it is wiped when the container goes and is not
-shared between concurrent instances, so a file written by one invocation is
-invisible to the next.
-
-Both ceilings sit far below MongoDB's 16 MB document limit, and the payload is
-`select: false` so no query drags the bytes along by accident. The multimedia
-centre's files are a different matter — a 12 MB video does not belong in a
-document, and that path still writes to disk. See **Known gaps**.
 
 ## Media pipeline
 
@@ -292,12 +274,6 @@ other case: file missing, slow connection, data saver, or reduced motion. Delete
 
 ## Known gaps
 
-- **There is no password recovery.** A forgotten password cannot be reset
-  from the site — it was cut rather than shipped half-working, because
-  delivering a code needs a mail provider and credentials that a marked
-  project should not be carrying. Adding it back is a route, a controller
-  and an SMTP account.
-
 - **Salary data is estimated, not sourced.** See above. This is the one thing to
   fix before real use.
 - **Fonts load from Google Fonts.** Self-hosted WOFF2 subsets would remove a
@@ -311,14 +287,6 @@ other case: file missing, slow connection, data saver, or reduced motion. Delete
   nothing in the client calls it. It also matches on substrings, so short
   signal words hit inside longer ones (`art` inside `apart`); fix that before
   surfacing it.
-- **The multimedia centre's uploads still write to disk**, under
-  `server/uploads/media`, which fails on Vercel for the same reason the
-  passport photograph did. Two things have to change together: the files need
-  real object storage (a 12 MB video will not fit a Mongo document), and the
-  request has to stop being base64 in JSON — Vercel caps a function's request
-  body at 4.5 MB, so a 12 MB clip cannot reach the handler at all. The
-  photograph and the resume are under that cap and are unaffected.
-
 - **The multimedia centre ships empty.** The submission form and moderation
   queue work; there is simply no seeded content, because the repository holds
   no photographs of the professions and placeholder imagery would have been

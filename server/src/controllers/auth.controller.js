@@ -1,3 +1,5 @@
+import crypto from 'node:crypto';
+import bcrypt from 'bcryptjs';
 import { User } from '../models/index.js';
 import { ApiError, asyncHandler } from '../utils/ApiError.js';
 import {
@@ -112,3 +114,90 @@ export const refresh = asyncHandler(async (req, res) => {
 });
 
 export { publicUser };
+
+/* ══════════════════════════════════════════════════════════════
+   Password reset
+   ══════════════════════════════════════════════════════════════ */
+
+const RESET_TTL_MS = 15 * 60 * 1000;
+const MAX_RESET_ATTEMPTS = 5;
+
+/**
+ * Start a reset.
+ *
+ * Always answers the same way, whether or not the address is registered.
+ * Saying "no such account" turns this endpoint into a way to test which
+ * emails exist, which is worth more to an attacker than the reset itself.
+ *
+ * There is no mail service wired up, so the code is written to the server
+ * log in development. It is never returned in the response — an endpoint
+ * that hands back its own reset code is not a reset, it is a bypass.
+ */
+export const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+
+  if (user) {
+    const code = String(crypto.randomInt(0, 1_000_000)).padStart(6, '0');
+    user.passwordReset = {
+      codeHash: await User.hashPassword(code),
+      expiresAt: new Date(Date.now() + RESET_TTL_MS),
+      attempts: 0,
+    };
+    await user.save();
+
+    if (!env.isProd) {
+      console.log(`
+  Password reset code for ${email}: ${code}  (valid 15 minutes)
+`);
+    }
+    // In production this is where the mail or SMS would be sent.
+  }
+
+  res.json({
+    ok: true,
+    message: 'If that address has an account, a six-digit code is on its way. It expires in 15 minutes.',
+  });
+});
+
+/**
+ * Finish a reset.
+ *
+ * On success every existing session is invalidated by bumping
+ * refreshTokenVersion — if the account was taken over, changing the
+ * password has to log the intruder out, not leave their refresh token live.
+ */
+export const resetPassword = asyncHandler(async (req, res) => {
+  const { email, code, password } = req.body;
+
+  const user = await User.findOne({ email }).select(
+    '+passwordReset.codeHash +passwordReset.expiresAt +passwordReset.attempts'
+  );
+
+  const invalid = () =>
+    ApiError.badRequest('That code is not valid, or it has expired.', { code: 'Check the code' });
+
+  if (!user || !user.passwordReset?.codeHash) throw invalid();
+  if (!user.passwordReset.expiresAt || user.passwordReset.expiresAt < new Date()) throw invalid();
+
+  if (user.passwordReset.attempts >= MAX_RESET_ATTEMPTS) {
+    // Burn the code rather than leaving it to be ground down.
+    user.passwordReset = { codeHash: null, expiresAt: null, attempts: 0 };
+    await user.save();
+    throw ApiError.badRequest('Too many attempts. Request a new code.', { code: 'Start again' });
+  }
+
+  const match = await bcrypt.compare(code, user.passwordReset.codeHash);
+  if (!match) {
+    user.passwordReset.attempts += 1;
+    await user.save();
+    throw invalid();
+  }
+
+  user.passwordHash = await User.hashPassword(password);
+  user.passwordReset = { codeHash: null, expiresAt: null, attempts: 0 };
+  user.refreshTokenVersion += 1;
+  await user.save();
+
+  res.json({ ok: true, message: 'Password changed. Sign in with your new password.' });
+});

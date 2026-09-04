@@ -1,6 +1,12 @@
+import { createWriteStream, createReadStream } from 'node:fs';
+import { mkdir, stat, unlink } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { ApiError, asyncHandler } from '../utils/ApiError.js';
 import { publicUser } from './auth.controller.js';
-import Upload from '../models/Upload.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const UPLOAD_DIR = path.resolve(__dirname, '../../uploads/resumes');
 
 /** 2 MB. A CV that does not fit in 2 MB is a portfolio. */
 const MAX_BYTES = 2 * 1024 * 1024;
@@ -10,7 +16,7 @@ const MAX_BYTES = 2 * 1024 * 1024;
  *
  * The extension is a claim, not evidence — anything can be renamed .pdf. Each
  * type is checked against its magic bytes, so a script renamed to .pdf is
- * rejected before it is ever stored. The brief asks that the application
+ * rejected before it is ever written. The brief asks that the application
  * never produce malicious or unnecessary downloads, and the way that goes
  * wrong is accepting a file you did not verify and handing it back later.
  */
@@ -29,9 +35,6 @@ const startsWith = (buf, bytes) => bytes.every((b, i) => buf[i] === b);
  * Sent as base64 in JSON rather than multipart, to avoid taking a file-upload
  * dependency for one endpoint. The size ceiling is enforced on the decoded
  * bytes, not the encoded string, since base64 inflates by a third.
- *
- * The verified bytes go into the database — see `models/Upload.js` for why
- * they are not written to disk.
  */
 export const uploadResume = asyncHandler(async (req, res) => {
   const { filename, data } = req.body;
@@ -66,15 +69,19 @@ export const uploadResume = asyncHandler(async (req, res) => {
     );
   }
 
-  // Upsert, so replacing a resume overwrites the old row rather than leaving
-  // an orphan no query will ever reach.
-  await Upload.findOneAndUpdate(
-    { user: req.user._id, kind: 'resume' },
-    { data: buf, contentType: accepted.mime, filename: String(filename).slice(0, 120), size: buf.length },
-    { upsert: true, new: true, setDefaultsOnInsert: true }
-  );
+  await mkdir(UPLOAD_DIR, { recursive: true });
 
-  req.user.profile.resumeType = accepted.mime;
+  // Named from the account id, never from user input — a filename from the
+  // client is a path traversal waiting to happen.
+  const stored = `${req.user._id}.${ext}`;
+  await new Promise((resolve, reject) => {
+    const out = createWriteStream(path.join(UPLOAD_DIR, stored));
+    out.on('error', reject);
+    out.on('finish', resolve);
+    out.end(buf);
+  });
+
+  req.user.profile.resumeUrl = stored;
   // Kept only for display. It is never used to build a path.
   req.user.profile.resumeName = String(filename).slice(0, 120);
   await req.user.save();
@@ -87,24 +94,36 @@ export const uploadResume = asyncHandler(async (req, res) => {
  *
  * Served as an attachment with sniffing disabled, so the browser stores it
  * rather than trying to render or execute it. Only the owner can fetch it —
- * the lookup is keyed on the session's user id, not on the request.
+ * the path is derived from the session, not from the request.
  */
 export const downloadResume = asyncHandler(async (req, res) => {
-  const file = await Upload.findOne({ user: req.user._id, kind: 'resume' }).select('+data');
-  if (!file) throw ApiError.notFound('No resume on file.');
+  const stored = req.user.profile?.resumeUrl;
+  if (!stored) throw ApiError.notFound('No resume on file.');
 
-  res.setHeader('Content-Type', file.contentType);
+  const ext = stored.split('.').pop();
+  const full = path.join(UPLOAD_DIR, `${req.user._id}.${ext}`);
+
+  try {
+    await stat(full);
+  } catch {
+    throw ApiError.notFound('No resume on file.');
+  }
+
+  res.setHeader('Content-Type', ACCEPTED[ext]?.mime || 'application/octet-stream');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader(
     'Content-Disposition',
-    `attachment; filename="${(file.filename || 'resume').replace(/"/g, '')}"`
+    `attachment; filename="${(req.user.profile.resumeName || `resume.${ext}`).replace(/"/g, '')}"`
   );
-  res.end(file.data);
+  createReadStream(full).pipe(res);
 });
 
 export const deleteResume = asyncHandler(async (req, res) => {
-  await Upload.deleteOne({ user: req.user._id, kind: 'resume' });
-  req.user.profile.resumeType = '';
+  const stored = req.user.profile?.resumeUrl;
+  if (stored) {
+    await unlink(path.join(UPLOAD_DIR, stored)).catch(() => { /* already gone */ });
+  }
+  req.user.profile.resumeUrl = '';
   req.user.profile.resumeName = '';
   await req.user.save();
   res.json({ ok: true, user: publicUser(req.user) });

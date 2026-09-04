@@ -441,6 +441,12 @@ export default function PassportAuth() {
                   {mode === 'register' ? 'Sign in' : 'Apply for one'}
                 </button>
               </p>
+
+              {mode === 'login' && (
+                <p className="pa__switch">
+                  <Link to="/forgot-password" className="pa__link">Forgotten your password?</Link>
+                </p>
+              )}
             </div>
 
             <div className="pa__page pa__page--right">

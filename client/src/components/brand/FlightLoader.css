@@ -1,161 +1,199 @@
 /* ============================================================
-   Flight loader — the wait, as a climb out
+   Flight loader — the wait, as a climb out, full screen
 
-   A small window onto a night sky: the plane climbs a curve from
-   the runway toward cruise, trailing gold, with cloud drifting past
-   and an altitude readout below. Sized in rem so the accessibility
-   text control scales it too.
+   The whole window is the sky: stars, a lit horizon over the curve
+   of the earth with a city on it, cloud in three layers moving at
+   different speeds, and the aircraft climbing a curve from the
+   runway to cruise. A cockpit readout sits along the bottom.
    ============================================================ */
 
-/* ── The cover ───────────────────────────────────────────────
-   Sits over a page that has already mounted, so the climb can finish
-   instead of being cut off the moment its chunk lands. Opaque, because
-   its whole job is to keep the content underneath from showing early. */
-.fload-cover {
+/* The route overlay still mounts this wrapper; the loader itself is
+   already full screen, so the wrapper only needs to hold its place. */
+.fload-cover { position: fixed; inset: 0; z-index: var(--z-cinema); background: #050814; }
+
+.fload {
   position: fixed;
   inset: 0;
-  z-index: var(--z-cinema);
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(60% 50% at 50% 55%, rgba(30, 52, 110, 0.35), transparent 70%),
-    var(--ink-900);
-}
-
-/* Sized against the viewport, not the parent — see the note on `.center-screen`:
-   a percentage width inside a shrink-to-fit grid item collapses. */
-.fload {
-  width: 26rem;
-  max-width: calc(100vw - 3rem);
-  display: grid;
-  gap: var(--sp-4);
-}
-
-/* ── The window ──────────────────────────────────────────── */
-.fload__sky {
-  position: relative;
-  aspect-ratio: 400 / 170;
-  border-radius: 18px;
+  z-index: calc(var(--z-cinema) + 1);
   overflow: hidden;
-  background: linear-gradient(180deg, #050814 0%, #0b1533 58%, #1a2650 100%);
-  box-shadow:
-    inset 0 0 0 1px rgba(245, 240, 230, 0.08),
-    inset 0 -30px 60px rgba(201, 162, 39, 0.08),
-    0 24px 60px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(180deg, #03050d 0%, #070d22 40%, #0e1a3e 72%, #1b2447 100%);
+  color: var(--text-hi);
+  animation: fload-in 280ms var(--ease-out) both;
 }
-/* Stars: two tiled layers of points, faintly twinkling */
-.fload__stars {
+@keyframes fload-in { from { opacity: 0; } }
+
+.fload__sky { position: absolute; inset: 0; }
+.fload__scene { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+
+/* ── Sky ─────────────────────────────────────────────────── */
+.fload__star { fill: #fff; opacity: 0.7; }
+.fload__earth { fill: #04060e; }
+.fload__earth-rim { fill: none; stroke: rgba(240, 190, 110, 0.55); stroke-width: 2; filter: drop-shadow(0 0 14px rgba(240, 170, 80, 0.8)); }
+.fload__city { fill: #ffcf73; opacity: 0.75; }
+.fload__runway { fill: #fff1c2; opacity: 0.4; }
+
+/* Cloud: soft blurred ellipses tiled wide, each layer drifting at its own pace */
+.fload__clouds {
   position: absolute;
-  inset: 0 0 35% 0;
-  opacity: 0.55;
+  left: 0;
+  width: 200%;
+  pointer-events: none;
+  background-repeat: repeat-x;
+}
+.fload__clouds--far {
+  top: 30%;
+  height: 22%;
+  opacity: 0.35;
   background-image:
-    radial-gradient(1px 1px at 12% 22%, #fff, transparent),
-    radial-gradient(1px 1px at 34% 12%, #fff, transparent),
-    radial-gradient(1.2px 1.2px at 58% 30%, #fff, transparent),
-    radial-gradient(1px 1px at 76% 16%, #fff, transparent),
-    radial-gradient(1px 1px at 90% 40%, #fff, transparent),
-    radial-gradient(1px 1px at 22% 48%, #fff, transparent),
-    radial-gradient(1.2px 1.2px at 46% 56%, #fff, transparent);
+    radial-gradient(closest-side, rgba(150, 170, 220, 0.5), transparent),
+    radial-gradient(closest-side, rgba(150, 170, 220, 0.35), transparent);
+  background-size: 420px 60px, 300px 40px;
+  background-position: 0 40%, 180px 80%;
+  filter: blur(6px);
 }
-
-/* Cloud drifting right to left: the sensation of forward speed */
-.fload__cloud {
+.fload__clouds--mid {
+  top: 52%;
+  height: 24%;
+  opacity: 0.45;
+  background-image:
+    radial-gradient(closest-side, rgba(190, 205, 240, 0.45), transparent),
+    radial-gradient(closest-side, rgba(170, 185, 230, 0.3), transparent);
+  background-size: 620px 90px, 460px 70px;
+  background-position: 60px 30%, 360px 85%;
+  filter: blur(10px);
+}
+.fload__clouds--near {
+  top: 70%;
+  height: 34%;
+  opacity: 0.55;
+  background-image: radial-gradient(closest-side, rgba(40, 50, 85, 0.95), transparent);
+  background-size: 900px 180px;
+  background-position: 0 60%;
+  filter: blur(16px);
+}
+.fload__vignette {
   position: absolute;
-  height: 18px;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(200, 212, 240, 0.22), transparent);
-  filter: blur(2px);
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(0, 0, 0, 0.6));
 }
-.fload__cloud--a { top: 42%; width: 120px; left: 100%; }
-.fload__cloud--b { top: 64%; width: 170px; height: 24px; left: 100%; }
-.fload__cloud--c { top: 24%; width: 90px; height: 14px; left: 100%; }
 
-.fload__scene { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; overflow: visible; }
-
-.fload__horizon { fill: rgba(201, 162, 39, 0.16); filter: blur(12px); }
-.fload__ground { stroke: rgba(245, 240, 230, 0.12); stroke-width: 1; }
-.fload__runway { fill: #f0d67a; opacity: 0.35; }
-
+/* ── The climb ───────────────────────────────────────────── */
 .fload__route {
   fill: none;
-  stroke: rgba(245, 240, 230, 0.22);
-  stroke-width: 1.5;
-  stroke-dasharray: 0.012 0.014;
+  stroke: rgba(245, 240, 230, 0.2);
+  stroke-width: 2;
+  stroke-dasharray: 0.006 0.008;
   stroke-linecap: round;
 }
 .fload__flown {
   fill: none;
   stroke: url(#fload-trail);
-  stroke-width: 3;
+  stroke-width: 6;
   stroke-linecap: round;
-  filter: drop-shadow(0 0 5px rgba(240, 214, 122, 0.7));
+  filter: drop-shadow(0 0 10px rgba(255, 214, 120, 0.85));
 }
-.fload__cruise-dot { fill: none; stroke: rgba(240, 214, 122, 0.55); stroke-width: 1.5; }
-.fload--cruise .fload__cruise-dot { fill: #f0d67a; stroke: #f0d67a; }
+.fload__cruise-mark circle { fill: none; stroke: rgba(255, 225, 150, 0.7); stroke-width: 2.5; }
+.fload__cruise-ring { stroke-dasharray: 4 6; opacity: 0.6; }
+.fload--cruise .fload__cruise-mark circle:first-child { fill: #fff1c2; }
 
 .fload__plane { will-change: transform; }
-.fload__plane path { fill: #f5f0e6; filter: drop-shadow(0 0 6px rgba(240, 214, 122, 0.9)); }
-.fload__plane-glow { fill: rgba(240, 214, 122, 0.16); }
+.fload__plane path { fill: #fdf8ec; filter: drop-shadow(0 0 4px rgba(255, 230, 160, 0.9)); }
+.fload__plane-glow { fill: rgba(255, 220, 140, 0.13); }
+.fload__beacon { fill: #ff6a5c; }
 
-/* ── HUD readout ─────────────────────────────────────────── */
-.fload__hud {
-  display: flex;
-  justify-content: space-between;
+/* ── Brand and readout ───────────────────────────────────── */
+.fload__brand {
+  position: absolute;
+  top: clamp(20px, 4vh, 36px);
+  left: clamp(20px, 4vw, 48px);
+  display: inline-flex;
   align-items: center;
-  gap: var(--sp-3);
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid rgba(245, 240, 230, 0.08);
-  background: rgba(10, 17, 40, 0.7);
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--cream-100);
 }
+
+.fload__hud {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(24px, 6vh, 60px);
+  translate: -50% 0;
+  width: min(760px, calc(100vw - 32px));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'left alt' 'bar bar';
+  align-items: end;
+  gap: 14px 24px;
+  padding: 20px 26px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 225, 150, 0.18);
+  background: linear-gradient(180deg, rgba(8, 12, 28, 0.55), rgba(8, 12, 28, 0.8));
+  backdrop-filter: blur(14px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.fload__hud-left { grid-area: left; display: grid; gap: 6px; min-width: 0; }
 .fload__status {
   display: inline-flex;
   align-items: center;
-  gap: var(--sp-2);
-  min-width: 0;
-  font-size: 0.86rem;
+  gap: 8px;
+  font-size: 0.8rem;
   font-weight: 600;
-  color: var(--text-hi);
+  letter-spacing: 0.04em;
+  color: var(--gold-300);
+}
+.fload__dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 10px currentColor; }
+.fload--cruise .fload__status { color: #7fdcae; }
+.fload__label {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #fff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.fload__dot {
-  flex: none;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--gold-400);
-  box-shadow: 0 0 10px var(--gold-400);
+.fload__alt { grid-area: alt; display: inline-flex; align-items: baseline; gap: 8px; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.fload__alt-n { font-size: clamp(1.8rem, 4.4vw, 3rem); font-weight: 600; line-height: 1; color: var(--gold-300); min-width: 5ch; text-align: right; }
+.fload__alt-u { font-size: 0.9rem; color: var(--text-low); }
+.fload__bar { grid-area: bar; height: 4px; border-radius: 2px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
+.fload__bar span {
+  display: block;
+  height: 100%;
+  transform-origin: left;
+  background: linear-gradient(90deg, var(--gold-500), #fff1c2);
+  box-shadow: 0 0 12px rgba(255, 214, 120, 0.7);
 }
-.fload--cruise .fload__dot { background: #6fd3a3; box-shadow: 0 0 10px #6fd3a3; }
 
-/* Tabular figures, or the number jitters sideways as it climbs. */
-.fload__alt {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-}
-.fload__alt-k { font-size: 0.62rem; letter-spacing: 0.14em; color: var(--text-low); }
-.fload__alt-n { font-size: 1.2rem; font-weight: 600; color: var(--gold-300); min-width: 4.4ch; text-align: right; }
-.fload__alt-u { font-size: 0.72rem; color: var(--text-low); }
-
+/* ── Motion ──────────────────────────────────────────────── */
 @media (prefers-reduced-motion: no-preference) {
-  .fload__cloud--a { animation: fload-drift 5.5s linear infinite; }
-  .fload__cloud--b { animation: fload-drift 8s linear -3s infinite; }
-  .fload__cloud--c { animation: fload-drift 4s linear -1.5s infinite; }
-  .fload__stars { animation: fload-twinkle 3s ease-in-out infinite alternate; }
-  .fload__runway { animation: fload-runway 1.2s ease-in-out infinite; }
-  .fload__dot { animation: fload-pulse 1.4s ease-in-out infinite; }
+  .fload__clouds--far { animation: fload-drift 38s linear infinite; }
+  .fload__clouds--mid { animation: fload-drift 18s linear infinite; }
+  .fload__clouds--near { animation: fload-drift 9s linear infinite; }
+  .fload__star { animation: fload-twinkle 2.6s ease-in-out infinite alternate; }
+  .fload__city { animation: fload-twinkle 1.8s ease-in-out infinite alternate; }
+  .fload__runway { animation: fload-runway 1.1s ease-in-out infinite; }
+  .fload__beacon { animation: fload-beacon 1s steps(1) infinite; }
+  .fload__cruise-ring { animation: fload-spin 8s linear infinite; }
+  .fload__dot { animation: fload-pulse 1.3s ease-in-out infinite; }
   .fload--cruise .fload__dot { animation: none; }
 }
-@keyframes fload-drift { to { transform: translateX(calc(-26rem - 200px)); } }
-@keyframes fload-twinkle { to { opacity: 0.3; } }
+@keyframes fload-drift { to { transform: translateX(-50%); } }
+@keyframes fload-twinkle { to { opacity: 0.25; } }
 @keyframes fload-runway { 50% { opacity: 1; } }
+@keyframes fload-beacon { 50% { opacity: 0; } }
+@keyframes fload-spin { to { transform: rotate(360deg); } }
 @keyframes fload-pulse { 50% { opacity: 0.35; } }
 
+@media (max-width: 560px) {
+  .fload__hud { grid-template-columns: 1fr; grid-template-areas: 'left' 'alt' 'bar'; padding: 16px 18px; gap: 10px; }
+  .fload__alt-n { text-align: left; min-width: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .fload { animation: none; }
   .fload__plane { will-change: auto; }
 }

@@ -1,6 +1,30 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { Logo } from './Logo.jsx';
 import { useReducedMotion } from '../../hooks/useReducedMotion.js';
 import './FlightLoader.css';
+
+/* A fixed star field: generated once from a seeded sequence, so it is the
+   same sky on every load rather than a new random one each render. */
+const STARS = (() => {
+  let seed = 7;
+  const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  return Array.from({ length: 110 }, () => ({
+    x: rnd() * 1600,
+    y: rnd() * 620,
+    r: 0.4 + rnd() * 1.4,
+    d: (rnd() * 4).toFixed(2),
+  }));
+})();
+
+/* The climb, off the runway at the lower left to cruise at the upper right.
+   The scene is scaled to cover the screen, which crops its sides on a tall
+   phone, so portrait gets a steeper route through the part that stays in
+   view. Cruise is kept clear of the edge so the aircraft is never cut off. */
+const FLIGHTS = {
+  landscape: { route: 'M 150 790 C 250 690, 620 470, 1340 190', runway: 60, cruise: [1340, 190] },
+  portrait: { route: 'M 630 800 C 700 720, 800 560, 950 250', runway: 610, cruise: [950, 250] },
+};
 
 /** Cruising altitude, and what a full bar means. */
 const CRUISE_FT = 38000;
@@ -41,6 +65,7 @@ export function FlightLoader({ label = 'Climbing out', progress, done = false, o
   const planeRef = useRef(null);
   const altRef = useRef(null);
   const routeRef = useRef(null);
+  const barRef = useRef(null);
   const pRef = useRef(determinate ? progress : 0);
 
   // Kept in a ref as well as state: the animation loop below reads it every
@@ -150,6 +175,7 @@ export function FlightLoader({ label = 'Climbing out', progress, done = false, o
   function placeOnRoute(pos) {
     const route = routeRef.current;
     if (flownRef.current) flownRef.current.style.strokeDasharray = `${pos} 1`;
+    if (barRef.current) barRef.current.style.transform = `scaleX(${pos})`;
     if (!route || !planeRef.current) return;
     const len = route.getTotalLength();
     const at = Math.min(len, Math.max(0, pos * len));
@@ -170,7 +196,12 @@ export function FlightLoader({ label = 'Climbing out', progress, done = false, o
   const pct = Math.round(p * 100);
   const atCruise = p >= 0.999;
 
-  return (
+  const [flight] = useState(() =>
+    (typeof window !== 'undefined' && window.innerHeight > window.innerWidth * 1.15) ? FLIGHTS.portrait : FLIGHTS.landscape
+  );
+  const [cx, cy] = flight.cruise;
+
+  const screen = (
     <div
       className={`fload ${atCruise ? 'fload--cruise' : ''}`}
       role="progressbar"
@@ -180,60 +211,93 @@ export function FlightLoader({ label = 'Climbing out', progress, done = false, o
       aria-valuetext={`${label} — ${feet.toLocaleString('en-US')} feet`}
       aria-label={label}
     >
-      {/* The window: night sky, a lit horizon, cloud drifting past, and the
-          climb drawn as a curve from the runway to cruise. */}
+      {/* The sky fills the window. Cloud sits in three layers moving at
+          different speeds, which is what reads as depth and forward motion. */}
       <div className="fload__sky" aria-hidden="true">
-        <span className="fload__stars" />
-        <span className="fload__cloud fload__cloud--a" />
-        <span className="fload__cloud fload__cloud--b" />
-        <span className="fload__cloud fload__cloud--c" />
-        <svg className="fload__scene" viewBox="0 0 400 170" preserveAspectRatio="xMidYMid meet">
+        <div className="fload__clouds fload__clouds--far" />
+        <div className="fload__clouds fload__clouds--mid" />
+
+        <svg className="fload__scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
           <defs>
-            <linearGradient id="fload-trail" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0" stopColor="#c9a227" stopOpacity="0.2" />
-              <stop offset="1" stopColor="#f0d67a" />
+            <linearGradient id="fload-trail" x1="0" x2="1" y1="1" y2="0">
+              <stop offset="0" stopColor="#c9a227" stopOpacity="0" />
+              <stop offset="0.5" stopColor="#d9b84a" stopOpacity="0.7" />
+              <stop offset="1" stopColor="#fff1c2" />
             </linearGradient>
+            <radialGradient id="fload-horizon" cx="0.5" cy="1" r="0.75">
+              <stop offset="0" stopColor="#e8a84a" stopOpacity="0.55" />
+              <stop offset="0.35" stopColor="#8a5a2a" stopOpacity="0.25" />
+              <stop offset="1" stopColor="#0b1533" stopOpacity="0" />
+            </radialGradient>
           </defs>
 
-          {/* Horizon glow and runway */}
-          <ellipse className="fload__horizon" cx="200" cy="170" rx="260" ry="34" />
-          <line className="fload__ground" x1="0" y1="152" x2="400" y2="152" />
-          {[24, 44, 64, 84, 104].map((x) => (
-            <circle key={x} className="fload__runway" cx={x} cy="152" r="1.8" style={{ animationDelay: `${(x - 24) * 12}ms` }} />
+          {STARS.map((st, i) => (
+            <circle key={i} className="fload__star" cx={st.x} cy={st.y} r={st.r} style={{ animationDelay: `${st.d}s` }} />
           ))}
 
-          {/* The climb */}
-          <path ref={routeRef} className="fload__route" d="M 30 148 C 150 146, 220 110, 370 30" pathLength="1" />
-          <path
-            ref={flownRef}
-            className="fload__flown"
-            d="M 30 148 C 150 146, 220 110, 370 30"
-            pathLength="1"
-            style={{ strokeDasharray: `${p} 1` }}
-          />
-          <circle className="fload__cruise-dot" cx="370" cy="30" r="4" />
+          {/* Horizon glow, the curve of the earth, and a city's lights on it */}
+          <rect x="0" y="420" width="1600" height="480" fill="url(#fload-horizon)" />
+          <path className="fload__earth" d="M -100 860 Q 800 770 1700 860 L 1700 1000 L -100 1000 Z" />
+          <path className="fload__earth-rim" d="M -100 860 Q 800 770 1700 860" />
+          {Array.from({ length: 46 }, (_, i) => {
+            const x = 60 + i * 34 + ((i * 13) % 11);
+            const y = 850 - Math.sin((x / 1600) * Math.PI) * 78 + ((i * 7) % 9);
+            return <circle key={i} className="fload__city" cx={x} cy={y} r={(i % 3) * 0.6 + 1} style={{ animationDelay: `${(i % 7) * 0.3}s` }} />;
+          })}
 
-          {/* The aircraft, drawn nose-right so rotating it follows the tangent */}
+          {/* Runway lights where the climb begins */}
+          {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+            <circle key={i} className="fload__runway" cx={flight.runway - 150 + i * 22} cy={800 - i * 1.2} r="3" style={{ animationDelay: `${i * 90}ms` }} />
+          ))}
+
+          {/* The route ahead, the route flown, and cruise */}
+          <path ref={routeRef} className="fload__route" d={flight.route} pathLength="1" />
+          <path ref={flownRef} className="fload__flown" d={flight.route} pathLength="1" style={{ strokeDasharray: `${p} 1` }} />
+          <g className="fload__cruise-mark">
+            <circle cx={cx} cy={cy} r="10" />
+            <circle cx={cx} cy={cy} r="22" className="fload__cruise-ring" style={{ transformOrigin: `${cx}px ${cy}px` }} />
+          </g>
+
+          {/* The aircraft, nose to the right so rotating it follows the route */}
           <g ref={planeRef} className="fload__plane">
-            <circle className="fload__plane-glow" r="14" />
-            <path d="M13 0 L-5 -2.2 L-9 -11 L-12 -11 L-9 -2 L-13 -1.6 L-15 -5 L-17 -5 L-15.5 0 L-17 5 L-15 5 L-13 1.6 L-9 2 L-12 11 L-9 11 L-5 2.2 Z" />
+            <circle className="fload__plane-glow" r="46" />
+            <g transform="scale(2.6)">
+              <path d="M13 0 L-5 -2.2 L-9 -11 L-12 -11 L-9 -2 L-13 -1.6 L-15 -5 L-17 -5 L-15.5 0 L-17 5 L-15 5 L-13 1.6 L-9 2 L-12 11 L-9 11 L-5 2.2 Z" />
+              <circle className="fload__beacon" cx="-9" cy="-11" r="1.1" />
+            </g>
           </g>
         </svg>
+
+        <div className="fload__clouds fload__clouds--near" />
+        <div className="fload__vignette" />
+      </div>
+
+      <div className="fload__brand" aria-hidden="true">
+        <Logo size={30} />
+        <span>PathSeeker</span>
       </div>
 
       <div className="fload__hud">
-        <span className="fload__status">
-          <span className="fload__dot" />
-          {atCruise ? 'Cruising altitude' : label}
-        </span>
-        <span className="fload__alt">
-          <span className="fload__alt-k">ALT</span>
+        <div className="fload__hud-left">
+          <span className="fload__status">
+            <span className="fload__dot" />
+            {atCruise ? 'Cruising altitude' : 'Climbing'}
+          </span>
+          <span className="fload__label">{label}</span>
+        </div>
+        <div className="fload__bar" aria-hidden="true"><span ref={barRef} style={{ transform: `scaleX(${p})` }} /></div>
+        <div className="fload__alt">
           <span className="fload__alt-n" ref={altRef}>{feet.toLocaleString('en-US')}</span>
           <span className="fload__alt-u">ft</span>
-        </span>
+        </div>
       </div>
     </div>
   );
+
+  // Rendered into <body>. Pages drop the loader inside their own markup, and
+  // any ancestor with a transform, filter or contain would otherwise become
+  // the box a fixed element is positioned against, shrinking the sky to it.
+  return typeof document !== 'undefined' ? createPortal(screen, document.body) : screen;
 }
 
 /**

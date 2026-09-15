@@ -1,249 +1,276 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useTypewriter } from '../../hooks/useTypewriter.js';
-import { PassportEmblem } from './PassportEmblem.jsx';
-import '../../styles/passport.css';
+import { PassportEmblem, ChipMark } from './PassportEmblem.jsx';
+import { EntryStamp } from './EntryStamp.jsx';
+import '../../styles/passport-view.css';
 
-/** Builds a passport-style machine-readable zone from the real user data. */
-function mrz(user) {
-  const surname = (user?.name || 'TRAVELLER').trim().toUpperCase().replace(/\s+/g, '<');
-  const number = (user?.passportNumber || 'PS<<<<<<<<<<').replace(/-/g, '');
-  const issued = user?.createdAt ? new Date(user.createdAt) : new Date();
-  const stamp = `${String(issued.getFullYear()).slice(2)}${String(issued.getMonth() + 1).padStart(2, '0')}${String(issued.getDate()).padStart(2, '0')}`;
-  const line1 = `P<PSK${surname}<<<<<<<<<<<<<<<<<<<<<<<<<<`.slice(0, 44).padEnd(44, '<');
-  const line2 = `${number}<PSK${stamp}<<<<<<<<<<<<<<<<<<<<<<`.slice(0, 44).padEnd(44, '<');
-  return [line1, line2];
-}
+const AXIS = { R: 'Realistic', I: 'Investigative', A: 'Artistic', S: 'Social', E: 'Enterprising', C: 'Conventional' };
+const AXIS_NOTE = {
+  R: 'Building and working with real things',
+  I: 'Analysing problems and finding out why',
+  A: 'Creating original work',
+  S: 'Working with and for people',
+  E: 'Leading and owning outcomes',
+  C: 'Precision and structure',
+};
+const CLASS = { student: 'Student', graduate: 'Graduate', professional: 'Professional' };
 
 const fmtDate = (value) =>
-  value
-    ? new Date(value).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase()
-    : null;
+  value ? new Date(value).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase() : null;
 
-/** One field row on a passport page. Renders an honest empty state rather than a blank. */
-function Field({ label, value, mono = false, placeholder = 'Not yet issued', children }) {
-  const empty = !value && !children;
+/** A machine-readable zone built from the holder's real details. */
+function mrz(user) {
+  const name = (user?.name || 'TRAVELLER').trim().toUpperCase().replace(/[^A-Z ]/g, '').replace(/\s+/g, '<');
+  const number = (user?.passportNumber || 'PS').replace(/-/g, '');
+  const d = user?.createdAt ? new Date(user.createdAt) : new Date();
+  const stamp = `${String(d.getFullYear()).slice(2)}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+  return [
+    `P<PSK${name}`.padEnd(44, '<').slice(0, 44),
+    `${number}<PSK${stamp}`.padEnd(44, '<').slice(0, 44),
+  ];
+}
+
+function Row({ label, value, empty = 'Not recorded', mono = false, wide = false }) {
   return (
-    <div>
-      <div className="pp__field-label">{label}</div>
-      <div
-        className={[
-          'pp__field-value',
-          mono ? 'pp__field-value--mono' : '',
-          empty ? 'pp__field-value--empty' : '',
-        ].filter(Boolean).join(' ')}
-      >
-        {children || value || placeholder}
-      </div>
+    <div className={`pv-row ${wide ? 'pv-row--wide' : ''}`}>
+      <dt>{label}</dt>
+      <dd className={`${mono ? 'is-mono' : ''} ${value ? '' : 'is-empty'}`}>{value || empty}</dd>
     </div>
   );
 }
 
-/* ── Page 1 — the identity page ─────────────────────────── */
-function PageIdentity({ user, typing }) {
+/* ── Left page: the data page ────────────────────────────── */
+function DataPage({ user, field, typing, stamped }) {
   const { shown, done } = useTypewriter(user?.name || '', { animate: typing });
   const [l1, l2] = mrz(user);
-
   return (
-    <>
-      <div className="pp__eyebrow">PathSeeker · Career Authority</div>
-      <div className="pp__rule" />
-      {/* The title runs full width. Sitting it beside the photo clips as soon
-          as the passport narrows to fit a short viewport. */}
-      <h2 className="pp__h">PathSeeker<br />Career Passport</h2>
-      <div className="pp__identity">
-        <div className="pp__photo" aria-hidden="true">
-          {(user?.name || '?').trim().charAt(0).toUpperCase()}
+    <div className="pv-page pv-page--data">
+      <header className="pv-page__head">
+        <span className="pv-emblem"><PassportEmblem size={40} ring="PATHSEEKER · PATHSEEKER · " /></span>
+        <span className="pv-page__names">
+          <span className="pv-page__kicker">PathSeeker Career Authority</span>
+          <span className="pv-page__title">Career Passport</span>
+        </span>
+        <span className="pv-type">P · PSK</span>
+      </header>
+
+      <div className="pv-identity">
+        <div className="pv-photo" aria-hidden="true">
+          <span>{(user?.name || '?').trim().charAt(0).toUpperCase()}</span>
+          <ChipMark size={12} />
         </div>
-        <div className="pp__fields pp__identity-fields">
-          <Field label="Holder">
-            {user ? (
-              <>
-                {shown}
-                {!done && <span className="pp__caret" aria-hidden="true" />}
-              </>
-            ) : null}
-          </Field>
-          <Field label="Passport No." value={user?.passportNumber} mono />
-        </div>
-      </div>
-      <div className="pp__mrz" aria-hidden="true">{l1}<br />{l2}</div>
-    </>
-  );
-}
-
-/* ── Page 2 — personal information ──────────────────────── */
-function PagePersonal({ user }) {
-  return (
-    <>
-      <div className="pp__eyebrow">Page 02 · Personal Information</div>
-      <div className="pp__rule" />
-      <h2 className="pp__h">Personal Information</h2>
-      <div className="pp__fields">
-        <Field label="Full Name" value={user?.name} />
-        <Field label="Registered Email" value={user?.email} mono />
-        {/* The password is never sent to the client and never rendered. This
-            is a fixed mask, not a length hint and not the real value. */}
-        <Field label="Access Key">
-          <span className="pp__field-value--mono" style={{ letterSpacing: '0.22em' }}>••••••••</span>
-        </Field>
-        <Field label="Date of Issue" value={fmtDate(user?.createdAt)} mono />
-      </div>
-    </>
-  );
-}
-
-/* ── Page 3 — career identity ───────────────────────────── */
-function PageIdentityCareer({ user, result }) {
-  const axes = result?.dominantAxes || [];
-  const AXIS = { R: 'Realistic', I: 'Investigative', A: 'Artistic', S: 'Social', E: 'Enterprising', C: 'Conventional' };
-
-  return (
-    <>
-      <div className="pp__eyebrow">Page 03 · Career Identity</div>
-      <div className="pp__rule" />
-      <h2 className="pp__h">Career Identity</h2>
-      <div className="pp__fields">
-        <Field label="Education" value={user?.profile?.education} placeholder="Not recorded" />
-        <Field label="Current Role" value={user?.profile?.currentRole} placeholder="Not recorded" />
-        <Field
-          label="Dominant Traits"
-          value={axes.length ? axes.map((a) => AXIS[a]).join(' · ') : null}
-          placeholder="Determined by the quiz"
-        />
-      </div>
-    </>
-  );
-}
-
-/* ── Page 4 — career destination ────────────────────────── */
-function PageDestination({ result }) {
-  const top = result?.matches?.[0];
-  return (
-    <>
-      <div className="pp__eyebrow">Page 04 · Career Destination</div>
-      <div className="pp__rule" />
-      <h2 className="pp__h">Career Destination</h2>
-      <div className="pp__fields">
-        <Field label="Destination" value={top?.career?.title} placeholder="Not yet determined" />
-        <Field label="Match" value={top ? `${top.score}%` : null} mono placeholder="—" />
-        <Field label="Field" value={top?.career?.field?.name} placeholder="—" />
-      </div>
-      {!top && (
-        <p className="pp__field-label" style={{ marginTop: 'var(--sp-5)', lineHeight: 1.7, textTransform: 'none', letterSpacing: 0 }}>
-          This page is stamped when you complete the journey.
-        </p>
-      )}
-    </>
-  );
-}
-
-const PAGES = [PageIdentity, PagePersonal, PageIdentityCareer, PageDestination];
-
-/**
- * The interactive Career Passport.
- *
- * @param {object}  user     signed-in user, or null before authentication
- * @param {object}  result   latest quiz result, if there is one
- * @param {boolean} open     cover swung open
- * @param {boolean} stamped  VERIFIED stamp has landed
- * @param {boolean} closing  playing the closing transition
- * @param {number}  page     which page is showing
- */
-export function Passport({
-  user = null,
-  result = null,
-  open = false,
-  stamped = false,
-  closing = false,
-  page = 0,
-  onPageChange,
-  typing = true,
-}) {
-  const [shake, setShake] = useState(false);
-
-  useEffect(() => {
-    if (!stamped) return undefined;
-    setShake(true);
-    const t = setTimeout(() => setShake(false), 900);
-    return () => clearTimeout(t);
-  }, [stamped]);
-
-  const Page = PAGES[page] || PAGES[0];
-  const canPage = typeof onPageChange === 'function';
-
-  return (
-    <div className="pp-stage">
-      <div
-        className={[
-          'pp',
-          open ? 'pp--open' : '',
-          closing ? 'pp--closing' : '',
-          shake ? 'pp--shake' : '',
-        ].filter(Boolean).join(' ')}
-      >
-        {/* The paper inside */}
-        <div className="pp__book">
-          <div className="pp__guilloche" aria-hidden="true" />
-          <div className="pp__page pp__page--active" key={page}>
-            <Page user={user} result={result} typing={typing} />
+        <dl className="pv-fields">
+          <div className="pv-row pv-row--wide pv-row--name">
+            <dt>Holder</dt>
+            <dd>{shown}{!done && <span className="pv-caret" aria-hidden="true" />}</dd>
           </div>
-
-          {stamped && (
-            <div className="pp__stamp pp__stamp--landed" role="img" aria-label="Career Passport verified stamp">
-              <span className="pp__shockwave" aria-hidden="true" />
-              <span className="pp__stamp-ink">
-                <span className="pp__stamp-brand">PATHSEEKER</span>
-                <span className="pp__stamp-word">VERIFIED</span>
-                <span className="pp__stamp-date">{fmtDate(user?.createdAt) || ''}</span>
-              </span>
-            </div>
-          )}
-        </div>
-
-        {/* The cover, which swings away on open */}
-        <div className="pp__cover" aria-hidden={open}>
-          <span className="pp__sheen" aria-hidden="true" />
-          <div className="pp__foil">
-            <div>
-              <div className="pp__crest"><PassportEmblem size={96} /></div>
-              <div className="pp__cover-title">Career<br />Passport</div>
-              <div className="pp__cover-sub">PathSeeker · Career Passport</div>
-            </div>
-            <div />
-            <div className="pp__cover-foot">{user?.passportNumber || 'AWAITING ISSUE'}</div>
-          </div>
-        </div>
+          <Row label="Passport no." value={user?.passportNumber} mono wide />
+          <Row label="Class" value={CLASS[user?.accountType] || 'Student'} />
+          <Row label="Date of issue" value={fmtDate(user?.createdAt)} mono />
+          <Row label="Issuing office" value={user?.profile?.location || 'Karachi'} />
+          <Row label="Field declared" value={field?.name} empty="Not yet" />
+        </dl>
       </div>
 
-      {canPage && open && (
-        <nav className="pp-nav" aria-label="Passport pages">
-          <button
-            type="button"
-            className="pp-nav__btn"
-            onClick={() => onPageChange(page - 1)}
-            disabled={page === 0}
-            aria-label="Previous page"
-          >
-            ‹
-          </button>
-          <span className="pp-nav__dots">
-            {PAGES.map((_, i) => (
-              <span key={i} className={`pp-nav__dot ${i === page ? 'pp-nav__dot--on' : ''}`} />
-            ))}
+      {stamped && (
+        <div className="pv-verified" role="img" aria-label="Verified stamp">
+          <span className="pv-verified__ink">
+            <span>PATHSEEKER</span>
+            <b>VERIFIED</b>
+            <span>{fmtDate(user?.createdAt)}</span>
           </span>
-          <button
-            type="button"
-            className="pp-nav__btn"
-            onClick={() => onPageChange(page + 1)}
-            disabled={page === PAGES.length - 1}
-            aria-label="Next page"
-          >
-            ›
-          </button>
-        </nav>
+        </div>
       )}
+
+      <div className="pv-mrz" aria-hidden="true">{l1}<br />{l2}</div>
     </div>
   );
 }
 
-export const PASSPORT_PAGE_COUNT = PAGES.length;
+/* ── Right page tabs ─────────────────────────────────────── */
+function ProfileTab({ user }) {
+  const p = user?.profile || {};
+  const list = (v) => (Array.isArray(v) ? v : typeof v === 'string' && v ? v.split(',').map((x) => x.trim()) : []);
+  const skills = list(p.skills);
+  const interests = list(p.interests);
+  return (
+    <>
+      <dl className="pv-fields pv-fields--2">
+        <Row label="Full name" value={user?.name} wide />
+        <Row label="Registered email" value={user?.email} mono wide />
+        <Row label="Education" value={p.education} />
+        <Row label="Current role" value={p.currentRole} />
+        <Row label="Age" value={p.age ? String(p.age) : null} />
+        <Row label="Location" value={p.location} />
+      </dl>
+      <div className="pv-chipset">
+        <span className="pv-chipset__k">Skills</span>
+        {skills.length ? skills.map((s) => <span key={s} className="pv-chip">{s}</span>) : <span className="pv-muted">None added yet</span>}
+      </div>
+      <div className="pv-chipset">
+        <span className="pv-chipset__k">Interests</span>
+        {interests.length ? interests.map((s) => <span key={s} className="pv-chip">{s}</span>) : <span className="pv-muted">None added yet</span>}
+      </div>
+      <Link to="/account" className="pv-link">Edit these details</Link>
+    </>
+  );
+}
+
+function TraitsTab({ result }) {
+  if (!result?.riasecVector) {
+    return (
+      <div className="pv-empty">
+        <p>Your traits are measured by the questions. Answer seven and this page fills in.</p>
+        <Link to="/quiz?mode=quick" className="pv-cta">Answer 7 questions</Link>
+      </div>
+    );
+  }
+  const top = result.dominantAxes || [];
+  return (
+    <>
+      <p className="pv-lead">Your strongest pair is <b>{top.map((a) => AXIS[a]).join(' and ')}</b>. Scored 0–10 from your answers.</p>
+      <ul className="pv-traits">
+        {Object.keys(AXIS).map((k) => {
+          const v = Number(result.riasecVector[k] || 0);
+          return (
+            <li key={k} className={top.includes(k) ? 'is-top' : ''}>
+              <span className="pv-traits__name">{AXIS[k]}<small>{AXIS_NOTE[k]}</small></span>
+              <span className="pv-traits__bar"><span style={{ width: `${Math.max(2, v * 10)}%` }} /></span>
+              <span className="pv-traits__v">{v.toFixed(1)}</span>
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  );
+}
+
+function DestinationTab({ result, field }) {
+  const top = result?.matches?.[0];
+  if (!top) {
+    return (
+      <div className="pv-empty">
+        <p>{field ? `You have declared ${field.name}. Choose a gate at the terminal and your destination is printed here.` : 'No destination yet. Choose a field, then a gate, and it is printed here.'}</p>
+        <Link to={field ? '/airport' : '/interests'} className="pv-cta">{field ? 'Go to the gates' : 'Choose your field'}</Link>
+      </div>
+    );
+  }
+  return (
+    <div className="pv-visa">
+      <div className="pv-visa__head">
+        <span>Entry visa</span>
+        <span className="is-mono">{fmtDate(result.takenAt)}</span>
+      </div>
+      <p className="pv-visa__k">Best-matched destination</p>
+      <p className="pv-visa__title">{top.career.title}</p>
+      <dl className="pv-fields pv-fields--2">
+        <Row label="Field" value={top.career.field?.name} />
+        <Row label="Match" value={`${top.score}%`} mono />
+      </dl>
+      <div className="pv-visa__bar"><span style={{ width: `${top.score}%` }} /></div>
+      <Link to="/result" className="pv-link">Read the full report</Link>
+    </div>
+  );
+}
+
+function StampsTab({ user, result }) {
+  const earned = [
+    { key: 'admitted', status: 'ADMITTED', port: 'KARACHI · JINNAH INTL', date: user?.createdAt, colour: '#2e7d5b', label: 'Passport issued' },
+    result && {
+      key: 'route',
+      status: 'ROUTED',
+      port: `${(result.matches?.[0]?.career?.field?.name || 'CAREER').toUpperCase()} GATES`,
+      date: result.takenAt,
+      colour: '#2b4f9c',
+      label: 'Route assigned',
+    },
+  ].filter(Boolean);
+  const ahead = result ? ['Roadmap flown'] : ['Route assigned', 'Roadmap flown'];
+  return (
+    <>
+    <p className="pv-lead">
+      A stamp is added at each point of the journey: when the passport is issued,
+      when the questions assign a route, and when the roadmap is flown.
+    </p>
+    <div className="pv-stamps">
+      {earned.map((s, i) => (
+        <figure key={s.key} className="pv-stamp">
+          <EntryStamp size={124} status={s.status} port={s.port} date={s.date || new Date()} colour={s.colour} seed={i + 3} />
+          <figcaption>{s.label}</figcaption>
+        </figure>
+      ))}
+      {ahead.map((label) => (
+        <figure key={label} className="pv-stamp pv-stamp--ahead">
+          <span className="pv-stamp__slot">Not yet stamped</span>
+          <figcaption>{label}</figcaption>
+        </figure>
+      ))}
+    </div>
+    </>
+  );
+}
+
+const TABS = [
+  { id: 'profile', label: 'Profile', Comp: ProfileTab },
+  { id: 'traits', label: 'Traits', Comp: TraitsTab },
+  { id: 'destination', label: 'Destination', Comp: DestinationTab },
+  { id: 'stamps', label: 'Stamps', Comp: StampsTab },
+];
+
+/**
+ * The Career Passport, open.
+ *
+ * A green book whose cover swings away onto a two-page spread: the data page
+ * on the left, and four tabbed pages on the right. Every value printed comes
+ * from the holder's account and their latest result; anything not yet known
+ * says so rather than being filled in.
+ */
+export function Passport({ user = null, result = null, field = null, open = false, stamped = false, closing = false, typing = true }) {
+  const [tab, setTab] = useState('profile');
+  const Current = TABS.find((t) => t.id === tab).Comp;
+
+  return (
+    <div className={`pv ${open ? 'pv--open' : ''} ${closing ? 'pv--closing' : ''}`}>
+      <div className="pv-book">
+        <div className="pv-spread">
+          <DataPage user={user} field={field} typing={typing} stamped={stamped} />
+
+          <div className="pv-page pv-page--tabs">
+            <div className="pv-tabs" role="tablist" aria-label="Passport pages">
+              {TABS.map((t, i) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  role="tab"
+                  id={`pv-tab-${t.id}`}
+                  aria-selected={tab === t.id}
+                  aria-controls="pv-panel"
+                  className="pv-tab"
+                  onClick={() => setTab(t.id)}
+                >
+                  <span className="pv-tab__n">{String(i + 2).padStart(2, '0')}</span>
+                  {t.label}
+                </button>
+              ))}
+            </div>
+            <div className="pv-panel" id="pv-panel" role="tabpanel" aria-labelledby={`pv-tab-${tab}`} key={tab}>
+              <Current user={user} result={result} field={field} />
+            </div>
+          </div>
+        </div>
+
+        <div className="pv-cover" aria-hidden={open}>
+          <span className="pv-cover__stitch" />
+          <div className="pv-cover__foil">
+            <span className="pv-cover__sm">PathSeeker</span>
+            <span className="pv-cover__lg">Career Passport</span>
+            <PassportEmblem size={130} />
+            <span className="pv-cover__ur" lang="ur">کیریئر پاسپورٹ</span>
+            <span className="pv-cover__no">{user?.passportNumber || 'Awaiting issue'}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

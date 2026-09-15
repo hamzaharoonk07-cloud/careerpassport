@@ -25,7 +25,8 @@ export function EntryStamp({
 }) {
   const d = date instanceof Date ? date : new Date(date);
   const day = String(d.getDate()).padStart(2, '0');
-  const month = d.toLocaleString('en-GB', { month: 'short' }).toUpperCase();
+  // Three letters: en-GB spells September 'Sept', which pushed the year off the die.
+  const month = d.toLocaleString('en-GB', { month: 'short' }).slice(0, 3).toUpperCase();
   const year = d.getFullYear();
 
   // A stable per-stamp wobble, so two stamps on one page are not identical
@@ -70,9 +71,9 @@ export function EntryStamp({
         {/* Country, arced along the top */}
         <text
           fontFamily="'IBM Plex Mono', monospace"
-          fontSize="13"
+          fontSize={country.length > 20 ? 10.5 : 13}
           fontWeight="500"
-          letterSpacing="2.2"
+          letterSpacing={country.length > 20 ? 1.2 : 2.2}
           stroke="none"
         >
           <textPath href="#stamp-top" startOffset="50%" textAnchor="middle">
@@ -101,7 +102,7 @@ export function EntryStamp({
         {/* The date, which is what a stamp is actually for */}
         <g stroke="none" textAnchor="middle" fontFamily="'IBM Plex Mono', monospace">
           <line x1="42" y1="86" x2="158" y2="86" strokeWidth="1.6" stroke={colour} />
-          <text x="100" y="112" fontSize="30" fontWeight="500" letterSpacing="1.5">
+          <text x="100" y="112" fontSize="28" fontWeight="500" textLength="122" lengthAdjust="spacingAndGlyphs">
             {`${day} ${month} ${year}`}
           </text>
           <line x1="42" y1="124" x2="158" y2="124" strokeWidth="1.6" stroke={colour} />

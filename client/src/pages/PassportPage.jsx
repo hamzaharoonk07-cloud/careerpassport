@@ -6,25 +6,28 @@ import { Button } from '../components/primitives/Button.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useJourney } from '../context/JourneyContext.jsx';
 import { useReducedMotion } from '../hooks/useReducedMotion.js';
+import { quizService } from '../services/quiz.service.js';
+import { careerService } from '../services/career.service.js';
 import { TabBar } from '../components/layout/TabBar.jsx';
 import './PassportPage.css';
 
 /**
- * The moment the document becomes the user's.
+ * The traveller's passport, and the moment it becomes theirs.
  *
- * Sequence, driven entirely by CSS with React holding the state:
- *   0.4s  the cover swings open
- *   1.2s  the holder's name is written on, character by character
- *   3.0s  the PATHSEEKER VERIFIED stamp lands and the paper flinches
- *   4.2s  the way forward appears
+ * Sequence, driven by CSS with React holding the state:
+ *   0.5s  the cover swings open onto the spread
+ *   1.2s  the holder's name is written onto the data page
+ *   2.8s  the VERIFIED stamp lands
+ *   3.6s  the way forward appears
  *
- * Every step is skippable, and reduced motion collapses the whole thing
- * to its finished state immediately.
+ * Skippable, and reduced motion shows the finished passport straight away.
+ * The spread reads the holder's latest result and declared field, so a
+ * returning traveller sees their traits, destination and stamps.
  */
 export default function PassportPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { advance } = useJourney();
+  const { advance, resumeRoute, stage } = useJourney();
   const reduced = useReducedMotion();
 
   const [open, setOpen] = useState(reduced);
@@ -32,21 +35,29 @@ export default function PassportPage() {
   const [stamped, setStamped] = useState(reduced);
   const [ready, setReady] = useState(reduced);
   const [closing, setClosing] = useState(false);
-  const [page, setPage] = useState(0);
+  const [result, setResult] = useState(null);
+  const [field, setField] = useState(null);
+
+  useEffect(() => {
+    let alive = true;
+    quizService.latestResult().then((r) => alive && setResult(r)).catch(() => {});
+    careerService.listFields()
+      .then((fs) => alive && setField(fs.find((f) => String(f._id) === String(user?.selectedField)) || null))
+      .catch(() => {});
+    return () => { alive = false; };
+  }, [user?.selectedField]);
 
   useEffect(() => {
     if (reduced) { advance('stamped'); return undefined; }
-
     const timers = [
-      setTimeout(() => setOpen(true), 400),
+      setTimeout(() => setOpen(true), 500),
       setTimeout(() => setTyping(true), 1200),
-      setTimeout(() => setStamped(true), 3000),
-      setTimeout(() => { setReady(true); advance('stamped'); }, 4200),
+      setTimeout(() => setStamped(true), 2800),
+      setTimeout(() => { setReady(true); advance('stamped'); }, 3600),
     ];
     return () => timers.forEach(clearTimeout);
   }, [reduced, advance]);
 
-  /** Skips straight to the stamped, finished state. */
   const skip = () => {
     setOpen(true);
     setTyping(true);
@@ -55,11 +66,14 @@ export default function PassportPage() {
     advance('stamped');
   };
 
-  /** Closes the passport, then hands off to customs — the field form. */
-  const toStation = () => {
-    if (reduced) { navigate('/interests'); return; }
+  // A new traveller goes on to choose a field; one further along resumes.
+  const next = stage === 'registered' || stage === 'stamped' ? '/interests' : resumeRoute;
+  const nextLabel = next === '/interests' ? 'Choose your field' : 'Continue your journey';
+
+  const go = () => {
+    if (reduced) { navigate(next); return; }
     setClosing(true);
-    setTimeout(() => navigate('/interests'), 900);
+    setTimeout(() => navigate(next), 700);
   };
 
   return (
@@ -69,39 +83,39 @@ export default function PassportPage() {
       </SceneVideo>
 
       <div className="wrap ppage__inner">
-        <header className={`ppage__head ${stamped ? 'is-in' : ''}`}>
-          <p className="t-eyebrow">Document issued</p>
-          <h1 className="t-h2 ppage__title">
-            {stamped ? 'Your passport is verified.' : 'Issuing your passport…'}
-          </h1>
+        <header className="ppage__head">
+          <div>
+            <p className={`ppage__status ${stamped ? 'is-verified' : ''}`}>
+              {stamped ? 'Verified' : 'Issuing'}
+              <span>{user?.passportNumber}</span>
+            </p>
+            <h1 className="ppage__title">
+              {stamped ? `${user?.name?.split(' ')[0] || 'Your'}'s passport` : 'Issuing your passport…'}
+            </h1>
+          </div>
+          <div className="ppage__actions">
+            {ready ? (
+              <>
+                <Button variant="ghost" to="/account">Edit details</Button>
+                <Button size="lg" onClick={go}>{nextLabel}</Button>
+              </>
+            ) : (
+              <button type="button" className="ppage__skip" onClick={skip}>Skip <span aria-hidden="true">→</span></button>
+            )}
+          </div>
         </header>
 
         <Passport
           user={user}
+          result={result}
+          field={field}
           open={open}
           stamped={stamped}
           closing={closing}
           typing={typing}
-          page={page}
-          onPageChange={(p) => setPage(Math.max(0, Math.min(3, p)))}
         />
-
-        <footer className="ppage__foot">
-          {ready ? (
-            <div className="ppage__actions anim-rise">
-              <p className="t-mid ppage__note">
-                Passport <strong>{user?.passportNumber}</strong> is now yours. Next, tell us where you want to go.
-              </p>
-              <Button onClick={toStation} size="lg">Board your future</Button>
-            </div>
-          ) : (
-            <button type="button" className="ppage__skip" onClick={skip}>
-              Skip <span aria-hidden="true">→</span>
-            </button>
-          )}
-        </footer>
       </div>
       <TabBar />
     </main>
-);
+  );
 }

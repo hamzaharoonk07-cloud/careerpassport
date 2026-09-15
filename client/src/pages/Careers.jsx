@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
 import { careerService } from '../services/career.service.js';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed.js';
 import { apiError } from '../services/api.js';
-import { formatSalary } from './Result.jsx';
+import { FieldIcon } from '../components/brand/FieldIcon.jsx';
+import { DemandMeter, salaryBand } from '../components/brand/DepartureBoard.jsx';
+import '../styles/bank.css';
 
 /** Debounces a value so typing in the search box does not fire a request per keystroke. */
 function useDebounced(value, ms = 320) {
@@ -32,6 +34,9 @@ export default function Careers() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const { recent, clear } = useRecentlyViewed();
+  const [counts, setCounts] = useState({});
+  const [bankTotal, setBankTotal] = useState(0);
+  const searchRef = useRef(null);
 
   const [q, setQ] = useState(params.get('q') || '');
   const debouncedQ = useDebounced(q);
@@ -41,11 +46,37 @@ export default function Careers() {
   const page = Number(params.get('page') || 1);
 
   // Load the filter vocabularies once.
+  // The per-field counts come from one pass over the whole bank, so each tab
+  // can say how many destinations it holds before it is opened.
   useEffect(() => {
-    Promise.allSettled([careerService.listFields(), careerService.skills()]).then(([f, s]) => {
+    Promise.allSettled([
+      careerService.listFields(),
+      careerService.skills(),
+      careerService.list({ limit: 60 }),
+    ]).then(([f, s, all]) => {
       if (f.status === 'fulfilled') setFields(f.value);
       if (s.status === 'fulfilled') setSkills(s.value);
+      if (all.status === 'fulfilled') {
+        const c = {};
+        for (const career of all.value.careers || []) {
+          const slug = career.field?.slug;
+          if (slug) c[slug] = (c[slug] || 0) + 1;
+        }
+        setCounts(c);
+        setBankTotal(all.value.total || 0);
+      }
     });
+  }, []);
+
+  // "/" jumps to search, the way it does on most catalogues.
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key !== '/' || e.target.closest('input, textarea, select, [contenteditable]')) return;
+      e.preventDefault();
+      searchRef.current?.focus();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, []);
 
   // Keep the URL in step with the search box.
@@ -78,127 +109,163 @@ export default function Careers() {
 
   const active = useMemo(() => Boolean(q || field || skill), [q, field, skill]);
 
+  const clearAll = () => { setQ(''); setParams(new URLSearchParams()); };
+  const fieldName = fields.find((f) => f.slug === field)?.name;
+
   return (
-    <div className="page wrap">
-      <header className="page__head">
+    <div className="page wrap bank">
+      <header className="bank__hero">
         <div>
-          {/* Keeps the SRS name visible — the architecture calls this module
-              the Career Bank, and it should be findable by that name — while
-              the departures framing carries the airport metaphor. */}
-          <p className="t-eyebrow">Career Bank · Departures · Karachi</p>
-          <h1 className="t-h2 page__title">Every destination on the board</h1>
-          {/* The count is read from the database rather than written into the
-              copy. It said "thirty-six" here while the bank held thirty-eight,
-              which is exactly the kind of number that goes stale silently. */}
-          <p className="t-lead" style={{ marginTop: 'var(--sp-4)' }}>
-            {data.total ? `${data.total} destinations` : 'Every destination'} across{' '}
-            {fields.length || 'six'} route groups — the skills each one needs, what to learn
-            first, and a six-stage route in.
+          <h1 className="bank__title">Career Bank</h1>
+          {/* The counts are read from the database rather than written into the
+              copy, which is the kind of number that otherwise goes stale. */}
+          <p className="bank__lead">
+            {bankTotal ? `${bankTotal} careers` : 'Every career'} across {fields.length || 'six'} fields:
+            what the work is, what it pays, the skills it asks for and a six-stage route in.
           </p>
           <p className="bank__fork">
-            Know what you are looking for? Search the board below.{' '}
-            <Link to="/register" className="bank__fork-link">Not sure? Take the passport quiz →</Link>
+            Not sure where to start? <Link to="/interests" className="bank__fork-link">Choose a field or answer 7 questions</Link>
           </p>
         </div>
+
+        <label className="bank__search">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+          </svg>
+          <input
+            ref={searchRef}
+            type="search"
+            placeholder="Search a career, a skill, a subject…"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            aria-label="Search careers"
+          />
+          <kbd aria-hidden="true">/</kbd>
+        </label>
       </header>
 
-      {/* Kept on the device, not the server — browsing history is worth not
-          collecting when a bit of localStorage does the job, and it works
-          the same for someone without an account. */}
-      {recent.length > 0 && (
-        <section className="recent">
-          <div className="recent__head">
-            <p className="t-eyebrow">Recently viewed</p>
-            <button type="button" className="alink" onClick={clear}>Clear</button>
-          </div>
-          <div className="recent__row">
-            {recent.map((r) => (
-              <Link key={r.slug} to={`/careers/${r.slug}`} className="recent__chip">
-                <span>{r.title}</span>
-                {r.field && <small>{r.field}</small>}
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      <div className="bank__filters">
-        <input
-          type="search"
-          className="field__input"
-          placeholder="Search title, summary or skill…"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          aria-label="Search careers"
-        />
-        <select className="select" value={field} onChange={(e) => setParam('field', e.target.value)} aria-label="Filter by field">
-          <option value="">All fields</option>
-          {fields.map((f) => <option key={f.slug} value={f.slug}>{f.name}</option>)}
-        </select>
-        <select className="select" value={skill} onChange={(e) => setParam('skill', e.target.value)} aria-label="Filter by skill">
-          <option value="">All skills</option>
-          {skills.map((s) => <option key={s} value={s}>{s}</option>)}
-        </select>
-      </div>
-
-      <p className="bank__count" aria-live="polite">
-        {loading ? 'Searching…' : `${data.total} career${data.total === 1 ? '' : 's'}`}
-        {active && !loading && (
-          <>
-            {' · '}
-            <button
-              type="button"
-              className="btn btn--ghost btn--sm"
-              style={{ padding: 0, minHeight: 'auto' }}
-              onClick={() => { setQ(''); setParams(new URLSearchParams()); }}
-            >
-              Clear filters
-            </button>
-          </>
-        )}
-      </p>
-
-      {error && <div className="auth__alert" style={{ marginTop: 'var(--sp-4)' }} role="alert">{error}</div>}
-
-      {!loading && data.careers.length === 0 && (
-        <div className="bank__empty">
-          <p>Nothing matches those filters.</p>
-          <div style={{ marginTop: 'var(--sp-4)' }}>
-            <Button variant="secondary" onClick={() => { setQ(''); setParams(new URLSearchParams()); }}>
-              Clear filters
-            </Button>
-          </div>
-        </div>
-      )}
-
-      <div className="bank__grid">
-        {data.careers.map((c) => (
-          <Link to={`/careers/${c.slug}`} className="ccard" key={c._id}>
-            <div className="ccard__top">
-              <span className="ccard__field">{c.field?.name}</span>
-            </div>
-            <span className="ccard__title">{c.title}</span>
-            <p className="ccard__sum">{c.summary}</p>
-            <div className="ccard__foot">
-              <span className={`tag ${c.hasSalaryData ? 'tag--gold' : ''}`}>
-                {formatSalary(c.salary) || 'Salary not available'}
-              </span>
-              {c.demand?.level && <span className="tag">{c.demand.level.replace('-', ' ')} demand</span>}
-            </div>
-          </Link>
+      <div className="bank__tabs" role="group" aria-label="Filter by field">
+        <button type="button" className="bank__tab" aria-pressed={!field} onClick={() => setParam('field', '')}>
+          All fields <span className="bank__tab-n">{bankTotal || '—'}</span>
+        </button>
+        {fields.map((f) => (
+          <button
+            key={f.slug}
+            type="button"
+            className="bank__tab"
+            aria-pressed={field === f.slug}
+            onClick={() => setParam('field', f.slug)}
+            style={{ '--accent': f.accent }}
+          >
+            <FieldIcon name={f.icon} size={17} />
+            {f.name}
+            <span className="bank__tab-n">{counts[f.slug] ?? '—'}</span>
+          </button>
         ))}
       </div>
 
-      {data.pages > 1 && (
-        <div className="bank__pager">
-          <Button variant="ghost" onClick={() => setParam('page', String(page - 1))} disabled={page <= 1}>
-            ← Previous
-          </Button>
-          <span className="bank__pager-n">Page {data.page} of {data.pages}</span>
-          <Button variant="ghost" onClick={() => setParam('page', String(page + 1))} disabled={page >= data.pages}>
-            Next →
-          </Button>
+      <div className="bank__bar">
+        <div className="bank__status" aria-live="polite">
+          <b>{loading ? '…' : data.total}</b> {data.total === 1 ? 'career' : 'careers'}
+          {active && !loading && (
+            <span className="bank__pills">
+              {q && <button type="button" className="bank__pill" onClick={() => setQ('')}>“{q}” <span aria-hidden="true">×</span></button>}
+              {field && <button type="button" className="bank__pill" onClick={() => setParam('field', '')}>{fieldName} <span aria-hidden="true">×</span></button>}
+              {skill && <button type="button" className="bank__pill" onClick={() => setParam('skill', '')}>{skill} <span aria-hidden="true">×</span></button>}
+              <button type="button" className="bank__clear" onClick={clearAll}>Clear all</button>
+            </span>
+          )}
         </div>
+        <label className="bank__skill">
+          <span>Skill</span>
+          <select value={skill} onChange={(e) => setParam('skill', e.target.value)} aria-label="Filter by skill">
+            <option value="">Any skill</option>
+            {skills.map((sk) => <option key={sk} value={sk}>{sk}</option>)}
+          </select>
+        </label>
+      </div>
+
+      {/* Kept on the device, not the server: browsing history is worth not
+          collecting when a bit of localStorage does the job. */}
+      {recent.length > 0 && (
+        <section className="bank__recent">
+          <span className="bank__recent-k">Recently viewed</span>
+          <div className="bank__recent-row">
+            {recent.map((r) => (
+              <Link key={r.slug} to={`/careers/${r.slug}`} className="bank__recent-chip">
+                {r.title}{r.field && <small>{r.field}</small>}
+              </Link>
+            ))}
+          </div>
+          <button type="button" className="bank__clear" onClick={clear}>Clear</button>
+        </section>
+      )}
+
+      {error && <div className="auth__alert" style={{ marginTop: 'var(--sp-4)' }} role="alert">{error}</div>}
+
+      {!loading && data.careers.length === 0 ? (
+        <div className="bank__empty">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5M8.5 11h5" />
+          </svg>
+          <h2>No careers match that</h2>
+          <p>Try a broader word, another field, or clear the filters to see the whole bank.</p>
+          <Button variant="secondary" onClick={clearAll}>Clear filters</Button>
+        </div>
+      ) : (
+        <div className={`bank__grid ${loading ? 'is-loading' : ''}`}>
+          {data.careers.map((c) => {
+            const pay = salaryBand(c.salary);
+            return (
+              <Link to={`/careers/${c.slug}`} className="bcard" key={c._id} style={{ '--accent': c.field?.accent || 'var(--gold-500)' }}>
+                <span className="bcard__band">
+                  <span className="bcard__field"><FieldIcon name={c.field?.icon} size={15} />{c.field?.name}</span>
+                </span>
+                <span className="bcard__body">
+                  <span className="bcard__title">{c.title}</span>
+                  <span className="bcard__sum">{c.summary}</span>
+                  {c.skills?.length > 0 && (
+                    <span className="bcard__skills">
+                      {c.skills.slice(0, 3).map((sk) => <span key={sk.name}>{sk.name}</span>)}
+                    </span>
+                  )}
+                  <span className="bcard__facts">
+                    <span className="bcard__fact">
+                      <small>Demand</small>
+                      <DemandMeter level={c.demand?.level} />
+                    </span>
+                    <span className="bcard__fact">
+                      <small>Salary / month</small>
+                      <b className={pay ? '' : 'is-none'}>{pay || 'Not available'}</b>
+                    </span>
+                  </span>
+                </span>
+                <span className="bcard__foot">
+                  View route
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      )}
+
+      {data.pages > 1 && (
+        <nav className="bank__pager" aria-label="Pages">
+          <button type="button" className="bank__page" onClick={() => setParam('page', String(page - 1))} disabled={page <= 1} aria-label="Previous page">‹</button>
+          {Array.from({ length: data.pages }, (_, i) => i + 1).map((n) => (
+            <button
+              key={n}
+              type="button"
+              className="bank__page"
+              aria-current={n === data.page ? 'page' : undefined}
+              onClick={() => setParam('page', String(n))}
+            >
+              {n}
+            </button>
+          ))}
+          <button type="button" className="bank__page" onClick={() => setParam('page', String(page + 1))} disabled={page >= data.pages} aria-label="Next page">›</button>
+        </nav>
       )}
     </div>
   );

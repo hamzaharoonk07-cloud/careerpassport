@@ -3,6 +3,7 @@
 @import './a11y.css';
 @import './print.css';
 @import './forms.css';
+@import './interactions.css';
 
 /* ── Reset ──────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }

@@ -1,0 +1,40 @@
+/* ============================================================
+   Press feedback for the custom controls
+   The Button primitive has its own. These are the hand-built
+   controls — cards, tabs, signs, rating circles — which lit up on
+   hover but gave nothing back when pressed.
+   ============================================================ */
+
+:where(
+  .fl-action, .pv-tab, .tw-nav__item, .stories__tab, .ife__channel,
+  .pa__type, .fbk__type, .fbk__rate-n, .rleg__toggle, .pa__more,
+  .scard__more, .tboard__toggle button, .wayf__sign, .fcard, .ife__qitem,
+  .hub__chip, .fl-dot, .pv-cta, .apt__action, .tw-kpi__go
+) {
+  transition-property: transform, background, background-color, border-color, color, box-shadow, opacity;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :where(
+    .fl-action, .pv-tab, .tw-nav__item, .stories__tab, .ife__channel,
+    .pa__type, .fbk__type, .rleg__toggle, .pa__more, .scard__more,
+    .tboard__toggle button, .ife__qitem, .hub__chip, .pv-cta, .tw-kpi__go
+  ):active:not(:disabled) {
+    transform: scale(0.96);
+    transition-duration: 90ms;
+  }
+  .fbk__rate:active .fbk__rate-n { transform: scale(0.9); transition-duration: 90ms; }
+  /* Large surfaces press in less, or they look like they are collapsing. */
+  :where(.fcard, .wayf__sign, .apt__action):active { transform: scale(0.985) !important; transition-duration: 90ms; }
+  .fl-row:active:not(:disabled) .fl-action { transform: scale(0.94); }
+}
+
+/* A visible keyboard ring on every one of them. */
+:where(
+  .fl-row, .pv-tab, .tw-nav__item, .stories__tab, .ife__channel, .pa__type,
+  .rleg__toggle, .pa__more, .scard__more, .tboard__toggle button, .wayf__sign,
+  .ife__qitem, .ife__card, .hub__chip, .fl-dot, .pv-cta, .apt__action
+):focus-visible {
+  outline: 2px solid var(--gold-400);
+  outline-offset: 3px;
+}

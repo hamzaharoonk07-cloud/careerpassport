@@ -1,8 +1,12 @@
 .btn {
   --btn-pad-y: 0.75rem;
   --btn-pad-x: 2rem;
+  --mx: 50%;
+  --my: 50%;
 
   position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -17,63 +21,137 @@
   text-align: center;
   cursor: pointer;
   white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
   transition:
-    transform var(--dur-2) var(--ease-out),
+    transform 260ms var(--ease-impact),
     background var(--dur-2) var(--ease-out),
+    background-size 420ms var(--ease-out),
     border-color var(--dur-2) var(--ease-out),
     color var(--dur-2) var(--ease-out),
     box-shadow var(--dur-2) var(--ease-out);
 }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+.btn__label { position: relative; z-index: 2; display: inline-flex; align-items: center; gap: var(--sp-2); transition: opacity var(--dur-2), transform var(--dur-2) var(--ease-out); }
 
 .btn--sm { --btn-pad-y: 0.55rem; --btn-pad-x: 1.25rem; font-size: 0.8rem; }
 .btn--lg { --btn-pad-y: 0.95rem; --btn-pad-x: 2.5rem; font-size: 1rem; }
 .btn--full { width: 100%; }
 
-/* Primary — one per screen */
+/* ── Pointer glow: a soft light that follows the cursor ──── */
+.btn__glow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(120px circle at var(--mx) var(--my), rgba(255, 255, 255, 0.38), transparent 70%);
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+.btn:hover:not(:disabled) .btn__glow { opacity: 1; }
+.btn--secondary .btn__glow,
+.btn--ghost .btn__glow,
+.btn--danger .btn__glow { background: radial-gradient(110px circle at var(--mx) var(--my), rgba(232, 199, 102, 0.22), transparent 70%); }
+
+/* ── Press: squash, then the ripple from the pressed point ── */
+.btn:active:not(:disabled) { transform: translateY(0) scale(0.96); transition-duration: 90ms; }
+.btn__ripple {
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.35) 38%, transparent 68%);
+  transform: scale(0);
+  animation: btn-ripple 620ms var(--ease-out) forwards;
+}
+.btn--secondary .btn__ripple,
+.btn--ghost .btn__ripple { background: radial-gradient(circle, rgba(232, 199, 102, 0.45) 0%, rgba(232, 199, 102, 0.16) 40%, transparent 70%); }
+@keyframes btn-ripple {
+  to { transform: scale(1); opacity: 0; }
+}
+
+/* ── Keyboard focus ─────────────────────────────────────── */
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ink-900), 0 0 0 4px var(--gold-400);
+}
+
+/* ── Primary — one per screen ───────────────────────────── */
 .btn--primary {
   background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
   color: var(--ink-900);
   box-shadow: var(--glow-gold);
 }
+/* One pass of light across the face on hover */
+.btn--primary::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 45%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-18deg);
+  opacity: 0;
+}
 .btn--primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 0 0 1px rgba(201,162,39,0.5), 0 12px 34px rgba(201,162,39,0.26);
+  box-shadow: 0 0 0 1px rgba(201, 162, 39, 0.55), 0 14px 34px rgba(201, 162, 39, 0.32);
 }
-.btn--primary:active:not(:disabled) { transform: translateY(0); }
+.btn--primary:hover:not(:disabled)::after { animation: btn-sheen 760ms var(--ease-out); }
+@keyframes btn-sheen {
+  0% { left: -60%; opacity: 1; }
+  100% { left: 130%; opacity: 1; }
+}
+.btn--primary:active:not(:disabled) { box-shadow: 0 0 0 1px rgba(201, 162, 39, 0.5), 0 4px 12px rgba(201, 162, 39, 0.22); }
+.btn--primary:focus-visible { box-shadow: 0 0 0 2px var(--ink-900), 0 0 0 4px var(--gold-300), 0 12px 30px rgba(201, 162, 39, 0.3); }
 
-/* Secondary — gold edge, fills on hover */
+/* ── Secondary — gold edge, fills from the left on hover ── */
 .btn--secondary {
-  background: transparent;
   border: 1px solid var(--gold-500);
   color: var(--gold-400);
+  background: linear-gradient(90deg, var(--gold-500), var(--gold-400)) no-repeat left / 0% 100%;
 }
-.btn--secondary:hover:not(:disabled) { background: var(--gold-500); color: var(--ink-900); transform: translateY(-2px); }
+.btn--secondary:hover:not(:disabled) {
+  background-size: 100% 100%;
+  color: var(--ink-900);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(201, 162, 39, 0.22);
+}
 
-/* Ghost — tertiary */
+/* ── Ghost — tertiary ───────────────────────────────────── */
 .btn--ghost { background: transparent; color: var(--text-mid); padding-inline: var(--sp-3); }
 .btn--ghost:hover:not(:disabled) { color: var(--gold-400); }
-.btn--ghost .btn__label { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: transparent; transition: text-decoration-color var(--dur-2); }
+.btn--ghost .btn__label { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: transparent; transition: text-decoration-color var(--dur-2), opacity var(--dur-2); }
 .btn--ghost:hover .btn__label { text-decoration-color: currentColor; }
 
-/* Danger — destructive only */
+/* ── Danger — destructive only ──────────────────────────── */
 .btn--danger { background: transparent; border: 1px solid var(--danger); color: var(--danger); }
 .btn--danger:hover:not(:disabled) { background: var(--danger); color: var(--cream-50); }
 
-.btn--loading { color: transparent; pointer-events: none; }
-.btn--loading .btn__label { opacity: 0; }
+/* ── Loading ────────────────────────────────────────────── */
+.btn--loading { pointer-events: none; }
+.btn--loading .btn__label { opacity: 0; transform: scale(0.9); }
 .btn__spinner {
   position: absolute;
-  width: 16px;
-  height: 16px;
+  z-index: 2;
+  width: 18px;
+  height: 18px;
   border: 2px solid currentColor;
   border-top-color: transparent;
   border-radius: 50%;
   color: var(--ink-900);
-  animation: ps-spin 620ms linear infinite;
+  animation: ps-spin 620ms linear infinite, btn-pop 240ms var(--ease-impact) both;
 }
+@keyframes btn-pop { from { transform: scale(0.4); opacity: 0; } }
 .btn--secondary .btn__spinner, .btn--ghost .btn__spinner, .btn--danger .btn__spinner { color: var(--gold-400); }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn:hover { transform: none !important; }
+  .btn, .btn:hover, .btn:active { transform: none !important; }
+  .btn--primary:hover::after { animation: none; }
+  .btn__glow { display: none; }
+  .btn--secondary { transition: background-size 0ms, color var(--dur-2); }
 }

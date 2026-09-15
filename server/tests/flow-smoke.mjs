@@ -58,6 +58,7 @@ const seed = [
   ...JSON.parse(readFileSync(new URL('../src/seed/questions.json', import.meta.url))),
   ...JSON.parse(readFileSync(new URL('../src/seed/questions.variants.json', import.meta.url))),
   ...JSON.parse(readFileSync(new URL('../src/seed/questions.field.json', import.meta.url))),
+  ...JSON.parse(readFileSync(new URL('../src/seed/questions.fields2.json', import.meta.url))),
 ];
 const techAnswer = (q) => {
   const src = seed.find((s) => s.prompt === q.prompt);
@@ -95,7 +96,10 @@ check('unknown career is a 404', r.status === 404, `got ${r.status}`);
 
 // Full quiz still works unchanged.
 r = await call('GET', '/quiz');
-check('full quiz still serves every slot', (r.json.questions || []).length === 25, `got ${(r.json.questions || []).length}`);
+check('full quiz still serves every slot', (r.json.questions || []).length === 31, `got ${(r.json.questions || []).length}`);
+
+r = await call('GET', '/career-fields');
+check('all twenty fields are served', (r.json.fields || []).length === 20, `got ${(r.json.fields || []).length}`);
 
 console.log(failed ? `\n${failed} failed` : '\nall passed');
 process.exit(failed ? 1 : 0);

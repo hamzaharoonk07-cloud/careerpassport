@@ -52,7 +52,7 @@ export default function Careers() {
     Promise.allSettled([
       careerService.listFields(),
       careerService.skills(),
-      careerService.list({ limit: 60 }),
+      careerService.list({ limit: 200 }),
     ]).then(([f, s, all]) => {
       if (f.status === 'fulfilled') setFields(f.value);
       if (s.status === 'fulfilled') setSkills(s.value);

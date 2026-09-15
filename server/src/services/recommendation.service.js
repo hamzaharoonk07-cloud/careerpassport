@@ -165,12 +165,14 @@ function buildReasons({ profile, career, fieldSlug, isChosenField, riasecFit, fi
 
   // 2. Field affinity, straight from the quiz.
   const fieldPct = Math.round(profile.fieldScores[fieldSlug] || 0);
+  // The field's name where it is populated; the slug reads badly ('armed-forces').
+  const fieldName = career.field?.name || fieldSlug;
   if (fieldPct >= 60) {
-    reasons.push(`Your answers pointed at ${fieldSlug} on ${fieldPct}% of the available signal — your clearest direction.`);
+    reasons.push(`Your answers pointed at ${fieldName} on ${fieldPct}% of the available signal — your clearest direction.`);
   } else if (fieldPct >= 35) {
-    reasons.push(`${fieldPct}% of your answers pointed toward ${fieldSlug}, enough to make this a genuine option rather than a stretch.`);
+    reasons.push(`${fieldPct}% of your answers pointed toward ${fieldName}, enough to make this a genuine option rather than a stretch.`);
   } else {
-    reasons.push(`Only ${fieldPct}% of your answers pointed toward ${fieldSlug}, so this match rests mainly on your trait profile.`);
+    reasons.push(`Only ${fieldPct}% of your answers pointed toward ${fieldName}, so this match rests mainly on your trait profile.`);
   }
 
   // 3. Whether they chose this field themselves on the train.

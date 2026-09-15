@@ -80,7 +80,7 @@ export function Empty({ children }) {
   return <p className="apanel__empty">{children}</p>;
 }
 
-/** A row of six 0–5 or 0–10 weight inputs. */
+/** A row of 0–5 or 0–10 weight inputs, one per key. */
 export function WeightRow({ label, keys, value = {}, max, onChange, hint }) {
   return (
     <div className="aweights">

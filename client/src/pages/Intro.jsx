@@ -103,7 +103,7 @@ export default function Intro() {
             at: 0.22,
             eyebrow: 'Step 02 · Your boarding pass',
             title: 'Choose a gate. The pass is issued.',
-            body: 'Technology, design, business, healthcare, finance or media. Printed in your name with your passport number, your gate and your seat — a starting point, not a commitment. The quiz can and often does route you somewhere else.',
+            body: `Engineering, law, aviation, medicine, fashion, the trades and ${counts?.fields ? counts.fields - 6 : 'more'} other fields. Printed in your name with your passport number, your gate and your seat — a starting point, not a commitment. The quiz can and often does route you somewhere else.`,
           },
           {
             at: 0.34,

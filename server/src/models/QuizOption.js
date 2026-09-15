@@ -7,18 +7,23 @@ import mongoose from 'mongoose';
  * without rewriting question documents.
  *
  * Every option carries TWO vectors:
- *   fieldWeights — points toward the six career fields (picks the field)
+ *   fieldWeights — points toward the career fields (picks the field)
  *   riasec       — Holland axes (ranks individual careers inside/across fields)
  */
+/**
+ * The career fields the quiz can point toward. Keys match CareerField slugs.
+ * The first six carry hand-set weights in the question bank; the rest are
+ * derived at seed time from the careers in each field (seed/deriveFieldWeights.js).
+ */
+export const FIELD_KEYS = [
+  'technology', 'design', 'business', 'healthcare', 'finance', 'media',
+  'engineering', 'science', 'education', 'law', 'government', 'armed-forces',
+  'architecture', 'agriculture', 'hospitality', 'aviation', 'sports', 'social',
+  'fashion', 'skilled-trades',
+];
+
 const fieldWeightsSchema = new mongoose.Schema(
-  {
-    technology: { type: Number, default: 0, min: 0, max: 5 },
-    design: { type: Number, default: 0, min: 0, max: 5 },
-    business: { type: Number, default: 0, min: 0, max: 5 },
-    healthcare: { type: Number, default: 0, min: 0, max: 5 },
-    finance: { type: Number, default: 0, min: 0, max: 5 },
-    media: { type: Number, default: 0, min: 0, max: 5 },
-  },
+  Object.fromEntries(FIELD_KEYS.map((k) => [k, { type: Number, default: 0, min: 0, max: 5 }])),
   { _id: false }
 );
 
@@ -49,6 +54,5 @@ const quizOptionSchema = new mongoose.Schema(
 
 quizOptionSchema.index({ question: 1, key: 1 }, { unique: true });
 
-export const FIELD_KEYS = ['technology', 'design', 'business', 'healthcare', 'finance', 'media'];
 export const RIASEC_KEYS = ['R', 'I', 'A', 'S', 'E', 'C'];
 export default mongoose.model('QuizOption', quizOptionSchema);

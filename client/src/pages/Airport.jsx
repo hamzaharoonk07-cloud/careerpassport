@@ -65,7 +65,7 @@ export default function Airport() {
       .catch(() => { if (alive) setLanded(null); });
 
     careerService
-      .list({ limit: 60 })
+      .list({ limit: 200 })
       .then((res) => {
         if (!alive) return;
         const sorted = [...(res.careers || [])].sort(

@@ -3,9 +3,13 @@ import { Button } from '../primitives/Button.jsx';
 import { Field, Modal, Confirm, Empty, WeightRow } from './ui.jsx';
 import { adminService } from '../../services/admin.service.js';
 import { apiError } from '../../services/api.js';
+import { careerService } from '../../services/career.service.js';
 
 const AXES = ['R', 'I', 'A', 'S', 'E', 'C'];
-const FIELDS = ['technology', 'design', 'business', 'healthcare', 'finance', 'media'];
+/* Field keys come from the career fields in the database, so a field added
+   there is weightable here without touching this file. These are the
+   fallback if that request fails. */
+const FALLBACK_FIELDS = ['technology', 'design', 'business', 'healthcare', 'finance', 'media'];
 
 const DIMENSIONS = [
   'interests', 'strengths', 'problem-solving', 'creativity', 'communication',
@@ -41,6 +45,11 @@ export function QuizPanel({ onError }) {
     .finally(() => setLoading(false));
 
   useEffect(() => { load(); }, []);
+
+  const [FIELDS, setFields] = useState(FALLBACK_FIELDS);
+  useEffect(() => {
+    careerService.listFields().then((fs) => fs.length && setFields(fs.map((f) => f.slug))).catch(() => {});
+  }, []);
 
   const saveQuestion = async () => {
     setBusy(true);

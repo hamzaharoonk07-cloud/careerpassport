@@ -52,5 +52,131 @@
     "description": "Content, journalism, film and communications. You think in audience and narrative, and you would rather be understood than admired.",
     "accent": "hsl(8 62% 58%)",
     "order": 6
+  },
+  {
+    "slug": "engineering",
+    "name": "Engineering",
+    "icon": "gear",
+    "tagline": "Design and build what the physical world runs on",
+    "description": "Civil, mechanical, electrical and chemical engineering. You like knowing exactly why a thing works, and you are comfortable being responsible when it has to keep working.",
+    "accent": "hsl(24 70% 56%)",
+    "order": 7
+  },
+  {
+    "slug": "science",
+    "name": "Science & Research",
+    "icon": "flask",
+    "tagline": "Find out what is actually true",
+    "description": "Laboratory, field and research science. You would rather test an idea than argue for it, and you can live with an experiment that takes months to say no.",
+    "accent": "hsl(190 60% 50%)",
+    "order": 8
+  },
+  {
+    "slug": "education",
+    "name": "Education",
+    "icon": "book",
+    "tagline": "Help other people understand",
+    "description": "Teaching, lecturing, counselling and learning design. You get more from someone else finally getting it than from getting it yourself.",
+    "accent": "hsl(48 75% 55%)",
+    "order": 9
+  },
+  {
+    "slug": "law",
+    "name": "Law & Justice",
+    "icon": "scale",
+    "tagline": "Argue precisely for what is fair",
+    "description": "Advocacy, legal advice and the courts. You read closely, you enjoy a well-built argument, and detail that others skip is where you win.",
+    "accent": "hsl(0 45% 58%)",
+    "order": 10
+  },
+  {
+    "slug": "government",
+    "name": "Government & Public Service",
+    "icon": "landmark",
+    "tagline": "Run the systems a country depends on",
+    "description": "Civil service, diplomacy and public policy. You care about outcomes at scale and you have the patience to move large institutions.",
+    "accent": "hsl(215 45% 60%)",
+    "order": 11
+  },
+  {
+    "slug": "armed-forces",
+    "name": "Armed Forces & Security",
+    "icon": "shield",
+    "tagline": "Protect people under pressure",
+    "description": "Army, navy, air force and police. You want structure, responsibility and a job where discipline and courage both count.",
+    "accent": "hsl(95 30% 48%)",
+    "order": 12
+  },
+  {
+    "slug": "architecture",
+    "name": "Architecture & Construction",
+    "icon": "building",
+    "tagline": "Shape the places people live in",
+    "description": "Architecture, planning, surveying and construction management. You think in space and cost at the same time.",
+    "accent": "hsl(30 35% 60%)",
+    "order": 13
+  },
+  {
+    "slug": "agriculture",
+    "name": "Agriculture & Environment",
+    "icon": "leaf",
+    "tagline": "Feed people and look after the land",
+    "description": "Crops, animals, food and the environment. You want work that is close to living things and to the problems that matter for decades.",
+    "accent": "hsl(120 40% 48%)",
+    "order": 14
+  },
+  {
+    "slug": "hospitality",
+    "name": "Hospitality & Tourism",
+    "icon": "bell",
+    "tagline": "Make people feel looked after",
+    "description": "Hotels, kitchens, travel and events. You are energised by people, you stay calm when a hundred things are happening, and the details of an experience matter to you.",
+    "accent": "hsl(330 50% 60%)",
+    "order": 15
+  },
+  {
+    "slug": "aviation",
+    "name": "Aviation & Transport",
+    "icon": "plane",
+    "tagline": "Keep people and aircraft moving safely",
+    "description": "Flying, maintaining and controlling aircraft, and the crews that look after passengers. Procedure, precision and responsibility come first.",
+    "accent": "hsl(200 70% 58%)",
+    "order": 16
+  },
+  {
+    "slug": "sports",
+    "name": "Sports & Fitness",
+    "icon": "trophy",
+    "tagline": "Build performance in bodies and teams",
+    "description": "Coaching, training, nutrition and the business of sport. You like measurable progress and you know motivation is a skill.",
+    "accent": "hsl(12 75% 58%)",
+    "order": 17
+  },
+  {
+    "slug": "social",
+    "name": "Social Work & Development",
+    "icon": "hands",
+    "tagline": "Change things for people who need it most",
+    "description": "Social work, NGOs, community development and humanitarian response. You want your effort to land on real people and you can hold steady in hard situations.",
+    "accent": "hsl(270 40% 64%)",
+    "order": 18
+  },
+  {
+    "slug": "fashion",
+    "name": "Fashion & Beauty",
+    "icon": "scissors",
+    "tagline": "Turn taste into something people wear",
+    "description": "Fashion and textile design, makeup and merchandising. You notice what others miss about how things look and why people want them.",
+    "accent": "hsl(310 55% 62%)",
+    "order": 19
+  },
+  {
+    "slug": "skilled-trades",
+    "name": "Skilled Trades",
+    "icon": "wrench",
+    "tagline": "Fix and build with your hands",
+    "description": "Electrical, automotive, cooling and fabrication trades. You like visible results, practical problems and skills that are always in demand.",
+    "accent": "hsl(40 55% 50%)",
+    "order": 20
   }
 ]

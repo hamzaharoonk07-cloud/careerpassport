@@ -16,7 +16,9 @@ const BASE = process.env.API_BASE || 'http://localhost:5000/api';
 // fail a test that has nothing to do with the change.
 const SEEDED_CAREERS =
   JSON.parse(readFileSync(new URL('../src/seed/careers.part1.json', import.meta.url))).length +
-  JSON.parse(readFileSync(new URL('../src/seed/careers.part2.json', import.meta.url))).length;
+  JSON.parse(readFileSync(new URL('../src/seed/careers.part2.json', import.meta.url))).length +
+  JSON.parse(readFileSync(new URL('../src/seed/careers.part3.json', import.meta.url))).length +
+  JSON.parse(readFileSync(new URL('../src/seed/careers.part4.json', import.meta.url))).length;
 
 let cookies = '';
 let passed = 0;
@@ -84,7 +86,7 @@ check('GET /auth/me works with the session cookie', r.status === 200 && r.json.u
 // ── Career fields ──────────────────────────────────────────────────
 section('Career fields');
 r = await call('GET', '/career-fields');
-check('six fields are seeded', r.json.fields?.length === 6, `got ${r.json.fields?.length}`);
+check('all twenty fields are seeded', r.json.fields?.length === 20, `got ${r.json.fields?.length}`);
 
 r = await call('PATCH', '/users/me/field', { fieldSlug: 'technology' });
 check('selecting a field succeeds', r.status === 200 && r.json.selectedField?.slug === 'technology');
@@ -97,11 +99,22 @@ check('unknown field is rejected', r.status === 400);
 section('Quiz');
 r = await call('GET', '/quiz');
 const questions = r.json.questions || [];
-check('ten questions are served', questions.length === 10, `got ${questions.length}`);
+// One question per slot, counted from the seed rather than written down.
+const seedQuestions = ['questions.json', 'questions.variants.json', 'questions.field.json', 'questions.fields2.json']
+  .flatMap((f) => JSON.parse(readFileSync(new URL(`../src/seed/${f}`, import.meta.url))));
+const SLOTS = new Set(seedQuestions.map((q) => q.order)).size;
+check(`one question per slot is served (${SLOTS})`, questions.length === SLOTS, `got ${questions.length}`);
 check('scoring weights are not exposed to the client', !/fieldWeights|riasec/.test(JSON.stringify(r.json)));
 check('every question has four options', questions.every((q) => q.options.length === 4));
 
-const answersA = questions.map((q) => ({ questionId: q.id, optionId: q.options.find((o) => o.key === 'a').id }));
+// The builder persona: on every question, the answer that leans hardest
+// toward technology. Picking option (a) throughout stopped meaning that once
+// the bank gained questions whose (a) answers name other fields.
+const techKey = (q) => {
+  const src = seedQuestions.find((sq) => sq.prompt === q.prompt);
+  return [...src.options].sort((x, y) => (y.fieldWeights?.technology || 0) - (x.fieldWeights?.technology || 0))[0].key;
+};
+const answersA = questions.map((q) => ({ questionId: q.id, optionId: q.options.find((o) => o.key === techKey(q)).id }));
 
 r = await call('POST', '/quiz/submit', { answers: answersA.slice(0, 4) });
 check('a partial quiz is rejected', r.status === 400, `got ${r.status}: ${r.json.message}`);

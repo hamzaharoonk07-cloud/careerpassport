@@ -1,0 +1,74 @@
+[
+  {
+    "order": 26,
+    "dimension": "work-environment",
+    "prompt": "You could spend the next year working in one of these places. Which do you pick?",
+    "helper": "Picture the actual building, not the job title.",
+    "options": [
+      { "key": "a", "label": "A hospital ward or a clinic", "fieldWeights": { "healthcare": 5, "science": 2 }, "riasec": { "S": 4, "I": 3 } },
+      { "key": "b", "label": "A courtroom or a lawyer's chambers", "fieldWeights": { "law": 5, "government": 2 }, "riasec": { "E": 3, "C": 3, "I": 2 } },
+      { "key": "c", "label": "An airport — the cockpit, the tower or the hangar", "fieldWeights": { "aviation": 5, "armed-forces": 2 }, "riasec": { "R": 4, "C": 3 } },
+      { "key": "d", "label": "A hotel, a busy kitchen or an event venue", "fieldWeights": { "hospitality": 5, "business": 1 }, "riasec": { "S": 3, "E": 3, "A": 2 } }
+    ]
+  },
+  {
+    "order": 27,
+    "dimension": "values",
+    "prompt": "Which title would you be proudest to have on your card?",
+    "helper": "The one you would want people to call you, not the one that pays most.",
+    "options": [
+      { "key": "a", "label": "Engineer", "fieldWeights": { "engineering": 5, "skilled-trades": 2 }, "riasec": { "R": 4, "I": 3 } },
+      { "key": "b", "label": "Officer — in the army, the police or the civil service", "fieldWeights": { "armed-forces": 5, "government": 3 }, "riasec": { "E": 3, "S": 2, "R": 2, "C": 2 } },
+      { "key": "c", "label": "Designer", "fieldWeights": { "design": 5, "fashion": 3 }, "riasec": { "A": 5 } },
+      { "key": "d", "label": "Teacher", "fieldWeights": { "education": 5, "social": 2 }, "riasec": { "S": 5 } }
+    ]
+  },
+  {
+    "order": 28,
+    "dimension": "interests",
+    "prompt": "Pick the problem you would most like to spend your career on.",
+    "helper": "Not the one that sounds most important — the one you would keep thinking about.",
+    "options": [
+      { "key": "a", "label": "Enough food and water for a growing country", "fieldWeights": { "agriculture": 5, "science": 2 }, "riasec": { "R": 3, "I": 3 } },
+      { "key": "b", "label": "Children and families who never got a fair chance", "fieldWeights": { "social": 5, "education": 2 }, "riasec": { "S": 5, "E": 1 } },
+      { "key": "c", "label": "Cities that need better homes, roads and public spaces", "fieldWeights": { "architecture": 5, "engineering": 2 }, "riasec": { "R": 3, "A": 2, "E": 2, "C": 2 } },
+      { "key": "d", "label": "A disease that nobody has cured yet", "fieldWeights": { "science": 5, "healthcare": 3 }, "riasec": { "I": 5 } }
+    ]
+  },
+  {
+    "order": 29,
+    "dimension": "interests",
+    "prompt": "A free Saturday. Which of these would you actually choose?",
+    "helper": "What you would do, not what you think you should do.",
+    "options": [
+      { "key": "a", "label": "Train, play or coach a sport", "fieldWeights": { "sports": 5 }, "riasec": { "R": 4, "S": 3 } },
+      { "key": "b", "label": "Put together an outfit or plan a look", "fieldWeights": { "fashion": 5, "design": 2 }, "riasec": { "A": 4, "E": 1 } },
+      { "key": "c", "label": "Fix a machine, rewire something or work on an engine", "fieldWeights": { "skilled-trades": 5, "engineering": 2 }, "riasec": { "R": 5 } },
+      { "key": "d", "label": "Organise a trip or an event for friends and family", "fieldWeights": { "hospitality": 4, "business": 2 }, "riasec": { "E": 3, "S": 3 } }
+    ]
+  },
+  {
+    "order": 30,
+    "dimension": "technical-interest",
+    "prompt": "Which of these would you read about just because you want to?",
+    "helper": "Think about what you already click on.",
+    "options": [
+      { "key": "a", "label": "Markets, money and where it goes", "fieldWeights": { "finance": 5, "business": 2 }, "riasec": { "C": 3, "E": 2, "I": 2 } },
+      { "key": "b", "label": "New apps, AI and technology", "fieldWeights": { "technology": 5 }, "riasec": { "I": 3, "R": 2 } },
+      { "key": "c", "label": "Films, news and what people are talking about", "fieldWeights": { "media": 5 }, "riasec": { "A": 3, "S": 2 } },
+      { "key": "d", "label": "Laws, politics and how the country is run", "fieldWeights": { "government": 5, "law": 3 }, "riasec": { "E": 3, "I": 2, "C": 2 } }
+    ]
+  },
+  {
+    "order": 31,
+    "dimension": "strengths",
+    "prompt": "Which kind of responsibility would you want to carry?",
+    "helper": "All of them are hard. Which weight would you choose?",
+    "options": [
+      { "key": "a", "label": "Leading a team through a crisis or a mission", "fieldWeights": { "armed-forces": 4, "social": 2 }, "riasec": { "E": 4, "S": 2, "R": 2 } },
+      { "key": "b", "label": "Keeping hundreds of people safe by following procedure exactly", "fieldWeights": { "aviation": 4, "healthcare": 2 }, "riasec": { "C": 4, "R": 3 } },
+      { "key": "c", "label": "Growing a company and winning customers", "fieldWeights": { "business": 5 }, "riasec": { "E": 5 } },
+      { "key": "d", "label": "Making sure a building, a bridge or a plant never fails", "fieldWeights": { "engineering": 4, "architecture": 3 }, "riasec": { "R": 3, "I": 3, "C": 3 } }
+    ]
+  }
+]

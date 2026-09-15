@@ -56,7 +56,13 @@ export async function seedDatabase({ log = console.log } = {}) {
   log(`✅  ${fields.length} career fields`);
 
   // ── Careers ──────────────────────────────────────────────────────
-  const careerData = [...(await readJson('careers.part1.json')), ...(await readJson('careers.part2.json'))];
+  const careerData = [
+    ...(await readJson('careers.part1.json')),
+    ...(await readJson('careers.part2.json')),
+    // The fourteen fields added after the original six.
+    ...(await readJson('careers.part3.json')),
+    ...(await readJson('careers.part4.json')),
+  ];
 
   const careerDocs = careerData.map((c) => {
     const fieldId = fieldBySlug.get(c.field);
@@ -103,6 +109,11 @@ export async function seedDatabase({ log = console.log } = {}) {
     // careers actually in this database, so they discriminate rather than
     // just adding length.
     ...(await readJson('questions.field.json')),
+    // Slots 26-31 ask directly about the kind of work and setting. RIASEC
+    // alone cannot separate twenty fields — a pilot, a lawyer and a fashion
+    // designer can share a trait profile — so these carry the field signal
+    // for every field, including the fourteen added later.
+    ...(await readJson('questions.fields2.json')),
   ];
   let optionCount = 0;
 

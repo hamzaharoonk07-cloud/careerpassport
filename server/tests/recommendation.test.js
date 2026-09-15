@@ -12,6 +12,12 @@ import {
 
 const require = createRequire(import.meta.url);
 const questions = require('../src/seed/questions.json');
+// Every slot a traveller can be asked, one phrasing each.
+const bank = [
+  ...questions,
+  ...require('../src/seed/questions.field.json'),
+  ...require('../src/seed/questions.fields2.json'),
+];
 const careersRaw = [
   ...require('../src/seed/careers.part1.json'),
   ...require('../src/seed/careers.part2.json'),
@@ -39,7 +45,9 @@ test('weights sum to exactly 1', () => {
 });
 
 test('ceilings are non-zero for every axis and every field', () => {
-  const { riasec, field } = computeCeilings(questions);
+  // The whole bank: the ten base questions weight only the original six
+  // fields, and slots 26-31 carry the signal for the rest.
+  const { riasec, field } = computeCeilings(bank);
   for (const [k, v] of Object.entries(riasec)) assert.ok(v > 0, `axis ${k} unreachable`);
   for (const [k, v] of Object.entries(field)) assert.ok(v > 0, `field ${k} unreachable`);
 });
@@ -147,4 +155,12 @@ test('cosine similarity behaves', () => {
   assert.ok(Math.abs(cosineSimilarity(v, v) - 1) < 1e-9, 'identical vectors should score 1');
   const zero = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
   assert.equal(cosineSimilarity(v, zero), 0, 'zero vector should not divide by zero');
+});
+
+test('the seven quick questions can reach every field and every axis', () => {
+  const quick = bank.filter((q) => [20, 26, 27, 28, 29, 30, 31].includes(q.order));
+  assert.equal(quick.length, 7);
+  const { riasec, field } = computeCeilings(quick);
+  for (const [k, v] of Object.entries(riasec)) assert.ok(v > 0, `axis ${k} unreachable in the quick quiz`);
+  for (const [k, v] of Object.entries(field)) assert.ok(v > 0, `field ${k} unreachable in the quick quiz`);
 });

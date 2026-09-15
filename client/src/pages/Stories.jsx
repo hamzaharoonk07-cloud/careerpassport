@@ -104,7 +104,7 @@ export default function Stories() {
     Promise.all([
       publicService.stories(),
       careerService.listFields().catch(() => []),
-      careerService.list({ limit: 60 }).then((r) => r.careers || []).catch(() => []),
+      careerService.list({ limit: 200 }).then((r) => r.careers || []).catch(() => []),
     ])
       .then(([st, fl, cs]) => {
         if (!alive) return;

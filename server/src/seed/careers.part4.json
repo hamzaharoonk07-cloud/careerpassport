@@ -1,0 +1,792 @@
+[
+  {
+    "slug": "agronomist",
+    "title": "Agronomist",
+    "field": "agriculture",
+    "summary": "Helps farmers grow more and better crops with less water, fertiliser and loss.",
+    "description": "Agronomists study soil, seed, water and pests, then advise farmers or agribusinesses on what to plant, when and how. They run field trials, diagnose crop problems and increasingly use data and satellite tools. Much of the job is out in the fields talking with growers.",
+    "dayInLife": "Walking a cotton field to identify a pest outbreak. Taking soil samples. Explaining a fertiliser plan to a farmer in terms that fit his budget.",
+    "skills": [
+      { "name": "Crop and soil science", "weight": 5 },
+      { "name": "Pest and disease management", "weight": 4 },
+      { "name": "Field trials", "weight": 4 },
+      { "name": "Farmer communication", "weight": 4 },
+      { "name": "Agricultural data tools", "weight": 3 }
+    ],
+    "learningAreas": ["Agronomy and plant physiology", "Soil science", "Integrated pest management", "Irrigation", "Precision agriculture"],
+    "roadmap": [
+      "Take pre-medical or a science intermediate, then a BSc (Hons) Agriculture majoring in agronomy.",
+      "Spend real time on farms and learn crop cycles, soils and irrigation in Pakistan's main crops — wheat, cotton, rice and sugarcane.",
+      "Intern with a research institute, a seed or fertiliser company, or an agricultural extension department.",
+      "Consider an MSc for research, government and senior advisory roles.",
+      "Apply to agribusiness, seed and fertiliser companies, extension services and agri-tech start-ups.",
+      "Grow into field research lead, regional agronomy manager or agri-tech product specialist."
+    ],
+    "demand": { "level": "moderate", "note": "Agriculture is a large employer; agri-tech and export crops are creating newer, better-paid roles." },
+    "salary": { "entry": 45000, "mid": 100000, "senior": 250000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 8, "I": 8, "A": 2, "S": 5, "E": 4, "C": 5 },
+    "workStyle": { "pace": "balanced", "collaboration": "mixed", "environment": "field" }
+  },
+  {
+    "slug": "veterinarian",
+    "title": "Veterinarian",
+    "field": "agriculture",
+    "summary": "Diagnoses and treats animals, from pets to dairy herds, and protects public health.",
+    "description": "Veterinarians examine, diagnose and treat animals, perform surgery, vaccinate herds and advise on livestock health and productivity. In Pakistan much of the work is with livestock, poultry and dairy, alongside a growing pet practice and roles in food safety and disease control.",
+    "dayInLife": "Morning visits to a dairy farm with a sick herd. Surgery at the clinic on a dog hit by a car. Advising a poultry farm on a vaccination schedule.",
+    "skills": [
+      { "name": "Animal diagnosis and treatment", "weight": 5 },
+      { "name": "Surgery", "weight": 4 },
+      { "name": "Animal handling", "weight": 5 },
+      { "name": "Communication with owners", "weight": 4 },
+      { "name": "Disease prevention", "weight": 4 }
+    ],
+    "learningAreas": ["Animal anatomy and physiology", "Veterinary pharmacology", "Livestock and poultry health", "Surgery", "Zoonotic diseases"],
+    "roadmap": [
+      "Take pre-medical, then the five-year Doctor of Veterinary Medicine (DVM) degree.",
+      "Get hands-on experience with large and small animals during clinical rotations.",
+      "Register with the Pakistan Veterinary Medical Council.",
+      "Work in a clinic, livestock department, dairy or poultry company to build clinical confidence.",
+      "Choose a direction — companion animals, livestock, poultry, food safety or research — and specialise.",
+      "Grow into your own practice, senior livestock roles, or postgraduate specialisation."
+    ],
+    "demand": { "level": "high", "note": "Livestock and poultry are major sectors, and pet care is growing in cities." },
+    "salary": { "entry": 50000, "mid": 120000, "senior": 300000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 8, "I": 8, "A": 2, "S": 7, "E": 4, "C": 5 },
+    "workStyle": { "pace": "fast", "collaboration": "mixed", "environment": "clinical" }
+  },
+  {
+    "slug": "environmental-scientist",
+    "title": "Environmental Scientist",
+    "field": "agriculture",
+    "summary": "Measures pollution and climate risk, and advises on how to reduce the damage.",
+    "description": "Environmental scientists monitor air, water and soil, prepare environmental impact assessments, and advise industry and government on regulations and climate adaptation. The work combines field sampling, laboratory analysis, data and report writing.",
+    "dayInLife": "Collecting water samples downstream of a factory. Running an analysis in the lab. Writing the section of an impact assessment that says what the project must change.",
+    "skills": [
+      { "name": "Environmental monitoring", "weight": 5 },
+      { "name": "Impact assessment", "weight": 4 },
+      { "name": "Data analysis and GIS", "weight": 4 },
+      { "name": "Environmental regulation", "weight": 4 },
+      { "name": "Technical writing", "weight": 4 }
+    ],
+    "learningAreas": ["Environmental chemistry", "EIA methods", "GIS", "Climate change science", "Pakistan environmental law"],
+    "roadmap": [
+      "Take a science intermediate, then a BS in Environmental Science.",
+      "Learn sampling methods, lab analysis and GIS, and understand EPA regulations and EIA processes.",
+      "Intern with an environmental consultancy, an Environmental Protection Agency or a climate NGO.",
+      "Work on real environmental assessments and monitoring programmes as a junior scientist.",
+      "Apply to consultancies, industry compliance teams, development agencies and climate programmes.",
+      "Grow into EIA lead, climate adaptation specialist, or an MPhil for research and policy roles."
+    ],
+    "demand": { "level": "moderate", "note": "Climate programmes and regulatory compliance are expanding this field." },
+    "salary": { "entry": 50000, "mid": 120000, "senior": 280000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 7, "I": 9, "A": 3, "S": 5, "E": 4, "C": 6 },
+    "workStyle": { "pace": "balanced", "collaboration": "team", "environment": "field" }
+  },
+  {
+    "slug": "food-technologist",
+    "title": "Food Technologist",
+    "field": "agriculture",
+    "summary": "Develops food products and keeps what people eat safe, consistent and good.",
+    "description": "Food technologists work in food and beverage companies creating new products, improving recipes for scale, testing shelf life and making sure production meets hygiene and quality standards. They sit between the laboratory, the factory floor and the marketing team.",
+    "dayInLife": "A trial batch of a new snack recipe. Checking quality test results from the morning shift. An audit walk through the plant against food-safety standards.",
+    "skills": [
+      { "name": "Food chemistry and processing", "weight": 5 },
+      { "name": "Quality assurance", "weight": 5 },
+      { "name": "Food safety standards (HACCP)", "weight": 5 },
+      { "name": "Product development", "weight": 4 },
+      { "name": "Sensory evaluation", "weight": 3 }
+    ],
+    "learningAreas": ["Food science", "HACCP and ISO 22000", "Food microbiology", "Packaging", "Product development"],
+    "roadmap": [
+      "Take a science intermediate, then a BSc in Food Science and Technology.",
+      "Learn food safety systems such as HACCP and how processing changes a product.",
+      "Intern in a food or beverage company's quality or R&D department.",
+      "Start as a quality or production officer on a factory floor.",
+      "Apply to food, dairy, beverage and export processing companies with certifications in food safety.",
+      "Grow into R&D manager, quality head or regulatory affairs specialist."
+    ],
+    "demand": { "level": "moderate", "note": "Large food and beverage sector with steady demand for quality and production roles." },
+    "salary": { "entry": 45000, "mid": 110000, "senior": 280000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 6, "I": 8, "A": 5, "S": 3, "E": 4, "C": 7 },
+    "workStyle": { "pace": "balanced", "collaboration": "team", "environment": "field" }
+  },
+
+  {
+    "slug": "hotel-manager",
+    "title": "Hotel Manager",
+    "field": "hospitality",
+    "summary": "Runs a hotel so guests are looked after and the business makes money.",
+    "description": "Hotel managers oversee front office, housekeeping, food and beverage, maintenance and sales. They manage staff and budgets, handle guest complaints, and keep occupancy and service standards high. It is a people-heavy job with long, unpredictable hours.",
+    "dayInLife": "Morning review of occupancy and complaints. A walk through housekeeping and the kitchen. Handling a VIP arrival, then a budget meeting with the owners.",
+    "skills": [
+      { "name": "Operations management", "weight": 5 },
+      { "name": "Guest service", "weight": 5 },
+      { "name": "Staff leadership", "weight": 5 },
+      { "name": "Revenue and budgeting", "weight": 4 },
+      { "name": "Problem solving", "weight": 4 }
+    ],
+    "learningAreas": ["Hospitality operations", "Revenue management", "Food and beverage management", "Customer service", "Hotel software (PMS)"],
+    "roadmap": [
+      "Study hospitality or hotel management, or business with hospitality modules.",
+      "Work in hotels during your studies — front desk, food service, housekeeping — to understand every department.",
+      "Join a hotel chain's management trainee programme where possible.",
+      "Take supervisory roles in front office or food and beverage and learn revenue management.",
+      "Apply for assistant manager roles in hotels in Pakistan or the Gulf.",
+      "Grow into general manager, cluster manager or hospitality business owner."
+    ],
+    "demand": { "level": "moderate", "note": "Tourism growth and Gulf hotel markets create opportunities for experienced staff." },
+    "salary": { "entry": 45000, "mid": 120000, "senior": 350000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 4, "I": 4, "A": 4, "S": 8, "E": 9, "C": 7 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "field" }
+  },
+  {
+    "slug": "chef",
+    "title": "Chef",
+    "field": "hospitality",
+    "summary": "Creates dishes and runs a kitchen that produces them consistently under pressure.",
+    "description": "Chefs design menus, cook, manage kitchen staff, control food cost and keep hygiene standards. Behind the creativity is intense physical work, long hours and a strict hierarchy, from line cook up to executive chef.",
+    "dayInLife": "Prep from mid-morning. A lunch service where every station must hit time. Afternoon testing a new dish, then a busy dinner service and cleanup.",
+    "skills": [
+      { "name": "Cooking technique", "weight": 5 },
+      { "name": "Food safety and hygiene", "weight": 5 },
+      { "name": "Speed under pressure", "weight": 5 },
+      { "name": "Menu design and costing", "weight": 4 },
+      { "name": "Kitchen leadership", "weight": 4 }
+    ],
+    "learningAreas": ["Culinary fundamentals", "Pastry and bakery", "Food safety", "Menu costing", "International cuisines"],
+    "roadmap": [
+      "Take a culinary arts diploma or certificate from a recognised culinary school.",
+      "Work in a real kitchen as soon as possible, starting as a commis or line cook.",
+      "Master the basics — knife skills, stocks, sauces, hygiene — before chasing signature dishes.",
+      "Rotate through stations and cuisines to become a well-rounded chef de partie.",
+      "Apply to hotels, restaurants and catering companies at home or in the Gulf.",
+      "Grow into sous chef and head chef, or open your own restaurant or food business."
+    ],
+    "demand": { "level": "high", "note": "Restaurants, hotels and Gulf employers hire trained chefs steadily." },
+    "salary": { "entry": 35000, "mid": 90000, "senior": 300000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 8, "I": 3, "A": 8, "S": 4, "E": 6, "C": 5 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "studio" }
+  },
+  {
+    "slug": "travel-tour-consultant",
+    "title": "Travel & Tour Consultant",
+    "field": "hospitality",
+    "summary": "Plans trips and tours, from Umrah packages to northern-areas adventures.",
+    "description": "Travel consultants design itineraries, book flights and hotels, arrange visas and guide clients through the details. Tour operators also lead or coordinate trips on the ground. The work rewards knowledge of destinations, booking systems and genuinely caring about a client's experience.",
+    "dayInLife": "Building a ten-day Hunza itinerary for a family. Rebooking flights after a cancellation. Chasing a visa appointment and answering twenty messages from clients.",
+    "skills": [
+      { "name": "Itinerary planning", "weight": 5 },
+      { "name": "Booking systems (GDS)", "weight": 4 },
+      { "name": "Customer service", "weight": 5 },
+      { "name": "Destination knowledge", "weight": 4 },
+      { "name": "Sales", "weight": 4 }
+    ],
+    "learningAreas": ["Tourism management", "Amadeus or Sabre GDS", "Visa processes", "Digital marketing", "Destination geography"],
+    "roadmap": [
+      "Study tourism and hospitality, or take a travel and tourism diploma.",
+      "Learn a global distribution system such as Amadeus and how fares and visas work.",
+      "Work at a travel agency or tour operator to handle real bookings and clients.",
+      "Build knowledge of a niche — religious travel, adventure tourism, corporate travel.",
+      "Grow a client base or join larger agencies and online travel companies.",
+      "Grow into operations manager or start your own tour company."
+    ],
+    "demand": { "level": "moderate", "note": "Domestic tourism and religious travel keep demand steady; online booking has reshaped the role." },
+    "salary": { "entry": 35000, "mid": 80000, "senior": 200000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 3, "I": 4, "A": 5, "S": 8, "E": 8, "C": 7 },
+    "workStyle": { "pace": "fast", "collaboration": "mixed", "environment": "office" }
+  },
+  {
+    "slug": "event-manager",
+    "title": "Event Manager",
+    "field": "hospitality",
+    "summary": "Plans and runs weddings, conferences and brand events so everything happens on cue.",
+    "description": "Event managers take a client's vision and budget and turn it into venues, vendors, schedules and a day that runs without visible problems. They negotiate with suppliers, manage teams on the day and deal calmly with the things that always go wrong.",
+    "dayInLife": "A site visit to a banquet hall. Negotiating with a décor vendor. On event day, eighteen hours on your feet keeping lighting, catering and guests on schedule.",
+    "skills": [
+      { "name": "Planning and scheduling", "weight": 5 },
+      { "name": "Vendor negotiation", "weight": 4 },
+      { "name": "Budget management", "weight": 4 },
+      { "name": "Crisis handling", "weight": 5 },
+      { "name": "Client relations", "weight": 5 }
+    ],
+    "learningAreas": ["Event planning", "Budgeting", "Contract negotiation", "Event marketing", "Health and safety for events"],
+    "roadmap": [
+      "Study hospitality, business or communications, or take an event management certificate.",
+      "Volunteer at university and community events to learn logistics firsthand.",
+      "Assist an event company and work real weddings, conferences and launches.",
+      "Build a supplier network and a portfolio of events you coordinated.",
+      "Take lead roles or start freelancing with a clear specialty.",
+      "Grow into senior event director or your own event management company."
+    ],
+    "demand": { "level": "moderate", "note": "Weddings, corporate and brand events provide steady work, with income tied to reputation." },
+    "salary": { "entry": 35000, "mid": 100000, "senior": 300000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 5, "I": 3, "A": 7, "S": 7, "E": 9, "C": 6 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "field" }
+  },
+
+  {
+    "slug": "commercial-pilot",
+    "title": "Commercial Pilot",
+    "field": "aviation",
+    "summary": "Flies passenger and cargo aircraft safely from departure to landing.",
+    "description": "Commercial pilots plan flights, operate the aircraft with a co-pilot, communicate with air traffic control and handle weather and emergencies. The career requires expensive training, strict medical standards and recurring checks throughout working life.",
+    "dayInLife": "Briefing on weather and fuel. A pre-flight inspection. Hours of monitoring systems in cruise, then a crosswind landing that takes full concentration.",
+    "skills": [
+      { "name": "Aircraft operation", "weight": 5 },
+      { "name": "Navigation and meteorology", "weight": 5 },
+      { "name": "Decision-making under pressure", "weight": 5 },
+      { "name": "Crew communication", "weight": 4 },
+      { "name": "Procedural discipline", "weight": 5 }
+    ],
+    "learningAreas": ["Principles of flight", "Aviation meteorology", "Air law", "Navigation", "Aviation English"],
+    "roadmap": [
+      "Complete intermediate with physics and mathematics and pass a Class 1 aviation medical.",
+      "Enrol in a Pakistan Civil Aviation Authority approved flying school.",
+      "Earn a Private Pilot Licence, then a Commercial Pilot Licence with the required flying hours.",
+      "Pass ATPL theory and add instrument and multi-engine ratings.",
+      "Apply to airlines for first officer roles, often via type-rating programmes.",
+      "Build hours toward captain and consider instructor or international airline careers."
+    ],
+    "demand": { "level": "moderate", "note": "Training is costly and airline hiring is cyclical; Gulf and international carriers recruit experienced pilots." },
+    "salary": { "entry": 150000, "mid": 500000, "senior": 1500000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data; varies greatly by airline and rank" },
+    "riasec": { "R": 9, "I": 7, "A": 2, "S": 4, "E": 5, "C": 8 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "field" }
+  },
+  {
+    "slug": "aircraft-maintenance-engineer",
+    "title": "Aircraft Maintenance Engineer",
+    "field": "aviation",
+    "summary": "Inspects, repairs and certifies aircraft as safe to fly.",
+    "description": "Aircraft maintenance engineers carry out scheduled checks, diagnose faults and repair engines, structures and avionics, following manuals exactly. Licensed engineers sign that an aircraft is airworthy, which carries serious responsibility.",
+    "dayInLife": "A night shift in the hangar on a scheduled check. Tracing an intermittent avionics fault. Completing documentation so the aircraft can be released for its morning flight.",
+    "skills": [
+      { "name": "Aircraft systems knowledge", "weight": 5 },
+      { "name": "Troubleshooting", "weight": 5 },
+      { "name": "Following technical manuals", "weight": 5 },
+      { "name": "Documentation", "weight": 4 },
+      { "name": "Safety discipline", "weight": 5 }
+    ],
+    "learningAreas": ["Airframe and powerplant", "Avionics", "Human factors", "Aviation regulations", "Technical English"],
+    "roadmap": [
+      "Complete pre-engineering, then a CAA-approved aircraft maintenance engineering programme or an aerospace degree.",
+      "Study for licence modules in mechanical (airframe and engine) or avionics categories.",
+      "Gain supervised practical experience in an approved maintenance organisation.",
+      "Pass the Civil Aviation Authority licensing examinations.",
+      "Apply to airlines, maintenance organisations and Gulf aviation companies.",
+      "Grow into licensed certifying engineer, type specialist or maintenance manager."
+    ],
+    "demand": { "level": "high", "note": "Licensed engineers are sought locally and heavily recruited by Gulf carriers." },
+    "salary": { "entry": 70000, "mid": 200000, "senior": 500000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 10, "I": 8, "A": 2, "S": 2, "E": 3, "C": 8 },
+    "workStyle": { "pace": "balanced", "collaboration": "team", "environment": "field" }
+  },
+  {
+    "slug": "air-traffic-controller",
+    "title": "Air Traffic Controller",
+    "field": "aviation",
+    "summary": "Directs aircraft on the ground and in the air so they stay safely separated.",
+    "description": "Air traffic controllers give pilots instructions for taxi, take-off, climb and approach, keeping aircraft apart in busy airspace. The job needs intense concentration, a clear voice and the ability to hold a changing three-dimensional picture in your head.",
+    "dayInLife": "A shift in the tower managing a burst of departures. A break, then approach control where two aircraft need rerouting around weather.",
+    "skills": [
+      { "name": "Spatial reasoning", "weight": 5 },
+      { "name": "Concentration", "weight": 5 },
+      { "name": "Clear radio communication", "weight": 5 },
+      { "name": "Decision-making", "weight": 5 },
+      { "name": "Procedure and regulation", "weight": 4 }
+    ],
+    "learningAreas": ["Aviation English", "Air traffic procedures", "Meteorology", "Radar and navigation systems", "Air law"],
+    "roadmap": [
+      "Complete a bachelor's degree, preferably in science, engineering or aviation.",
+      "Build excellent spoken English and strong mathematical and spatial skills.",
+      "Apply for air traffic control training through the Pakistan Airports Authority or aviation authority recruitment.",
+      "Pass aptitude tests, medical examination and selection.",
+      "Complete classroom and simulator training, then on-the-job training at an airport.",
+      "Qualify for tower, approach and area ratings and progress to supervisor."
+    ],
+    "demand": { "level": "low", "note": "Few, occasional recruitment rounds; a stable career once qualified." },
+    "salary": { "entry": 90000, "mid": 200000, "senior": 400000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 6, "I": 7, "A": 1, "S": 4, "E": 5, "C": 9 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "office" }
+  },
+  {
+    "slug": "cabin-crew",
+    "title": "Cabin Crew",
+    "field": "aviation",
+    "summary": "Keeps passengers safe and comfortable on board, and takes charge in an emergency.",
+    "description": "Cabin crew are trained first for safety — evacuations, first aid, fire — and then for service. They manage passengers from boarding to landing, handle difficult situations calmly and work irregular hours across time zones.",
+    "dayInLife": "A pre-flight briefing and equipment check. Boarding three hundred passengers. Meal service, a passenger who feels unwell, and landing in a different country.",
+    "skills": [
+      { "name": "Safety and emergency procedures", "weight": 5 },
+      { "name": "Customer service", "weight": 5 },
+      { "name": "Calm under pressure", "weight": 5 },
+      { "name": "First aid", "weight": 4 },
+      { "name": "Languages", "weight": 3 }
+    ],
+    "learningAreas": ["Aviation safety", "First aid", "Customer service", "English and a second language", "Grooming and presentation"],
+    "roadmap": [
+      "Complete at least intermediate, meet the airline's height, fitness and grooming requirements.",
+      "Improve spoken English and consider learning Arabic or another language for international carriers.",
+      "Prepare for airline assessment days: group exercises, interviews and swimming tests.",
+      "Pass selection and complete airline safety and service training.",
+      "Fly with a local airline or apply to Gulf carriers that recruit in Pakistan.",
+      "Grow into senior crew, purser, trainer or ground roles in aviation."
+    ],
+    "demand": { "level": "moderate", "note": "Gulf airlines run regular recruitment; selection is competitive." },
+    "salary": { "entry": 70000, "mid": 150000, "senior": 350000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data; Gulf carriers pay considerably more" },
+    "riasec": { "R": 5, "I": 2, "A": 3, "S": 9, "E": 6, "C": 6 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "field" }
+  },
+
+  {
+    "slug": "sports-coach",
+    "title": "Sports Coach",
+    "field": "sports",
+    "summary": "Develops athletes and teams through training, tactics and motivation.",
+    "description": "Sports coaches plan training, teach technique, analyse performance and prepare players mentally for competition. They work in schools, academies, clubs and national setups, and the best combine sport-science knowledge with the ability to get the most out of people.",
+    "dayInLife": "Early training session with an academy squad. Watching match footage to plan tactics. Talking one player through a loss of confidence.",
+    "skills": [
+      { "name": "Sport-specific expertise", "weight": 5 },
+      { "name": "Training planning", "weight": 5 },
+      { "name": "Motivation and leadership", "weight": 5 },
+      { "name": "Performance analysis", "weight": 4 },
+      { "name": "Communication", "weight": 4 }
+    ],
+    "learningAreas": ["Coaching methods", "Sports science basics", "Performance analysis", "Injury prevention", "Sports psychology"],
+    "roadmap": [
+      "Play and study your sport seriously; many coaches have competed at club or higher level.",
+      "Study sports sciences or physical education, or take coaching courses from your sport's federation.",
+      "Earn coaching certifications — for example PCB cricket levels or AFC football licences.",
+      "Assist at a school, academy or club and learn to run sessions.",
+      "Take head-coach roles with teams and build a record of player development.",
+      "Grow into academy director, professional team coach or national-level roles."
+    ],
+    "demand": { "level": "moderate", "note": "Private academies and schools are growing; top roles depend on results and certifications." },
+    "salary": { "entry": 35000, "mid": 90000, "senior": 300000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 8, "I": 4, "A": 3, "S": 8, "E": 8, "C": 4 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "field" }
+  },
+  {
+    "slug": "fitness-trainer",
+    "title": "Personal Fitness Trainer",
+    "field": "sports",
+    "summary": "Designs exercise programmes and coaches clients to get stronger and healthier.",
+    "description": "Personal trainers assess clients, design training plans, teach safe technique and keep people motivated through slow progress. Many work in gyms, some independently or online. Income grows with reputation and client results.",
+    "dayInLife": "Three client sessions before work hours. A programme review for a client with a knee injury. Evening group class and content for your online clients.",
+    "skills": [
+      { "name": "Exercise programming", "weight": 5 },
+      { "name": "Anatomy and safe technique", "weight": 5 },
+      { "name": "Motivation and coaching", "weight": 5 },
+      { "name": "Nutrition basics", "weight": 3 },
+      { "name": "Client business skills", "weight": 3 }
+    ],
+    "learningAreas": ["Exercise physiology", "Strength training", "Nutrition basics", "First aid and CPR", "Online coaching"],
+    "roadmap": [
+      "Train consistently yourself and understand the fundamentals of strength and conditioning.",
+      "Earn a recognised personal training certification such as ACE, NASM or ISSA.",
+      "Get first aid and CPR certification.",
+      "Work at a gym to build a client base and experience with different goals.",
+      "Specialise — strength, weight loss, women's fitness, rehabilitation support — and build online presence.",
+      "Grow into head trainer, gym manager, or your own studio and online coaching business."
+    ],
+    "demand": { "level": "high", "note": "Fitness culture in cities is growing quickly; online coaching extends reach." },
+    "salary": { "entry": 30000, "mid": 80000, "senior": 250000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 8, "I": 4, "A": 2, "S": 8, "E": 7, "C": 4 },
+    "workStyle": { "pace": "fast", "collaboration": "solo", "environment": "field" }
+  },
+  {
+    "slug": "sports-nutritionist",
+    "title": "Sports Nutritionist",
+    "field": "sports",
+    "summary": "Plans how athletes eat to perform, recover and stay healthy.",
+    "description": "Sports nutritionists assess athletes' diets, body composition and training loads, then design eating and hydration plans for performance and recovery. They work with teams, gyms, clinics and individual clients, and must translate science into meals people will actually eat.",
+    "dayInLife": "Body composition assessments for a cricket squad. A meal plan for a fasting athlete during Ramadan. A workshop for parents at a youth academy.",
+    "skills": [
+      { "name": "Nutrition science", "weight": 5 },
+      { "name": "Diet planning", "weight": 5 },
+      { "name": "Client counselling", "weight": 4 },
+      { "name": "Body composition assessment", "weight": 3 },
+      { "name": "Evidence-based practice", "weight": 4 }
+    ],
+    "learningAreas": ["Human nutrition", "Exercise physiology", "Sports supplements evidence", "Dietary assessment", "Behaviour change"],
+    "roadmap": [
+      "Take pre-medical, then a BS in Human Nutrition and Dietetics.",
+      "Take electives and short courses in sports nutrition and exercise physiology.",
+      "Intern with a hospital, sports academy or fitness centre.",
+      "Earn a sports nutrition certification and join a professional nutrition body.",
+      "Work with gyms, teams or in private practice, building results and referrals.",
+      "Grow into team nutritionist, clinic head or an MSc for elite sport roles."
+    ],
+    "demand": { "level": "moderate", "note": "Emerging field in Pakistan with growing demand from gyms, academies and professional teams." },
+    "salary": { "entry": 40000, "mid": 100000, "senior": 250000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 4, "I": 8, "A": 3, "S": 8, "E": 5, "C": 5 },
+    "workStyle": { "pace": "balanced", "collaboration": "mixed", "environment": "clinical" }
+  },
+  {
+    "slug": "sports-manager",
+    "title": "Sports Manager",
+    "field": "sports",
+    "summary": "Runs the business of sport — teams, leagues, events, sponsorships and athletes.",
+    "description": "Sports managers handle the operations and commercial side of sport: organising tournaments, managing team logistics, securing sponsors, marketing leagues and representing athletes. It suits people who love sport but whose strength is organising and selling.",
+    "dayInLife": "A sponsor meeting for a franchise league. Planning travel for a squad of thirty. Reviewing ticket sales and social media numbers before match day.",
+    "skills": [
+      { "name": "Event and operations management", "weight": 5 },
+      { "name": "Sponsorship and sales", "weight": 5 },
+      { "name": "Marketing", "weight": 4 },
+      { "name": "Negotiation", "weight": 4 },
+      { "name": "Budgeting", "weight": 4 }
+    ],
+    "learningAreas": ["Sports management", "Sponsorship and marketing", "Event operations", "Contracts", "Digital media"],
+    "roadmap": [
+      "Study sports management, business or marketing.",
+      "Volunteer at tournaments, university sports and leagues to learn operations.",
+      "Intern with a franchise, federation, sports agency or event company.",
+      "Take coordinator roles in operations, marketing or sponsorship.",
+      "Build a network across teams, sponsors and media, and specialise.",
+      "Grow into general manager of a team, league operations head or athlete agent."
+    ],
+    "demand": { "level": "moderate", "note": "Franchise leagues and sports media have opened more professional roles." },
+    "salary": { "entry": 45000, "mid": 130000, "senior": 400000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 4, "I": 4, "A": 4, "S": 6, "E": 9, "C": 6 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "office" }
+  },
+
+  {
+    "slug": "social-worker",
+    "title": "Social Worker",
+    "field": "social",
+    "summary": "Supports vulnerable people and families through crisis and connects them to help.",
+    "description": "Social workers assess people's situations — abuse, poverty, disability, addiction — plan support, and connect them to services. They work in hospitals, courts, schools, government welfare departments and NGOs, often with heavy caseloads and emotionally hard cases.",
+    "dayInLife": "A home visit to a family at risk. A case conference with a doctor and a school. Hours of notes and referrals, and one call you keep thinking about after work.",
+    "skills": [
+      { "name": "Case assessment", "weight": 5 },
+      { "name": "Empathy and active listening", "weight": 5 },
+      { "name": "Knowledge of welfare services", "weight": 4 },
+      { "name": "Case documentation", "weight": 4 },
+      { "name": "Resilience", "weight": 5 }
+    ],
+    "learningAreas": ["Social work practice", "Child protection", "Counselling skills", "Welfare law and services", "Self-care and supervision"],
+    "roadmap": [
+      "Study social work or sociology at bachelor's level.",
+      "Complete supervised field placements in welfare departments, hospitals or NGOs.",
+      "Learn the welfare, child-protection and legal systems you will work within.",
+      "Take a master's in social work for professional and supervisory roles.",
+      "Apply to government social welfare, hospitals, courts and NGOs.",
+      "Grow into senior caseworker, programme manager or specialist in child protection or mental health."
+    ],
+    "demand": { "level": "moderate", "note": "Needed across NGOs and welfare services; pay is modest but the work is meaningful." },
+    "salary": { "entry": 40000, "mid": 80000, "senior": 180000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 2, "I": 5, "A": 3, "S": 10, "E": 5, "C": 5 },
+    "workStyle": { "pace": "fast", "collaboration": "mixed", "environment": "field" }
+  },
+  {
+    "slug": "ngo-programme-manager",
+    "title": "NGO Programme Manager",
+    "field": "social",
+    "summary": "Runs development programmes in education, health or livelihoods, and proves they work.",
+    "description": "Programme managers plan and deliver donor-funded projects: hiring teams, managing budgets, working with communities and government, and reporting results to funders. Good ones care about impact and are ruthless about measuring whether it is happening.",
+    "dayInLife": "A field visit to project schools in a rural district. A budget variance call with the finance team. Writing the quarterly report for a donor.",
+    "skills": [
+      { "name": "Project management", "weight": 5 },
+      { "name": "Monitoring and evaluation", "weight": 4 },
+      { "name": "Budget and donor reporting", "weight": 4 },
+      { "name": "Community engagement", "weight": 4 },
+      { "name": "Team leadership", "weight": 4 }
+    ],
+    "learningAreas": ["Development studies", "Logical framework and M&E", "Proposal writing", "Budget management", "Gender and inclusion"],
+    "roadmap": [
+      "Study development studies, social sciences, economics or public health.",
+      "Volunteer or intern with NGOs to understand field realities.",
+      "Take entry roles as a field officer or M&E assistant.",
+      "Learn project management, proposal writing and donor requirements; consider PMD Pro certification.",
+      "Move into project coordinator and then manager roles.",
+      "Grow into country programme director or roles with UN agencies and international donors."
+    ],
+    "demand": { "level": "moderate", "note": "Many NGOs and donor programmes; funding cycles affect job security." },
+    "salary": { "entry": 60000, "mid": 180000, "senior": 450000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data; international organisations pay more" },
+    "riasec": { "R": 3, "I": 6, "A": 3, "S": 8, "E": 8, "C": 7 },
+    "workStyle": { "pace": "balanced", "collaboration": "team", "environment": "field" }
+  },
+  {
+    "slug": "community-development-officer",
+    "title": "Community Development Officer",
+    "field": "social",
+    "summary": "Works directly with communities to organise, plan and deliver local improvements.",
+    "description": "Community development officers build trust with local groups, help them identify needs, and organise projects — water schemes, women's savings groups, school committees. They are the link between an organisation and the people it serves, and spend much of their time in villages and neighbourhoods.",
+    "dayInLife": "A village meeting to agree priorities. Training a women's committee on record keeping. Resolving a dispute over where a water pump should go.",
+    "skills": [
+      { "name": "Community mobilisation", "weight": 5 },
+      { "name": "Facilitation", "weight": 5 },
+      { "name": "Local languages", "weight": 4 },
+      { "name": "Cultural sensitivity", "weight": 5 },
+      { "name": "Basic reporting", "weight": 3 }
+    ],
+    "learningAreas": ["Participatory methods", "Facilitation", "Gender and inclusion", "Basic project management", "Conflict resolution"],
+    "roadmap": [
+      "Study social sciences, rural development or social work.",
+      "Learn to speak the local languages of the communities you want to work with.",
+      "Volunteer with community organisations and rural support programmes.",
+      "Take a social organiser or community mobiliser role with an NGO.",
+      "Build a record of projects communities owned and sustained.",
+      "Grow into programme coordinator, trainer or district-level development lead."
+    ],
+    "demand": { "level": "moderate", "note": "Rural support programmes and NGOs employ many officers across provinces." },
+    "salary": { "entry": 35000, "mid": 75000, "senior": 160000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 4, "I": 4, "A": 3, "S": 10, "E": 7, "C": 4 },
+    "workStyle": { "pace": "balanced", "collaboration": "team", "environment": "field" }
+  },
+  {
+    "slug": "humanitarian-aid-worker",
+    "title": "Humanitarian Aid Worker",
+    "field": "social",
+    "summary": "Delivers emergency relief — food, shelter, health and protection — when disaster strikes.",
+    "description": "Humanitarian workers respond to floods, earthquakes and displacement. They assess needs quickly, organise distributions, coordinate with other agencies and government, and keep aid reaching the most vulnerable. The work is intense, often in difficult locations, with long deployments.",
+    "dayInLife": "A rapid assessment in a flood-affected district. Setting up a distribution point. An evening coordination meeting with five agencies about gaps in shelter.",
+    "skills": [
+      { "name": "Needs assessment", "weight": 5 },
+      { "name": "Logistics and distribution", "weight": 4 },
+      { "name": "Coordination", "weight": 5 },
+      { "name": "Working under stress", "weight": 5 },
+      { "name": "Humanitarian principles", "weight": 4 }
+    ],
+    "learningAreas": ["Humanitarian principles and Sphere standards", "Emergency logistics", "Protection", "Security awareness", "Coordination systems"],
+    "roadmap": [
+      "Study social sciences, public health, logistics or development studies.",
+      "Volunteer with the Red Crescent, rescue services or relief NGOs during emergencies.",
+      "Take Sphere standards and humanitarian training courses, many available free online.",
+      "Join an NGO in a field role — distribution, protection or assessments.",
+      "Build deployment experience and specialise in WASH, shelter, protection or logistics.",
+      "Grow into emergency response coordinator or roles with UN humanitarian agencies."
+    ],
+    "demand": { "level": "moderate", "note": "Demand spikes with disasters; climate risks make response skills increasingly important." },
+    "salary": { "entry": 60000, "mid": 170000, "senior": 450000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data; international agencies pay more" },
+    "riasec": { "R": 6, "I": 5, "A": 2, "S": 9, "E": 7, "C": 6 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "field" }
+  },
+
+  {
+    "slug": "fashion-designer",
+    "title": "Fashion Designer",
+    "field": "fashion",
+    "summary": "Designs clothing collections, from sketch and fabric to finished garments on sale.",
+    "description": "Fashion designers research trends, sketch and develop collections, choose fabrics, work with pattern makers and oversee sampling and production. In Pakistan the industry spans luxury bridal, prêt and high-street lawn brands, and designers must balance creativity with cost and deadlines.",
+    "dayInLife": "Mood board for next season's lawn collection. Fittings on three samples that need changes. A call with the factory about embroidery that came back wrong.",
+    "skills": [
+      { "name": "Design and sketching", "weight": 5 },
+      { "name": "Textiles and fabric knowledge", "weight": 5 },
+      { "name": "Pattern making and construction", "weight": 4 },
+      { "name": "Trend research", "weight": 4 },
+      { "name": "Production coordination", "weight": 3 }
+    ],
+    "learningAreas": ["Fashion illustration", "Pattern making", "Textile science", "Digital design (CLO 3D, Illustrator)", "Fashion business"],
+    "roadmap": [
+      "Build a sketchbook and sewing basics, then study fashion design at a recognised art and design school.",
+      "Learn pattern making, draping and a digital design tool alongside illustration.",
+      "Intern with a fashion house or brand to see sampling and production.",
+      "Build a portfolio including a capsule collection you designed and made.",
+      "Join a brand as an assistant designer, or show work at student and emerging designer shows.",
+      "Grow into lead designer, creative director or your own label."
+    ],
+    "demand": { "level": "moderate", "note": "Large textile and fashion market; competition is high and portfolios decide hiring." },
+    "salary": { "entry": 40000, "mid": 120000, "senior": 400000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 6, "I": 3, "A": 10, "S": 4, "E": 7, "C": 4 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "studio" }
+  },
+  {
+    "slug": "textile-designer",
+    "title": "Textile Designer",
+    "field": "fashion",
+    "summary": "Creates the prints, weaves and embroideries that fabrics are made with.",
+    "description": "Textile designers create surface patterns, prints, weave structures and embroidery designs for fashion and home textiles. They work digitally and by hand, and closely with mills and printing units, where colour matching and production limits shape what is possible.",
+    "dayInLife": "Designing a print repeat in Photoshop. Adjusting colours after a strike-off from the mill. Presenting ten options to a buyer for next season.",
+    "skills": [
+      { "name": "Pattern and print design", "weight": 5 },
+      { "name": "Colour theory", "weight": 5 },
+      { "name": "Adobe Photoshop and Illustrator", "weight": 5 },
+      { "name": "Weaving and printing processes", "weight": 4 },
+      { "name": "Trend awareness", "weight": 3 }
+    ],
+    "learningAreas": ["Surface design", "Colour theory", "Digital textile design", "Weaving and printing technology", "CAD for textiles"],
+    "roadmap": [
+      "Study textile design at an art and design school.",
+      "Master digital pattern tools and learn how printing and weaving actually work.",
+      "Intern at a textile mill, printing unit or home-textile exporter.",
+      "Build a portfolio of prints and collections that show range and technical understanding.",
+      "Join a textile company, fashion brand or export house as a designer.",
+      "Grow into design manager, creative head or freelance studio owner."
+    ],
+    "demand": { "level": "high", "note": "Pakistan's textile export industry needs designers who understand production." },
+    "salary": { "entry": 40000, "mid": 110000, "senior": 300000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 6, "I": 4, "A": 10, "S": 2, "E": 4, "C": 6 },
+    "workStyle": { "pace": "balanced", "collaboration": "mixed", "environment": "studio" }
+  },
+  {
+    "slug": "makeup-artist",
+    "title": "Makeup Artist",
+    "field": "fashion",
+    "summary": "Creates looks for brides, shoots, television and film.",
+    "description": "Makeup artists work with faces, skin and light, creating looks for weddings, photoshoots, fashion shows and screen. Skill is only half the job: building a portfolio, managing bookings and making clients feel comfortable matter just as much.",
+    "dayInLife": "A 6 a.m. bridal booking. A fashion shoot where the look changes three times. Evening editing portfolio photos and answering booking requests.",
+    "skills": [
+      { "name": "Makeup technique", "weight": 5 },
+      { "name": "Skin knowledge and hygiene", "weight": 5 },
+      { "name": "Colour and lighting", "weight": 4 },
+      { "name": "Client relations", "weight": 4 },
+      { "name": "Social media marketing", "weight": 4 }
+    ],
+    "learningAreas": ["Makeup fundamentals", "Bridal and editorial makeup", "Hygiene and skincare", "Photography lighting", "Personal branding"],
+    "roadmap": [
+      "Take a professional makeup course from a reputable academy.",
+      "Practise on many different skin tones and face shapes, and photograph your work well.",
+      "Assist an established artist at weddings and shoots.",
+      "Build a portfolio and an active social media presence.",
+      "Take independent bookings and collaborate with photographers and designers.",
+      "Grow into a celebrity or bridal specialist, run your own salon, or teach."
+    ],
+    "demand": { "level": "high", "note": "Wedding and media industries sustain demand; income depends on reputation." },
+    "salary": { "entry": 30000, "mid": 100000, "senior": 400000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data; freelance income varies widely" },
+    "riasec": { "R": 7, "I": 2, "A": 9, "S": 7, "E": 7, "C": 3 },
+    "workStyle": { "pace": "fast", "collaboration": "solo", "environment": "studio" }
+  },
+  {
+    "slug": "fashion-merchandiser",
+    "title": "Fashion Merchandiser",
+    "field": "fashion",
+    "summary": "Decides what a brand stocks, how much, at what price, and where it sells.",
+    "description": "Fashion merchandisers analyse sales data and trends to plan ranges, set prices, manage stock levels and work with buyers and suppliers. In export houses they coordinate orders between international buyers and factories. It is fashion seen through numbers and deadlines.",
+    "dayInLife": "Reviewing last week's sell-through by store. A meeting deciding which designs to reorder. Chasing a factory on an export order that must ship Friday.",
+    "skills": [
+      { "name": "Sales and stock analysis", "weight": 5 },
+      { "name": "Range planning", "weight": 4 },
+      { "name": "Supplier coordination", "weight": 5 },
+      { "name": "Negotiation", "weight": 4 },
+      { "name": "Excel", "weight": 5 }
+    ],
+    "learningAreas": ["Fashion merchandising", "Retail maths", "Supply chain basics", "Advanced Excel", "Textile product knowledge"],
+    "roadmap": [
+      "Study fashion merchandising, textile management or business.",
+      "Get strong at Excel and retail maths — margins, sell-through, open-to-buy.",
+      "Intern with a retail brand or garment export house.",
+      "Start as an assistant merchandiser handling orders and suppliers.",
+      "Apply to retail brands, buying houses and export companies with a record of managed orders.",
+      "Grow into senior merchandiser, buying manager or head of merchandising."
+    ],
+    "demand": { "level": "high", "note": "Retail brands and textile exporters consistently hire merchandisers." },
+    "salary": { "entry": 45000, "mid": 120000, "senior": 300000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 3, "I": 5, "A": 6, "S": 4, "E": 8, "C": 8 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "office" }
+  },
+
+  {
+    "slug": "electrician",
+    "title": "Electrician",
+    "field": "skilled-trades",
+    "summary": "Installs, repairs and maintains electrical wiring and equipment in homes and industry.",
+    "description": "Electricians wire new buildings, fix faults, install panels, solar systems and appliances, and make sure everything is safe and to code. It is practical problem-solving with real danger if done carelessly, and skilled electricians are in demand locally and abroad.",
+    "dayInLife": "Tracing a short circuit in an office building. Wiring a new distribution board. Installing a rooftop solar inverter and testing the connections.",
+    "skills": [
+      { "name": "Wiring and installation", "weight": 5 },
+      { "name": "Fault finding", "weight": 5 },
+      { "name": "Electrical safety", "weight": 5 },
+      { "name": "Reading electrical drawings", "weight": 4 },
+      { "name": "Solar installation", "weight": 3 }
+    ],
+    "learningAreas": ["Electrical fundamentals", "Wiring regulations", "Safety practice", "Solar PV installation", "Motor and control circuits"],
+    "roadmap": [
+      "Enrol in a TEVTA or NAVTTC electrician course, or a DAE in Electrical Technology.",
+      "Practise wiring and fault finding under supervision until safety habits are automatic.",
+      "Work as a helper or apprentice with an experienced electrician or contractor.",
+      "Earn a solar installation certification to widen your work.",
+      "Take independent jobs or apply to construction and industrial companies, including in the Gulf.",
+      "Grow into electrical supervisor, contractor or your own installation business."
+    ],
+    "demand": { "level": "very-high", "note": "Solar growth and construction keep skilled electricians busy, with strong overseas demand." },
+    "salary": { "entry": 30000, "mid": 70000, "senior": 180000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data; self-employed and overseas earnings can be higher" },
+    "riasec": { "R": 10, "I": 6, "A": 2, "S": 3, "E": 4, "C": 6 },
+    "workStyle": { "pace": "balanced", "collaboration": "solo", "environment": "field" }
+  },
+  {
+    "slug": "automotive-technician",
+    "title": "Automotive Technician",
+    "field": "skilled-trades",
+    "summary": "Diagnoses and repairs cars, from engines and brakes to electronic systems.",
+    "description": "Automotive technicians inspect vehicles, use diagnostic tools to find faults, and repair engines, transmissions, suspension and electronics. Modern cars and hybrids need increasing electronic knowledge, and dealerships value certified technicians.",
+    "dayInLife": "Connecting a diagnostic scanner to read fault codes. Replacing a clutch. Explaining to a customer why their car makes that noise and what it will cost.",
+    "skills": [
+      { "name": "Mechanical repair", "weight": 5 },
+      { "name": "Diagnostic tools", "weight": 5 },
+      { "name": "Auto electrical systems", "weight": 4 },
+      { "name": "Safety practice", "weight": 4 },
+      { "name": "Customer explanation", "weight": 3 }
+    ],
+    "learningAreas": ["Engine systems", "Auto electrics and electronics", "Diagnostics", "Hybrid and EV basics", "Workshop safety"],
+    "roadmap": [
+      "Take a DAE in Auto and Diesel Technology, or a TEVTA auto mechanic course.",
+      "Work as an apprentice in a workshop to learn real repairs quickly.",
+      "Learn computerised diagnostics and auto electrical systems.",
+      "Join a dealership workshop and earn manufacturer training certificates.",
+      "Specialise in diagnostics, hybrids or a brand, or apply for Gulf roles.",
+      "Grow into workshop supervisor, service advisor or your own workshop."
+    ],
+    "demand": { "level": "high", "note": "Every vehicle needs servicing; technicians with diagnostic and hybrid skills are in shortest supply." },
+    "salary": { "entry": 30000, "mid": 70000, "senior": 180000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 10, "I": 6, "A": 2, "S": 3, "E": 4, "C": 5 },
+    "workStyle": { "pace": "balanced", "collaboration": "mixed", "environment": "field" }
+  },
+  {
+    "slug": "hvac-technician",
+    "title": "HVAC Technician",
+    "field": "skilled-trades",
+    "summary": "Installs and repairs air conditioning, refrigeration and ventilation systems.",
+    "description": "HVAC technicians install, service and repair split ACs, central cooling plants, cold storage and ventilation. The work involves refrigerant handling, electrical controls and a lot of problem-solving in hot rooftops and plant rooms, with very high demand in summer.",
+    "dayInLife": "Servicing three split ACs in an office. Finding a refrigerant leak in a cold store. Commissioning a new chiller with a senior engineer.",
+    "skills": [
+      { "name": "Refrigeration systems", "weight": 5 },
+      { "name": "Installation and servicing", "weight": 5 },
+      { "name": "Electrical controls", "weight": 4 },
+      { "name": "Leak detection and refrigerant handling", "weight": 4 },
+      { "name": "Safety", "weight": 4 }
+    ],
+    "learningAreas": ["Refrigeration cycle", "HVAC installation", "Electrical controls", "Refrigerant safety", "Inverter AC technology"],
+    "roadmap": [
+      "Take a DAE or TEVTA course in refrigeration and air conditioning.",
+      "Learn refrigerant handling safely and practise on real units.",
+      "Work as a helper with an HVAC company during peak season.",
+      "Learn inverter systems and central cooling basics.",
+      "Apply to HVAC contractors, facility management companies and Gulf employers.",
+      "Grow into HVAC supervisor, service manager or your own service business."
+    ],
+    "demand": { "level": "very-high", "note": "Hot climate and construction make HVAC skills highly employable locally and across the Gulf." },
+    "salary": { "entry": 30000, "mid": 75000, "senior": 180000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 10, "I": 6, "A": 1, "S": 3, "E": 4, "C": 6 },
+    "workStyle": { "pace": "fast", "collaboration": "mixed", "environment": "field" }
+  },
+  {
+    "slug": "welder-fabricator",
+    "title": "Welder & Fabricator",
+    "field": "skilled-trades",
+    "summary": "Joins and shapes metal to build structures, pipelines and machinery.",
+    "description": "Welders and fabricators cut, shape and join metal using different welding processes, reading drawings to build frames, tanks, pipelines and structures. Certified welders who pass international tests are sought for industrial and overseas work.",
+    "dayInLife": "Reading a fabrication drawing. Welding pipe joints to a standard that will be X-rayed. Grinding and finishing a steel frame before inspection.",
+    "skills": [
+      { "name": "Welding processes (SMAW, TIG, MIG)", "weight": 5 },
+      { "name": "Reading technical drawings", "weight": 4 },
+      { "name": "Metal fabrication", "weight": 5 },
+      { "name": "Safety practice", "weight": 5 },
+      { "name": "Quality and inspection standards", "weight": 4 }
+    ],
+    "learningAreas": ["Welding processes", "Blueprint reading", "Metallurgy basics", "Welding safety", "International welding certification"],
+    "roadmap": [
+      "Enrol in a TEVTA, NAVTTC or technical institute welding course.",
+      "Practise until your welds pass bend tests consistently.",
+      "Work in a fabrication workshop to learn cutting, fitting and finishing.",
+      "Earn international certifications such as 3G or 6G pipe welding.",
+      "Apply to industrial, oil and gas, shipbuilding and Gulf construction employers.",
+      "Grow into welding inspector, fabrication supervisor or your own workshop."
+    ],
+    "demand": { "level": "high", "note": "Certified welders are in strong demand in industry and overseas projects." },
+    "salary": { "entry": 30000, "mid": 70000, "senior": 200000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data; overseas certified roles pay more" },
+    "riasec": { "R": 10, "I": 4, "A": 3, "S": 2, "E": 3, "C": 6 },
+    "workStyle": { "pace": "balanced", "collaboration": "mixed", "environment": "field" }
+  }
+]

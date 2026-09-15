@@ -19,7 +19,7 @@ export const listCareers = asyncHandler(async (req, res) => {
   const { q, field, skill, sort = 'title', page = '1', limit = '24' } = req.query;
 
   const pageNum = Math.max(1, Number(page) || 1);
-  const perPage = Math.min(60, Math.max(1, Number(limit) || 24));
+  const perPage = Math.min(200, Math.max(1, Number(limit) || 24));
 
   const filter = { active: true };
 

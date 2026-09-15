@@ -58,7 +58,7 @@ export default function Dashboard() {
     Promise.allSettled([
       quizService.latestResult(),
       careerService.listSaved(),
-      careerService.list({ limit: 60 }),
+      careerService.list({ limit: 200 }),
     ]).then(
       ([res, sav, bank]) => {
         // A missing result is an empty state, not an error — a new user has none.

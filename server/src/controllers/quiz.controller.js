@@ -83,12 +83,13 @@ function chooseVariants(questions, seenIds) {
 /**
  * The seven slots asked of a traveller who is not sure which field they want.
  *
- * Chosen by searching every seven-slot subset of the bank for the one whose
- * reachable score is most even across the six fields (20/20/20/19/19/18) and
- * leaves no Holland axis unmeasured. A short quiz that could only reach, say,
- * finance on two questions would steer everyone away from finance.
+ * Slots 26-31 between them name every one of the twenty fields, so all six
+ * are in. The seventh was chosen by simulating a traveller aimed at each of
+ * the 94 careers and keeping the base question that most often put that
+ * traveller's own field on top (73 of 94) while keeping the six Holland axes
+ * evenly measurable. The earlier set, chosen for six fields, managed 33.
  */
-export const QUICK_SLOTS = Object.freeze([1, 8, 9, 14, 18, 20, 21]);
+export const QUICK_SLOTS = Object.freeze([20, 26, 27, 28, 29, 30, 31]);
 
 const isQuick = (mode) => mode === 'quick';
 const inMode = (questions, mode) =>

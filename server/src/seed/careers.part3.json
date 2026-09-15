@@ -1,0 +1,792 @@
+[
+  {
+    "slug": "civil-engineer",
+    "title": "Civil Engineer",
+    "field": "engineering",
+    "summary": "Designs and oversees the roads, bridges, buildings and water systems a city stands on.",
+    "description": "Civil engineers turn a need — a road, a dam, a building that must survive an earthquake — into drawings, calculations and a site that follows them. The work splits between office design, where loads and materials are checked, and site supervision, where reality rarely matches the drawing and decisions have to be made on the spot.",
+    "dayInLife": "Morning checking a structural calculation and a contractor's revised drawing. Afternoon on site, measuring what was actually built, then a meeting about why the concrete delivery was late.",
+    "skills": [
+      { "name": "Structural analysis", "weight": 5 },
+      { "name": "AutoCAD and design software", "weight": 4 },
+      { "name": "Construction materials", "weight": 4 },
+      { "name": "Site supervision", "weight": 4 },
+      { "name": "Codes and safety standards", "weight": 5 }
+    ],
+    "learningAreas": ["Engineering mathematics", "Strength of materials", "Surveying", "AutoCAD and ETABS", "Building codes"],
+    "roadmap": [
+      "Take pre-engineering at intermediate level with strong maths and physics, then enter a BSc Civil Engineering programme accredited by the Pakistan Engineering Council.",
+      "Learn the core: mechanics, structures, soil, hydraulics, and the design software firms actually use — AutoCAD, ETABS or SAP2000.",
+      "Do internships on real sites and in design offices. Seeing a pour, a failed test cube and a site dispute teaches what lectures cannot.",
+      "Register with the Pakistan Engineering Council and work as a junior site or design engineer under a senior who signs off your work.",
+      "Apply to construction firms, consultancies, WAPDA, NHA or development authorities with site experience you can describe precisely.",
+      "Grow into a project manager, a structural specialist, or chartered status that lets you sign designs yourself."
+    ],
+    "demand": { "level": "high", "note": "Steady demand from infrastructure, housing and public-sector projects, though pay varies widely between firms." },
+    "salary": { "entry": 60000, "mid": 150000, "senior": 350000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 8, "I": 8, "A": 3, "S": 3, "E": 4, "C": 7 },
+    "workStyle": { "pace": "balanced", "collaboration": "team", "environment": "field" }
+  },
+  {
+    "slug": "mechanical-engineer",
+    "title": "Mechanical Engineer",
+    "field": "engineering",
+    "summary": "Designs, builds and maintains machines — from engines and pumps to factory production lines.",
+    "description": "Mechanical engineers work wherever something moves, heats or bears a load. Some design new parts in CAD and test them; others keep a plant running, finding why a machine fails and preventing the next breakdown. Both jobs come down to physics applied carefully under cost and time pressure.",
+    "dayInLife": "An early walk through the production floor after a line stopped overnight. Hours tracing the failure to a worn bearing, then redesigning a part so it lasts longer.",
+    "skills": [
+      { "name": "Thermodynamics and mechanics", "weight": 5 },
+      { "name": "CAD (SolidWorks)", "weight": 4 },
+      { "name": "Manufacturing processes", "weight": 4 },
+      { "name": "Maintenance and troubleshooting", "weight": 4 },
+      { "name": "Technical drawing", "weight": 3 }
+    ],
+    "learningAreas": ["Engineering mechanics", "Thermodynamics", "SolidWorks", "Machine design", "Maintenance planning"],
+    "roadmap": [
+      "Take pre-engineering with strong physics and maths, then a PEC-accredited BSc Mechanical Engineering.",
+      "Build fluency in CAD, mechanics of machines and manufacturing — and take apart anything you can get your hands on.",
+      "Complete industrial internships in a factory, power plant or automotive company, where maintenance and production are real.",
+      "Register with PEC and start as a trainee or maintenance engineer, learning how a plant actually runs shift to shift.",
+      "Apply to manufacturing, energy, automotive and HVAC firms with a clear account of problems you have solved.",
+      "Grow into plant management, design specialisation, or a master's in a field like renewable energy or robotics."
+    ],
+    "demand": { "level": "high", "note": "Needed across manufacturing, energy, textiles and automotive; strongest for engineers with plant experience." },
+    "salary": { "entry": 60000, "mid": 150000, "senior": 380000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 9, "I": 8, "A": 3, "S": 2, "E": 3, "C": 6 },
+    "workStyle": { "pace": "balanced", "collaboration": "team", "environment": "field" }
+  },
+  {
+    "slug": "electrical-engineer",
+    "title": "Electrical Engineer",
+    "field": "engineering",
+    "summary": "Designs and runs the systems that generate, carry and use electrical power.",
+    "description": "Electrical engineers plan power distribution for buildings and grids, design control systems, and keep substations and industrial electrical systems safe. The work is exact: a mistake is expensive at best and dangerous at worst, so calculation and procedure matter as much as design.",
+    "dayInLife": "Reviewing a single-line diagram for a new factory. Testing protection settings at a substation. Writing up why a transformer tripped and what should change.",
+    "skills": [
+      { "name": "Circuit and power systems analysis", "weight": 5 },
+      { "name": "Electrical design and load calculation", "weight": 5 },
+      { "name": "Control systems and PLCs", "weight": 4 },
+      { "name": "Safety standards", "weight": 5 },
+      { "name": "Testing and commissioning", "weight": 3 }
+    ],
+    "learningAreas": ["Circuit theory", "Power systems", "PLC programming", "Electrical safety codes", "Renewable energy systems"],
+    "roadmap": [
+      "Take pre-engineering, then a PEC-accredited BSc Electrical Engineering with a power or electronics focus.",
+      "Master circuits, machines and power systems, and learn PLCs and simulation tools such as ETAP or MATLAB.",
+      "Intern with a distribution company, a solar installer or an industrial plant to see live systems safely.",
+      "Register with PEC and work as a junior engineer on design, installation or maintenance under supervision.",
+      "Apply to power companies, solar and energy firms, construction consultancies and telecoms.",
+      "Grow into protection and grid specialisation, renewable-energy project leadership, or senior design roles."
+    ],
+    "demand": { "level": "high", "note": "Solar adoption and grid expansion have lifted demand, particularly for engineers who can design and commission systems." },
+    "salary": { "entry": 60000, "mid": 160000, "senior": 400000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 8, "I": 9, "A": 2, "S": 2, "E": 3, "C": 7 },
+    "workStyle": { "pace": "balanced", "collaboration": "team", "environment": "field" }
+  },
+  {
+    "slug": "chemical-engineer",
+    "title": "Chemical Engineer",
+    "field": "engineering",
+    "summary": "Designs and runs the processes that turn raw materials into fuel, fertiliser, food and medicine.",
+    "description": "Chemical engineers scale chemistry up from a flask to a plant. They design reactors and separation units, keep continuous processes stable and safe, and squeeze out waste and energy cost. Much of the work is monitoring numbers and acting on small changes before they become big ones.",
+    "dayInLife": "Checking overnight process data for a drift in temperature. A safety review of a proposed change. Working with operators on why one column's yield dropped.",
+    "skills": [
+      { "name": "Process design and mass balance", "weight": 5 },
+      { "name": "Thermodynamics and reaction engineering", "weight": 5 },
+      { "name": "Process safety", "weight": 5 },
+      { "name": "Plant operations", "weight": 4 },
+      { "name": "Process simulation (Aspen HYSYS)", "weight": 3 }
+    ],
+    "learningAreas": ["Chemistry and thermodynamics", "Unit operations", "Aspen HYSYS", "Process safety management", "Environmental regulation"],
+    "roadmap": [
+      "Take pre-engineering with strong chemistry, then a PEC-accredited BSc Chemical Engineering.",
+      "Learn mass and energy balances, unit operations and simulation software properly — they are the language of every plant.",
+      "Intern at a refinery, fertiliser, cement or pharmaceutical plant to understand shifts, safety culture and control rooms.",
+      "Start as a graduate trainee or process engineer and learn one plant thoroughly before moving on.",
+      "Apply to oil and gas, fertiliser, food, textile processing and pharmaceutical companies.",
+      "Grow into process optimisation, plant management, or health, safety and environment leadership."
+    ],
+    "demand": { "level": "moderate", "note": "Fewer openings than civil or electrical, but well paid in energy, fertiliser and multinational plants." },
+    "salary": { "entry": 70000, "mid": 180000, "senior": 450000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 7, "I": 9, "A": 2, "S": 2, "E": 3, "C": 8 },
+    "workStyle": { "pace": "steady", "collaboration": "team", "environment": "field" }
+  },
+
+  {
+    "slug": "research-scientist",
+    "title": "Research Scientist",
+    "field": "science",
+    "summary": "Designs experiments to answer open questions and publishes what is found — including when the answer is no.",
+    "description": "Research scientists work in universities, research institutes and industry labs, turning a question into a hypothesis, a method and data. The job rewards patience and honesty: most experiments fail or are inconclusive, and writing grants and papers takes as much time as the bench.",
+    "dayInLife": "Setting up an experiment that will run for a week. Reading three new papers in your area. An afternoon analysing last month's data, which does not say what you hoped.",
+    "skills": [
+      { "name": "Experimental design", "weight": 5 },
+      { "name": "Statistics and data analysis", "weight": 5 },
+      { "name": "Scientific writing", "weight": 4 },
+      { "name": "Laboratory technique", "weight": 4 },
+      { "name": "Literature review", "weight": 4 }
+    ],
+    "learningAreas": ["Research methods", "Statistics (R or Python)", "Your discipline's core theory", "Scientific writing", "Grant writing"],
+    "roadmap": [
+      "Choose a science degree — physics, chemistry, biology or another discipline — and aim for strong grades and a research project.",
+      "Learn statistics and a data tool such as R or Python early; every field now depends on them.",
+      "Work as a research assistant in a lab during your degree and contribute to something that gets published.",
+      "Complete an MPhil or PhD, in Pakistan through an HEC-recognised programme or abroad on a scholarship.",
+      "Apply for postdoctoral, lecturer or research-institute positions with a publication record you can explain.",
+      "Grow into leading your own group, securing funding, and supervising the next generation of researchers."
+    ],
+    "demand": { "level": "moderate", "note": "Competitive; positions depend on funding and publications, with stronger prospects abroad and in industry labs." },
+    "salary": { "entry": 60000, "mid": 150000, "senior": 350000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 5, "I": 10, "A": 4, "S": 3, "E": 2, "C": 6 },
+    "workStyle": { "pace": "steady", "collaboration": "mixed", "environment": "clinical" }
+  },
+  {
+    "slug": "biotechnologist",
+    "title": "Biotechnologist",
+    "field": "science",
+    "summary": "Uses living cells and molecular biology to develop medicines, diagnostics and better crops.",
+    "description": "Biotechnologists work with DNA, enzymes, cell cultures and microbes to create something useful — a vaccine, a diagnostic test, a disease-resistant crop. The daily reality is careful laboratory work, sterile technique and documentation that would satisfy a regulator.",
+    "dayInLife": "Running PCR on a batch of samples. Troubleshooting a contaminated culture. Recording every step in a lab notebook so the result can be reproduced.",
+    "skills": [
+      { "name": "Molecular biology techniques", "weight": 5 },
+      { "name": "Cell culture and sterile technique", "weight": 5 },
+      { "name": "Data analysis", "weight": 4 },
+      { "name": "Laboratory documentation", "weight": 4 },
+      { "name": "Bioinformatics basics", "weight": 3 }
+    ],
+    "learningAreas": ["Genetics and molecular biology", "PCR and gel electrophoresis", "Cell culture", "Bioinformatics", "Good laboratory practice"],
+    "roadmap": [
+      "Take pre-medical at intermediate level, then a BS in Biotechnology or Molecular Biology.",
+      "Get genuine hands-on lab time — PCR, cloning, culture — not just theory, and learn basic bioinformatics.",
+      "Intern at a research centre, diagnostic lab or pharmaceutical company.",
+      "Take a research MPhil, which most serious lab roles in Pakistan expect.",
+      "Apply to diagnostic labs, pharmaceutical and agricultural biotech firms, and research institutes.",
+      "Grow into research leadership, quality and regulatory roles, or a PhD for academic and international careers."
+    ],
+    "demand": { "level": "moderate", "note": "Growing in diagnostics and pharma; the strongest candidates combine lab skill with data analysis." },
+    "salary": { "entry": 50000, "mid": 120000, "senior": 280000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 6, "I": 10, "A": 3, "S": 3, "E": 2, "C": 7 },
+    "workStyle": { "pace": "steady", "collaboration": "team", "environment": "clinical" }
+  },
+  {
+    "slug": "microbiologist",
+    "title": "Microbiologist",
+    "field": "science",
+    "summary": "Studies bacteria, viruses and fungi to diagnose infection, keep food safe and fight resistance.",
+    "description": "Microbiologists identify microorganisms and work out what they do — in a hospital lab culturing a patient's sample, in a food plant testing for contamination, or in research on antibiotic resistance. Precision and safety are non-negotiable, because a wrong result or a careless spill has real consequences.",
+    "dayInLife": "Reading culture plates from yesterday. Running sensitivity tests to see which antibiotic will work. Logging results into a system a doctor will act on.",
+    "skills": [
+      { "name": "Culture and identification methods", "weight": 5 },
+      { "name": "Biosafety", "weight": 5 },
+      { "name": "Antimicrobial testing", "weight": 4 },
+      { "name": "Quality control", "weight": 4 },
+      { "name": "Record keeping", "weight": 4 }
+    ],
+    "learningAreas": ["General and medical microbiology", "Immunology", "Biosafety practice", "Food and water microbiology", "Laboratory quality systems"],
+    "roadmap": [
+      "Take pre-medical, then a BS in Microbiology.",
+      "Master aseptic technique, staining, culture and identification until they are second nature.",
+      "Intern in a hospital laboratory, a food-testing lab or a public health laboratory.",
+      "Consider an MPhil for research, hospital and teaching roles, which increasingly expect it.",
+      "Apply to hospital and diagnostic labs, food and beverage companies, pharmaceuticals and water authorities.",
+      "Grow into lab management, infection control, quality assurance or public health research."
+    ],
+    "demand": { "level": "moderate", "note": "Steady in diagnostics, food safety and pharmaceuticals; entry pay is modest." },
+    "salary": { "entry": 45000, "mid": 100000, "senior": 230000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 6, "I": 9, "A": 2, "S": 4, "E": 2, "C": 8 },
+    "workStyle": { "pace": "steady", "collaboration": "mixed", "environment": "clinical" }
+  },
+  {
+    "slug": "geologist",
+    "title": "Geologist",
+    "field": "science",
+    "summary": "Reads rock, soil and water to find resources, assess hazards and guide construction.",
+    "description": "Geologists study what the ground is made of and how it behaves. They map rock formations in the field, analyse samples, and advise mining, oil and gas, construction and water projects — including where not to build. Field work in remote places is part of the job.",
+    "dayInLife": "A week in the field logging rock cores and taking samples. Back in the office, building a map of the formation and writing a report on the risk of a slope failing.",
+    "skills": [
+      { "name": "Field mapping", "weight": 5 },
+      { "name": "Rock and mineral analysis", "weight": 4 },
+      { "name": "GIS and remote sensing", "weight": 4 },
+      { "name": "Report writing", "weight": 4 },
+      { "name": "Physical fitness for field work", "weight": 3 }
+    ],
+    "learningAreas": ["Structural geology", "Petrology and mineralogy", "GIS (ArcGIS or QGIS)", "Geophysics basics", "Hydrogeology"],
+    "roadmap": [
+      "Take a science pathway, then a BS in Geology.",
+      "Take every field trip available; mapping in the field is the core skill and cannot be learned from a screen.",
+      "Learn GIS and remote sensing, which almost every employer now expects.",
+      "Intern with an oil and gas company, a mining project, the Geological Survey of Pakistan or an engineering consultancy.",
+      "Apply for field geologist, exploration or geotechnical roles, often starting on project contracts.",
+      "Grow into senior exploration, hydrogeology, geohazard assessment or an MPhil for research."
+    ],
+    "demand": { "level": "moderate", "note": "Tied to mining, energy and infrastructure investment; field-ready geologists with GIS skills are preferred." },
+    "salary": { "entry": 55000, "mid": 140000, "senior": 350000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 8, "I": 9, "A": 3, "S": 2, "E": 2, "C": 5 },
+    "workStyle": { "pace": "balanced", "collaboration": "mixed", "environment": "field" }
+  },
+
+  {
+    "slug": "school-teacher",
+    "title": "School Teacher",
+    "field": "education",
+    "summary": "Teaches a class of students a subject — and a great deal about how to learn.",
+    "description": "School teachers plan lessons, teach them to thirty very different students, mark work, and notice who is falling behind before it shows in exam results. The job is part subject expertise, part performance, part patient relationship-building with students and parents.",
+    "dayInLife": "Five lessons with a free period used for marking. A student who stays behind to ask a question. A call with a parent about homework, then planning tomorrow.",
+    "skills": [
+      { "name": "Subject knowledge", "weight": 5 },
+      { "name": "Lesson planning", "weight": 5 },
+      { "name": "Classroom management", "weight": 5 },
+      { "name": "Assessment and feedback", "weight": 4 },
+      { "name": "Communication with parents", "weight": 3 }
+    ],
+    "learningAreas": ["Your teaching subject in depth", "Pedagogy", "Classroom management", "Assessment design", "Educational technology"],
+    "roadmap": [
+      "Earn a degree in the subject you want to teach, or a four-year B.Ed with a subject specialisation.",
+      "Take a B.Ed or teaching certification if your degree did not include one; good schools increasingly require it.",
+      "Complete teaching practice and volunteer to tutor, so you learn to explain things to people who do not already understand.",
+      "Start as an assistant or junior teacher and get observed and coached by experienced colleagues.",
+      "Apply to private school networks, government schools through public service tests, or international schools with Cambridge credentials.",
+      "Grow into head of department, curriculum lead, teacher trainer or school leadership."
+    ],
+    "demand": { "level": "high", "note": "Constant demand, especially for maths, science and English; pay varies enormously between schools." },
+    "salary": { "entry": 35000, "mid": 80000, "senior": 200000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 2, "I": 5, "A": 5, "S": 10, "E": 5, "C": 5 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "office" }
+  },
+  {
+    "slug": "university-lecturer",
+    "title": "University Lecturer",
+    "field": "education",
+    "summary": "Teaches degree students and carries out research in a specialist subject.",
+    "description": "University lecturers split their time between teaching, research and administration. They design courses, lecture and supervise, while also expected to publish. Promotion in Pakistan's HEC system depends heavily on qualifications and research output.",
+    "dayInLife": "A morning lecture to eighty students. Office hours with final-year project students. An evening revising a paper that a journal sent back with reviewer comments.",
+    "skills": [
+      { "name": "Deep subject expertise", "weight": 5 },
+      { "name": "Research and publishing", "weight": 5 },
+      { "name": "Lecturing and presentation", "weight": 4 },
+      { "name": "Student supervision", "weight": 4 },
+      { "name": "Academic writing", "weight": 4 }
+    ],
+    "learningAreas": ["Your discipline at postgraduate level", "Research methods", "Academic writing", "Curriculum design", "Supervision"],
+    "roadmap": [
+      "Complete a bachelor's in your subject with strong results and at least one research project.",
+      "Take an MPhil or master's, which is the minimum for most lecturer posts under HEC criteria.",
+      "Start publishing and teaching as a visiting faculty member or research associate.",
+      "Complete a PhD, in Pakistan or abroad on scholarship; it is essential for permanent academic progression.",
+      "Apply for lecturer or assistant professor posts with a teaching record and publications.",
+      "Grow toward associate and full professor through research, grants and supervising PhD students."
+    ],
+    "demand": { "level": "moderate", "note": "Many universities, but permanent posts are competitive and favour PhD holders with publications." },
+    "salary": { "entry": 90000, "mid": 200000, "senior": 450000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 2, "I": 9, "A": 5, "S": 8, "E": 4, "C": 5 },
+    "workStyle": { "pace": "balanced", "collaboration": "mixed", "environment": "office" }
+  },
+  {
+    "slug": "educational-counsellor",
+    "title": "Educational Counsellor",
+    "field": "education",
+    "summary": "Guides students through subject choices, university applications and the stress that comes with them.",
+    "description": "Educational counsellors help students decide what to study and where, prepare applications and scholarship essays, and support them when pressure or uncertainty gets in the way. The job needs up-to-date knowledge of admissions systems and genuine skill at listening.",
+    "dayInLife": "One-to-one sessions with three students about subject choices. A workshop on writing personal statements. Hours researching a scholarship deadline that moved.",
+    "skills": [
+      { "name": "Active listening", "weight": 5 },
+      { "name": "Admissions and scholarship knowledge", "weight": 5 },
+      { "name": "Career guidance", "weight": 4 },
+      { "name": "Writing and editing", "weight": 4 },
+      { "name": "Workshop facilitation", "weight": 3 }
+    ],
+    "learningAreas": ["Counselling skills", "University admissions systems", "Scholarships and funding", "Career development theory", "Student wellbeing"],
+    "roadmap": [
+      "Study psychology, education or a related social science at bachelor's level.",
+      "Learn counselling fundamentals through a certificate or diploma, and understand the limits of what a counsellor should handle.",
+      "Volunteer or intern with a school guidance office, a university admissions team or an education consultancy.",
+      "Build detailed knowledge of local and international admissions — HEC, UK, US, Canada — and keep it current.",
+      "Apply to schools, universities and education consultancies with a record of students you have guided.",
+      "Grow into heading a guidance department, running your own consultancy, or specialising in scholarships."
+    ],
+    "demand": { "level": "moderate", "note": "Growing with international study; reputation and results matter more than formal title." },
+    "salary": { "entry": 40000, "mid": 90000, "senior": 200000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 1, "I": 5, "A": 4, "S": 10, "E": 6, "C": 5 },
+    "workStyle": { "pace": "balanced", "collaboration": "solo", "environment": "office" }
+  },
+  {
+    "slug": "instructional-designer",
+    "title": "Instructional Designer",
+    "field": "education",
+    "summary": "Designs online courses and training so that people actually learn from them.",
+    "description": "Instructional designers take expert knowledge and turn it into learning — e-learning modules, video courses, corporate training and assessments. They decide the sequence, the activities and how to check understanding, working with subject experts and using authoring tools.",
+    "dayInLife": "Interviewing a subject expert to understand a process. Storyboarding a module. Building an interactive quiz in an authoring tool and testing it with a learner.",
+    "skills": [
+      { "name": "Learning design principles", "weight": 5 },
+      { "name": "E-learning authoring tools", "weight": 4 },
+      { "name": "Writing clear instructional content", "weight": 5 },
+      { "name": "Assessment design", "weight": 4 },
+      { "name": "Working with subject experts", "weight": 3 }
+    ],
+    "learningAreas": ["ADDIE and learning design models", "Articulate or similar tools", "Video and multimedia basics", "Learning management systems", "Accessibility"],
+    "roadmap": [
+      "Study education, psychology, communication or any subject you could later design training in.",
+      "Learn instructional design models and an authoring tool such as Articulate Storyline or Rise.",
+      "Build a portfolio of two or three short courses on topics you know well, published online.",
+      "Take freelance or junior work for ed-tech companies, universities or corporate training teams.",
+      "Apply to ed-tech firms, corporate learning departments and remote international roles with your portfolio.",
+      "Grow into learning experience design lead, learning technology specialist or training manager."
+    ],
+    "demand": { "level": "high", "note": "Ed-tech and remote corporate training have created steady demand, including international remote work." },
+    "salary": { "entry": 50000, "mid": 130000, "senior": 300000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 2, "I": 6, "A": 8, "S": 7, "E": 3, "C": 6 },
+    "workStyle": { "pace": "balanced", "collaboration": "mixed", "environment": "remote" }
+  },
+
+  {
+    "slug": "advocate-lawyer",
+    "title": "Advocate (Lawyer)",
+    "field": "law",
+    "summary": "Represents clients in court and advises them on their legal rights and options.",
+    "description": "Advocates take a client's problem — a dispute, a criminal charge, a family matter — find the law that applies, and argue it in court or negotiate a settlement. The early years are demanding and poorly paid, spent in a senior's chambers learning procedure, drafting and how courts really work.",
+    "dayInLife": "Morning at the district court waiting for a hearing that may be adjourned. Afternoon drafting a petition. Evening meeting a client to go over evidence.",
+    "skills": [
+      { "name": "Legal research", "weight": 5 },
+      { "name": "Drafting", "weight": 5 },
+      { "name": "Oral advocacy", "weight": 5 },
+      { "name": "Client counselling", "weight": 4 },
+      { "name": "Court procedure", "weight": 4 }
+    ],
+    "learningAreas": ["Constitutional and civil law", "Criminal procedure", "Legal drafting", "Evidence law", "Urdu and English legal writing"],
+    "roadmap": [
+      "Complete a five-year LLB from a Pakistan Bar Council recognised institution.",
+      "Read judgements, join moot courts and debating — advocacy is learned by doing it in front of people.",
+      "Pass the Law Graduate Assessment Test and complete pupillage in an experienced advocate's chambers.",
+      "Enrol with your provincial bar council and appear in lower courts, handling your own cases under guidance.",
+      "Build a practice in an area — criminal, family, corporate, tax — or join a law firm.",
+      "Grow toward high court and Supreme Court practice, a partnership, or the judiciary."
+    ],
+    "demand": { "level": "moderate", "note": "Many graduates; income depends heavily on reputation and specialisation, especially in the first years." },
+    "salary": { "entry": 30000, "mid": 150000, "senior": 600000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 2, "I": 8, "A": 5, "S": 6, "E": 9, "C": 7 },
+    "workStyle": { "pace": "fast", "collaboration": "mixed", "environment": "office" }
+  },
+  {
+    "slug": "corporate-lawyer",
+    "title": "Corporate Lawyer",
+    "field": "law",
+    "summary": "Advises businesses on contracts, regulation, deals and disputes before they reach court.",
+    "description": "Corporate lawyers keep companies out of legal trouble and help them do deals safely. They draft and negotiate contracts, check compliance with regulators such as the SECP, handle mergers and investments, and manage disputes. The work is detailed, document-heavy and deadline-driven.",
+    "dayInLife": "Reviewing a hundred-page shareholders' agreement line by line. A call negotiating two clauses with the other side's lawyer. Preparing a regulatory filing that is due tomorrow.",
+    "skills": [
+      { "name": "Contract drafting and review", "weight": 5 },
+      { "name": "Corporate and commercial law", "weight": 5 },
+      { "name": "Negotiation", "weight": 4 },
+      { "name": "Regulatory compliance", "weight": 4 },
+      { "name": "Attention to detail", "weight": 5 }
+    ],
+    "learningAreas": ["Companies Act and SECP regulation", "Contract law", "Banking and finance law", "Tax basics", "Business English"],
+    "roadmap": [
+      "Complete an LLB, and consider a university with strong corporate and commercial law teaching.",
+      "Develop outstanding written English and contract-reading skills; they matter more here than oratory.",
+      "Intern at a corporate law firm or a company's legal department during your degree.",
+      "Qualify and enrol with the bar, then join a firm as an associate working on real transactions.",
+      "Specialise — banking, energy, tech, mergers — and consider an LLM from a recognised foreign university.",
+      "Grow into senior associate and partner, or head a company's legal function as general counsel."
+    ],
+    "demand": { "level": "high", "note": "Strong demand in major cities for lawyers with commercial experience and excellent drafting." },
+    "salary": { "entry": 60000, "mid": 250000, "senior": 800000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 1, "I": 8, "A": 3, "S": 4, "E": 8, "C": 9 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "office" }
+  },
+  {
+    "slug": "judicial-officer",
+    "title": "Judicial Officer (Civil Judge)",
+    "field": "law",
+    "summary": "Hears cases and decides them fairly according to the law and the evidence.",
+    "description": "Civil judges and judicial magistrates preside over trials, weigh evidence, apply the law and write reasoned judgements. The job requires independence, patience and a very large caseload. Entry is through competitive provincial judicial service examinations.",
+    "dayInLife": "A full cause list of hearings — some adjourned, some arguing interim applications. Recording evidence from a witness. Evenings writing judgements that must survive appeal.",
+    "skills": [
+      { "name": "Deep knowledge of law and procedure", "weight": 5 },
+      { "name": "Weighing evidence", "weight": 5 },
+      { "name": "Judgement writing", "weight": 5 },
+      { "name": "Impartiality", "weight": 5 },
+      { "name": "Case management", "weight": 4 }
+    ],
+    "learningAreas": ["Civil and criminal procedure codes", "Evidence law", "Constitutional law", "Judgement writing", "Case management"],
+    "roadmap": [
+      "Complete an LLB and qualify as an advocate.",
+      "Practise law for the years required by your province's judicial service rules, gaining real courtroom experience.",
+      "Study systematically for the provincial judicial service examination — written papers, then interview.",
+      "Pass and complete training at the provincial judicial academy.",
+      "Serve as civil judge or judicial magistrate, building a record of careful, timely decisions.",
+      "Progress to senior civil judge, additional sessions judge and district and sessions judge."
+    ],
+    "demand": { "level": "low", "note": "Few seats per recruitment cycle and a demanding examination; a stable and respected career once in." },
+    "salary": { "entry": 150000, "mid": 250000, "senior": 450000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 2, "I": 9, "A": 3, "S": 6, "E": 6, "C": 9 },
+    "workStyle": { "pace": "steady", "collaboration": "solo", "environment": "office" }
+  },
+  {
+    "slug": "legal-researcher-paralegal",
+    "title": "Paralegal / Legal Researcher",
+    "field": "law",
+    "summary": "Researches case law, organises files and drafts documents that lawyers rely on.",
+    "description": "Paralegals and legal researchers do the groundwork of legal practice: finding the relevant judgements, summarising them, preparing case files and first drafts, and tracking deadlines. It is a strong entry route into law firms and suits people who like precise, organised work.",
+    "dayInLife": "Searching law reports for judgements on a specific point. Summarising five of them for a partner. Organising exhibits for a hearing next week.",
+    "skills": [
+      { "name": "Legal research databases", "weight": 5 },
+      { "name": "Summarising and writing", "weight": 5 },
+      { "name": "Document management", "weight": 4 },
+      { "name": "Deadline tracking", "weight": 4 },
+      { "name": "Confidentiality", "weight": 4 }
+    ],
+    "learningAreas": ["Legal research methods", "Pakistan law reports and databases", "Legal drafting basics", "Case file management", "Professional ethics"],
+    "roadmap": [
+      "Study law, or a related subject with a legal studies certificate.",
+      "Learn to use legal databases and law reports quickly and to summarise a judgement in a paragraph.",
+      "Intern at a law firm, NGO legal aid office or a company legal department.",
+      "Take a paralegal or research associate role and become the person who always finds the right case.",
+      "Move to larger firms or specialist research roles in policy institutes and international legal organisations.",
+      "Grow into a practising lawyer after qualifying, or into legal operations and knowledge management."
+    ],
+    "demand": { "level": "moderate", "note": "Useful stepping stone into firms; larger firms and legal-tech companies hire most." },
+    "salary": { "entry": 35000, "mid": 70000, "senior": 150000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 1, "I": 8, "A": 3, "S": 3, "E": 3, "C": 9 },
+    "workStyle": { "pace": "balanced", "collaboration": "team", "environment": "office" }
+  },
+
+  {
+    "slug": "civil-servant",
+    "title": "Civil Servant (CSS Officer)",
+    "field": "government",
+    "summary": "Runs government departments and districts after entering through the Central Superior Services exam.",
+    "description": "CSS officers administer districts, collect revenue, manage policing policy, foreign relations and more, depending on their service group. The work involves managing large teams and budgets, solving public problems with limited resources, and regular transfers across the country.",
+    "dayInLife": "An early meeting on a flood-relief plan. Hearing public complaints. Reviewing budget files and signing off decisions that affect thousands of people.",
+    "skills": [
+      { "name": "Administration and management", "weight": 5 },
+      { "name": "Written communication", "weight": 5 },
+      { "name": "Public policy understanding", "weight": 4 },
+      { "name": "Decision-making under pressure", "weight": 5 },
+      { "name": "Current affairs knowledge", "weight": 4 }
+    ],
+    "learningAreas": ["Pakistan affairs", "English essay and précis", "Current and international affairs", "Public administration", "Your optional CSS subjects"],
+    "roadmap": [
+      "Complete a bachelor's degree in any subject with second division or better, as CSS eligibility requires.",
+      "Read widely and practise essay writing daily; the essay and précis papers eliminate most candidates.",
+      "Take the MPT screening test, then prepare seriously for the written exam with chosen optional subjects.",
+      "Pass the written exam, medical, psychological assessment and viva conducted by the FPSC.",
+      "Complete training at the Civil Services Academy and join your allocated group — PAS, PSP, FSP and others.",
+      "Rise from assistant commissioner or equivalent through the grades to secretary-level leadership."
+    ],
+    "demand": { "level": "low", "note": "Thousands sit the exam each year for a few hundred places; highly competitive and prestigious." },
+    "salary": { "entry": 90000, "mid": 200000, "senior": 450000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data; excludes allowances and housing" },
+    "riasec": { "R": 3, "I": 7, "A": 3, "S": 7, "E": 9, "C": 8 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "office" }
+  },
+  {
+    "slug": "foreign-service-officer",
+    "title": "Foreign Service Officer (Diplomat)",
+    "field": "government",
+    "summary": "Represents Pakistan abroad, negotiates with other countries and helps citizens overseas.",
+    "description": "Diplomats serve in embassies and in the Foreign Office, reporting on political developments, negotiating agreements, promoting trade and culture, and supporting Pakistanis abroad. It means postings in different countries every few years and representing national positions carefully in public.",
+    "dayInLife": "Drafting a cable on political developments in the host country. Meeting a counterpart at their ministry. Hosting a trade delegation in the evening.",
+    "skills": [
+      { "name": "Negotiation", "weight": 5 },
+      { "name": "Political analysis", "weight": 5 },
+      { "name": "Diplomatic writing", "weight": 4 },
+      { "name": "Foreign languages", "weight": 4 },
+      { "name": "Cultural awareness", "weight": 4 }
+    ],
+    "learningAreas": ["International relations", "Diplomatic history", "International law", "A foreign language", "Negotiation"],
+    "roadmap": [
+      "Complete a degree — international relations, political science, law or economics are useful but not required.",
+      "Build excellent English writing, follow world affairs daily, and start learning a second foreign language.",
+      "Pass the CSS examination with a merit position high enough to be allocated to the Foreign Service of Pakistan.",
+      "Train at the Foreign Service Academy and the Ministry of Foreign Affairs.",
+      "Serve your first posting as third or second secretary at a mission abroad.",
+      "Progress through counsellor and minister ranks toward ambassador and senior ministry roles."
+    ],
+    "demand": { "level": "low", "note": "Very few places each year, allocated to the highest-ranking CSS candidates." },
+    "salary": { "entry": 90000, "mid": 220000, "senior": 500000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data; foreign postings carry additional allowances" },
+    "riasec": { "R": 2, "I": 8, "A": 4, "S": 8, "E": 9, "C": 6 },
+    "workStyle": { "pace": "balanced", "collaboration": "team", "environment": "office" }
+  },
+  {
+    "slug": "policy-analyst",
+    "title": "Policy Analyst",
+    "field": "government",
+    "summary": "Researches public problems and recommends what government should actually do about them.",
+    "description": "Policy analysts work in think tanks, ministries, donor agencies and NGOs. They gather evidence on an issue — energy prices, school enrolment, tax — analyse options and their trade-offs, and write briefs that busy decision-makers will read. Data skills increasingly matter as much as writing.",
+    "dayInLife": "Cleaning a household survey dataset. Drafting a two-page brief with three options. Presenting findings to officials who push back hard.",
+    "skills": [
+      { "name": "Research and evidence synthesis", "weight": 5 },
+      { "name": "Data analysis", "weight": 4 },
+      { "name": "Policy writing", "weight": 5 },
+      { "name": "Economics basics", "weight": 4 },
+      { "name": "Stakeholder engagement", "weight": 3 }
+    ],
+    "learningAreas": ["Public policy", "Economics", "Statistics (Stata, R or Python)", "Research methods", "Policy brief writing"],
+    "roadmap": [
+      "Study economics, public policy, political science or development studies.",
+      "Learn quantitative analysis in Stata, R or Python; it separates good analysts from opinion writers.",
+      "Intern at a think tank, a donor-funded project or a government policy unit.",
+      "Take a master's in public policy or economics, in Pakistan or abroad.",
+      "Apply to think tanks, planning ministries, the World Bank, UN agencies and policy NGOs.",
+      "Grow into senior research fellow, programme lead or adviser to government."
+    ],
+    "demand": { "level": "moderate", "note": "Concentrated in Islamabad and donor-funded work; strong quantitative skills stand out." },
+    "salary": { "entry": 60000, "mid": 160000, "senior": 400000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 1, "I": 9, "A": 4, "S": 6, "E": 6, "C": 7 },
+    "workStyle": { "pace": "balanced", "collaboration": "mixed", "environment": "office" }
+  },
+  {
+    "slug": "urban-local-government-officer",
+    "title": "Local Government Officer",
+    "field": "government",
+    "summary": "Runs municipal services — water, sanitation, roads and public spaces — for towns and cities.",
+    "description": "Local government officers manage the services residents notice most when they fail: rubbish collection, water supply, drainage, parks and local roads. They plan budgets, oversee contractors, respond to complaints and coordinate with provincial departments.",
+    "dayInLife": "Inspecting a drainage project before the monsoon. Resolving a contractor's delayed payment. A council meeting on next year's development budget.",
+    "skills": [
+      { "name": "Public administration", "weight": 5 },
+      { "name": "Budgeting and procurement", "weight": 4 },
+      { "name": "Project oversight", "weight": 4 },
+      { "name": "Community engagement", "weight": 4 },
+      { "name": "Problem solving", "weight": 4 }
+    ],
+    "learningAreas": ["Local government law", "Public financial management", "Urban services", "Procurement rules", "Community consultation"],
+    "roadmap": [
+      "Complete a bachelor's in public administration, urban planning, civil engineering or a related field.",
+      "Understand how local government works in your province and how development budgets are allocated.",
+      "Intern with a municipal corporation, development authority or urban-services NGO.",
+      "Pass provincial public service commission exams for local government posts.",
+      "Serve in municipal administration, taking responsibility for specific services and projects.",
+      "Grow into chief officer, municipal commissioner or senior provincial local-government roles."
+    ],
+    "demand": { "level": "moderate", "note": "Recruitment follows provincial commission cycles; urban growth keeps the need high." },
+    "salary": { "entry": 60000, "mid": 120000, "senior": 250000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 4, "I": 5, "A": 2, "S": 7, "E": 7, "C": 8 },
+    "workStyle": { "pace": "balanced", "collaboration": "team", "environment": "field" }
+  },
+
+  {
+    "slug": "army-officer",
+    "title": "Army Officer",
+    "field": "armed-forces",
+    "summary": "Leads soldiers, plans operations and takes responsibility for people's lives and missions.",
+    "description": "Army officers command units, train soldiers, plan operations and manage logistics, weapons and people. Beyond combat roles there are engineering, signals, medical and education corps. The life is structured and demanding, with postings anywhere in the country.",
+    "dayInLife": "Physical training at dawn. Inspecting a platoon's equipment. Planning a field exercise, then dealing with a soldier's family emergency.",
+    "skills": [
+      { "name": "Leadership", "weight": 5 },
+      { "name": "Physical fitness", "weight": 5 },
+      { "name": "Discipline and decision-making", "weight": 5 },
+      { "name": "Planning and logistics", "weight": 4 },
+      { "name": "Teamwork under pressure", "weight": 5 }
+    ],
+    "learningAreas": ["Physical conditioning", "Military history and strategy", "Leadership", "Current affairs", "Your corps' technical skills"],
+    "roadmap": [
+      "Complete intermediate with the required marks, meet age and medical standards, and stay physically fit.",
+      "Register for the Pakistan Army's long course or other commissioning schemes through the official recruitment portal.",
+      "Pass the initial tests, medical examination and the Inter Services Selection Board.",
+      "Complete officer training at the Pakistan Military Academy, Kakul.",
+      "Commission into your arm or corps and serve in unit command and staff roles.",
+      "Progress through captain, major and beyond via professional courses and Command and Staff College."
+    ],
+    "demand": { "level": "moderate", "note": "Regular intakes each year; selection is rigorous and emphasises character and fitness." },
+    "salary": { "entry": 80000, "mid": 180000, "senior": 400000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data; excludes housing, medical and other benefits" },
+    "riasec": { "R": 8, "I": 5, "A": 2, "S": 7, "E": 8, "C": 7 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "field" }
+  },
+  {
+    "slug": "naval-officer",
+    "title": "Naval Officer",
+    "field": "armed-forces",
+    "summary": "Serves at sea operating and commanding ships, submarines and maritime operations.",
+    "description": "Naval officers navigate, operate weapons and engineering systems, and lead crews on ships and shore establishments. Branches include operations, engineering, weapons engineering and supply. Long periods at sea and technical responsibility are central to the job.",
+    "dayInLife": "A watch on the bridge, responsible for the ship's navigation. Engineering checks with the machinery crew. Drills for fire and damage control.",
+    "skills": [
+      { "name": "Navigation and seamanship", "weight": 5 },
+      { "name": "Leadership", "weight": 5 },
+      { "name": "Technical systems knowledge", "weight": 4 },
+      { "name": "Physical and mental resilience", "weight": 5 },
+      { "name": "Teamwork", "weight": 4 }
+    ],
+    "learningAreas": ["Physics and mathematics", "Navigation", "Marine engineering basics", "Leadership", "Swimming and sea survival"],
+    "roadmap": [
+      "Complete intermediate — pre-engineering for technical branches — within the age limits for navy entry.",
+      "Apply through Pakistan Navy recruitment for the permanent commission scheme.",
+      "Pass the written test, medical examination and Inter Services Selection Board.",
+      "Train at the Pakistan Naval Academy, including sea training.",
+      "Commission into your branch and serve aboard ships and at shore establishments.",
+      "Progress through command of vessels and senior staff appointments."
+    ],
+    "demand": { "level": "moderate", "note": "Annual intakes with competitive selection; engineering branches value strong science backgrounds." },
+    "salary": { "entry": 80000, "mid": 180000, "senior": 400000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data; excludes sea allowances and benefits" },
+    "riasec": { "R": 9, "I": 6, "A": 2, "S": 5, "E": 7, "C": 7 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "field" }
+  },
+  {
+    "slug": "air-force-officer",
+    "title": "Air Force Officer (GD Pilot)",
+    "field": "armed-forces",
+    "summary": "Flies military aircraft and serves in the operational core of the air force.",
+    "description": "General Duties pilots fly fighter, transport and training aircraft, while other air force officers work in engineering, air defence and administration. Pilot training is long and highly selective, with strict medical, aptitude and academic requirements throughout.",
+    "dayInLife": "A pre-flight briefing, a training sortie, then a long debrief of every decision made in the air. Study for the next phase of qualification.",
+    "skills": [
+      { "name": "Flying aptitude", "weight": 5 },
+      { "name": "Spatial awareness", "weight": 5 },
+      { "name": "Decision-making at speed", "weight": 5 },
+      { "name": "Physical fitness", "weight": 5 },
+      { "name": "Technical knowledge", "weight": 4 }
+    ],
+    "learningAreas": ["Physics and mathematics", "Principles of flight", "Aviation meteorology", "Physical conditioning", "Leadership"],
+    "roadmap": [
+      "Complete intermediate with physics and mathematics, meet eyesight and medical standards, and stay within age limits.",
+      "Apply to the Pakistan Air Force for GD (Pilot) through official recruitment.",
+      "Pass academic tests, flying aptitude and medical examinations, and the Inter Services Selection Board.",
+      "Train at the PAF Academy, Risalpur, completing the degree and flying training phases.",
+      "Earn your wings, convert to an operational aircraft type and join a squadron.",
+      "Progress to flight lead, instructor, squadron command and senior command roles."
+    ],
+    "demand": { "level": "low", "note": "Very selective, especially medically; alternative commissions exist in engineering and other branches." },
+    "salary": { "entry": 90000, "mid": 200000, "senior": 450000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data; flying allowances and benefits are additional" },
+    "riasec": { "R": 9, "I": 7, "A": 2, "S": 4, "E": 7, "C": 7 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "field" }
+  },
+  {
+    "slug": "police-officer",
+    "title": "Police Officer",
+    "field": "armed-forces",
+    "summary": "Keeps communities safe, investigates crime and upholds the law.",
+    "description": "Police officers patrol, respond to emergencies, investigate crimes and work with courts and communities. Officers can enter at constable, sub-inspector (through provincial exams) or ASP level through CSS. The work is unpredictable and demanding, and public trust depends on how it is done.",
+    "dayInLife": "A shift that starts with a briefing, then a traffic accident, a theft report and hours on an investigation file that needs statements before the court date.",
+    "skills": [
+      { "name": "Investigation", "weight": 5 },
+      { "name": "Knowledge of criminal law", "weight": 4 },
+      { "name": "Calm under pressure", "weight": 5 },
+      { "name": "Communication", "weight": 4 },
+      { "name": "Physical fitness", "weight": 4 }
+    ],
+    "learningAreas": ["Criminal law and procedure", "Investigation techniques", "Community policing", "Forensics basics", "Physical training"],
+    "roadmap": [
+      "Decide your entry level: constable (intermediate), sub-inspector (graduate, provincial exam) or ASP (CSS, Police Service of Pakistan).",
+      "Prepare for the written test, physical tests and interview for your chosen entry.",
+      "Pass selection and complete training at a police training college or academy.",
+      "Serve in station duty, traffic, investigation or special units, learning procedure and community work.",
+      "Specialise — counter-terrorism, cybercrime, investigation, traffic management — through courses.",
+      "Progress through ranks by examinations, performance and, at senior level, service in the Police Service of Pakistan."
+    ],
+    "demand": { "level": "moderate", "note": "Regular provincial recruitment; specialist units value investigation and technology skills." },
+    "salary": { "entry": 45000, "mid": 100000, "senior": 300000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data; varies widely by rank and entry route" },
+    "riasec": { "R": 7, "I": 6, "A": 2, "S": 8, "E": 7, "C": 7 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "field" }
+  },
+
+  {
+    "slug": "architect",
+    "title": "Architect",
+    "field": "architecture",
+    "summary": "Designs buildings that work for the people in them, and follows them through to construction.",
+    "description": "Architects start with a client's brief, a site and a budget, and produce a design that is beautiful, buildable and compliant with regulations. They draw, model, present, and then coordinate engineers and contractors so the building is built as designed. Creativity is constrained by cost, climate and codes.",
+    "dayInLife": "Sketching options for a house on a narrow plot. A 3D model review with the client. A site visit where the contractor has changed a window without asking.",
+    "skills": [
+      { "name": "Architectural design", "weight": 5 },
+      { "name": "AutoCAD, Revit and SketchUp", "weight": 5 },
+      { "name": "Building regulations", "weight": 4 },
+      { "name": "Presentation and client communication", "weight": 4 },
+      { "name": "Construction detailing", "weight": 4 }
+    ],
+    "learningAreas": ["Design studio", "Building technology", "Revit and 3D visualisation", "Climate-responsive design", "Building bylaws"],
+    "roadmap": [
+      "Take an intermediate with maths or drawing, then a five-year B.Arch accredited by the Pakistan Council of Architects and Town Planners.",
+      "Draw constantly and learn AutoCAD, Revit and a visualisation tool while building a design portfolio.",
+      "Complete internships in architecture offices and spend time on construction sites.",
+      "Register with PCATP and work as a junior architect on real projects under a principal.",
+      "Apply to design firms, developers and consultancies with a portfolio of studio and office work.",
+      "Grow into project architect, start your own practice, or specialise in urban, interior or sustainable design."
+    ],
+    "demand": { "level": "moderate", "note": "Tied to the construction market; a strong portfolio and software skills make a clear difference." },
+    "salary": { "entry": 50000, "mid": 140000, "senior": 400000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 6, "I": 6, "A": 10, "S": 4, "E": 5, "C": 5 },
+    "workStyle": { "pace": "balanced", "collaboration": "team", "environment": "studio" }
+  },
+  {
+    "slug": "quantity-surveyor",
+    "title": "Quantity Surveyor",
+    "field": "architecture",
+    "summary": "Estimates and controls the cost of construction projects from tender to final account.",
+    "description": "Quantity surveyors measure materials and labour from drawings, prepare cost estimates and bills of quantities, manage contracts, and track spending as a project is built. They protect the client or contractor from overruns and settle disputes over variations.",
+    "dayInLife": "Measuring quantities from a new set of drawings. Checking a contractor's monthly payment claim. Negotiating the price of a variation the architect added.",
+    "skills": [
+      { "name": "Measurement and estimation", "weight": 5 },
+      { "name": "Cost control", "weight": 5 },
+      { "name": "Contract administration", "weight": 4 },
+      { "name": "Construction technology", "weight": 4 },
+      { "name": "Excel and estimating software", "weight": 4 }
+    ],
+    "learningAreas": ["Construction measurement standards", "Estimating and costing", "Contract law (FIDIC)", "Construction materials", "Advanced Excel"],
+    "roadmap": [
+      "Study civil engineering, construction management or a quantity surveying programme.",
+      "Learn measurement from drawings and build strong Excel skills; estimates live or die on accuracy.",
+      "Intern with a contractor or cost consultancy and prepare real bills of quantities.",
+      "Start as an assistant quantity surveyor on site or in an office.",
+      "Pursue professional recognition such as RICS, which also opens Gulf and international roles.",
+      "Grow into senior QS, commercial manager or contracts manager on major projects."
+    ],
+    "demand": { "level": "high", "note": "Strong demand locally and in the Gulf construction market for experienced, certified surveyors." },
+    "salary": { "entry": 50000, "mid": 130000, "senior": 350000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 5, "I": 7, "A": 2, "S": 3, "E": 5, "C": 9 },
+    "workStyle": { "pace": "balanced", "collaboration": "team", "environment": "office" }
+  },
+  {
+    "slug": "construction-project-manager",
+    "title": "Construction Project Manager",
+    "field": "architecture",
+    "summary": "Delivers building projects on time, on budget and safely, coordinating everyone on site.",
+    "description": "Construction project managers plan the schedule, manage contractors and suppliers, control budget and quality, and keep workers safe. They are the point where design, money and site reality meet, and they spend their days solving the problems that would otherwise stop work.",
+    "dayInLife": "A site walk at seven. A meeting with three subcontractors whose schedules clash. Updating the client on a two-week delay caused by a materials shortage.",
+    "skills": [
+      { "name": "Project planning and scheduling", "weight": 5 },
+      { "name": "Contractor management", "weight": 5 },
+      { "name": "Budget control", "weight": 4 },
+      { "name": "Health and safety", "weight": 5 },
+      { "name": "Problem solving on site", "weight": 5 }
+    ],
+    "learningAreas": ["Primavera or MS Project", "Construction methods", "Contract management", "Health and safety (NEBOSH)", "Leadership"],
+    "roadmap": [
+      "Study civil engineering, architecture or construction management.",
+      "Work on site early — as a site engineer or supervisor — to learn how buildings actually go up.",
+      "Learn scheduling software such as Primavera P6 and a recognised safety certification.",
+      "Take responsibility for a section of a project, then a small project end to end.",
+      "Earn PMP or a similar certification and apply for project manager roles with a delivery record.",
+      "Grow into managing large projects, programmes or a construction company's operations."
+    ],
+    "demand": { "level": "high", "note": "Consistent demand in housing, commercial and infrastructure projects, and strong overseas opportunities." },
+    "salary": { "entry": 70000, "mid": 180000, "senior": 450000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 7, "I": 5, "A": 2, "S": 5, "E": 9, "C": 7 },
+    "workStyle": { "pace": "fast", "collaboration": "team", "environment": "field" }
+  },
+  {
+    "slug": "urban-planner",
+    "title": "Urban Planner",
+    "field": "architecture",
+    "summary": "Plans how cities grow — where housing, roads, parks and services should go.",
+    "description": "Urban planners prepare master plans and zoning, assess development applications, and work on transport, housing and public space. They balance growth with environment, community needs and law, using maps, data and a great deal of consultation.",
+    "dayInLife": "Mapping land use in GIS for a new master plan. Reviewing a housing scheme's application against regulations. A public consultation where residents disagree strongly.",
+    "skills": [
+      { "name": "Land use planning", "weight": 5 },
+      { "name": "GIS", "weight": 5 },
+      { "name": "Policy and regulation", "weight": 4 },
+      { "name": "Community consultation", "weight": 4 },
+      { "name": "Report writing", "weight": 4 }
+    ],
+    "learningAreas": ["Planning theory", "GIS and spatial analysis", "Transport planning", "Environmental impact assessment", "Planning law"],
+    "roadmap": [
+      "Study city and regional planning, architecture or geography at bachelor's level.",
+      "Learn GIS thoroughly and understand how zoning and building control work in Pakistani cities.",
+      "Intern with a development authority, planning consultancy or urban NGO.",
+      "Register with the Pakistan Council of Architects and Town Planners where eligible.",
+      "Apply to development authorities, consultancies and donor-funded urban projects.",
+      "Grow into senior planner, transport or housing specialist, or a master's for international roles."
+    ],
+    "demand": { "level": "moderate", "note": "Rapid urbanisation creates need; posts concentrate in development authorities and consultancies." },
+    "salary": { "entry": 55000, "mid": 130000, "senior": 300000, "currency": "PKR", "period": "month", "source": "Indicative range for Pakistan, 2025 — verify against current local market data" },
+    "riasec": { "R": 5, "I": 8, "A": 6, "S": 6, "E": 6, "C": 6 },
+    "workStyle": { "pace": "steady", "collaboration": "team", "environment": "office" }
+  }
+]

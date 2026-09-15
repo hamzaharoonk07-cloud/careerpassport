@@ -16,7 +16,7 @@ import '../styles/interests.css';
  *
  * Straight after the passport. A traveller who already knows where they want
  * to go picks a field and the terminal opens on that field's gates. One who
- * does not gets seven questions instead of being handed thirty-eight job
+ * does not gets seven questions instead of being handed ninety-four job
  * titles and asked to guess.
  */
 export default function Interests() {
@@ -34,7 +34,7 @@ export default function Interests() {
   useEffect(() => {
     advance('stamped');
     let alive = true;
-    Promise.all([careerService.listFields(), careerService.list({ limit: 60 })])
+    Promise.all([careerService.listFields(), careerService.list({ limit: 200 })])
       .then(([f, c]) => {
         if (!alive) return;
         setFields(f);

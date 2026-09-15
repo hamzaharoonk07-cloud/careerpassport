@@ -10,6 +10,7 @@ import { apiError } from '../services/api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import '../styles/admin.css';
 import '../styles/admin-panels.css';
+import '../styles/tower.css';
 
 const fmtDate = (v) => (v ? new Date(v).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '—');
 
@@ -28,117 +29,204 @@ const STAT_LABELS = {
 };
 
 const TABS = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'careers', label: 'Careers' },
-  { id: 'quiz', label: 'Quiz & scoring' },
-  { id: 'media', label: 'Multimedia' },
-  { id: 'feedback', label: 'Feedback' },
-  { id: 'stories', label: 'Success stories' },
-  { id: 'users', label: 'Users' },
+  { id: 'overview', label: 'Overview', sub: 'How the site is doing',
+    icon: <><path d="M4 20V11M10 20V5M16 20v-6M22 20H2" /></> },
+  { id: 'careers', label: 'Careers', sub: 'The departures board',
+    icon: <><rect x="3" y="7.5" width="18" height="12.5" rx="2" /><path d="M9 7.5V5.8A1.8 1.8 0 0 1 10.8 4h2.4A1.8 1.8 0 0 1 15 5.8v1.7M3 13h18" /></> },
+  { id: 'quiz', label: 'Quiz & scoring', sub: 'Questions and weights',
+    icon: <><circle cx="12" cy="12" r="9" /><path d="M9.5 9.3a2.6 2.6 0 0 1 5 .9c0 1.7-2.5 2.2-2.5 3.8M12 17v.3" /></> },
+  { id: 'media', label: 'Multimedia', sub: 'Shared videos and links',
+    icon: <path d="M4 6.5h11a1.5 1.5 0 0 1 1.5 1.5v8a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 16V8A1.5 1.5 0 0 1 4 6.5zM16.5 10.5l5-3v9l-5-3" /> },
+  { id: 'feedback', label: 'Feedback', sub: 'Comment cards to answer',
+    icon: <path d="M20 15.5a2 2 0 0 1-2 2H8l-4 3.5V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z" /> },
+  { id: 'stories', label: 'Success stories', sub: 'Published journeys',
+    icon: <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" /> },
+  { id: 'users', label: 'Users', sub: 'Passengers and roles',
+    icon: <><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6" /></> },
 ];
+
+function TabIcon({ children, size = 20 }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {children}
+    </svg>
+  );
+}
 
 /* ── Overview ───────────────────────────────────────────────── */
 
-function Overview({ stats, topMatches, topSaved, fb }) {
-  if (!stats) return <Empty>Loading…</Empty>;
+/** The last 14 days, oldest first, with empty days filled in as zero. */
+function lastFortnight(series) {
+  const byDay = new Map((series || []).map((d) => [d._id, d.count]));
+  const days = [];
+  for (let i = 13; i >= 0; i -= 1) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const key = d.toISOString().slice(0, 10);
+    days.push({ key, count: byDay.get(key) || 0, label: d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) });
+  }
+  return days;
+}
+
+/** Headline number with the context that makes it mean something. */
+function Kpi({ value, label, context, action }) {
   return (
-    <section className="apanel">
-      <div className="adm__stats">
-        {Object.entries(stats).map(([k, v]) => (
-          <div className="adm__stat" key={k}>
-            <div className="adm__stat-n">{v}</div>
-            <div className="adm__stat-k">{STAT_LABELS[k] || k}</div>
+    <div className="tw-kpi">
+      <span className="tw-kpi__label">{label}</span>
+      <span className="tw-kpi__value">{value}</span>
+      <span className="tw-kpi__context">{context}</span>
+      {action}
+    </div>
+  );
+}
+
+/** Vertical bars, one per day. Each bar carries its own tooltip and label. */
+function SignupChart({ days }) {
+  const peak = Math.max(...days.map((d) => d.count), 1);
+  const total = days.reduce((n, d) => n + d.count, 0);
+  return (
+    <figure className="tw-card tw-signups">
+      <figcaption className="tw-card__head">
+        <h3 className="tw-card__title">Sign-ups, last 14 days</h3>
+        <span className="tw-card__meta">{total} new</span>
+      </figcaption>
+      <div className="tw-bars" role="img" aria-label={`Sign-ups per day for the last 14 days, ${total} in total`}>
+        {[1, 0.5, 0].map((f) => (
+          <span key={f} className="tw-bars__grid" style={{ bottom: `${f * 100}%` }}>
+            <span>{Math.round(peak * f)}</span>
+          </span>
+        ))}
+        {days.map((d) => (
+          <div className="tw-bars__col" key={d.key} tabIndex={0}>
+            <span className="tw-bars__bar" style={{ height: `${(d.count / peak) * 100}%` }} />
+            <span className="tw-tip" role="tooltip">{d.label}: <b>{d.count}</b> sign-up{d.count === 1 ? '' : 's'}</span>
           </div>
         ))}
       </div>
+      <div className="tw-bars__axis">
+        <span>{days[0].label}</span>
+        <span>Today</span>
+      </div>
+      {/* The same numbers as a table, for screen readers. */}
+      <table className="sr-only">
+        <caption>Sign-ups per day</caption>
+        <tbody>{days.map((d) => <tr key={d.key}><th>{d.label}</th><td>{d.count}</td></tr>)}</tbody>
+      </table>
+    </figure>
+  );
+}
 
-      {/* Feedback, grouped rather than listed. Twenty comments say nothing
-          at a glance; the split between bug reports and ideas, and whether
-          the ratings are drifting, is what is worth seeing on arrival. */}
-      {fb && fb.total > 0 && (
-        <div className="apanel__box" style={{ marginTop: 'var(--sp-5)' }}>
-          <h3 className="apanel__title">Feedback analytics</h3>
-          <p className="apanel__sub">
-            {fb.total} submission{fb.total === 1 ? '' : 's'} · {fb.replied} replied to ·
-            average rating {fb.averageRating ?? '—'} out of 5
-          </p>
+/** A ranked list drawn as horizontal bars against the leader. */
+function Ranking({ title, note, rows, empty }) {
+  const peak = Math.max(...rows.map((r) => r.count), 1);
+  return (
+    <section className="tw-card">
+      <div className="tw-card__head">
+        <h3 className="tw-card__title">{title}</h3>
+        <span className="tw-card__meta">{note}</span>
+      </div>
+      {rows.length ? (
+        <ol className="tw-rank">
+          {rows.map((r, i) => (
+            <li key={r.slug} className="tw-rank__row">
+              <span className="tw-rank__n">{i + 1}</span>
+              <span className="tw-rank__body">
+                <span className="tw-rank__top">
+                  <Link to={`/careers/${r.slug}`} className="tw-rank__title">{r.title}</Link>
+                  <span className="tw-rank__count">{r.count}</span>
+                </span>
+                <span className="tw-rank__track"><span style={{ width: `${(r.count / peak) * 100}%` }} /></span>
+              </span>
+            </li>
+          ))}
+        </ol>
+      ) : <p className="tw-empty">{empty}</p>}
+    </section>
+  );
+}
 
-          <div className="agrid2" style={{ marginTop: 'var(--sp-4)' }}>
-            <div>
-              <span className="dash__rec-k">By type</span>
-              <ul className="adm__list">
-                {fb.byType.map((t) => (
-                  <li key={t.type}>
-                    <b style={{ textTransform: 'capitalize' }}>{t.type}</b>
-                    <span className="t-mono">{t.count} · avg {t.avgRating}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+function Overview({ stats, topMatches, topSaved, fb, signups, onOpen }) {
+  if (!stats) return <p className="tw-empty">Loading the tower…</p>;
+  const days = lastFortnight(signups);
+  const peakRating = Math.max(...(fb?.byRating || []).map((r) => r.count), 1);
 
-            <div>
-              <span className="dash__rec-k">Rating spread</span>
-              <div className="fba">
+  return (
+    <div className="tw-overview">
+      <div className="tw-kpis">
+        <Kpi
+          label="Travellers"
+          value={stats.users}
+          context={`${stats.activeUsers} signed in during the last 30 days`}
+        />
+        <Kpi
+          label="Quiz attempts"
+          value={stats.results}
+          context={`${stats.answers} answers recorded`}
+        />
+        <Kpi
+          label="Feedback to answer"
+          value={stats.feedbackNew}
+          context={fb?.total ? `${fb.total} received, ${fb.replied} replied to` : 'Nothing received yet'}
+          action={stats.feedbackNew > 0 && (
+            <button type="button" className="tw-kpi__go" onClick={() => onOpen('feedback')}>Open feedback</button>
+          )}
+        />
+        <Kpi
+          label="Careers on the board"
+          value={stats.careers}
+          context={`Across ${stats.fields} fields`}
+          action={<button type="button" className="tw-kpi__go" onClick={() => onOpen('careers')}>Manage careers</button>}
+        />
+      </div>
+
+      <div className="tw-row tw-row--chart">
+        <SignupChart days={days} />
+
+        <section className="tw-card tw-fb">
+          <div className="tw-card__head">
+            <h3 className="tw-card__title">Feedback ratings</h3>
+            <span className="tw-card__meta">{fb?.total || 0} cards</span>
+          </div>
+          {fb?.total ? (
+            <>
+              <div className="tw-fb__avg">
+                <span className="tw-fb__avg-n">{fb.averageRating}</span>
+                <span className="tw-fb__avg-k">average out of 5</span>
+              </div>
+              <div className="tw-fb__spread">
                 {[5, 4, 3, 2, 1].map((n) => {
-                  const row = fb.byRating.find((r) => r.rating === n);
-                  const count = row?.count || 0;
-                  // Scaled against the busiest bar, not the total, or a
-                  // dominant rating flattens every other row to nothing.
-                  const peak = Math.max(...fb.byRating.map((r) => r.count), 1);
+                  const count = fb.byRating.find((r) => r.rating === n)?.count || 0;
                   return (
-                    <div className="fba__row" key={n}>
-                      <span className="fba__n">{n}★</span>
-                      <span className="fba__track">
-                        <span className="fba__fill" style={{ width: `${(count / peak) * 100}%` }} />
-                      </span>
-                      <span className="fba__c">{count}</span>
+                    <div className="tw-fb__row" key={n} title={`${count} rated ${n}`}>
+                      <span className="tw-fb__k">{n}</span>
+                      <span className="tw-rank__track"><span style={{ width: `${(count / peakRating) * 100}%` }} /></span>
+                      <span className="tw-fb__c">{count}</span>
                     </div>
                   );
                 })}
               </div>
-            </div>
-          </div>
-
-          <div style={{ marginTop: 'var(--sp-4)' }}>
-            <span className="dash__rec-k">Status</span>
-            <ul className="adm__list">
-              {fb.byStatus.map((x) => (
-                <li key={x.status}>
-                  <b style={{ textTransform: 'capitalize' }}>{x.status}</b>
-                  <span className="t-mono">{x.count}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
-
-      <div className="agrid2">
-        <div className="apanel__box">
-          <h3 className="apanel__title">Most matched</h3>
-          <p className="apanel__sub">Where the engine sends people.</p>
-          {topMatches.length ? (
-            <ul className="adm__list">
-              {topMatches.map((m) => (
-                <li key={m.slug}><b>{m.title}</b><span className="t-mono">{m.count}</span></li>
-              ))}
-            </ul>
-          ) : <Empty>No quiz results yet.</Empty>}
-        </div>
-
-        <div className="apanel__box">
-          <h3 className="apanel__title">Most saved</h3>
-          <p className="apanel__sub">What people bookmark — not always the same thing.</p>
-          {topSaved.length ? (
-            <ul className="adm__list">
-              {topSaved.map((m) => (
-                <li key={m.slug}><b>{m.title}</b><span className="t-mono">{m.count}</span></li>
-              ))}
-            </ul>
-          ) : <Empty>Nothing saved yet.</Empty>}
-        </div>
+              <ul className="tw-fb__types">
+                {fb.byType.map((t) => (
+                  <li key={t.type}><span>{t.type}</span><b>{t.count}</b></li>
+                ))}
+              </ul>
+            </>
+          ) : <p className="tw-empty">No feedback yet. Ratings appear here as cards come in.</p>}
+        </section>
       </div>
-    </section>
+
+      <div className="tw-row">
+        <Ranking title="Most matched" note="Where the quiz sends people" rows={topMatches} empty="No quiz results yet." />
+        <Ranking title="Most saved" note="What people bookmark" rows={topSaved} empty="Nothing saved yet." />
+      </div>
+
+      <dl className="tw-minor">
+        <div><dt>Administrators</dt><dd>{stats.admins}</dd></div>
+        <div><dt>Careers saved</dt><dd>{stats.saved}</dd></div>
+        <div><dt>Media on air</dt><dd>{stats.media}</dd></div>
+        <div><dt>Published stories</dt><dd>{stats.stories}</dd></div>
+      </dl>
+    </div>
   );
 }
 
@@ -321,11 +409,17 @@ export default function Admin() {
   const [topMatches, setTopMatches] = useState([]);
   const [topSaved, setTopSaved] = useState([]);
   const [fb, setFb] = useState(null);
+  const [signups, setSignups] = useState([]);
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 30000);
+    return () => clearInterval(t);
+  }, []);
   const [error, setError] = useState('');
 
   useEffect(() => {
     adminService.stats()
-      .then((d) => { setStats(d.stats); setTopMatches(d.topMatches || []); setTopSaved(d.topSaved || []); setFb(d.feedbackAnalytics || null); })
+      .then((d) => { setStats(d.stats); setTopMatches(d.topMatches || []); setTopSaved(d.topSaved || []); setFb(d.feedbackAnalytics || null); setSignups(d.signupsByDay || []); })
       .catch((e) => setError(apiError(e)));
   }, []);
 
@@ -343,40 +437,72 @@ export default function Admin() {
     );
   }
 
+  const current = TABS.find((t) => t.id === tab);
+  const badge = { feedback: stats?.feedbackNew, careers: stats?.careers, users: stats?.users, media: stats?.media, stories: stats?.stories };
+
   return (
-    <div className="page wrap">
-      <header className="page__head">
-        <div>
-          <p className="t-eyebrow">Administration · PathSeeker</p>
-          <h1 className="t-h2 page__title">Control tower</h1>
+    <div className="page wrap tw">
+      <aside className="tw-side">
+        <div className="tw-brand">
+          <span className="tw-brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M8 21h8M10 21l1-9h2l1 9M7.5 8h9l-1.5 4h-6zM9 8V5.5A3 3 0 0 1 15 5.5V8M12 2.5v0" />
+            </svg>
+          </span>
+          <span>
+            <span className="tw-brand__name">Control tower</span>
+            <span className="tw-brand__sub">PathSeeker admin</span>
+          </span>
         </div>
-        <Button variant="ghost" to="/dashboard">Back to dashboard</Button>
-      </header>
 
-      {error && <div className="auth__alert" style={{ marginTop: 'var(--sp-5)' }} role="alert">{error}</div>}
+        <nav className="tw-nav" aria-label="Admin sections">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              className="tw-nav__item"
+              onClick={() => setTab(t.id)}
+              aria-current={tab === t.id ? 'page' : undefined}
+            >
+              <TabIcon>{t.icon}</TabIcon>
+              <span className="tw-nav__label">{t.label}</span>
+              {badge[t.id] > 0 && (
+                <span className={`tw-nav__badge ${t.id === 'feedback' ? 'tw-nav__badge--alert' : ''}`}>{badge[t.id]}</span>
+              )}
+            </button>
+          ))}
+        </nav>
 
-      <nav className="atabs" aria-label="Admin sections">
-        {TABS.map((t) => (
-          <button
-            key={t.id}
-            type="button"
-            className={`atab ${tab === t.id ? 'atab--on' : ''}`}
-            onClick={() => setTab(t.id)}
-            aria-current={tab === t.id ? 'page' : undefined}
-          >
-            {t.label}
-            {t.id === 'feedback' && stats?.feedbackNew > 0 && <span className="atab__dot">{stats.feedbackNew}</span>}
-          </button>
-        ))}
-      </nav>
+        <div className="tw-side__foot">
+          <span className="tw-side__who">Signed in as <b>{user?.name}</b></span>
+          <Button variant="ghost" size="sm" to="/dashboard">Back to dashboard</Button>
+        </div>
+      </aside>
 
-      {tab === 'overview' && <Overview stats={stats} topMatches={topMatches} topSaved={topSaved} fb={fb} />}
-      {tab === 'careers' && <CareersPanel onError={setError} />}
-      {tab === 'quiz' && <QuizPanel onError={setError} />}
-      {tab === 'media' && <MediaPanel onError={setError} />}
-      {tab === 'feedback' && <FeedbackPanel onError={setError} />}
-      {tab === 'stories' && <StoriesPanel onError={setError} />}
-      {tab === 'users' && <UsersPanel onError={setError} currentUserId={user?.id} />}
+      <main className="tw-main">
+        <header className="tw-top">
+          <div>
+            <h1 className="tw-top__title">{current.label}</h1>
+            <p className="tw-top__sub">{current.sub}</p>
+          </div>
+          <div className="tw-top__status">
+            <span className={`tw-live ${error ? 'tw-live--down' : ''}`}>{error ? 'Connection problem' : 'Connected'}</span>
+            <span className="tw-clock">{now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</span>
+          </div>
+        </header>
+
+        {error && <div className="auth__alert" style={{ marginTop: 'var(--sp-5)' }} role="alert">{error}</div>}
+
+        <div className="tw-body">
+          {tab === 'overview' && <Overview stats={stats} topMatches={topMatches} topSaved={topSaved} fb={fb} signups={signups} onOpen={setTab} />}
+          {tab === 'careers' && <CareersPanel onError={setError} />}
+          {tab === 'quiz' && <QuizPanel onError={setError} />}
+          {tab === 'media' && <MediaPanel onError={setError} />}
+          {tab === 'feedback' && <FeedbackPanel onError={setError} />}
+          {tab === 'stories' && <StoriesPanel onError={setError} />}
+          {tab === 'users' && <UsersPanel onError={setError} currentUserId={user?.id} />}
+        </div>
+      </main>
     </div>
   );
 }

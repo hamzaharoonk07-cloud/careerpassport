@@ -1,0 +1,268 @@
+/* ============================================================
+   Stories — the arrivals hall
+   One featured journey told in full beside its route, then
+   postcards, each banded in its field's colour.
+   ============================================================ */
+
+/* ── Header ──────────────────────────────────────────────── */
+.stories__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--sp-6);
+  flex-wrap: wrap;
+}
+.stories__title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--text-hi);
+}
+.stories__lead { margin-top: var(--sp-4); max-width: 46ch; font-size: 1.15rem; line-height: 1.6; color: var(--text-mid); }
+.stories__side { display: flex; align-items: center; gap: var(--sp-5); flex-wrap: wrap; }
+.stories__stats { margin: 0; display: flex; gap: var(--sp-5); }
+.stories__stats dt { font-size: 0.8rem; color: var(--text-low); }
+.stories__stats dd { margin: 0; font-family: var(--font-display); font-size: 2rem; font-weight: 700; line-height: 1.1; color: var(--text-hi); }
+
+/* ── Field tabs ──────────────────────────────────────────── */
+.stories__tabs {
+  margin-top: var(--sp-7);
+  display: flex;
+  gap: var(--sp-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.stories__tabs::-webkit-scrollbar { display: none; }
+.stories__tab {
+  --accent: var(--gold-500);
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 9px 14px;
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(245, 240, 230, 0.12);
+  background: rgba(10, 17, 40, 0.6);
+  color: var(--text-mid);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: border-color var(--dur-2), color var(--dur-2), background var(--dur-2);
+}
+.stories__tab svg { color: var(--accent); }
+.stories__tab:hover { color: var(--text-hi); border-color: color-mix(in srgb, var(--accent) 60%, transparent); }
+.stories__tab[aria-pressed='true'] {
+  color: var(--text-hi);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, rgba(10, 17, 40, 0.8));
+}
+.stories__count {
+  min-width: 22px;
+  padding: 0 7px;
+  border-radius: var(--r-pill);
+  background: rgba(245, 240, 230, 0.08);
+  font-size: 0.74rem;
+  text-align: center;
+  color: var(--text-low);
+}
+.stories__tab[aria-pressed='true'] .stories__count { background: var(--accent); color: var(--ink-900); font-weight: 700; }
+.stories__note { margin-top: var(--sp-4); font-size: 0.82rem; color: var(--text-low); }
+
+/* ── Route (shared) ──────────────────────────────────────── */
+.sroute { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-4); position: relative; }
+.sroute::before {
+  content: '';
+  position: absolute;
+  top: 9px;
+  left: 10px;
+  right: 10px;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--accent) 70%, transparent) 0 6px, transparent 6px 11px);
+}
+.sroute__stop { position: relative; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.sroute__dot {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: #0b1122;
+  color: var(--ink-900);
+}
+.sroute__stop--end .sroute__dot { width: 26px; height: 26px; margin-top: -3px; background: var(--accent); }
+.sroute__k { margin-top: var(--sp-2); font-size: 0.78rem; font-weight: 700; color: var(--text-hi); }
+.sroute__v { font-size: 0.86rem; line-height: 1.55; color: var(--text-mid); }
+
+/* Vertical, in the featured card */
+.sroute--v { grid-template-columns: 1fr; gap: 0; }
+.sroute--v::before { top: 12px; bottom: 40px; left: 12px; right: auto; width: 2px; height: auto; background: repeating-linear-gradient(180deg, color-mix(in srgb, var(--accent) 70%, transparent) 0 6px, transparent 6px 11px); }
+.sroute--v .sroute__stop { grid-template-columns: 26px 1fr; column-gap: var(--sp-4); padding-bottom: var(--sp-5); }
+.sroute--v .sroute__dot { grid-row: span 2; justify-self: center; }
+.sroute--v .sroute__stop--end { padding-bottom: 0; }
+.sroute--v .sroute__k { margin-top: 0; font-size: 0.86rem; }
+.sroute--v .sroute__v { font-size: 0.95rem; }
+
+/* ── Featured journey ────────────────────────────────────── */
+.sfeat {
+  --accent: var(--gold-500);
+  position: relative;
+  margin-top: var(--sp-6);
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  background: #0b1122;
+  box-shadow: var(--sh-4);
+}
+.sfeat::before { content: ''; position: absolute; inset: 0 0 auto; height: 4px; background: var(--accent); }
+.sfeat__main {
+  padding: clamp(var(--sp-6), 4vw, var(--sp-8));
+  background: radial-gradient(90% 80% at 0% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 60%);
+}
+.sfeat__tag { display: flex; align-items: center; flex-wrap: wrap; gap: var(--sp-2); font-size: 0.88rem; font-weight: 600; color: var(--accent); }
+.sfeat__role { margin-left: var(--sp-2); padding: 2px 10px; border-radius: var(--r-pill); background: rgba(245, 240, 230, 0.08); color: var(--text-hi); font-weight: 500; }
+.sfeat__headline {
+  margin-top: var(--sp-4);
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text-hi);
+}
+.sfeat__who { margin-top: var(--sp-3); color: var(--text-low); }
+.sfeat__quote {
+  margin: var(--sp-5) 0 0;
+  padding-left: var(--sp-5);
+  border-left: 3px solid var(--accent);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--cream-200);
+  max-width: 62ch;
+}
+.sfeat__link { display: inline-block; margin-top: var(--sp-5); font-weight: 600; color: var(--gold-300); text-decoration: underline; text-underline-offset: 4px; }
+.sfeat__route {
+  padding: clamp(var(--sp-6), 4vw, var(--sp-8)) var(--sp-6);
+  background: #070b16;
+  border-left: 1px dashed rgba(245, 240, 230, 0.12);
+  display: grid;
+  align-content: center;
+}
+
+/* ── Postcards ───────────────────────────────────────────── */
+.scards { margin-top: var(--sp-6); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-5); }
+.scard {
+  --accent: var(--gold-500);
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #0b1122;
+  border: 1px solid rgba(245, 240, 230, 0.08);
+  transition: border-color var(--dur-2), transform var(--dur-3) var(--ease-out);
+}
+.scard:hover { border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
+.scard__band {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  padding: var(--sp-3) var(--sp-5);
+  background: color-mix(in srgb, var(--accent) 18%, #0b1122);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.scard__field { display: inline-flex; align-items: center; gap: var(--sp-2); font-size: 0.84rem; font-weight: 700; color: var(--text-hi); }
+.scard__field svg { color: var(--accent); }
+.scard__role { font-size: 0.8rem; color: var(--text-mid); }
+.scard__body { display: flex; flex-direction: column; gap: var(--sp-3); padding: var(--sp-5); flex: 1; }
+.scard__headline { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; line-height: 1.2; color: var(--text-hi); }
+.scard__who { color: var(--text-low); font-size: 0.88rem; margin-bottom: var(--sp-2); }
+.scard__text { color: var(--text-mid); line-height: 1.65; }
+.scard__full {
+  margin: var(--sp-2) 0 0;
+  padding: var(--sp-4);
+  border-radius: 12px;
+  background: rgba(245, 240, 230, 0.04);
+  color: var(--cream-200);
+  line-height: 1.7;
+  font-size: 0.94rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .scard__full { animation: ps-fade-in var(--dur-3) var(--ease-out) both; }
+}
+.scard__foot {
+  margin-top: auto;
+  padding-top: var(--sp-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(245, 240, 230, 0.06);
+}
+.scard__more { font-weight: 600; font-size: 0.88rem; color: var(--gold-300); }
+.scard__more:hover { text-decoration: underline; text-underline-offset: 3px; }
+.scard__career {
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(245, 240, 230, 0.14);
+  font-size: 0.8rem;
+  color: var(--text-mid);
+}
+.scard__career:hover { border-color: var(--accent); color: var(--text-hi); }
+
+/* ── Empty and closing ───────────────────────────────────── */
+.stories__empty {
+  margin-top: var(--sp-6);
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-8) var(--sp-5);
+  text-align: center;
+  border-radius: 18px;
+  border: 1px dashed rgba(201, 162, 39, 0.35);
+  color: var(--text-mid);
+}
+.stories__empty h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--text-hi); }
+.stories__empty p { margin-bottom: var(--sp-3); }
+
+.stories__cta {
+  margin-top: var(--sp-8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-5);
+  flex-wrap: wrap;
+  padding: var(--sp-6) var(--sp-7);
+  border-radius: 22px;
+  background: linear-gradient(120deg, var(--cream-50), var(--cream-200));
+  color: var(--text-dark);
+}
+.stories__cta h2 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; }
+.stories__cta p { margin-top: var(--sp-2); max-width: 52ch; color: #4a4740; line-height: 1.6; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .sfeat { grid-template-columns: 1fr; }
+  .sfeat__route { border-left: 0; border-top: 1px dashed rgba(245, 240, 230, 0.12); }
+  .scards { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .sroute { grid-template-columns: 1fr; gap: 0; }
+  .sroute::before { top: 12px; bottom: 40px; left: 9px; right: auto; width: 2px; height: auto; background: repeating-linear-gradient(180deg, color-mix(in srgb, var(--accent) 70%, transparent) 0 6px, transparent 6px 11px); }
+  .sroute__stop { grid-template-columns: 26px 1fr; column-gap: var(--sp-3); padding-bottom: var(--sp-4); }
+  .sroute__dot { grid-row: span 2; justify-self: center; }
+  .sroute__k { margin-top: 0; }
+  .stories__cta { padding: var(--sp-5); }
+}
+
+/* A card opened to its full story must not stretch the one beside it. */
+.scards { align-items: start; }
+@media (max-width: 620px) {
+  .sfeat__role { margin-left: 0; }
+}

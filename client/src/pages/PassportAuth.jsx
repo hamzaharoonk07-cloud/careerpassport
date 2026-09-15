@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
 import { Logo } from '../components/brand/Logo.jsx';
 import { EntryStamp } from '../components/brand/EntryStamp.jsx';
+import { PassportEmblem, ChipMark } from '../components/brand/PassportEmblem.jsx';
 import { SceneVideo } from '../components/media/SceneVideo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { apiError } from '../services/api.js';
@@ -229,6 +230,34 @@ export default function PassportAuth() {
 
   const busy = phase !== 'idle';
 
+  /* The closed book leans toward the pointer. Written straight to CSS
+     variables rather than state, so moving the mouse never re-renders the
+     form. Off once the book is open, and off for reduced motion. */
+  const bookRef = useRef(null);
+  const tilt = (e) => {
+    const el = bookRef.current;
+    if (!el || open || reduced) return;
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    el.style.setProperty('--tilt-y', `${(x * 14).toFixed(2)}deg`);
+    el.style.setProperty('--tilt-x', `${(-y * 10).toFixed(2)}deg`);
+  };
+  const untilt = () => {
+    bookRef.current?.style.setProperty('--tilt-y', '0deg');
+    bookRef.current?.style.setProperty('--tilt-x', '0deg');
+  };
+
+  // The data page on the left fills in from what is being typed on the right.
+  const holder = (mode === 'register' ? form.name : form.email).trim();
+  const initial = (holder || '?').charAt(0).toUpperCase();
+  const today = new Date();
+  const issued = today.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
+  const mrzName = (form.name.trim() || 'TRAVELLER').toUpperCase().replace(/[^A-Z ]/g, '').replace(/\s+/g, '<');
+  const mrz1 = `P<PSK${mrzName}`.padEnd(44, '<').slice(0, 44);
+  const mrz2 = `PS<<<<<<<<<PSK${String(today.getFullYear()).slice(2)}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`.padEnd(44, '<').slice(0, 44);
+  const travellerClass = ACCOUNT_TYPES.find((t) => t.id === form.accountType)?.label || 'Student';
+
   /* The form is defined once and hosted in one of two places: the CSS
      passport's right-hand page, or — when the device can afford 3D — projected
      onto the real page mesh by drei's <Html transform>. Either way these are
@@ -393,8 +422,8 @@ export default function PassportAuth() {
         {muted ? 'Sound off' : 'Sound on'}
       </button>
 
-      <div className="pa__stage">
-        <div className="pa__book">
+      <div className="pa__stage" onPointerMove={tilt} onPointerLeave={untilt}>
+        <div className="pa__book" ref={bookRef}>
           {/* ── Inside pages ─────────────────────────────── */}
           <div className="pa__pages">
             <div className={`pa__page pa__page--left ${secret ? 'pa__page--private' : ''}`}>
@@ -412,8 +441,30 @@ export default function PassportAuth() {
               {/* The dry seal is where the stamp lands. It is a printed
                   ring waiting for ink, so the stamp is centred on it rather
                   than dropped in a corner of the spread. */}
+              <div className="pa__data" aria-hidden="true">
+                <span className="pa__data-photo">{initial}</span>
+                <dl className="pa__data-fields">
+                  <div className="pa__data-wide">
+                    <dt>{mode === 'register' ? 'Holder' : 'Registered email'}</dt>
+                    <dd className={holder ? '' : 'is-empty'}>{holder || (mode === 'register' ? 'Your name' : 'you@example.com')}</dd>
+                  </div>
+                  {mode === 'register' ? (
+                    <>
+                      <div><dt>Class</dt><dd>{travellerClass}</dd></div>
+                      <div><dt>Office</dt><dd>{form.location.trim() || 'Karachi'}</dd></div>
+                      <div><dt>Date of issue</dt><dd>{issued}</dd></div>
+                      <div><dt>Passport no.</dt><dd className="is-empty">On submit</dd></div>
+                    </>
+                  ) : (
+                    <div className="pa__data-wide"><dt>Status</dt><dd>Awaiting presentation</dd></div>
+                  )}
+                </dl>
+              </div>
+
               <div className="pa__sealwrap">
-                <div className="pa__seal" aria-hidden="true" />
+                <div className="pa__seal" aria-hidden="true">
+                  <PassportEmblem size={150} ring="OFFICIAL SEAL · PATHSEEKER · OFFICIAL SEAL · PATHSEEKER · " />
+                </div>
                 {(phase === 'stamping' || phase === 'done') && (
                   <div className="pa__stamp" role="status" aria-label="Admitted">
                     <span className="pa__shock" aria-hidden="true" />
@@ -426,6 +477,10 @@ export default function PassportAuth() {
                   </div>
                 )}
               </div>
+
+              {mode === 'register' && (
+                <div className="pa__mrz" aria-hidden="true">{mrz1}<br />{mrz2}</div>
+              )}
 
               <p className="pa__switch">
                 {mode === 'register' ? 'Already have a passport?' : 'No passport yet?'}{' '}
@@ -457,18 +512,22 @@ export default function PassportAuth() {
           )}
 
           {/* ── The cover ────────────────────────────────── */}
+          {/* The page block, visible along the edge of the shut book. */}
+          <div className="pa__thickness" aria-hidden="true" />
+
           <div className="pa__cover" aria-hidden={open}>
             <span className="pa__sheen" aria-hidden="true" />
+            <span className="pa__stitch" aria-hidden="true" />
             <div className="pa__foil">
               <div className="pa__foil-country">
                 <span className="pa__foil-country-sm">PathSeeker</span>
-                <span className="pa__foil-country-lg">Pakistan</span>
+                <span className="pa__foil-country-lg">Career Passport</span>
               </div>
-              <div className="pa__foil-crest"><Logo size={78} /></div>
-              <div className="pa__foil-urdu" lang="ur">اسلامی جمہوریہ پاکستان</div>
-              <div className="pa__foil-title">
-                <span>Passport</span>
-                <span className="pa__foil-title-ur" lang="ur">پاسپورٹ</span>
+              <div className="pa__foil-crest"><PassportEmblem size={156} /></div>
+              <div className="pa__foil-urdu" lang="ur">کیریئر پاسپورٹ</div>
+              <div className="pa__foil-foot">
+                <ChipMark size={20} />
+                <span>Karachi · {new Date().getFullYear()}</span>
               </div>
             </div>
           </div>

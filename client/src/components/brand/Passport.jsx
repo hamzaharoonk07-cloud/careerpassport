@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTypewriter } from '../../hooks/useTypewriter.js';
-import { CompassMark } from './CompassMark.jsx';
+import { PassportEmblem } from './PassportEmblem.jsx';
 import '../../styles/passport.css';
 
 /** Builds a passport-style machine-readable zone from the real user data. */
@@ -205,7 +205,7 @@ export function Passport({
           <span className="pp__sheen" aria-hidden="true" />
           <div className="pp__foil">
             <div>
-              <div className="pp__crest"><CompassMark /></div>
+              <div className="pp__crest"><PassportEmblem size={96} /></div>
               <div className="pp__cover-title">Career<br />Passport</div>
               <div className="pp__cover-sub">PathSeeker · Career Passport</div>
             </div>

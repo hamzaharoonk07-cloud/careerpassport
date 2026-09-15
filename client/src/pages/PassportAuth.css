@@ -629,3 +629,203 @@
   .pa__page--left .pa__seal { transition: opacity var(--dur-2) linear; }
   .pa__page--private .pa__seal { transform: none; filter: none; }
 }
+
+/* ============================================================
+   Passport, rebuilt as an object
+   The closed book leans toward the pointer, shows its page block
+   along the edge, and carries a stitched border and a foil emblem.
+   The open left page is the data page, filled in as you type.
+   ============================================================ */
+
+/* ── Tilt (closed only; custom props set from PassportAuth.jsx) ── */
+.pa__book {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  transform: rotateX(calc(9deg + var(--tilt-x))) rotateY(var(--tilt-y)) scale(0.86);
+  transition: transform 500ms var(--ease-out);
+}
+.pa--open .pa__book { transform: rotateX(3deg) scale(1); transition: transform var(--dur-5) var(--ease-out); }
+
+/* ── Leather, stitching and foil ────────────────────────────── */
+.pa__cover {
+  background:
+    radial-gradient(120% 80% at 18% 0%, rgba(255, 255, 255, 0.09), transparent 50%),
+    radial-gradient(90% 70% at 100% 100%, rgba(0, 0, 0, 0.35), transparent 60%),
+    linear-gradient(155deg, #11573a 0%, #0a3f27 40%, #052617 100%);
+  box-shadow:
+    inset 6px 0 10px -4px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 2px 0 #031a0f,
+    0 30px 70px rgba(0, 0, 0, 0.6);
+}
+/* Leather grain, denser than the old weave. */
+.pa__cover::before {
+  opacity: 0.55;
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.22) 0.6px, transparent 0.9px),
+    radial-gradient(rgba(255, 255, 255, 0.05) 0.6px, transparent 0.9px);
+  background-size: 5px 5px, 7px 7px;
+  background-position: 0 0, 2px 3px;
+}
+/* Spine fold along the hinge. */
+.pa__cover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 22px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.45), rgba(255, 255, 255, 0.06) 55%, transparent);
+  pointer-events: none;
+}
+.pa__stitch {
+  position: absolute;
+  inset: 14px 14px 14px 26px;
+  border: 1.5px dashed rgba(232, 199, 102, 0.42);
+  border-radius: 8px;
+  pointer-events: none;
+}
+.pa__stitch::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(232, 199, 102, 0.22);
+  border-radius: 4px;
+}
+
+.pa__foil {
+  gap: var(--sp-5);
+  width: 80%;
+  color: var(--gold-300);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+}
+.pa__foil-country-sm { letter-spacing: 0.34em; font-size: clamp(0.62rem, 1.5vw, 0.74rem); }
+.pa__foil-country-lg {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3.2vw, 1.8rem);
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  background: linear-gradient(180deg, #f6dc8a, #c9a227 55%, #9c7b17);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.5));
+}
+.pa__foil-crest {
+  color: #e2c060;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.2)) drop-shadow(0 -1px 0 rgba(0, 0, 0, 0.55)) drop-shadow(0 0 14px rgba(232, 199, 102, 0.18));
+}
+.pa__foil-urdu { font-size: clamp(1rem, 2.6vw, 1.3rem); color: #e2c060; }
+.pa__foil-foot {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(232, 199, 102, 0.85);
+}
+.pa__foil-foot svg { color: #e2c060; }
+
+/* ── The page block ─────────────────────────────────────────── */
+.pa__thickness {
+  position: absolute;
+  top: 5px;
+  bottom: -5px;
+  left: 50%;
+  width: 50%;
+  translate: calc(-50% + 6px) 0;
+  z-index: 3;
+  border-radius: 6px 14px 14px 6px;
+  background:
+    repeating-linear-gradient(180deg, #f3ecdc 0 1px, #d9cfb8 1px 2px),
+    #eae1cc;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55);
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+.pa--open .pa__thickness { opacity: 0; pointer-events: none; }
+
+/* ── Data page (left page, open) ────────────────────────────── */
+.pa__data {
+  margin-top: var(--sp-5);
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: var(--sp-4);
+  padding: var(--sp-4);
+  border-radius: 10px;
+  border: 1px solid rgba(16, 20, 31, 0.1);
+  background:
+    repeating-linear-gradient(135deg, rgba(13, 74, 49, 0.035) 0 2px, transparent 2px 7px),
+    rgba(255, 255, 255, 0.55);
+}
+.pa__data-photo {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 116px;
+  border-radius: 6px;
+  background: linear-gradient(160deg, #e8e0cc, #d4c8ab);
+  border: 1px solid rgba(16, 20, 31, 0.12);
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: #0d4a31;
+}
+.pa__data-fields { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3) var(--sp-4); align-content: start; min-width: 0; }
+.pa__data-fields div { min-width: 0; }
+.pa__data-wide { grid-column: 1 / -1; }
+.pa__data-fields dt {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8a7333;
+}
+.pa__data-fields dd {
+  margin: 2px 0 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pa__data-wide dd { font-family: var(--font-display); font-size: 1.2rem; }
+.pa__data-fields dd.is-empty { color: rgba(16, 20, 31, 0.35); font-weight: 500; font-style: italic; }
+
+/* Seal: embossed, with its own lettering ring. */
+.pa__sealwrap { margin: var(--sp-5) auto auto; }
+.pa__seal {
+  display: grid;
+  place-items: center;
+  border: none;
+  color: rgba(13, 74, 49, 0.22);
+  background: radial-gradient(circle at 42% 38%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0) 64%);
+  filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, 0.9)) drop-shadow(-1px -1px 0 rgba(16, 20, 31, 0.08));
+}
+
+.pa__mrz {
+  margin-top: var(--sp-5);
+  padding-top: var(--sp-3);
+  border-top: 1px solid rgba(16, 20, 31, 0.12);
+  font-family: var(--font-mono);
+  font-size: clamp(0.5rem, 0.95vw, 0.66rem);
+  letter-spacing: 0.08em;
+  line-height: 1.7;
+  color: #5d584c;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pa__book { transform: rotateX(9deg) scale(0.86); }
+}
+
+@media (max-width: 860px) {
+  /* The cover spans the whole book on a phone, so the page block does too. */
+  .pa__thickness { left: 0; width: 100%; translate: 6px 0; }
+}

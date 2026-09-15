@@ -21,7 +21,7 @@ export const STAGES = [
 /** Which route each stage resumes to, so a refresh lands where you left off. */
 export const STAGE_ROUTES = {
   registered: '/passport',
-  stamped: '/airport',
+  stamped: '/interests',
   station: '/airport',
   boarded: '/airport',
   'field-selected': '/quiz',

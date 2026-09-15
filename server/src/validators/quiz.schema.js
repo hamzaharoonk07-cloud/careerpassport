@@ -7,6 +7,7 @@ export const submitQuizSchema = z.object({
     .array(z.object({ questionId: objectId, optionId: objectId }))
     .min(1, 'No answers were submitted')
     .max(50),
+  mode: z.enum(['full', 'quick']).optional(),
 });
 
 export const saveCareerSchema = z.object({

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
 import { Decide } from '../components/brand/Decide.jsx';
 import { ScrollFilm } from '../components/media/ScrollFilm.jsx';
@@ -64,9 +64,45 @@ function MatchRing({ score, animate }) {
   );
 }
 
+/** How the two measured parts of a score split, as two labelled bars. */
+function FitBars({ breakdown }) {
+  if (!breakdown) return null;
+  const rows = [
+    { k: 'Personality fit', v: breakdown.riasec, note: 'How your traits match what the work asks of you' },
+    { k: 'Field fit', v: breakdown.field, note: 'How strongly your answers pointed at this field' },
+  ];
+  return (
+    <div className="rs__bars">
+      {rows.map((r) => (
+        <div className="rs__bar" key={r.k}>
+          <div className="rs__bar-head">
+            <span className="rs__bar-k">{r.k}</span>
+            <span className="rs__bar-v">{r.v}%</span>
+          </div>
+          <div className="rs__bar-track"><span style={{ width: `${Math.max(2, r.v)}%` }} /></div>
+          <span className="rs__bar-note">{r.note}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Two ways in, one page.
+ *
+ *   /result                  the latest quiz's best match
+ *   /result?career=<slug>    the career the traveller chose at the gate
+ *
+ * The second used to be ignored: the flight passed the slug in router state,
+ * this page never read it, and every flight landed on the quiz's top match.
+ * Flying to DevOps Engineer and reading about Game Developer was the bug.
+ */
 export default function Result() {
   const { advance } = useJourney();
-  const [result, setResult] = useState(null);
+  const [params] = useSearchParams();
+  const chosenSlug = params.get('career');
+
+  const [view, setView] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
@@ -75,17 +111,44 @@ export default function Result() {
   useEffect(() => {
     advance('result');
     let alive = true;
-    quizService
-      .latestResult()
-      .then((r) => alive && setResult(r))
-      .catch((err) => alive && setError(apiError(err)))
+    setLoading(true);
+    setError('');
+    setSaved(false);
+    setSavingNote('');
+
+    const load = chosenSlug
+      ? quizService.careerReport(chosenSlug).then((r) => ({
+          chosen: true,
+          career: r.career,
+          top: r.match ? { score: r.match.score, breakdown: r.match.breakdown, reasons: r.match.reasons } : null,
+          rank: r.match ? { at: r.match.rank, of: r.match.of } : null,
+          best: r.best,
+          counsel: null,
+          matches: [],
+        }))
+      : quizService.latestResult().then((r) => {
+          if (!r?.matches?.length) throw new Error('You have not taken the quiz yet.');
+          return {
+            chosen: false,
+            career: r.matches[0].career,
+            top: r.matches[0],
+            rank: null,
+            best: null,
+            counsel: r.counsel,
+            matches: r.matches,
+          };
+        });
+
+    load
+      .then((v) => alive && setView(v))
+      .catch((err) => alive && setError(err.response ? apiError(err) : err.message))
       .finally(() => alive && setLoading(false));
     return () => { alive = false; };
-  }, [advance]);
+  }, [advance, chosenSlug]);
 
   const save = async () => {
     try {
-      const res = await careerService.save(top.career._id);
+      const res = await careerService.save(career._id);
       setSaved(true);
       setSavingNote(res.message || 'Saved to your watchlist.');
     } catch (err) {
@@ -99,7 +162,7 @@ export default function Result() {
     return <main className="rs"><div className="center-screen"><FlightLoader label="Fetching your result" {...landing} /></div></main>;
   }
 
-  if (error || !result?.matches?.length) {
+  if (error || !view) {
     return (
       <main className="rs">
         <div className="center-screen wrap-narrow" style={{ textAlign: 'center' }}>
@@ -108,16 +171,19 @@ export default function Result() {
             <p className="t-lead" style={{ marginTop: 'var(--sp-4)', marginInline: 'auto' }}>
               {error || 'You have not taken the quiz yet.'}
             </p>
-            <div style={{ marginTop: 'var(--sp-6)' }}><Button to="/quiz">Take the quiz</Button></div>
+            <div className="row" style={{ marginTop: 'var(--sp-6)', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Button to="/interests">Choose your field</Button>
+              <Button variant="ghost" to="/quiz?mode=quick">Answer 7 questions</Button>
+            </div>
           </div>
         </div>
       </main>
     );
   }
 
-  const top = result.matches[0];
-  const career = top.career;
-  const others = result.matches.slice(1, 5);
+  const { career, top, chosen, rank, best } = view;
+  const result = view;
+  const others = view.matches.slice(1, 5);
   const salary = formatSalary(career.salary);
   const demand = career.demand?.level ? DEMAND_LABEL[career.demand.level] : null;
 
@@ -125,8 +191,8 @@ export default function Result() {
     <main className="rs">
       <div className="wrap">
         <header className="rs__head">
-          <p className="t-eyebrow">Career destination</p>
-          <h1 className="t-h2 rs__title">Your career match</h1>
+          <p className="t-eyebrow">{chosen ? 'Flight report · your chosen gate' : 'Career destination'}</p>
+          <h1 className="t-h2 rs__title">{chosen ? 'Your destination report' : 'Your best career match'}</h1>
         </header>
 
         {/* The result, styled as a passport destination page */}
@@ -134,7 +200,13 @@ export default function Result() {
           <div className="rs__stamp" role="img" aria-label={`Destination stamp: ${career.field?.name}`}>
             <span>
               <span className="rs__stamp-a">DESTINATION</span>
-              <span className="rs__stamp-b">{(career.field?.name || '').toUpperCase()}</span>
+              <span
+                className="rs__stamp-b"
+                // Long names (TECHNOLOGY, HEALTHCARE) overran the circle.
+                style={(career.field?.name || '').length > 7 ? { fontSize: '0.62rem', letterSpacing: '0.04em' } : undefined}
+              >
+                {(career.field?.name || '').toUpperCase()}
+              </span>
               <span className="rs__stamp-a">PATHSEEKER</span>
             </span>
           </div>
@@ -145,13 +217,48 @@ export default function Result() {
               <h2 className="rs__career">{career.title}</h2>
               <p className="rs__field">{career.field?.name} · {career.summary}</p>
             </div>
-            <MatchRing score={top.score} animate />
+            {top ? (
+              <MatchRing score={top.score} animate />
+            ) : (
+              <div className="rs__noscore">
+                <span className="rs__noscore-k">No score yet</span>
+                <span className="rs__noscore-v">Answer 7 questions to see how well this fits you.</span>
+                <Button size="sm" to="/quiz?mode=quick">Check my fit</Button>
+              </div>
+            )}
           </div>
+
+          {top && (
+            <div className="rs__fit">
+              {rank && (
+                <p className="rs__rank">
+                  <strong>#{rank.at}</strong> of {rank.of} careers for your answers
+                </p>
+              )}
+              <FitBars breakdown={top.breakdown} />
+            </div>
+          )}
+
+          {/* Chose something other than what the answers pointed at. Worth
+              saying plainly, without overruling the choice. */}
+          {chosen && best && (
+            <aside className="rs__compare">
+              <p>
+                You chose <strong>{career.title}</strong>
+                {top ? ` (${top.score}%)` : ''}. Your quiz answers pointed most strongly at{' '}
+                <strong>{best.career.title}</strong> ({best.score}%). Both are real options — the
+                choice is yours.
+              </p>
+              <Link to={`/result?career=${best.career.slug}`} className="rs__compare-link">
+                Read the {best.career.title} report →
+              </Link>
+            </aside>
+          )}
 
           {/* The counsellor's reading of the whole ranking. This sits above the
               per-match reasons because "how much should I trust this, and what
               am I actually choosing between" comes before "why this one". */}
-          {result.counsel && (
+          {!chosen && result.counsel && (
             <section className={`counsel counsel--${result.counsel.confidence}`}>
               <p className="counsel__badge">
                 {result.counsel.confidence === 'clear' && 'Clear result'}
@@ -188,17 +295,19 @@ export default function Result() {
             </section>
           )}
 
-          <section className="rs__section">
-            <h3 className="rs__section-h">Why this fits you</h3>
-            <ul className="rs__reasons">
-              {top.reasons.map((reason, i) => (
-                <li className="rs__reason" key={i}>
-                  <span className="rs__reason-mark" aria-hidden="true">—</span>
-                  <span>{reason}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
+          {top?.reasons?.length > 0 && (
+            <section className="rs__section">
+              <h3 className="rs__section-h">Why this fits you</h3>
+              <ul className="rs__reasons">
+                {top.reasons.map((reason, i) => (
+                  <li className="rs__reason" key={i}>
+                    <span className="rs__reason-mark" aria-hidden="true">—</span>
+                    <span>{reason}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           <section className="rs__section">
             <h3 className="rs__section-h">What the work actually is</h3>
@@ -270,7 +379,7 @@ export default function Result() {
         {/* Only worth showing when there is a genuine second option. A
             comparison against something scoring far lower is not a decision,
             it is padding. */}
-        {result.matches[1] && top.score - result.matches[1].score <= 12 && (
+        {!chosen && result.matches[1] && top.score - result.matches[1].score <= 12 && (
           <Reveal>
             <Decide first={top} second={result.matches[1]} />
           </Reveal>
@@ -295,7 +404,7 @@ export default function Result() {
         )}
 
         <div className="rs__actions">
-          <Button size="lg" to="/roadmap">See your roadmap</Button>
+          <Button size="lg" to={`/roadmap?career=${career.slug}`}>See your roadmap</Button>
           <Button variant="secondary" onClick={save} disabled={saved}>
             {saved ? 'Saved ✓' : 'Save this career'}
           </Button>
@@ -326,7 +435,7 @@ export default function Result() {
             at: 0.42,
             eyebrow: 'Opening',
             title: career.title,
-            body: `${top.score}% match · ${career.field?.name}. The case is yours; so is the decision.`,
+            body: `${top ? `${top.score}% match · ` : ''}${career.field?.name}. The case is yours; so is the decision.`,
           },
           {
             at: 0.78,
@@ -334,7 +443,7 @@ export default function Result() {
             eyebrow: 'Take it with you',
             title: 'Your future is worth carrying.',
             body: 'The full case holds your saved careers, your notes and the six-stage flight plan.',
-            actions: <Button variant="secondary" size="lg" to="/roadmap">See the route</Button>,
+            actions: <Button variant="secondary" size="lg" to={`/roadmap?career=${career.slug}`}>See the route</Button>,
           },
         ]}
       />

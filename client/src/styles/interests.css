@@ -1,0 +1,225 @@
+/* ============================================================
+   Customs — the field declaration form
+   Glass cards over the gate footage; each field carries its own
+   accent from the database, gold marks the selection.
+   ============================================================ */
+
+.ints {
+  position: relative;
+  min-height: 100dvh;
+  padding-block: var(--sp-7) var(--sp-8);
+  overflow-x: hidden;
+  isolation: isolate;
+}
+.ints__inner { position: relative; z-index: 2; }
+
+/* ── Header ─────────────────────────────────────────────── */
+.ints__head { max-width: 760px; }
+
+.ints__steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  list-style: none;
+  padding: 0;
+  margin-bottom: var(--sp-5);
+}
+.ints__steps li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(245, 240, 230, 0.12);
+  background: rgba(6, 9, 17, 0.55);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-low);
+}
+.ints__steps li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.6;
+}
+.ints__steps .is-done { color: var(--success); border-color: rgba(63, 155, 115, 0.4); }
+.ints__steps .is-now { color: var(--gold-300); border-color: var(--gold-500); background: rgba(201, 162, 39, 0.1); }
+
+.ints__title {
+  margin-top: var(--sp-3);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  color: var(--text-hi);
+  text-shadow: 0 2px 24px rgba(6, 9, 17, 0.75);
+}
+.ints__lead { margin-top: var(--sp-4); }
+
+/* ── Field cards ────────────────────────────────────────── */
+.ints__form { margin-top: var(--sp-7); }
+
+.ints__grid {
+  border: 0;
+  padding: 0;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: var(--sp-4);
+}
+
+.fcard {
+  --accent: var(--gold-500);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  min-height: 236px;
+  padding: var(--sp-5);
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(245, 240, 230, 0.1);
+  background:
+    radial-gradient(120% 70% at 0% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 60%),
+    rgba(10, 17, 40, 0.78);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--sh-2);
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    transform var(--dur-3) var(--ease-out),
+    box-shadow var(--dur-3) var(--ease-out);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .fcard { animation: ps-rise var(--dur-4) var(--ease-out) both; animation-delay: calc(var(--i, 0) * 60ms); }
+}
+/* Accent rule along the top edge */
+.fcard::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: var(--accent);
+  opacity: 0.55;
+  transition: opacity var(--dur-2);
+}
+.fcard:hover {
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  transform: translateY(-4px);
+  box-shadow: var(--sh-3);
+}
+.fcard:hover::before { opacity: 1; }
+.fcard:has(input:focus-visible) { outline: 2px solid var(--gold-500); outline-offset: 3px; }
+
+.fcard--on {
+  border-color: var(--gold-500);
+  box-shadow: var(--glow-gold), var(--sh-3);
+  transform: translateY(-4px);
+}
+.fcard--on::before { opacity: 1; background: var(--gold-500); }
+
+.fcard__top { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--sp-2); }
+.fcard__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-md);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+}
+.fcard__check {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 240, 230, 0.22);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ink-900);
+  transition: all var(--dur-2) var(--ease-impact);
+}
+.fcard--on .fcard__check { background: var(--gold-500); border-color: var(--gold-500); transform: scale(1.1); }
+
+.fcard__name { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; color: var(--text-hi); line-height: 1.2; }
+.fcard__tag { color: var(--text-mid); font-size: var(--fs-sm); line-height: 1.55; }
+
+.fcard__roles { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: var(--sp-3); }
+.fcard__role,
+.fcard__more {
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  border: 1px solid rgba(245, 240, 230, 0.12);
+  color: var(--text-mid);
+  background: rgba(6, 9, 17, 0.4);
+}
+.fcard__more { color: var(--text-low); border-style: dashed; }
+
+/* The seventh card: the way out for someone who does not know yet */
+.fcard--unsure {
+  --accent: var(--gold-400);
+  border-style: dashed;
+  border-color: rgba(201, 162, 39, 0.45);
+  background:
+    radial-gradient(120% 80% at 100% 100%, rgba(201, 162, 39, 0.16), transparent 60%),
+    rgba(10, 17, 40, 0.78);
+}
+.fcard--unsure::before { display: none; }
+.fcard__icon--q { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; }
+.fcard__badge {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-300);
+}
+.fcard__cta {
+  margin-top: auto;
+  padding-top: var(--sp-3);
+  font-weight: 600;
+  color: var(--gold-300);
+}
+.fcard--unsure:hover .fcard__cta span { display: inline-block; transform: translateX(4px); transition: transform var(--dur-2); }
+
+/* ── Sticky confirm bar ─────────────────────────────────── */
+.ints__bar {
+  position: sticky;
+  bottom: var(--sp-4);
+  z-index: 5;
+  margin-top: var(--sp-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-5);
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(245, 240, 230, 0.12);
+  background: rgba(6, 9, 17, 0.88);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--sh-3);
+  transition: border-color var(--dur-3);
+}
+.ints__bar.is-ready { border-color: var(--gold-500); }
+.ints__bar-text { color: var(--text-mid); font-size: var(--fs-sm); }
+.ints__bar-text strong { color: var(--gold-300); font-weight: 600; }
+
+@media (max-width: 1024px) {
+  /* The tab bar is fixed along the top on tablets and phones. */
+  body .ints { padding-top: calc(var(--tabbar-h) + var(--sp-5)); }
+}
+@media (max-width: 560px) {
+  .ints__bar { border-radius: var(--r-lg); padding: var(--sp-4); }
+  .ints__bar .btn { width: 100%; }
+  .fcard { min-height: 0; }
+}

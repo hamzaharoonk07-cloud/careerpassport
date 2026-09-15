@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
 import { Reveal } from '../components/motion/Reveal.jsx';
 import { quizService } from '../services/quiz.service.js';
+import { careerService } from '../services/career.service.js';
 import { apiError } from '../services/api.js';
 import { useJourney } from '../context/JourneyContext.jsx';
 import '../styles/quiz.css';
@@ -18,20 +20,25 @@ import { FlightLoader, useLanding } from '../components/brand/FlightLoader.jsx';
  */
 export default function Roadmap() {
   const { advance } = useJourney();
-  const [result, setResult] = useState(null);
+  // ?career=<slug> is the gate the traveller chose; without it, the quiz's top match.
+  const [params] = useSearchParams();
+  const chosenSlug = params.get('career');
+  const [career, setCareer] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     advance('roadmap');
     let alive = true;
-    quizService
-      .latestResult()
-      .then((r) => alive && setResult(r))
+    const load = chosenSlug
+      ? careerService.get(chosenSlug)
+      : quizService.latestResult().then((r) => r?.matches?.[0]?.career || null);
+    load
+      .then((c) => alive && setCareer(c))
       .catch((err) => alive && setError(apiError(err)))
       .finally(() => alive && setLoading(false));
     return () => { alive = false; };
-  }, [advance]);
+  }, [advance, chosenSlug]);
 
   // Hold the loader until its climb resolves, then show the page.
   const { held, landing } = useLanding(loading);
@@ -39,7 +46,7 @@ export default function Roadmap() {
     return <main className="rm" style={{ position: 'relative', isolation: 'isolate' }}><div className="center-screen"><FlightLoader label="Plotting your route" {...landing} /></div></main>;
   }
 
-  if (error || !result?.matches?.length) {
+  if (error || !career) {
     return (
       <main className="rm" style={{ position: 'relative', isolation: 'isolate' }}>
         <div className="center-screen wrap-narrow" style={{ textAlign: 'center' }}>
@@ -48,15 +55,15 @@ export default function Roadmap() {
             <p className="t-lead" style={{ marginTop: 'var(--sp-4)', marginInline: 'auto' }}>
               {error || 'Take the quiz and a roadmap is built from your top match.'}
             </p>
-            <div style={{ marginTop: 'var(--sp-6)' }}><Button to="/quiz">Take the quiz</Button></div>
+            <div style={{ marginTop: 'var(--sp-6)' }}><Button to="/interests">Choose your field</Button></div>
           </div>
         </div>
       </main>
     );
   }
 
-  const top = result.matches[0];
-  const stages = top.career.roadmap || [];
+  const top = { career };
+  const stages = career.roadmap || [];
 
   return (
     <main className="rm" style={{ position: 'relative', isolation: 'isolate' }}>

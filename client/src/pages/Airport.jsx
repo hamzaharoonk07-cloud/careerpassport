@@ -100,7 +100,9 @@ export default function Airport() {
     // quiz existed upstream of the gates this landed on the career page,
     // which was the only thing there was to show; now the flight has a result
     // waiting behind it and that is what the traveller came for.
-    navigate('/result', { state: { arrivedByFlight: true, slug: selected.career.slug } });
+    // In the URL rather than router state, so a refresh on the report keeps
+    // showing the career that was flown to.
+    navigate(`/result?career=${encodeURIComponent(selected.career.slug)}`);
   };
 
 
@@ -117,9 +119,21 @@ export default function Airport() {
    * The rest are still reachable - a match is a starting point, not a verdict,
    * and someone who wants to look at everything should be able to.
    */
+  /**
+   * Which field the board opens on.
+   *
+   * The declaration at customs wins, because it is the traveller's own and
+   * the quiz writes its answer there too. The last result's field is only a
+   * fallback for accounts that flew before customs existed.
+   */
+  const boardField = useMemo(() => {
+    const declared = careers.find((c) => String(c.field?._id) === String(user?.selectedField))?.field;
+    return declared || arrival?.career.field || null;
+  }, [careers, user?.selectedField, arrival]);
+
   const gateCareers = useMemo(() => {
-    if (!arrival || showAll) return careers;
-    const field = arrival.career.field?.slug;
+    if (!boardField || showAll) return careers;
+    const field = boardField.slug;
     if (!field) return careers;
     const scored = new Map((landed?.matches || []).map((m) => [m.career.slug, m.score]));
     const inField = careers.filter((c) => c.field?.slug === field);
@@ -129,7 +143,7 @@ export default function Airport() {
     return [...inField].sort(
       (a, b) => (scored.get(b.slug) ?? -1) - (scored.get(a.slug) ?? -1) || a.title.localeCompare(b.title)
     );
-  }, [careers, arrival, landed, showAll]);
+  }, [careers, boardField, landed, showAll]);
 
   // Everything above this line runs on every render. React counts hooks by
   // call order, so a hook placed below one of the early returns is called on
@@ -204,8 +218,8 @@ export default function Airport() {
             </h1>
             <p className="apt__loc">
               <span aria-hidden="true">📍</span>{' '}
-              {arrival
-                ? `Arrivals · ${arrival.career.title}`
+              {boardField
+                ? `International Terminal · ${boardField.name} gates open`
                 : 'International Terminal · Karachi, Pakistan'}
             </p>
           </div>
@@ -220,13 +234,13 @@ export default function Airport() {
               onClick={() => {
                 if (a.key === 'explore') {
                   // Before the quiz there is no board to scroll to.
-                  if (arrival) document.querySelector('.board3')?.scrollIntoView({ behavior: 'smooth' });
-                  else navigate('/quiz');
+                  if (boardField) document.querySelector('.board3')?.scrollIntoView({ behavior: 'smooth' });
+                  else navigate('/interests');
                 }
                 if (a.key === 'journey') navigate('/dashboard');
                 if (a.key === 'pass') {
-                  if (arrival) passRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  else navigate('/quiz');
+                  if (boardField) passRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  else navigate('/interests');
                 }
                 if (a.key === 'profile') navigate('/dashboard');
               }}
@@ -238,33 +252,29 @@ export default function Airport() {
           ))}
         </div>
 
-        {arrival && (
+        {boardField && (
           <section className="apt__landed">
-            <p className="t-eyebrow">Where you landed</p>
-            <h2 className="apt__landed-title">{arrival.career.title}</h2>
-            <p className="apt__landed-sub">
-              {arrival.career.field?.name}
-              {' · '}
-              {arrival.score}% match
-            </p>
-            <p className="t-mid" style={{ marginTop: 'var(--sp-4)' }}>
-              {showAll
-                ? 'Showing every destination on the board.'
-                : `The board below is showing ${arrival.career.field?.name || 'your'} gates, best match first.`}
-            </p>
-            <div className="row" style={{ flexWrap: 'wrap', marginTop: 'var(--sp-5)' }}>
-              <Button to="/result">See your result</Button>
-              <Button variant="ghost" onClick={() => setShowAll((v) => !v)}>
-                {showAll ? 'Show my matched gates' : 'Show all destinations'}
-              </Button>
-              <Button variant="ghost" to={`/careers/${arrival.career.slug}`}>
-                Open this career
-              </Button>
+            <div className="apt__landed-row">
+              <div>
+                <p className="t-eyebrow">Your field</p>
+                <h2 className="apt__landed-title">{boardField.name}</h2>
+                <p className="apt__landed-sub">
+                  {arrival
+                    ? `Best quiz match: ${arrival.career.title} · ${arrival.score}%`
+                    : 'Choose a gate below to see the full report for that career.'}
+                </p>
+              </div>
+              <div className="row" style={{ flexWrap: 'wrap' }}>
+                <Button variant="ghost" to="/interests">Change field</Button>
+                <Button variant="ghost" onClick={() => setShowAll((v) => !v)}>
+                  {showAll ? `Only ${boardField.name}` : 'All destinations'}
+                </Button>
+              </div>
             </div>
           </section>
         )}
 
-        {!arrival ? (
+        {!boardField ? (
           /*
            * The board stays closed until the questions are answered.
            *
@@ -278,13 +288,12 @@ export default function Airport() {
             <p className="t-eyebrow">Check in</p>
             <h2 className="apt__landed-title">Before the gates open</h2>
             <p className="t-lead" style={{ marginTop: 'var(--sp-4)' }}>
-              The board is showing no destinations for you yet. Answer the
-              questions about what you actually enjoy, and it fills with the
-              gates that fit you rather than all thirty-eight at once.
+              Tell us which field you are interested in and the board fills with
+              its gates. Not sure yet? Seven quick questions will point you.
             </p>
             <div className="row" style={{ flexWrap: 'wrap', marginTop: 'var(--sp-5)' }}>
-              <Button size="lg" to="/quiz">Answer the questions</Button>
-              <Button variant="ghost" to="/careers">Browse the career bank instead</Button>
+              <Button size="lg" to="/interests">Choose your field</Button>
+              <Button variant="ghost" to="/quiz?mode=quick">I'm not sure — 7 questions</Button>
             </div>
           </section>
         ) : (

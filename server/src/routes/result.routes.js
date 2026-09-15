@@ -7,6 +7,7 @@ router.use(requireAuth);
 
 router.get('/me', ctrl.getMyLatestResult);
 router.get('/me/all', ctrl.getMyResults);
+router.get('/me/career/:slug', ctrl.getCareerReport);
 router.get('/:id', ctrl.getResultById);
 
 export default router;

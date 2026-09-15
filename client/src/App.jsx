@@ -19,6 +19,7 @@ import NotFound from './pages/NotFound.jsx';
  */
 const PassportAuth = lazy(() => import('./pages/PassportAuth.jsx'));
 const PassportPage = lazy(() => import('./pages/PassportPage.jsx'));
+const Interests = lazy(() => import('./pages/Interests.jsx'));
 const Airport = lazy(() => import('./pages/Airport.jsx'));
 const Quiz = lazy(() => import('./pages/Quiz.jsx'));
 const Analysis = lazy(() => import('./pages/Analysis.jsx'));
@@ -111,6 +112,10 @@ export default function App() {
             <Route path="/passport/:mode" element={<PassportAuth />} />
 
             <Route path="/passport" element={guard(<PassportPage />)} />
+
+            {/* Customs: which field are you travelling to? Straight after the
+                passport, so the terminal opens on gates that mean something. */}
+            <Route path="/interests" element={guard(<Interests />)} />
 
             {/* The airport terminal is the destination-choosing screen.
                 Every earlier URL for that step redirects here, so nothing

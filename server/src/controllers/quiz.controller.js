@@ -80,11 +80,29 @@ function chooseVariants(questions, seenIds) {
   return chosen;
 }
 
+/**
+ * The seven slots asked of a traveller who is not sure which field they want.
+ *
+ * Chosen by searching every seven-slot subset of the bank for the one whose
+ * reachable score is most even across the six fields (20/20/20/19/19/18) and
+ * leaves no Holland axis unmeasured. A short quiz that could only reach, say,
+ * finance on two questions would steer everyone away from finance.
+ */
+export const QUICK_SLOTS = Object.freeze([1, 8, 9, 14, 18, 20, 21]);
+
+const isQuick = (mode) => mode === 'quick';
+const inMode = (questions, mode) =>
+  isQuick(mode) ? questions.filter((q) => QUICK_SLOTS.includes(q.order)) : questions;
+
 export const getQuestions = asyncHandler(async (req, res) => {
-  const all = await QuizQuestion.find({ active: true })
-    .sort({ order: 1, variant: 1 })
-    .populate({ path: 'options', options: { sort: { order: 1 } } })
-    .lean();
+  const mode = isQuick(req.query.mode) ? 'quick' : 'full';
+  const all = inMode(
+    await QuizQuestion.find({ active: true })
+      .sort({ order: 1, variant: 1 })
+      .populate({ path: 'options', options: { sort: { order: 1 } } })
+      .lean(),
+    mode
+  );
 
   // What this traveller saw last time, so it can be avoided.
   const previous = await QuizResult.findOne({ user: req.user._id })
@@ -103,7 +121,7 @@ export const getQuestions = asyncHandler(async (req, res) => {
     options: q.options.map((o) => ({ id: o._id, key: o.key, label: o.label })),
   }));
 
-  res.json({ ok: true, questions: safe, total: safe.length });
+  res.json({ ok: true, mode, questions: safe, total: safe.length });
 });
 
 /**
@@ -114,12 +132,15 @@ export const getQuestions = asyncHandler(async (req, res) => {
  * profile skewed by which questions happened to be skipped.
  */
 export const submitQuiz = asyncHandler(async (req, res) => {
-  const { answers } = req.body;
+  const { answers, mode } = req.body;
 
-  const questions = await QuizQuestion.find({ active: true })
-    .sort({ order: 1 })
-    .populate({ path: 'options', options: { sort: { order: 1 } } })
-    .lean();
+  const questions = inMode(
+    await QuizQuestion.find({ active: true })
+      .sort({ order: 1 })
+      .populate({ path: 'options', options: { sort: { order: 1 } } })
+      .lean(),
+    mode
+  );
 
   if (!questions.length) throw ApiError.badRequest('The quiz is not available right now.');
 
@@ -231,6 +252,59 @@ export const getMyLatestResult = asyncHandler(async (req, res) => {
 
   if (!result) throw ApiError.notFound('You have not taken the quiz yet.');
   res.json({ ok: true, result: decorateResult(result) });
+});
+
+/**
+ * The report for one specific destination.
+ *
+ * Choosing a gate is a decision about a career, so the page that follows has
+ * to be about that career. It used to show the latest result's top match
+ * instead, which meant flying to DevOps Engineer landed on Game Developer.
+ *
+ * The chosen career is scored against the traveller's latest profile with the
+ * same engine and the same inputs the quiz used, and ranked against the whole
+ * bank, so the page can say honestly where it sits. Someone who picked a field
+ * without answering any questions still gets the report, with no score.
+ */
+export const getCareerReport = asyncHandler(async (req, res) => {
+  const slug = String(req.params.slug || '').toLowerCase();
+  const career = await Career.findOne({ slug, active: true })
+    .populate('field', 'slug name icon accent tagline')
+    .lean();
+  if (!career) throw ApiError.notFound('We do not have a career by that name.');
+
+  const latest = await QuizResult.findOne({ user: req.user._id })
+    .sort({ takenAt: -1 })
+    .populate('selectedField', 'slug')
+    .lean();
+
+  if (!latest) {
+    return res.json({ ok: true, career: decorateCareer(career), match: null, best: null });
+  }
+
+  const profile = {
+    riasecVector: latest.riasecVector || {},
+    fieldScores: latest.fieldScores || {},
+    dominantAxes: latest.dominantAxes || [],
+  };
+  const careers = await Career.find({ active: true }).populate('field', 'slug name icon accent').lean();
+  const ranked = rankCareers(profile, careers, latest.selectedField?.slug || null, careers.length);
+
+  const index = ranked.findIndex((m) => String(m.career) === String(career._id));
+  const mine = ranked[index];
+  const top = ranked[0];
+
+  res.json({
+    ok: true,
+    career: decorateCareer(career),
+    match: mine
+      ? { score: mine.score, breakdown: mine.breakdown, reasons: mine.reasons, rank: index + 1, of: ranked.length }
+      : null,
+    best: top && String(top.career) !== String(career._id)
+      ? { career: decorateCareer(top.careerDoc), score: top.score }
+      : null,
+    takenAt: latest.takenAt,
+  });
 });
 
 export const getMyResults = asyncHandler(async (req, res) => {

@@ -10,6 +10,29 @@
   background: radial-gradient(60% 44% at 50% 0%, rgba(15, 27, 60, 0.85), var(--ink-900) 72%);
 }
 
+/* ── Quick-check banner ─────────────────────────────────── */
+.qz__mode {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-5);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  background: rgba(201, 162, 39, 0.07);
+}
+.qz__mode-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-300);
+}
+.qz__mode-link { font-size: var(--fs-sm); color: var(--text-mid); text-decoration: underline; text-underline-offset: 3px; }
+.qz__mode-link:hover { color: var(--gold-300); }
+
 /* ── Progress ───────────────────────────────────────────── */
 .qz__bar-wrap { display: grid; gap: var(--sp-3); }
 .qz__meta {
@@ -41,7 +64,18 @@
 /* ── Question card ──────────────────────────────────────── */
 .qz__stage { margin-top: var(--sp-7); min-height: 420px; }
 
-.qz__q { display: grid; gap: var(--sp-5); }
+.qz__q {
+  display: grid;
+  gap: var(--sp-5);
+  padding: clamp(var(--sp-5), 4vw, var(--sp-7));
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(245, 240, 230, 0.08);
+  background: linear-gradient(160deg, rgba(15, 27, 60, 0.6), rgba(10, 17, 40, 0.35));
+  box-shadow: var(--sh-2);
+}
+@media (min-width: 720px) {
+  .qz__options { grid-template-columns: 1fr 1fr; }
+}
 .qz__q--in-right { animation: ps-slide-in-right var(--dur-3) var(--ease-out) both; }
 .qz__q--in-left { animation: ps-slide-in-left var(--dur-3) var(--ease-out) both; }
 .qz__q--out-left { animation: ps-slide-out-left var(--dur-2) var(--ease-in-out) both; }
@@ -292,6 +326,82 @@
   color: #8a8471;
 }
 
+/* No quiz yet: an invitation where the ring would be */
+.rs__noscore {
+  display: grid;
+  gap: var(--sp-2);
+  justify-items: start;
+  max-width: 230px;
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px dashed rgba(138, 115, 51, 0.5);
+  background: rgba(201, 162, 39, 0.06);
+}
+.rs__noscore-k {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8a7333;
+}
+.rs__noscore-v { font-size: var(--fs-sm); color: #4a4638; line-height: 1.5; }
+
+/* Rank and the two measured parts of the score */
+.rs__fit {
+  margin-top: var(--sp-6);
+  padding: var(--sp-5);
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(16, 20, 31, 0.08);
+}
+.rs__rank { font-size: var(--fs-sm); color: #5a5647; margin-bottom: var(--sp-4); }
+.rs__rank strong {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  color: var(--ink-800);
+  margin-right: 4px;
+}
+.rs__bars { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--sp-5); }
+.rs__bar { display: grid; gap: 6px; }
+.rs__bar-head { display: flex; justify-content: space-between; align-items: baseline; }
+.rs__bar-k {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8a7333;
+}
+.rs__bar-v { font-family: var(--font-mono); font-weight: 600; color: var(--ink-800); font-variant-numeric: tabular-nums; }
+.rs__bar-track { height: 8px; border-radius: var(--r-pill); background: rgba(16, 20, 31, 0.08); overflow: hidden; }
+.rs__bar-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--gold-500), var(--gold-300));
+  transform-origin: left;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rs__bar-track span { animation: rs-grow 1.2s var(--ease-out) 0.4s both; }
+}
+@keyframes rs-grow { from { transform: scaleX(0); } }
+.rs__bar-note { font-size: 0.74rem; color: #7a7563; line-height: 1.45; }
+
+/* Chose one thing, answers pointed at another */
+.rs__compare {
+  margin-top: var(--sp-5);
+  display: grid;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-5);
+  border-left: 3px solid var(--gold-500);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  background: rgba(201, 162, 39, 0.1);
+  color: #3a3a35;
+  line-height: 1.6;
+}
+.rs__compare strong { color: var(--ink-800); }
+.rs__compare-link { font-weight: 600; color: #7a6220; justify-self: start; }
+.rs__compare-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
 /* Destination stamp */
 /* The stamp sits low on the page, clear of the match ring in the top-right —
    the way a real stamp lands on free paper rather than over the printing. */
@@ -360,6 +470,12 @@
 }
 .chip--strong { border-color: rgba(201, 162, 39, 0.55); background: rgba(201, 162, 39, 0.1); }
 
+/* The market row is the last thing on the card, where the stamp lands —
+   leave it free paper instead of stamping over the text. */
+.rs__card > .rs__section:last-child .rs__facts { padding-right: clamp(110px, 15vw, 160px); }
+@media (max-width: 720px) {
+  .rs__card > .rs__section:last-child .rs__facts { padding-right: 0; }
+}
 .rs__facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--sp-4); }
 .fact { display: grid; gap: 4px; }
 .fact__k {

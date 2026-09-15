@@ -55,12 +55,11 @@ export default function PassportPage() {
     advance('stamped');
   };
 
-  /** Closes the passport, then hands off to the station. */
+  /** Closes the passport, then hands off to customs — the field form. */
   const toStation = () => {
-    advance('station');
-    if (reduced) { navigate('/airport'); return; }
+    if (reduced) { navigate('/interests'); return; }
     setClosing(true);
-    setTimeout(() => navigate('/airport'), 900);
+    setTimeout(() => navigate('/interests'), 900);
   };
 
   return (
@@ -91,7 +90,7 @@ export default function PassportPage() {
           {ready ? (
             <div className="ppage__actions anim-rise">
               <p className="t-mid ppage__note">
-                Passport <strong>{user?.passportNumber}</strong> is now yours. The station is waiting.
+                Passport <strong>{user?.passportNumber}</strong> is now yours. Next, tell us where you want to go.
               </p>
               <Button onClick={toStation} size="lg">Board your future</Button>
             </div>

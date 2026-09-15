@@ -664,9 +664,9 @@
 .apt__checkin {
   margin-top: var(--sp-7);
   padding: var(--sp-6);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line, rgba(201, 162, 39, 0.24));
   border-radius: var(--r-lg);
-  background: var(--panel);
+  background: var(--panel, rgba(10, 17, 40, 0.84));
   box-shadow: var(--sh-2);
 }
 
@@ -692,3 +692,11 @@
 }
 
 .apt__checkin { max-width: 62ch; }
+
+.apt__landed-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-5);
+  flex-wrap: wrap;
+}

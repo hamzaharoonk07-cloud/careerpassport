@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
 import { quizService } from '../services/quiz.service.js';
 import { apiError } from '../services/api.js';
@@ -8,7 +8,6 @@ import { FlightLoader, useLanding } from '../components/brand/FlightLoader.jsx';
 import { TabBar } from '../components/layout/TabBar.jsx';
 import '../styles/quiz.css';
 
-const DRAFT_KEY = 'pathseeker.quiz.draft';
 
 const DIMENSION_LABEL = {
   interests: 'Interests',
@@ -33,7 +32,13 @@ const DIMENSION_LABEL = {
  */
 export default function Quiz() {
   const navigate = useNavigate();
-  const { advance } = useJourney();
+  const { advance, chooseField } = useJourney();
+  // 'quick' is the seven-question path for a traveller who is not sure which
+  // field they want. Each mode keeps its own draft, so abandoning one never
+  // restores half-answered questions into the other.
+  const [params] = useSearchParams();
+  const mode = params.get('mode') === 'quick' ? 'quick' : 'full';
+  const DRAFT_KEY = `pathseeker.quiz.draft.${mode}`;
 
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});      // questionId -> optionId
@@ -53,7 +58,7 @@ export default function Quiz() {
     let alive = true;
 
     quizService
-      .getQuestions()
+      .getQuestions(mode)
       .then((qs) => {
         if (!alive) return;
         setQuestions(qs);
@@ -79,7 +84,9 @@ export default function Quiz() {
       .finally(() => alive && setLoading(false));
 
     return () => { alive = false; };
-  }, [advance]);
+    // DRAFT_KEY is derived from mode.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [advance, mode]);
 
   // Persist after every change.
   useEffect(() => {
@@ -87,7 +94,7 @@ export default function Quiz() {
     try {
       localStorage.setItem(DRAFT_KEY, JSON.stringify({ answers, index }));
     } catch { /* storage unavailable — the quiz still works */ }
-  }, [answers, index]);
+  }, [answers, index, DRAFT_KEY]);
 
   const question = questions[index];
   const answeredCount = Object.keys(answers).length;
@@ -117,8 +124,13 @@ export default function Quiz() {
     setError('');
     try {
       const payload = questions.map((q) => ({ questionId: q.id, optionId: answers[q.id] }));
-      const result = await quizService.submit(payload);
+      const result = await quizService.submit(payload, mode);
       try { localStorage.removeItem(DRAFT_KEY); } catch { /* fine */ }
+      // The answers are the newest thing we know about where this traveller
+      // is headed, so the terminal opens on the field they pointed at. A
+      // failure only costs the board its filter, never the result.
+      const topField = result?.matches?.[0]?.career?.field?.slug;
+      if (topField) await chooseField(topField).catch(() => {});
       advance('analysed');
       navigate('/analysis', { replace: true, state: { resultId: result._id } });
     } catch (err) {
@@ -160,6 +172,12 @@ export default function Quiz() {
   return (
     <main className="qz">
       <div className="wrap-narrow">
+        {mode === 'quick' && (
+          <div className="qz__mode">
+            <span className="qz__mode-badge">Quick check · 7 questions</span>
+            <Link to="/interests" className="qz__mode-link">I already know my field</Link>
+          </div>
+        )}
         <div className="qz__bar-wrap">
           <div className="qz__meta">
             <span>Question <strong>{String(index + 1).padStart(2, '0')}</strong> / {String(questions.length).padStart(2, '0')}</span>

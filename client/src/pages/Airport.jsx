@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/primitives/Button.jsx';
 import { SceneVideo } from '../components/media/SceneVideo.jsx';
-import { DepartureBoard } from '../components/brand/DepartureBoard.jsx';
+import { DepartureBoard, DemandMeter, salaryBand } from '../components/brand/DepartureBoard.jsx';
 import { BoardingPass } from '../components/brand/BoardingPass.jsx';
 import { FlightSequence } from '../components/brand/FlightSequence.jsx';
 import { Itinerary } from '../components/brand/Itinerary.jsx';
@@ -111,6 +111,10 @@ export default function Airport() {
   // to show, so the arrival itself is what the terminal branches on.
   const arrival = landed?.matches?.[0] || null;
   const firstName = user?.name?.split(' ')[0] || 'traveller';
+  const matchScores = useMemo(
+    () => new Map((landed?.matches || []).map((m) => [m.career.slug, m.score])),
+    [landed]
+  );
 
   /**
    * The gates the quiz actually pointed at.
@@ -331,21 +335,47 @@ export default function Airport() {
             selectedSlug={selected?.career.slug || null}
             page={page}
             onPageChange={setPage}
+            scores={matchScores}
           />
 
-          <div ref={passRef}>
+          <div ref={passRef} className="fl-sel-wrap">
             {selected ? (
-              <div style={{ display: 'grid', gap: 'var(--sp-5)', justifyItems: 'start' }}>
+              <div className="fl-sel">
                 <BoardingPass user={user} career={selected.career} index={selected.index} issued />
-                <div className="row" style={{ flexWrap: 'wrap' }}>
-                  <Button size="lg" onClick={board}>Board your flight</Button>
-                  <Button variant="ghost" onClick={() => setSelected(null)}>Choose another gate</Button>
-                </div>
+                <aside className="fl-info">
+                  <span className="fl-info__field">{selected.career.field?.name}</span>
+                  <h3 className="fl-info__title">{selected.career.title}</h3>
+                  <p className="fl-info__sum">{selected.career.summary}</p>
+                  <dl className="fl-info__facts">
+                    <div><dt>Demand</dt><dd><DemandMeter level={selected.career.demand?.level} /></dd></div>
+                    <div><dt>Salary / month</dt><dd>{salaryBand(selected.career.salary) || 'Not available'}</dd></div>
+                    {matchScores.get(selected.career.slug) != null && (
+                      <div><dt>Your match</dt><dd>{matchScores.get(selected.career.slug)}%</dd></div>
+                    )}
+                  </dl>
+                  {selected.career.skills?.length > 0 && (
+                    <div className="fl-info__skills">
+                      {selected.career.skills.slice(0, 4).map((sk) => <span key={sk.name}>{sk.name}</span>)}
+                    </div>
+                  )}
+                  <div className="fl-info__actions">
+                    <Button size="lg" onClick={board}>Board this flight</Button>
+                    <Button variant="ghost" onClick={() => setSelected(null)}>Choose another gate</Button>
+                  </div>
+                </aside>
               </div>
             ) : (
-              <p className="t-mid" style={{ textAlign: 'center', padding: 'var(--sp-6)' }}>
-                Choose a career gate above and your boarding pass is issued here.
-              </p>
+              <div className="fl-waiting">
+                <span className="fl-waiting__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h15A1.5 1.5 0 0 1 21 7.5V10a2 2 0 0 0 0 4v2.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 16.5V14a2 2 0 0 0 0-4z" /><path d="M15 6v12" strokeDasharray="2 2" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="fl-waiting__t">Your boarding pass prints here</p>
+                  <p className="fl-waiting__d">Select a destination on the board to see its details and board the flight.</p>
+                </div>
+              </div>
             )}
           </div>
         </div>

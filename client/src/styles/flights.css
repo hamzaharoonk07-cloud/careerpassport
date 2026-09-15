@@ -1,0 +1,233 @@
+/* ============================================================
+   Flight options — the departures board rows and the selection
+   Each row is a flight entry: gate, destination, demand, pay,
+   fit, and a select control. Field accent marks the row edge.
+   ============================================================ */
+
+.fl-board { border-radius: 18px; }
+.fl-board__count { font-size: 0.8rem; color: var(--text-low); margin-left: var(--sp-3); }
+
+.fl-cols,
+.fl-row {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 2.4fr) 130px 150px 140px 118px;
+  gap: var(--sp-4);
+  align-items: center;
+}
+.fl-cols {
+  padding: var(--sp-3) var(--sp-5);
+  font-size: 0.76rem;
+  color: var(--text-low);
+  border-bottom: 1px solid rgba(245, 240, 230, 0.08);
+}
+
+.fl-row {
+  position: relative;
+  width: 100%;
+  padding: var(--sp-4) var(--sp-5);
+  text-align: left;
+  border-bottom: 1px solid rgba(245, 240, 230, 0.06);
+  transition: background var(--dur-2) var(--ease-out), opacity var(--dur-3) var(--ease-out);
+}
+/* The field's colour runs down the left edge of every row. */
+.fl-row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--accent);
+  opacity: 0.55;
+  transition: opacity var(--dur-2), top var(--dur-2), bottom var(--dur-2);
+}
+.fl-row:hover:not(:disabled) { background: rgba(201, 162, 39, 0.06); }
+.fl-row:hover:not(:disabled)::before { opacity: 1; top: 0; bottom: 0; }
+.fl-row:disabled { cursor: default; }
+.fl-row--on {
+  background: linear-gradient(90deg, rgba(201, 162, 39, 0.16), rgba(201, 162, 39, 0.04));
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 39, 0.45);
+}
+.fl-row--on::before { opacity: 1; top: 0; bottom: 0; width: 4px; background: var(--gold-400); }
+.fl-row--dim { opacity: 0.45; }
+.fl-row--dim:hover { opacity: 0.85; }
+
+.fl-gate { color: var(--gold-400); font-size: 1rem; }
+
+.fl-dest { display: flex; align-items: center; gap: var(--sp-4); min-width: 0; }
+.fl-dest__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.fl-dest__text { display: grid; gap: 3px; min-width: 0; }
+.fl-dest__title {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text-hi);
+}
+.fl-dest__sum {
+  font-size: 0.84rem;
+  color: var(--text-mid);
+  line-height: 1.45;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fl-best {
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: var(--gold-500);
+  color: var(--ink-900);
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.fl-cell { font-size: 0.88rem; color: var(--text-hi); min-width: 0; }
+.fl-none { color: var(--text-low); font-size: 0.84rem; }
+
+.fl-demand { display: inline-flex; align-items: center; gap: var(--sp-2); }
+.fl-demand__bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 16px; }
+.fl-demand__bars i { width: 4px; border-radius: 1px; background: rgba(245, 240, 230, 0.16); }
+.fl-demand__bars i.on { background: #6fd3a3; }
+
+.fl-pay { font-variant-numeric: tabular-nums; font-weight: 500; }
+
+.fl-match { display: inline-flex; align-items: center; gap: var(--sp-2); width: 100%; }
+.fl-match__track { flex: 1; height: 6px; border-radius: 3px; background: rgba(245, 240, 230, 0.08); overflow: hidden; max-width: 70px; }
+.fl-match__track span { display: block; height: 100%; border-radius: 3px; background: var(--gold-500); }
+.fl-match b { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.fl-action {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(201, 162, 39, 0.5);
+  color: var(--gold-300);
+  font-size: 0.84rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background var(--dur-2), color var(--dur-2);
+}
+.fl-row:hover:not(:disabled) .fl-action { background: var(--gold-500); color: var(--ink-900); border-color: var(--gold-500); }
+.fl-action--on { background: var(--gold-500); color: var(--ink-900); border-color: var(--gold-500); }
+
+/* Pager dots */
+.fl-dots { display: inline-flex; gap: 8px; align-items: center; }
+.fl-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(245, 240, 230, 0.2); padding: 0; transition: all var(--dur-2); }
+.fl-dot:hover { background: rgba(245, 240, 230, 0.45); }
+.fl-dot--on { width: 24px; border-radius: 4px; background: var(--gold-500); }
+
+/* ── Selection: pass + flight details ────────────────────── */
+.fl-sel-wrap { scroll-margin-top: var(--sp-7); }
+.fl-sel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: var(--sp-6);
+  align-items: center;
+}
+.fl-sel .bpass { max-width: none; }
+.fl-info {
+  display: grid;
+  gap: var(--sp-3);
+  padding: var(--sp-6);
+  border-radius: 18px;
+  background: linear-gradient(180deg, #0d1427, #070b16);
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  box-shadow: var(--sh-3);
+}
+.fl-info__field { font-size: 0.84rem; font-weight: 600; color: var(--gold-300); }
+.fl-info__title { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; line-height: 1.1; color: var(--text-hi); }
+.fl-info__sum { color: var(--text-mid); line-height: 1.6; }
+.fl-info__facts {
+  margin: var(--sp-2) 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--sp-3);
+  padding: var(--sp-4) 0;
+  border-block: 1px solid rgba(245, 240, 230, 0.08);
+}
+.fl-info__facts dt { font-size: 0.76rem; color: var(--text-low); }
+.fl-info__facts dd { margin: 4px 0 0; font-weight: 600; color: var(--text-hi); }
+.fl-info__skills { display: flex; flex-wrap: wrap; gap: 6px; }
+.fl-info__skills span {
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  background: rgba(245, 240, 230, 0.06);
+  font-size: 0.78rem;
+  color: var(--text-mid);
+}
+.fl-info__actions { display: flex; gap: var(--sp-3); flex-wrap: wrap; margin-top: var(--sp-3); }
+
+.fl-waiting {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-5) var(--sp-6);
+  border-radius: 18px;
+  border: 2px dashed rgba(201, 162, 39, 0.3);
+  background: rgba(6, 9, 17, 0.55);
+}
+.fl-waiting__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(201, 162, 39, 0.12);
+  color: var(--gold-300);
+}
+.fl-waiting__t { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; color: var(--text-hi); }
+.fl-waiting__d { color: var(--text-low); font-size: var(--fs-sm); margin-top: 2px; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1180px) {
+  .fl-cols, .fl-row { grid-template-columns: 70px minmax(0, 1fr) 120px 140px 110px; }
+  .fl-cols span:nth-child(5), .fl-row .fl-cell[data-k='Match'] { display: none; }
+  .fl-sel { grid-template-columns: 1fr; }
+}
+@media (max-width: 860px) {
+  .fl-cols { display: none; }
+  .fl-row {
+    grid-template-columns: 58px minmax(0, 1fr) auto;
+    grid-template-areas:
+      'gate dest dest'
+      'gate demand pay'
+      'gate match action';
+    gap: var(--sp-3);
+  }
+  .fl-gate { grid-area: gate; align-self: start; }
+  .fl-dest { grid-area: dest; }
+  .fl-row .fl-cell[data-k='Demand'] { grid-area: demand; }
+  .fl-row .fl-cell[data-k='Salary'] { grid-area: pay; justify-self: end; }
+  .fl-row .fl-cell[data-k='Match'] { grid-area: match; display: block; }
+  .fl-action { grid-area: action; }
+  .fl-dest__sum { white-space: normal; }
+  .fl-dest__icon { width: 36px; height: 36px; }
+}
+@media (max-width: 560px) {
+  .fl-board__count { display: none; }
+  .fl-row { grid-template-columns: 40px minmax(0, 1fr) auto; padding: var(--sp-4); }
+  .fl-dest__icon { display: none; }
+  .fl-gate { font-size: 0.9rem; }
+  /* No score to show: let the select button take the row on its own. */
+  .fl-row .fl-cell--empty[data-k='Match'] { visibility: hidden; }
+}

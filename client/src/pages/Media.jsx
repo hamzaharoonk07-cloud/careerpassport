@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button } from '../components/primitives/Button.jsx';
 import { publicService } from '../services/public.service.js';
 import { apiError } from '../services/api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import '../styles/hub.css';
+import '../styles/media.css';
 
 /** What a visitor may send in. `Everything` is a filter, not a kind. */
 const SUBMIT_KINDS = [
@@ -15,13 +16,48 @@ const SUBMIT_KINDS = [
 
 const EMPTY = { title: '', description: '', kind: 'link', url: '' };
 
+/** The channels on the seat-back screen. `Everything` is a filter, not a kind. */
 const KINDS = [
-  { id: '', label: 'Everything' },
-  { id: 'video', label: 'Video' },
-  { id: 'image', label: 'Image' },
-  { id: 'document', label: 'Document' },
-  { id: 'link', label: 'Link' },
+  { id: '', label: 'All channels' },
+  { id: 'video', label: 'Videos' },
+  { id: 'image', label: 'Images' },
+  { id: 'document', label: 'Documents' },
+  { id: 'link', label: 'Links' },
 ];
+
+/**
+ * Shown on the big screen until anyone shares a video: the site's own
+ * journey film, which really is on this server. The screen is the page, so
+ * it should never be switched off.
+ */
+const HOUSE_FILM = {
+  _id: 'house-film',
+  kind: 'video',
+  title: 'The PathSeeker journey',
+  description: 'The film behind the site: a passport issued, a gate chosen, a flight, and an arrival.',
+  url: '/videos/journey.mp4',
+  thumbnailUrl: '/images/journey.jpg',
+  house: true,
+};
+
+const KIND_ICON = {
+  video: <path d="M4 6.5h11a1.5 1.5 0 0 1 1.5 1.5v8a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 16V8A1.5 1.5 0 0 1 4 6.5zM16.5 10.5l5-3v9l-5-3" />,
+  image: <><rect x="3" y="4.5" width="18" height="15" rx="2" /><circle cx="9" cy="10" r="1.8" /><path d="m3.5 18 5.5-5 4 3.5 3-2.5 4.5 4" /></>,
+  document: <><path d="M7 3h7l4 4v14H7z" /><path d="M14 3v4h4M9.5 12h6M9.5 15.5h6" /></>,
+  link: <path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />,
+};
+
+function KindIcon({ kind, size = 22 }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {KIND_ICON[kind] || KIND_ICON.link}
+    </svg>
+  );
+}
+
+const hostOf = (url) => {
+  try { return new URL(url, window.location.origin).hostname.replace(/^www\./, ''); } catch { return ''; }
+};
 
 /**
  * The multimedia centre.
@@ -34,6 +70,7 @@ export default function Media() {
   const { isAuthed } = useAuth();
   const [items, setItems] = useState([]);
   const [kind, setKind] = useState('');
+  const [nowPlaying, setNowPlaying] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -79,85 +116,182 @@ export default function Media() {
     }
   };
 
+  // Loaded once and filtered here, so every channel tab can show its count.
   useEffect(() => {
     let alive = true;
-    setLoading(true);
-    publicService.media(kind ? { kind } : undefined)
+    publicService.media()
       .then((m) => alive && setItems(m))
       .catch((e) => alive && setError(apiError(e)))
       .finally(() => alive && setLoading(false));
     return () => { alive = false; };
-  }, [kind]);
+  }, []);
+
+  const counts = useMemo(() => {
+    const c = { '': items.length };
+    for (const m of items) c[m.kind] = (c[m.kind] || 0) + 1;
+    return c;
+  }, [items]);
+
+  const shown = kind ? items.filter((m) => m.kind === kind) : items;
+  const playable = items.filter((m) => m.kind === 'video' || m.kind === 'image');
+  const featured = nowPlaying || playable.find((m) => m.kind === 'video') || playable[0] || HOUSE_FILM;
+  const upNext = [...playable, ...(featured.house ? [] : [HOUSE_FILM])]
+    .filter((m) => m._id !== featured._id)
+    .slice(0, 4);
+
+  const play = (m) => {
+    setNowPlaying(m);
+    document.querySelector('.ife__screen')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
-    <div className="page wrap">
-      <header className="page__head">
+    <div className="page wrap ife">
+      <header className="ife__head">
         <div>
-          <p className="t-eyebrow">In-flight entertainment</p>
-          <h1 className="t-h2 page__title">Multimedia centre</h1>
-          <p className="t-lead" style={{ marginTop: 'var(--sp-4)' }}>
-            Talks, walkthroughs and guides. Send one in and an administrator
-            reviews it before it appears here.
+          <h1 className="ife__title">In-flight entertainment</h1>
+          <p className="t-lead" style={{ marginTop: 'var(--sp-3)' }}>
+            Talks, walkthroughs and guides about the careers on the board. Anyone can share
+            one; an administrator checks it before it goes on air.
           </p>
         </div>
-        <Button onClick={() => { setSent(''); setForm({ ...EMPTY }); }}>
+        <Button size="lg" onClick={() => { setSent(''); setForm({ ...EMPTY }); }}>
           Share something
         </Button>
       </header>
 
       {sent && <p className="anotice" role="status">{sent}</p>}
+      {error && <div className="auth__alert" role="alert">{error}</div>}
 
-      <div className="hub__filters" role="group" aria-label="Filter by kind">
+      {/* ── The seat-back screen ─────────────────────────── */}
+      <section className="ife__screen" aria-label="Now playing">
+        <div className="ife__player">
+          {featured.kind === 'video' ? (
+            <video
+              key={featured._id}
+              className="ife__video"
+              controls
+              preload="metadata"
+              poster={featured.thumbnailUrl || undefined}
+            >
+              <source src={featured.url} type="video/mp4" />
+            </video>
+          ) : (
+            <img key={featured._id} className="ife__video" src={featured.url} alt={featured.title} />
+          )}
+          <div className="ife__caption">
+            <span className="ife__live">Now playing</span>
+            <h2 className="ife__now">{featured.title}</h2>
+            {featured.description && <p className="ife__desc">{featured.description}</p>}
+            {(featured.career || featured.field) && (
+              <p className="ife__about">About {featured.career?.title || featured.field?.name}</p>
+            )}
+          </div>
+        </div>
+
+        <aside className="ife__next">
+          <h3 className="ife__next-h">Up next</h3>
+          {upNext.length === 0 ? (
+            <div className="ife__next-empty">
+              <p>Nothing else on air yet. Good things to share:</p>
+              <ul className="ife__ideas">
+                <li>A day in the life of someone in a career on the board</li>
+                <li>A walkthrough of a course or certification</li>
+                <li>An interview about how someone got their first job</li>
+              </ul>
+              <Button size="sm" variant="secondary" onClick={() => { setSent(''); setForm({ ...EMPTY, kind: 'video' }); }}>
+                Share a video
+              </Button>
+            </div>
+          ) : (
+            <ul className="ife__queue">
+              {upNext.map((m) => (
+                <li key={m._id}>
+                  <button type="button" className="ife__qitem" onClick={() => play(m)}>
+                    <span className="ife__qthumb">
+                      {m.thumbnailUrl || m.kind === 'image'
+                        ? <img src={m.thumbnailUrl || m.url} alt="" loading="lazy" />
+                        : <KindIcon kind={m.kind} />}
+                    </span>
+                    <span className="ife__qtext">
+                      <span className="ife__qtitle">{m.title}</span>
+                      <span className="ife__qkind">{m.kind === 'video' ? 'Video' : 'Image'}</span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </aside>
+      </section>
+
+      {/* ── Channels ─────────────────────────────────────── */}
+      <div className="ife__channels" role="group" aria-label="Filter by kind">
         {KINDS.map((k) => (
           <button
             key={k.id}
             type="button"
-            className={`hub__chip ${kind === k.id ? 'hub__chip--on' : ''}`}
+            className="ife__channel"
             onClick={() => setKind(k.id)}
             aria-pressed={kind === k.id}
           >
-            {k.label}
+            {k.id ? <KindIcon kind={k.id} size={18} /> : (
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                <rect x="3" y="3" width="7.5" height="7.5" rx="1.5" /><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5" />
+                <rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5" /><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5" />
+              </svg>
+            )}
+            <span>{k.label}</span>
+            <span className="ife__count">{counts[k.id] || 0}</span>
           </button>
         ))}
       </div>
 
-      {error && <div className="auth__alert" role="alert">{error}</div>}
-
       {loading ? (
-        <div className="loading-row"><span className="spinner" aria-hidden="true" /> Loading…</div>
-      ) : items.length === 0 ? (
-        <p className="hub__empty">
-          Nothing here yet. Send something in, or wait for an administrator to add it — either way it appears here once it is approved.
-        </p>
+        <div className="loading-row"><span className="spinner" aria-hidden="true" /> Loading the programme…</div>
+      ) : shown.length === 0 ? (
+        <div className="ife__empty">
+          <span className="ife__empty-icon"><KindIcon kind={kind || 'video'} size={30} /></span>
+          <h2 className="ife__empty-h">
+            {kind ? `No ${KINDS.find((k) => k.id === kind).label.toLowerCase()} on this channel yet` : 'The programme is empty'}
+          </h2>
+          <p>Share a talk, a walkthrough or a guide you found useful. It goes on air once an administrator approves it.</p>
+          <Button variant="secondary" onClick={() => { setSent(''); setForm({ ...EMPTY, kind: kind || 'link' }); }}>
+            Share something
+          </Button>
+        </div>
       ) : (
-        <div className="hub__grid">
-          {items.map((m) => (
-            <article className="hub__card" key={m._id}>
-              {m.kind === 'video' ? (
-                <video className="hub__media" controls preload="none" poster={m.thumbnailUrl || undefined}>
-                  <source src={m.url} type="video/mp4" />
-                </video>
-              ) : m.kind === 'image' ? (
-                <img className="hub__media" src={m.url} alt={m.title} loading="lazy" />
-              ) : null}
-
-              <div className="hub__body">
-                <span className="hub__kind">{m.kind}</span>
-                <h2 className="hub__title">{m.title}</h2>
-                {m.description && <p className="hub__text">{m.description}</p>}
-                {(m.career || m.field) && (
-                  <p className="hub__tag">{m.career?.title || m.field?.name}</p>
-                )}
-                {(m.kind === 'document' || m.kind === 'link') && (
-                  // Explicit click, new tab, and rel guards against the opener
-                  // being reachable from the destination.
-                  <a className="hub__open" href={m.url} target="_blank" rel="noreferrer noopener">
-                    Open {m.kind} →
-                  </a>
-                )}
-              </div>
-            </article>
-          ))}
+        <div className="ife__grid">
+          {shown.map((m) => {
+            const onScreen = m.kind === 'video' || m.kind === 'image';
+            const inner = (
+              <>
+                <span className={`ife__tile ife__tile--${m.kind}`}>
+                  {m.kind === 'image' || m.thumbnailUrl ? (
+                    <img src={m.thumbnailUrl || m.url} alt="" loading="lazy" />
+                  ) : (
+                    <KindIcon kind={m.kind} size={40} />
+                  )}
+                  {m.kind === 'video' && <span className="ife__play" aria-hidden="true" />}
+                </span>
+                <span className="ife__cbody">
+                  <span className="ife__ckind"><KindIcon kind={m.kind} size={14} /> {m.kind}</span>
+                  <span className="ife__ctitle">{m.title}</span>
+                  {m.description && <span className="ife__ctext">{m.description}</span>}
+                  <span className="ife__cfoot">
+                    {m.career?.title || m.field?.name || (!onScreen && hostOf(m.url)) || ''}
+                    <span className="ife__cgo">{onScreen ? 'Play on screen' : `Open ${m.kind}`}</span>
+                  </span>
+                </span>
+              </>
+            );
+            // A video or image plays on the big screen; a document or link
+            // opens in a new tab on an explicit click, never by itself.
+            return onScreen ? (
+              <button key={m._id} type="button" className="ife__card" onClick={() => play(m)}>{inner}</button>
+            ) : (
+              <a key={m._id} className="ife__card" href={m.url} target="_blank" rel="noreferrer noopener">{inner}</a>
+            );
+          })}
         </div>
       )}
 

@@ -1,0 +1,270 @@
+/* ============================================================
+   Multimedia — the seat-back entertainment screen
+   A bezelled screen with a now-playing player and a queue,
+   channel tabs, and programme tiles.
+   ============================================================ */
+
+.ife__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--sp-5);
+  flex-wrap: wrap;
+}
+.ife__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--text-hi);
+}
+
+/* ── The screen ──────────────────────────────────────────── */
+.ife__screen {
+  margin-top: var(--sp-7);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 0;
+  padding: 14px;
+  border-radius: 28px;
+  background: linear-gradient(160deg, #1b2030, #0a0d16 55%, #141824);
+  box-shadow:
+    0 40px 90px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+  scroll-margin-top: calc(var(--nav-h) + var(--sp-4));
+}
+.ife__player {
+  position: relative;
+  border-radius: 16px 0 0 16px;
+  overflow: hidden;
+  background: #000;
+  aspect-ratio: 16 / 9;
+}
+.ife__video { width: 100%; height: 100%; object-fit: cover; display: block; background: #000; }
+/* The caption sits over the picture until playback is wanted; controls stay reachable underneath it. */
+.ife__caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: var(--sp-8) var(--sp-6) calc(var(--sp-6) + 36px);
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.85));
+  pointer-events: none;
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+.ife__player:hover .ife__caption,
+.ife__player:focus-within .ife__caption { opacity: 0; }
+.ife__live {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  background: var(--gold-500);
+  color: var(--ink-900);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+.ife__live::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--ink-900); }
+.ife__now {
+  margin-top: var(--sp-3);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #fff;
+}
+.ife__desc { margin-top: var(--sp-2); max-width: 56ch; color: #d6d2c6; line-height: 1.55; }
+.ife__about { margin-top: var(--sp-2); color: var(--gold-300); font-size: var(--fs-sm); }
+
+.ife__next {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 16px 16px 0;
+  background: #070a12;
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  padding: var(--sp-5) var(--sp-4);
+  min-width: 0;
+}
+.ife__next-h { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; color: var(--text-hi); padding-inline: var(--sp-2); }
+.ife__next-empty { margin-top: var(--sp-4); padding-inline: var(--sp-2); color: var(--text-mid); font-size: var(--fs-sm); line-height: 1.6; display: grid; gap: var(--sp-4); justify-items: start; }
+.ife__ideas { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--sp-3); }
+.ife__ideas li { position: relative; padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-6); border-radius: 10px; background: rgba(245, 240, 230, 0.04); color: var(--text-hi); }
+.ife__ideas li::before { content: ''; position: absolute; left: var(--sp-3); top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 3px; background: var(--gold-500); }
+.ife__queue { list-style: none; padding: 0; margin: var(--sp-4) 0 0; display: grid; gap: var(--sp-2); }
+.ife__qitem {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: var(--sp-3);
+  align-items: center;
+  padding: var(--sp-2);
+  border-radius: 10px;
+  text-align: left;
+  transition: background var(--dur-2) var(--ease-out);
+}
+.ife__qitem:hover { background: rgba(201, 162, 39, 0.1); }
+.ife__qthumb {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--ink-700);
+  color: var(--gold-400);
+}
+.ife__qthumb img { width: 100%; height: 100%; object-fit: cover; }
+.ife__qtext { display: grid; gap: 2px; min-width: 0; }
+.ife__qtitle {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-hi);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.ife__qkind { font-size: 0.74rem; color: var(--text-low); }
+
+@media (max-width: 960px) {
+  .ife__screen { grid-template-columns: 1fr; border-radius: 22px; padding: 10px; }
+  .ife__player { border-radius: 14px 14px 0 0; }
+  .ife__next { border-radius: 0 0 14px 14px; border-left: 0; border-top: 1px solid rgba(255, 255, 255, 0.06); }
+  .ife__caption { position: static; padding: var(--sp-4); background: #05070d; }
+  .ife__player { aspect-ratio: auto; }
+  .ife__video { aspect-ratio: 16 / 9; }
+  .ife__player:hover .ife__caption, .ife__player:focus-within .ife__caption { opacity: 1; }
+}
+
+/* ── Channels ────────────────────────────────────────────── */
+.ife__channels {
+  margin-top: var(--sp-7);
+  display: flex;
+  gap: var(--sp-2);
+  overflow-x: auto;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(245, 240, 230, 0.1);
+  scrollbar-width: none;
+}
+.ife__channels::-webkit-scrollbar { display: none; }
+.ife__channel {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -5px;
+  color: var(--text-mid);
+  font-weight: 500;
+  transition: color var(--dur-2), border-color var(--dur-2);
+}
+.ife__channel:hover { color: var(--text-hi); }
+.ife__channel[aria-pressed='true'] { color: var(--gold-300); border-bottom-color: var(--gold-500); }
+.ife__count {
+  min-width: 22px;
+  padding: 1px 7px;
+  border-radius: var(--r-pill);
+  background: rgba(245, 240, 230, 0.08);
+  font-size: 0.74rem;
+  text-align: center;
+  color: var(--text-low);
+}
+.ife__channel[aria-pressed='true'] .ife__count { background: var(--gold-500); color: var(--ink-900); font-weight: 700; }
+
+/* ── Programme tiles ─────────────────────────────────────── */
+.ife__grid {
+  margin-top: var(--sp-6);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: var(--sp-5);
+}
+.ife__card {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0b1122;
+  border: 1px solid rgba(245, 240, 230, 0.08);
+  transition: transform var(--dur-3) var(--ease-out), border-color var(--dur-2);
+}
+.ife__card:hover { transform: translateY(-4px); border-color: rgba(201, 162, 39, 0.5); }
+.ife__tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  color: var(--gold-300);
+  background: radial-gradient(90% 90% at 30% 20%, #1c2a55, #0a1128);
+}
+.ife__tile--document { background: radial-gradient(90% 90% at 30% 20%, #3b2f18, #140f06); }
+.ife__tile--link { background: radial-gradient(90% 90% at 30% 20%, #173a3a, #061212); color: #8fd6c8; }
+.ife__tile img { width: 100%; height: 100%; object-fit: cover; }
+.ife__play {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(6, 9, 17, 0.7);
+  border: 2px solid var(--gold-400);
+  transition: transform var(--dur-2) var(--ease-impact);
+}
+.ife__play::after {
+  content: '';
+  position: absolute;
+  left: 22px;
+  top: 17px;
+  border-style: solid;
+  border-width: 10px 0 10px 16px;
+  border-color: transparent transparent transparent var(--gold-300);
+}
+.ife__card:hover .ife__play { transform: scale(1.1); }
+.ife__cbody { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-4) var(--sp-5) var(--sp-5); flex: 1; }
+.ife__ckind { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--gold-400); text-transform: capitalize; }
+.ife__ctitle { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--text-hi); line-height: 1.3; }
+.ife__ctext {
+  color: var(--text-mid);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.ife__cfoot {
+  margin-top: auto;
+  padding-top: var(--sp-3);
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  font-size: 0.8rem;
+  color: var(--text-low);
+}
+.ife__cgo { color: var(--gold-300); font-weight: 600; white-space: nowrap; }
+
+.ife__empty {
+  margin-top: var(--sp-6);
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-8) var(--sp-5);
+  text-align: center;
+  border-radius: 18px;
+  border: 1px dashed rgba(201, 162, 39, 0.35);
+  background: rgba(10, 17, 40, 0.5);
+  color: var(--text-mid);
+}
+.ife__empty p { max-width: 52ch; line-height: 1.6; margin-bottom: var(--sp-3); }
+.ife__empty-icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: rgba(201, 162, 39, 0.12);
+  color: var(--gold-300);
+}
+.ife__empty-h { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; color: var(--text-hi); }

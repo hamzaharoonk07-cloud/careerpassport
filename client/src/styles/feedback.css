@@ -1,0 +1,238 @@
+/* ============================================================
+   Feedback — the passenger comment card
+   Dark page, one cream card with a perforated tear line along the
+   top; replies come back as ticket stubs.
+   ============================================================ */
+
+.fbk__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: var(--sp-8);
+  align-items: start;
+}
+.fbk__intro { position: sticky; top: calc(var(--nav-h) + var(--sp-6)); }
+.fbk__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4.8vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--text-hi);
+}
+
+.fbk__steps { list-style: none; padding: 0; margin: var(--sp-7) 0 0; display: grid; gap: 0; }
+.fbk__steps li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: var(--sp-4);
+  padding-bottom: var(--sp-5);
+  color: var(--text-mid);
+  line-height: 1.55;
+}
+.fbk__steps li:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 40px;
+  bottom: 4px;
+  width: 2px;
+  background: repeating-linear-gradient(180deg, rgba(201, 162, 39, 0.5) 0 5px, transparent 5px 10px);
+}
+.fbk__steps strong { display: block; color: var(--text-hi); font-weight: 600; }
+.fbk__step-n {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--gold-500);
+  color: var(--gold-300);
+  font-weight: 700;
+}
+
+/* ── The card ────────────────────────────────────────────── */
+.fbk__card {
+  --paper: #f7f2e7;
+  --ink: #1b1a16;
+  --muted: #6d6857;
+  --rule: rgba(27, 26, 22, 0.14);
+  position: relative;
+  padding: var(--sp-7) clamp(var(--sp-5), 4vw, var(--sp-7)) var(--sp-6);
+  border-radius: 6px 6px 18px 18px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+/* The tear line: punched holes along the top edge. */
+.fbk__card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -7px;
+  height: 14px;
+  background: radial-gradient(circle at 7px 7px, var(--ink-900) 5px, transparent 5.5px) 0 0 / 22px 14px repeat-x;
+}
+.fbk__card::after {
+  content: '';
+  position: absolute;
+  left: var(--sp-5);
+  right: var(--sp-5);
+  top: var(--sp-5);
+  border-top: 2px dashed var(--rule);
+}
+
+.fbk__card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--sp-4);
+  padding-bottom: var(--sp-4);
+  border-bottom: 3px solid var(--ink);
+}
+.fbk__card-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; }
+.fbk__card-no { font-family: var(--font-mono); font-size: 0.9rem; color: #8a6d12; white-space: nowrap; }
+
+.fbk__group { display: grid; gap: var(--sp-3); margin: var(--sp-6) 0 0; padding: 0; border: 0; min-width: 0; }
+.fbk__label { font-weight: 600; font-size: 0.95rem; color: var(--ink); padding: 0; }
+
+.fbk__types { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-3); }
+.fbk__type {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--sp-3);
+  row-gap: 2px;
+  align-items: center;
+  padding: var(--sp-4);
+  border-radius: 12px;
+  border: 1.5px solid var(--rule);
+  background: #fffdf8;
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color var(--dur-2), background var(--dur-2), box-shadow var(--dur-2);
+}
+.fbk__type svg { grid-row: span 2; color: #9c8a55; }
+.fbk__type:hover { border-color: #b99a3c; }
+.fbk__type:has(input:focus-visible) { outline: 2px solid var(--gold-500); outline-offset: 2px; }
+.fbk__type--on { border-color: var(--ink); background: #fff; box-shadow: 0 0 0 1px var(--ink); }
+.fbk__type--on svg { color: #a17c10; }
+.fbk__type-l { font-weight: 600; color: var(--ink); line-height: 1.25; }
+.fbk__type-n { font-size: 0.8rem; line-height: 1.4; }
+
+.fbk__rating { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--sp-2); }
+.fbk__rate { display: grid; justify-items: center; gap: 6px; cursor: pointer; }
+.fbk__rate-n {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--rule);
+  background: #fffdf8;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--muted);
+  transition: all var(--dur-2) var(--ease-out);
+}
+.fbk__rate:hover .fbk__rate-n { border-color: #b99a3c; }
+.fbk__rate:has(input:focus-visible) .fbk__rate-n { outline: 2px solid var(--gold-500); outline-offset: 2px; }
+.fbk__rate--below .fbk__rate-n { background: #efe2b8; border-color: #d6bf73; color: #6b560f; }
+.fbk__rate--on .fbk__rate-n { background: var(--ink); border-color: var(--ink); color: var(--gold-300); transform: scale(1.08); }
+.fbk__rate-w { font-size: 0.78rem; color: var(--muted); }
+.fbk__rate--on .fbk__rate-w { color: var(--ink); font-weight: 600; }
+
+.fbk__input {
+  width: 100%;
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: 10px;
+  border: 1.5px solid var(--rule);
+  background: #fffdf8;
+  color: var(--ink);
+  line-height: 1.6;
+  resize: vertical;
+}
+.fbk__input::placeholder { color: #a09a88; }
+.fbk__input:focus-visible { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.35); }
+
+.fbk__card-foot {
+  margin-top: var(--sp-6);
+  padding-top: var(--sp-5);
+  border-top: 2px dashed var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+}
+.fbk__from { font-size: var(--fs-sm); color: var(--muted); }
+.fbk__from strong { color: var(--ink); }
+
+.fbk__sent {
+  margin-top: var(--sp-5);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: 10px;
+  background: #dcefe3;
+  color: #1d5a3c;
+  font-weight: 500;
+}
+
+/* ── Your cards, as stubs ────────────────────────────────── */
+.fbk__mine { margin-top: var(--sp-9); }
+.fbk__mine-h { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--text-hi); margin-bottom: var(--sp-2); }
+.fbk__stubs { margin-top: var(--sp-5); display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: var(--sp-4); }
+.fbk__stub {
+  display: grid;
+  grid-template-columns: 76px 1fr;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0b1122;
+  border: 1px solid rgba(245, 240, 230, 0.08);
+}
+.fbk__stub-side {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: var(--sp-2);
+  background: var(--gold-500);
+  color: var(--ink-900);
+  border-right: 2px dashed rgba(6, 9, 17, 0.35);
+}
+.fbk__stub-rating { font-weight: 700; font-size: 0.9rem; }
+.fbk__stub-main { padding: var(--sp-4) var(--sp-5); display: grid; gap: var(--sp-2); min-width: 0; }
+.fbk__stub-top { display: flex; justify-content: space-between; gap: var(--sp-3); align-items: center; }
+.fbk__stub-type { font-weight: 600; color: var(--text-hi); }
+.fbk__status {
+  padding: 2px 10px;
+  border-radius: var(--r-pill);
+  font-size: 0.76rem;
+  background: rgba(245, 240, 230, 0.08);
+  color: var(--text-mid);
+}
+.fbk__status--done { background: rgba(63, 155, 115, 0.2); color: #7fdcae; }
+.fbk__stub-msg { color: var(--text-mid); line-height: 1.6; font-size: var(--fs-sm); }
+.fbk__reply {
+  margin-top: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: 10px;
+  border-left: 3px solid var(--gold-500);
+  background: rgba(201, 162, 39, 0.08);
+  color: var(--text-hi);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+}
+.fbk__reply-from { display: block; font-size: 0.76rem; color: var(--gold-300); font-weight: 600; margin-bottom: 2px; }
+.fbk__noreply { color: var(--text-low); font-size: 0.82rem; }
+
+@media (max-width: 960px) {
+  .fbk__layout { grid-template-columns: 1fr; gap: var(--sp-7); }
+  .fbk__intro { position: static; }
+  .fbk__card { rotate: none; }
+}
+@media (max-width: 520px) {
+  .fbk__types { grid-template-columns: 1fr; }
+  .fbk__rate-n { width: 42px; height: 42px; }
+  .fbk__rate-w { font-size: 0.68rem; }
+  .fbk__card-foot .btn { width: 100%; }
+}

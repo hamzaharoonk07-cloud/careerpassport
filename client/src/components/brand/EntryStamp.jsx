@@ -16,7 +16,7 @@
  */
 export function EntryStamp({
   size = 190,
-  country = 'ISLAMIC REPUBLIC OF PAKISTAN',
+  country = 'PATHSEEKER CAREER AUTHORITY',
   port = 'KARACHI · JINNAH INTL',
   date = new Date(),
   status = 'ADMITTED',

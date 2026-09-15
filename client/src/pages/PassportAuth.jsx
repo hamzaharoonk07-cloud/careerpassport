@@ -119,6 +119,9 @@ export default function PassportAuth() {
   const [alert, setAlert] = useState('');
   const [phase, setPhase] = useState('idle'); // idle | verifying | stamping | done
   const [muted, setMuted] = useState(true);
+  // The optional profile fields sit behind a disclosure so the form that
+  // actually creates the account fits on one screen.
+  const [more, setMore] = useState(false);
 
   const firstFieldRef = useRef(null);
   const timers = useRef([]);
@@ -264,6 +267,19 @@ export default function PassportAuth() {
      genuine DOM inputs, so autofill, focus order and screen readers all work. */
   const formEl = (
     <form className="pa__form pp3d-form" onSubmit={submit} noValidate>
+      {/* On a phone the left page is hidden, and with it the title and the
+          way to switch between applying and signing in. This header carries
+          both below that width. */}
+      <div className="pa__formhead">
+        <h1 className="pa__formhead-h">{mode === 'register' ? 'Passport application' : 'Present your passport'}</h1>
+        <p className="pa__formhead-switch">
+          {mode === 'register' ? 'Already have a passport?' : 'No passport yet?'}{' '}
+          <button type="button" className="pa__link" onClick={() => { setMode(mode === 'register' ? 'login' : 'register'); setErrors({}); setAlert(''); }}>
+            {mode === 'register' ? 'Sign in' : 'Apply for one'}
+          </button>
+        </p>
+      </div>
+
       {alert && <div className="pa__alert" role="alert">{alert}</div>}
 
       {mode === 'register' && (
@@ -289,7 +305,7 @@ export default function PassportAuth() {
             id="password" label="Password" type="password"
               onFocus={() => setSecret(true)} onBlur={() => setSecret(false)}
             value={form.password} onChange={set('password')} error={errors.password}
-            autoComplete="new-password" placeholder="Min. 8 characters" disabled={busy}
+            autoComplete="new-password" placeholder="8+ characters" disabled={busy}
           />
           <PField
             id="confirmPassword" label="Confirm" type="password"
@@ -347,16 +363,30 @@ export default function PassportAuth() {
             </div>
           </div>
 
+          <button
+            type="button"
+            className={`pa__more ${more ? 'pa__more--open' : ''}`}
+            onClick={() => setMore((v) => !v)}
+            aria-expanded={more}
+            aria-controls="pa-more"
+          >
+            <span>{more ? 'Hide the optional details' : 'Add more about you'}</span>
+            <span className="pa__more-note">Optional · education, role, skills</span>
+            <span className="pa__more-icon" aria-hidden="true">{more ? '−' : '+'}</span>
+          </button>
+
+          {more && (
+          <div className="pa__morebox" id="pa-more">
           <div className="pa__row">
             <PField
               id="education" label="Education" half
               value={form.education} onChange={set('education')} error={errors.education}
-              placeholder="BS Computer Science" disabled={busy} hint="Optional"
+              placeholder="BS Computer Science" disabled={busy}
             />
             <PField
               id="age" label="Age" half type="number" min="13" max="100"
               value={form.age} onChange={set('age')} error={errors.age}
-              placeholder="21" disabled={busy} hint="Optional"
+              placeholder="21" disabled={busy}
             />
           </div>
 
@@ -368,12 +398,12 @@ export default function PassportAuth() {
             <PField
               id="currentRole" label="Current role" half
               value={form.currentRole} onChange={set('currentRole')} error={errors.currentRole}
-              placeholder="Student" disabled={busy} hint="Optional"
+              placeholder="Student" disabled={busy}
             />
             <PField
               id="location" label="Location" half
               value={form.location} onChange={set('location')} error={errors.location}
-              placeholder="Karachi" disabled={busy} hint="Optional"
+              placeholder="Karachi" disabled={busy}
             />
           </div>
 
@@ -387,6 +417,8 @@ export default function PassportAuth() {
             value={form.interests} onChange={set('interests')} error={errors.interests}
             placeholder="AI, fintech, product design" disabled={busy} hint="Separated by commas"
           />
+          </div>
+          )}
         </>
       )}
 
@@ -427,8 +459,10 @@ export default function PassportAuth() {
           {/* ── Inside pages ─────────────────────────────── */}
           <div className="pa__pages">
             <div className={`pa__page pa__page--left ${secret ? 'pa__page--private' : ''}`}>
-              <div className="pa__crest"><Logo size={42} /></div>
-              <p className="pa__doc">PathSeeker · Career Authority</p>
+              <div className="pa__crest">
+                <Logo size={36} />
+                <p className="pa__doc">PathSeeker · Career Authority</p>
+              </div>
               <h1 className="pa__h">
                 {mode === 'register' ? 'Passport Application' : 'Present Your Passport'}
               </h1>
@@ -461,41 +495,44 @@ export default function PassportAuth() {
                 </dl>
               </div>
 
-              <div className="pa__sealwrap">
-                <div className="pa__seal" aria-hidden="true">
-                  <PassportEmblem size={150} ring="OFFICIAL SEAL · PATHSEEKER · OFFICIAL SEAL · PATHSEEKER · " />
-                </div>
-                {(phase === 'stamping' || phase === 'done') && (
-                  <div className="pa__stamp" role="status" aria-label="Admitted">
-                    <span className="pa__shock" aria-hidden="true" />
-                    <EntryStamp
-                      size={168}
-                      status="ADMITTED"
-                      port="KARACHI · JINNAH INTL"
-                      seed={(user?.passportNumber || '').length}
-                    />
+              <div className="pa__sealrow">
+                <div className="pa__sealwrap">
+                  <div className="pa__seal" aria-hidden="true">
+                    <PassportEmblem size={118} ring="OFFICIAL SEAL · PATHSEEKER · OFFICIAL SEAL · PATHSEEKER · " />
                   </div>
-                )}
+                  {(phase === 'stamping' || phase === 'done') && (
+                    <div className="pa__stamp" role="status" aria-label="Admitted">
+                      <span className="pa__shock" aria-hidden="true" />
+                      <EntryStamp
+                        size={168}
+                        status="ADMITTED"
+                        port="KARACHI · JINNAH INTL"
+                        seed={(user?.passportNumber || '').length}
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className="pa__sealrow-text">
+                  {mode === 'register' && (
+                    <div className="pa__mrz" aria-hidden="true">{mrz1}<br />{mrz2}</div>
+                  )}
+
+                  <p className="pa__switch">
+                    {mode === 'register' ? 'Already have a passport?' : 'No passport yet?'}{' '}
+                    <button
+                      type="button"
+                      className="pa__link"
+                      onClick={() => {
+                        setMode(mode === 'register' ? 'login' : 'register');
+                        setErrors({});
+                        setAlert('');
+                      }}
+                    >
+                      {mode === 'register' ? 'Sign in' : 'Apply for one'}
+                    </button>
+                  </p>
+                </div>
               </div>
-
-              {mode === 'register' && (
-                <div className="pa__mrz" aria-hidden="true">{mrz1}<br />{mrz2}</div>
-              )}
-
-              <p className="pa__switch">
-                {mode === 'register' ? 'Already have a passport?' : 'No passport yet?'}{' '}
-                <button
-                  type="button"
-                  className="pa__link"
-                  onClick={() => {
-                    setMode(mode === 'register' ? 'login' : 'register');
-                    setErrors({});
-                    setAlert('');
-                  }}
-                >
-                  {mode === 'register' ? 'Sign in' : 'Apply for one'}
-                </button>
-              </p>
             </div>
 
             <div className="pa__page pa__page--right">

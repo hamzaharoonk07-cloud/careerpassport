@@ -829,3 +829,161 @@
   /* The cover spans the whole book on a phone, so the page block does too. */
   .pa__thickness { left: 0; width: 100%; translate: 6px 0; }
 }
+
+/* ============================================================
+   Layout pass — the open passport has to fit a laptop screen
+   ============================================================ */
+
+/* Open, the book starts below the corner links and lies flat: the leftover
+   3D tilt drew the spread as a trapezoid. */
+.pa.pa--open { align-content: start; padding-top: calc(var(--sp-8) + var(--sp-4)); }
+.pa--open.pa--settled .pa__book { transform: none; }
+.pa--open .pa__book { width: min(96vw, 1000px); }
+
+/* ── Left page: one even column ─────────────────────────── */
+.pa__page--left { gap: 0; }
+.pa__page--left .pa__crest { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: 0; }
+.pa__page--left .pa__h { margin-top: var(--sp-4); }
+.pa__page--left .pa__blurb { margin-top: var(--sp-3); }
+.pa__page--left .pa__sealwrap { margin: var(--sp-5) auto 0; width: 150px; height: 150px; }
+.pa__page--left .pa__mrz { margin-top: auto; }
+.pa__page--left .pa__switch { margin-top: var(--sp-4); }
+
+/* ── Fields: readable labels, real input boxes ──────────── */
+.pa__form { gap: var(--sp-4); }
+.pa__row { gap: var(--sp-4); }
+.pf { gap: 6px; }
+.pf__label {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #4f4a3e;
+}
+.pf__input {
+  min-height: 46px;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid rgba(16, 20, 31, 0.16);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  transition: border-color var(--dur-2), box-shadow var(--dur-2), background var(--dur-2);
+}
+.pf__input::placeholder { color: rgba(16, 20, 31, 0.36); font-style: normal; }
+.pf__input:hover:not(:disabled) { border-color: rgba(16, 20, 31, 0.28); }
+.pf__input:focus {
+  border-color: #a8871f;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.28);
+}
+.pf__input[aria-invalid='true'] { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(166, 58, 50, 0.14); }
+.pf__wrap--secret .pf__input { padding-right: 4rem; }
+.pf__reveal { right: 12px; font-family: var(--font-body); font-size: 0.72rem; font-weight: 600; letter-spacing: 0; text-transform: none; }
+.pf__hint { font-size: 0.74rem; color: rgba(16, 20, 31, 0.45); }
+.pf__err { font-size: 0.78rem; }
+
+.pa__types-row { gap: var(--sp-2); margin-top: 6px; }
+.pa__type { padding: 10px 12px; border-radius: 10px; background: rgba(255, 255, 255, 0.55); }
+.pa__type-l { font-size: 0.9rem; }
+.pa__type-n { font-size: 0.72rem; margin-top: 2px; }
+.pa__type--on { background: rgba(201, 162, 39, 0.16); box-shadow: 0 0 0 1px #8a6f18; }
+
+/* The disclosure for the optional details */
+.pa__more {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: 'label icon' 'note icon';
+  align-items: center;
+  column-gap: var(--sp-3);
+  width: 100%;
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: 10px;
+  border: 1px dashed rgba(138, 111, 24, 0.45);
+  background: rgba(201, 162, 39, 0.05);
+  text-align: left;
+  color: var(--text-dark);
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition: background var(--dur-2), border-color var(--dur-2);
+}
+.pa__more:hover { background: rgba(201, 162, 39, 0.12); border-color: #8a6f18; }
+.pa__more-note { grid-area: note; font-weight: 400; font-size: 0.76rem; color: #6a6559; }
+.pa__more-icon {
+  grid-area: icon;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #0d4a31;
+  color: #f0e2b8;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.pa__more--open { border-style: solid; }
+.pa__morebox { display: grid; gap: var(--sp-4); }
+@media (prefers-reduced-motion: no-preference) {
+  .pa__morebox { animation: ps-fade-in var(--dur-3) var(--ease-out) both; }
+}
+
+/* A solid gold submit on paper. */
+.pa__form .btn--primary {
+  background: linear-gradient(180deg, #e2c060, #c9a227);
+  color: #10141f;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 8px 20px rgba(138, 111, 24, 0.28);
+}
+
+/* ── Header above the form, only where the left page is hidden ── */
+.pa__formhead { display: none; }
+@media (max-width: 860px) {
+  .pa.pa--open { padding-top: calc(var(--sp-8) + var(--sp-2)); }
+  .pa__formhead {
+    display: grid;
+    gap: 4px;
+    padding-bottom: var(--sp-4);
+    border-bottom: 1px solid rgba(16, 20, 31, 0.1);
+  }
+  .pa__formhead-h { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; color: var(--text-dark); }
+  .pa__formhead-switch { font-size: 0.88rem; color: #6a6559; }
+  .pa__formhead-switch .pa__link { min-height: 0; }
+}
+
+/* ── Left page, compact: seal beside the machine-readable lines ── */
+.pa__page--left .pa__crest .pa__doc { margin: 0; }
+.pa__page--left .pa__h { margin-top: var(--sp-5); }
+.pa__page--left .pa__data { margin-top: var(--sp-5); }
+.pa__sealrow {
+  margin-top: auto;
+  padding-top: var(--sp-5);
+  display: grid;
+  grid-template-columns: 124px minmax(0, 1fr);
+  gap: var(--sp-4);
+  align-items: center;
+}
+.pa__page--left .pa__sealrow .pa__sealwrap { margin: 0; width: 124px; height: 124px; }
+.pa__sealrow-text { display: grid; gap: var(--sp-3); min-width: 0; }
+.pa__page--left .pa__sealrow .pa__mrz { margin: 0; padding-top: 0; border-top: 0; font-size: 0.56rem; }
+.pa__page--left .pa__sealrow .pa__switch { margin: 0; }
+/* The stamp is sized for the old ring; centre it on the smaller one. */
+.pa__sealrow .pa__stamp { left: 50%; top: 50%; translate: -50% -50%; }
+
+@media (max-width: 860px) {
+  /* While stamping on a phone, only the seal row's seal comes back. */
+  .pa--stamping .pa__page--left > *:not(.pa__sealrow) { display: none; }
+  .pa--stamping .pa__sealrow { display: block; padding: 0; margin: 0; }
+  .pa--stamping .pa__sealrow-text { display: none; }
+}
+
+@media (max-width: 620px) {
+  /* Three short cards side by side; the note is the extra, the label is the choice. */
+  .pa__types-row { grid-template-columns: repeat(3, 1fr); }
+  .pa__type { padding: 10px 8px; text-align: center; }
+  .pa__type-n { display: none; }
+}
+
+@media (max-width: 860px) {
+  /* Outranks the older rule that hides every child but the bare seal. */
+  .pa--stamping .pa__page--left > .pa__sealrow { display: block; }
+}

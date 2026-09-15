@@ -7,6 +7,7 @@ import { JourneyProvider } from './context/JourneyContext.jsx';
 import { ProtectedRoute } from './components/layout/ProtectedRoute.jsx';
 import { AppLayout } from './components/layout/AppLayout.jsx';
 import { FlightLoader } from './components/brand/FlightLoader.jsx';
+import { RouteTransition } from './components/layout/RouteTransition.jsx';
 
 import Intro from './pages/Intro.jsx';
 import NotFound from './pages/NotFound.jsx';
@@ -100,6 +101,7 @@ export default function App() {
       <JourneyProvider>
         <a className="skip-link" href="#main">Skip to content</a>
         <ScrollReset />
+        <RouteTransition />
         <RouteLoading>
           <Routes>
             {/* ── The cinematic journey — full-bleed, no chrome ── */}

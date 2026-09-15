@@ -95,7 +95,10 @@ export function AppLayout() {
       )}
 
       <main id="main" className="app-main">
-        <Outlet />
+        {/* Keyed by path so each page fades in as the route curtain lifts. */}
+        <div key={pathname} className="route-in">
+          <Outlet />
+        </div>
       </main>
 
     </>

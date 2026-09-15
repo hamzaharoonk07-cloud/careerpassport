@@ -493,7 +493,7 @@ export default function Admin() {
 
         {error && <div className="auth__alert" style={{ marginTop: 'var(--sp-5)' }} role="alert">{error}</div>}
 
-        <div className="tw-body">
+        <div className="tw-body route-in" key={tab}>
           {tab === 'overview' && <Overview stats={stats} topMatches={topMatches} topSaved={topSaved} fb={fb} signups={signups} onOpen={setTab} />}
           {tab === 'careers' && <CareersPanel onError={setError} />}
           {tab === 'quiz' && <QuizPanel onError={setError} />}

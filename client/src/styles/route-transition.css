@@ -1,0 +1,86 @@
+/* ============================================================
+   Route transition — the curtain between pages
+   Covers on the change, holds long enough to read the
+   destination, then wipes off to the right with a gold edge.
+   Opacity and clip-path/transform only.
+   ============================================================ */
+
+.rtx {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-cinema) - 1);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.rtx__panel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(60% 50% at 50% 50%, rgba(201, 162, 39, 0.12), transparent 70%),
+    linear-gradient(180deg, #0a1128, #060911);
+  animation: rtx-wipe 760ms var(--ease-in-out) both;
+}
+
+.rtx__label {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--cream-100);
+  animation: rtx-label 760ms var(--ease-out) both;
+}
+
+/* The gold edge rides the curtain's left boundary as it uncovers. */
+.rtx__edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  background: linear-gradient(180deg, transparent, var(--gold-400) 30%, var(--gold-300) 50%, var(--gold-400) 70%, transparent);
+  box-shadow: 0 0 24px rgba(217, 184, 74, 0.7);
+  animation: rtx-edge 760ms var(--ease-in-out) both;
+}
+.rtx__plane {
+  position: absolute;
+  top: 50%;
+  left: -14px;
+  margin-top: -15px;
+  max-width: none;
+  color: var(--gold-300);
+  filter: drop-shadow(0 0 10px rgba(217, 184, 74, 0.8));
+}
+
+/* Transform, not clip-path, so the curtain and its gold edge run on the
+   same compositor clock and never drift apart mid-sweep. */
+@keyframes rtx-wipe {
+  0%, 38% { transform: translateX(0); }
+  100%    { transform: translateX(100%); }
+}
+@keyframes rtx-edge {
+  0%, 38% { transform: translateX(0); opacity: 0; }
+  42%     { opacity: 1; }
+  100%    { transform: translateX(100vw); opacity: 1; }
+}
+@keyframes rtx-label {
+  0%   { opacity: 0; transform: translateY(8px); }
+  18%  { opacity: 1; transform: none; }
+  36%  { opacity: 1; }
+  52%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* The page underneath settles in as the curtain lifts. Opacity only:
+   a transform here would become the containing block for every fixed
+   element on the page — video plates, modals — while it runs. */
+.route-in { animation: route-in 520ms var(--ease-out) 200ms both; }
+@keyframes route-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .route-in { animation-duration: 200ms; animation-delay: 0ms; }
+}

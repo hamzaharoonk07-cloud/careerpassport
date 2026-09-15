@@ -40,6 +40,7 @@ export function FlightLoader({ label = 'Climbing out', progress, done = false, o
   const flownRef = useRef(null);
   const planeRef = useRef(null);
   const altRef = useRef(null);
+  const routeRef = useRef(null);
   const pRef = useRef(determinate ? progress : 0);
 
   // Kept in a ref as well as state: the animation loop below reads it every
@@ -103,9 +104,7 @@ export function FlightLoader({ label = 'Climbing out', progress, done = false, o
     let shownFeet = -1;
 
     const paint = () => {
-      const pct = `${pos * 100}%`;
-      if (flownRef.current) flownRef.current.style.width = pct;
-      if (planeRef.current) planeRef.current.style.left = pct;
+      placeOnRoute(pos);
 
       const feet = Math.round((pos * CRUISE_FT) / 100) * 100;
       if (feet !== shownFeet) {
@@ -144,6 +143,27 @@ export function FlightLoader({ label = 'Climbing out', progress, done = false, o
     return () => { alive = false; cancelAnimationFrame(raf.current); clearTimeout(bail); };
   }, [determinate, progress, reduced, done]);
 
+  /* Puts the flown trail and the aircraft at a fraction of the climb.
+     The route is one SVG path with pathLength="1", so the trail is a dash of
+     length `pos`, and the aircraft sits at the same point along the curve,
+     nosed along its tangent. */
+  function placeOnRoute(pos) {
+    const route = routeRef.current;
+    if (flownRef.current) flownRef.current.style.strokeDasharray = `${pos} 1`;
+    if (!route || !planeRef.current) return;
+    const len = route.getTotalLength();
+    const at = Math.min(len, Math.max(0, pos * len));
+    const a = route.getPointAtLength(Math.max(0, at - 1));
+    const b = route.getPointAtLength(Math.min(len, at + 1));
+    const angle = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI;
+    const pt = route.getPointAtLength(at);
+    planeRef.current.setAttribute('transform', `translate(${pt.x} ${pt.y}) rotate(${angle})`);
+  }
+
+  // Keep the drawing in step with state-driven values (determinate progress,
+  // reduced motion, the final frame) as well as the frame loop.
+  useEffect(() => { placeOnRoute(pRef.current); });
+
   // Rounded to the nearest hundred feet: an altimeter that changed by single
   // feet sixty times a second would be noise, not a readout.
   const feet = Math.round((p * CRUISE_FT) / 100) * 100;
@@ -160,25 +180,58 @@ export function FlightLoader({ label = 'Climbing out', progress, done = false, o
       aria-valuetext={`${label} — ${feet.toLocaleString('en-US')} feet`}
       aria-label={label}
     >
-      <p className="fload__label">{atCruise ? 'Cruising altitude' : label}</p>
+      {/* The window: night sky, a lit horizon, cloud drifting past, and the
+          climb drawn as a curve from the runway to cruise. */}
+      <div className="fload__sky" aria-hidden="true">
+        <span className="fload__stars" />
+        <span className="fload__cloud fload__cloud--a" />
+        <span className="fload__cloud fload__cloud--b" />
+        <span className="fload__cloud fload__cloud--c" />
+        <svg className="fload__scene" viewBox="0 0 400 170" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="fload-trail" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stopColor="#c9a227" stopOpacity="0.2" />
+              <stop offset="1" stopColor="#f0d67a" />
+            </linearGradient>
+          </defs>
 
-      <div className="fload__track">
-        <span className="fload__path" />
-        <span className="fload__flown" ref={flownRef} style={{ width: `${p * 100}%` }} />
-        {/* The plane rides the head of the flown segment. `left` is a
-            percentage of the track and the translate re-centres it, so it
-            stays on the line at both ends instead of overhanging them. */}
-        <span className="fload__plane" ref={planeRef} style={{ left: `${p * 100}%` }} aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-            <path d="M21 14.5 13.5 12V5.5a1.5 1.5 0 0 0-3 0V12L3 14.5v2l7.5-2v4L8 20.5V22l4-1.2 4 1.2v-1.5L13.5 18.5v-4l7.5 2z" />
-          </svg>
-        </span>
+          {/* Horizon glow and runway */}
+          <ellipse className="fload__horizon" cx="200" cy="170" rx="260" ry="34" />
+          <line className="fload__ground" x1="0" y1="152" x2="400" y2="152" />
+          {[24, 44, 64, 84, 104].map((x) => (
+            <circle key={x} className="fload__runway" cx={x} cy="152" r="1.8" style={{ animationDelay: `${(x - 24) * 12}ms` }} />
+          ))}
+
+          {/* The climb */}
+          <path ref={routeRef} className="fload__route" d="M 30 148 C 150 146, 220 110, 370 30" pathLength="1" />
+          <path
+            ref={flownRef}
+            className="fload__flown"
+            d="M 30 148 C 150 146, 220 110, 370 30"
+            pathLength="1"
+            style={{ strokeDasharray: `${p} 1` }}
+          />
+          <circle className="fload__cruise-dot" cx="370" cy="30" r="4" />
+
+          {/* The aircraft, drawn nose-right so rotating it follows the tangent */}
+          <g ref={planeRef} className="fload__plane">
+            <circle className="fload__plane-glow" r="14" />
+            <path d="M13 0 L-5 -2.2 L-9 -11 L-12 -11 L-9 -2 L-13 -1.6 L-15 -5 L-17 -5 L-15.5 0 L-17 5 L-15 5 L-13 1.6 L-9 2 L-12 11 L-9 11 L-5 2.2 Z" />
+          </g>
+        </svg>
       </div>
 
-      <p className="fload__alt">
-        <span className="fload__alt-n" ref={altRef}>{feet.toLocaleString('en-US')}</span>
-        <span className="fload__alt-u">ft</span>
-      </p>
+      <div className="fload__hud">
+        <span className="fload__status">
+          <span className="fload__dot" />
+          {atCruise ? 'Cruising altitude' : label}
+        </span>
+        <span className="fload__alt">
+          <span className="fload__alt-k">ALT</span>
+          <span className="fload__alt-n" ref={altRef}>{feet.toLocaleString('en-US')}</span>
+          <span className="fload__alt-u">ft</span>
+        </span>
+      </div>
     </div>
   );
 }

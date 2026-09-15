@@ -5,7 +5,8 @@ import { SceneVideo } from '../components/media/SceneVideo.jsx';
 import { DepartureBoard } from '../components/brand/DepartureBoard.jsx';
 import { BoardingPass } from '../components/brand/BoardingPass.jsx';
 import { FlightSequence } from '../components/brand/FlightSequence.jsx';
-import { FieldIcon } from '../components/brand/FieldIcon.jsx';
+import { Itinerary } from '../components/brand/Itinerary.jsx';
+import { Wayfinding } from '../components/brand/Wayfinding.jsx';
 import { careerService } from '../services/career.service.js';
 import { quizService } from '../services/quiz.service.js';
 import { apiError } from '../services/api.js';
@@ -14,14 +15,7 @@ import { useJourney } from '../context/JourneyContext.jsx';
 import { FlightLoader, useLanding } from '../components/brand/FlightLoader.jsx';
 import { TabBar } from '../components/layout/TabBar.jsx';
 import '../styles/airport.css';
-
-/** The four terminal actions from the brief. */
-const ACTIONS = [
-  { key: 'explore', icon: 'cpu', title: 'Explore Careers', sub: 'Choose your destination' },
-  { key: 'journey', icon: 'line-chart', title: 'Your Journey', sub: 'Track your progress' },
-  { key: 'pass', icon: 'briefcase', title: 'Boarding Pass', sub: 'Your future awaits' },
-  { key: 'profile', icon: 'heart-pulse', title: 'My Profile', sub: 'Update your info' },
-];
+import '../styles/terminal.css';
 
 /**
  * The airport terminal.
@@ -50,6 +44,13 @@ export default function Airport() {
   const [landed, setLanded] = useState(null);
   const [showAll, setShowAll] = useState(false);
   const passRef = useRef(null);
+  const boardRef = useRef(null);
+  // The monitor's clock. A minute is the resolution anyone reads it at.
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 30000);
+    return () => clearInterval(t);
+  }, []);
 
   useEffect(() => {
     advance('station');
@@ -109,6 +110,7 @@ export default function Airport() {
   // A result row with no matches would satisfy `landed` while having nothing
   // to show, so the arrival itself is what the terminal branches on.
   const arrival = landed?.matches?.[0] || null;
+  const firstName = user?.name?.split(' ')[0] || 'traveller';
 
   /**
    * The gates the quiz actually pointed at.
@@ -210,69 +212,83 @@ export default function Airport() {
       <SceneVideo src="/videos/terminal.mp4" poster="/images/terminal.jpg" loop />
 
       <div className="wrap apt__inner">
-        <header className="apt__head">
+        <section className="thero">
           <div>
-            <p className="t-eyebrow">Passport {user?.passportNumber} · cleared for travel</p>
-            <h1 className="apt__welcome">
-              {arrival ? 'Welcome back' : 'Welcome to your journey'}
+            <Itinerary current={selected ? 2 : boardField ? 2 : 1} />
+            <h1 className="thero__greet">
+              Welcome {arrival ? 'back' : 'aboard'},
+              <span>{firstName}.</span>
             </h1>
-            <p className="apt__loc">
-              <span aria-hidden="true">📍</span>{' '}
+            <p className="thero__lead">
               {boardField
-                ? `International Terminal · ${boardField.name} gates open`
-                : 'International Terminal · Karachi, Pakistan'}
+                ? `The ${boardField.name} gates are open. Pick the career you want to fly to and we'll print your boarding pass and the full report.`
+                : 'Your passport is cleared. Tell us which field you want to explore and the departures board opens on its gates.'}
             </p>
           </div>
-        </header>
 
-        <div className="apt__actions">
-          {ACTIONS.map((a) => (
-            <button
-              key={a.key}
-              type="button"
-              className="apt__action"
-              onClick={() => {
-                if (a.key === 'explore') {
-                  // Before the quiz there is no board to scroll to.
-                  if (boardField) document.querySelector('.board3')?.scrollIntoView({ behavior: 'smooth' });
-                  else navigate('/interests');
-                }
-                if (a.key === 'journey') navigate('/dashboard');
-                if (a.key === 'pass') {
-                  if (boardField) passRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  else navigate('/interests');
-                }
-                if (a.key === 'profile') navigate('/dashboard');
-              }}
-            >
-              <span className="apt__action-icon"><FieldIcon name={a.icon} size={20} /></span>
-              <span className="apt__action-title">{a.title}</span>
-              <span className="apt__action-sub">{a.sub}</span>
-            </button>
-          ))}
-        </div>
-
-        {boardField && (
-          <section className="apt__landed">
-            <div className="apt__landed-row">
-              <div>
-                <p className="t-eyebrow">Your field</p>
-                <h2 className="apt__landed-title">{boardField.name}</h2>
-                <p className="apt__landed-sub">
-                  {arrival
-                    ? `Best quiz match: ${arrival.career.title} · ${arrival.score}%`
-                    : 'Choose a gate below to see the full report for that career.'}
-                </p>
-              </div>
-              <div className="row" style={{ flexWrap: 'wrap' }}>
-                <Button variant="ghost" to="/interests">Change field</Button>
-                <Button variant="ghost" onClick={() => setShowAll((v) => !v)}>
-                  {showAll ? `Only ${boardField.name}` : 'All destinations'}
-                </Button>
-              </div>
+          <aside className="finfo" aria-label="Flight information">
+            <div className="finfo__head">
+              <span>Flight information</span>
+              <span className="finfo__clock">
+                {now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
+              </span>
             </div>
-          </section>
-        )}
+            <dl className="finfo__rows">
+              <div className="finfo__row">
+                <dt>Passenger</dt>
+                <dd>{user?.name}</dd>
+              </div>
+              <div className="finfo__row">
+                <dt>Field</dt>
+                <dd className="finfo__big">{boardField?.name || 'Not chosen'}</dd>
+              </div>
+              <div className="finfo__row">
+                <dt>Gates</dt>
+                <dd>{boardField ? `${careers.filter((c) => c.field?.slug === boardField.slug).length} open` : 'Closed'}</dd>
+              </div>
+              {arrival && (
+                <div className="finfo__row">
+                  <dt>Best match</dt>
+                  <dd>{arrival.career.title} <span className="t-low">({arrival.score}%)</span></dd>
+                </div>
+              )}
+              <div className="finfo__row">
+                <dt>Passport</dt>
+                <dd className="finfo__mono">{user?.passportNumber}</dd>
+              </div>
+              <div className="finfo__row">
+                <dt>Status</dt>
+                <dd>
+                  <span className={`finfo__status ${selected ? '' : 'finfo__status--wait'}`}>
+                    {selected ? `Boarding · ${selected.career.title}` : boardField ? 'Choose a gate' : 'Check in'}
+                  </span>
+                </dd>
+              </div>
+            </dl>
+          </aside>
+        </section>
+
+        <div className="apt__sign">
+          <Wayfinding
+            signs={[
+              boardField
+                ? {
+                    picto: 'departures', arrow: 'down', title: 'Departures',
+                    detail: `${boardField.name} gates`,
+                    onClick: () => boardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+                  }
+                : { picto: 'departures', arrow: 'right', title: 'Check in', detail: 'Choose your field', to: '/interests' },
+              {
+                picto: 'pass', arrow: 'down', title: 'Boarding pass',
+                detail: selected ? selected.career.title : 'Pick a gate first',
+                disabled: !selected,
+                onClick: () => passRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+              },
+              { picto: 'change', arrow: 'right', title: 'Change field', detail: 'Or take 7 questions', to: '/interests' },
+              { picto: 'lounge', arrow: 'right', title: 'Dashboard', detail: 'Your saved careers', to: '/dashboard' },
+            ]}
+          />
+        </div>
 
         {!boardField ? (
           /*
@@ -297,7 +313,18 @@ export default function Airport() {
             </div>
           </section>
         ) : (
-        <div className="apt__grid">
+        <div className="apt__grid" ref={boardRef}>
+          <div className="tboard__bar">
+            <p className="t-mid">Tap a gate to print your boarding pass.</p>
+            <div className="tboard__toggle" role="group" aria-label="Which gates to show">
+              <button type="button" aria-pressed={!showAll} onClick={() => setShowAll(false)}>
+                {boardField?.name}
+              </button>
+              <button type="button" aria-pressed={showAll} onClick={() => setShowAll(true)}>
+                All fields
+              </button>
+            </div>
+          </div>
           <DepartureBoard
             careers={gateCareers}
             onSelect={select}

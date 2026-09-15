@@ -7,6 +7,9 @@ import { quizService } from '../services/quiz.service.js';
 import { careerService } from '../services/career.service.js';
 import { apiError } from '../services/api.js';
 import { formatSalary } from './Result.jsx';
+import { BoardingPass } from '../components/brand/BoardingPass.jsx';
+import { Itinerary } from '../components/brand/Itinerary.jsx';
+import '../styles/terminal.css';
 import { useAuth } from '../context/AuthContext.jsx';
 import '../styles/dashboard.css';
 
@@ -46,13 +49,28 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [noteFor, setNoteFor] = useState(null);
+  // Board position of the top match, so its pass prints the same gate the
+  // terminal gave it.
+  const [gateIndex, setGateIndex] = useState(0);
 
   const load = () => {
     setLoading(true);
-    Promise.allSettled([quizService.latestResult(), careerService.listSaved()]).then(
-      ([res, sav]) => {
+    Promise.allSettled([
+      quizService.latestResult(),
+      careerService.listSaved(),
+      careerService.list({ limit: 60 }),
+    ]).then(
+      ([res, sav, bank]) => {
         // A missing result is an empty state, not an error — a new user has none.
         if (res.status === 'fulfilled') setResult(res.value);
+        if (res.status === 'fulfilled' && bank.status === 'fulfilled') {
+          // Same order the departures board uses: field, then title.
+          const sorted = [...(bank.value.careers || [])].sort(
+            (a, b) => (a.field?.order ?? 99) - (b.field?.order ?? 99) || a.title.localeCompare(b.title)
+          );
+          const slug = res.value?.matches?.[0]?.career?.slug;
+          setGateIndex(Math.max(0, sorted.findIndex((c) => c.slug === slug)));
+        }
         if (sav.status === 'fulfilled') setSaved(sav.value);
         else setError(apiError(sav.reason));
         setLoading(false);
@@ -90,31 +108,52 @@ export default function Dashboard() {
         <SceneVideo src="/videos/cabin.mp4" poster="/images/cabin.jpg" loop />
       </div>
 
-      {/* ── Boarding-pass strip ──────────────────────────── */}
-      <header className="dash__strip">
-        <div className="dash__stub">
-          <span className="dash__stub-k">Passport</span>
-          <span className="dash__stub-v">{user?.passportNumber || '—'}</span>
-          <span className="dash__stub-k" style={{ marginTop: 'var(--sp-2)' }}>Class</span>
-          <span className="dash__badge">{user?.accountType || 'student'}</span>
-          <span className="dash__stub-k" style={{ marginTop: 'var(--sp-2)' }}>Status</span>
-          <span className="dash__badge">{top ? 'Arrived' : 'Not checked in'}</span>
-        </div>
-        <div className="dash__strip-main">
-          <div>
-            <div className="dash__greet">Welcome back, {firstName}.</div>
-            <p className="dash__sub">
-              {top
-                ? `Your route is filed. Last flown ${fmtDate(result.takenAt)}.`
-                : 'No flight on record yet. The terminal is waiting.'}
-            </p>
-          </div>
-          <div className="dash__strip-actions">
+      {/* ── Hero: the traveller and their boarding pass ───── */}
+      <header className="dhero">
+        <div className="dhero__copy">
+          <Itinerary current={top ? 4 : 1} />
+          <h1 className="thero__greet">
+            Welcome back,
+            <span>{firstName}.</span>
+          </h1>
+          <p className="thero__lead">
             {top
-              ? <Button to="/result">Full result</Button>
-              : <Button to="/airport">Start the journey</Button>}
-            <Button variant="secondary" to="/careers">Departures board</Button>
+              ? `Your best match is ${top.career.title} at ${top.score}%, from the quiz you took on ${fmtDate(result.takenAt)}.`
+              : 'No flight on record yet. Choose a field or answer seven questions and your boarding pass is printed here.'}
+          </p>
+          <div className="thero__actions">
+            {top ? (
+              <>
+                <Button size="lg" to="/result">Read your report</Button>
+                <Button size="lg" variant="secondary" to="/airport">Go to the gates</Button>
+                <Button variant="ghost" to="/quiz?mode=quick">Retake 7 questions</Button>
+              </>
+            ) : (
+              <>
+                <Button size="lg" to="/interests">Choose your field</Button>
+                <Button size="lg" variant="secondary" to="/quiz?mode=quick">Answer 7 questions</Button>
+              </>
+            )}
           </div>
+          <dl className="dhero__facts">
+            <div><dt>Passport</dt><dd className="finfo__mono">{user?.passportNumber || '—'}</dd></div>
+            <div><dt>Class</dt><dd>{user?.accountType || 'student'}</dd></div>
+            <div><dt>Saved careers</dt><dd>{saved.length}</dd></div>
+          </dl>
+        </div>
+
+        <div className="dhero__pass">
+          {top ? (
+            <>
+              <BoardingPass user={user} career={top.career} index={gateIndex} issued />
+              <p className="dhero__why">{top.reasons?.[0]}</p>
+            </>
+          ) : (
+            <div className="dhero__blank">
+              <span className="dhero__blank-t">Boarding pass</span>
+              <span className="dhero__blank-d">Printed when you choose a destination.</span>
+            </div>
+          )}
         </div>
       </header>
 
@@ -122,31 +161,6 @@ export default function Dashboard() {
 
       {!loading && (
         <div className="dash__grid">
-          {/* ── Flight status: the match ─────────────────── */}
-          <Board title="Flight status" note={top ? 'Confirmed' : 'Awaiting departure'} wide>
-            {top ? (
-              <div className="dash__status">
-                <span className="dash__pct">{top.score}%</span>
-                <div>
-                  <div className="dash__dest">{top.career.title}</div>
-                  <div className="dash__meta">
-                    {top.career.field?.name} · flown {fmtDate(result.takenAt)}
-                  </div>
-                  <p className="dash__why">{top.reasons[0]}</p>
-                </div>
-                <div className="dash__status-actions">
-                  <Button size="sm" to="/result">Full result</Button>
-                  <Button size="sm" variant="ghost" to="/quiz">Retake</Button>
-                </div>
-              </div>
-            ) : (
-              <div className="dash__empty">
-                <p>You have not taken the quiz yet, so there is nothing to match against.</p>
-                <Button to="/airport">Take the journey</Button>
-              </div>
-            )}
-          </Board>
-
           {/* ── The counsel, in full ──────────────────────
               It lived only on /result, which meant a returning traveller
               saw a percentage and no reasoning — the part that actually

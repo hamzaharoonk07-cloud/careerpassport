@@ -1,0 +1,300 @@
+/* ============================================================
+   Terminal furniture — shared by the terminal and the dashboard
+   The flight path, the overhead signage, the flight-info monitor.
+   ============================================================ */
+
+/* ── Flight path ─────────────────────────────────────────── */
+.itin {
+  --itin-p: 0;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-width: 560px;
+}
+/* The route: dashed where it is still ahead, solid gold where it is flown.
+   Both lines run between the first and last node centres. */
+.itin::before,
+.itin::after {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 12.5%;
+  height: 2px;
+}
+.itin::before {
+  right: 12.5%;
+  background: repeating-linear-gradient(90deg, rgba(245, 240, 230, 0.28) 0 6px, transparent 6px 12px);
+}
+.itin::after {
+  width: calc(75% * var(--itin-p));
+  background: linear-gradient(90deg, var(--gold-500), var(--gold-300));
+  box-shadow: 0 0 12px rgba(201, 162, 39, 0.5);
+}
+.itin__stop { position: relative; z-index: 1; display: grid; justify-items: center; gap: var(--sp-2); }
+.itin__node {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(245, 240, 230, 0.3);
+  background: var(--ink-900);
+  color: var(--ink-900);
+}
+.itin__stop--done .itin__node { border-color: var(--gold-500); background: var(--gold-500); }
+.itin__stop--now .itin__node {
+  border-color: var(--gold-300);
+  background: var(--ink-800);
+  color: var(--gold-300);
+  box-shadow: 0 0 0 6px rgba(201, 162, 39, 0.16);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .itin__stop--now .itin__node { animation: itin-pulse 2.4s var(--ease-in-out) infinite; }
+}
+@keyframes itin-pulse {
+  50% { box-shadow: 0 0 0 11px rgba(201, 162, 39, 0.04); }
+}
+.itin__label { font-size: 0.8rem; font-weight: 500; color: var(--text-low); }
+.itin__stop--done .itin__label { color: var(--text-mid); }
+.itin__stop--now .itin__label { color: var(--gold-300); font-weight: 600; }
+
+/* ── Overhead signage ────────────────────────────────────── */
+.wayf {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: #04060c;
+  border-block: 3px solid var(--gold-500);
+  border-radius: 4px;
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+/* The two hanging rods, so it reads as a sign and not a toolbar. */
+.wayf::before,
+.wayf::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  width: 3px;
+  height: 22px;
+  background: linear-gradient(180deg, transparent, #2a2f3d);
+}
+.wayf::before { left: 14%; }
+.wayf::after { right: 14%; }
+
+.wayf__sign {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-4) var(--sp-5);
+  text-align: left;
+  color: var(--cream-100);
+  transition: background var(--dur-2) var(--ease-out);
+}
+.wayf__sign + .wayf__sign { border-left: 1px solid rgba(245, 240, 230, 0.1); }
+.wayf__sign:hover:not(:disabled) { background: rgba(201, 162, 39, 0.09); }
+.wayf__sign:disabled { cursor: default; }
+.wayf__sign:disabled .wayf__picto { background: #3a3526; color: #857a55; }
+.wayf__sign:disabled .wayf__arrow { opacity: 0.25; }
+
+.wayf__picto {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 5px;
+  background: var(--gold-400);
+  color: #04060c;
+}
+.wayf__text { display: grid; gap: 2px; min-width: 0; }
+.wayf__title {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+}
+.wayf__detail {
+  font-size: 0.8rem;
+  color: #a8adb9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wayf__arrow { color: var(--gold-400); transition: transform var(--dur-2) var(--ease-out); }
+.wayf__sign:hover:not(:disabled) .wayf__arrow { transform: translateX(3px); }
+.wayf__sign:hover:not(:disabled) .wayf__arrow:has(path[d^='M12 4']) { transform: translateY(3px); }
+
+@media (max-width: 1100px) {
+  .wayf { grid-template-columns: repeat(2, 1fr); }
+  .wayf__sign:nth-child(3) { border-left: 0; }
+  .wayf__sign:nth-child(n + 3) { border-top: 1px solid rgba(245, 240, 230, 0.1); }
+}
+@media (max-width: 560px) {
+  .wayf { grid-template-columns: 1fr; }
+  .wayf__sign + .wayf__sign { border-left: 0; border-top: 1px solid rgba(245, 240, 230, 0.1); }
+  .wayf::before, .wayf::after { display: none; }
+}
+
+/* ── Terminal hero ───────────────────────────────────────── */
+.thero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+  gap: var(--sp-7);
+  align-items: end;
+}
+.thero__greet {
+  margin-top: var(--sp-6);
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5.6vw, 4.6rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--text-hi);
+  text-shadow: 0 4px 40px rgba(6, 9, 17, 0.8);
+}
+.thero__greet span { display: block; color: var(--gold-300); }
+.thero__lead {
+  margin-top: var(--sp-5);
+  max-width: 46ch;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--cream-200);
+  text-shadow: 0 2px 16px rgba(6, 9, 17, 0.9);
+}
+.thero__actions { margin-top: var(--sp-6); display: flex; gap: var(--sp-3); flex-wrap: wrap; }
+
+/* Flight-information monitor */
+.finfo {
+  border-radius: 10px;
+  border: 1px solid #232a3d;
+  background: linear-gradient(180deg, #0b1122, #060911);
+  box-shadow: var(--sh-4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+.finfo__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--sp-3) var(--sp-5);
+  background: var(--gold-500);
+  color: #04060c;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.finfo__clock { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.finfo__rows { margin: 0; padding: var(--sp-2) 0; }
+.finfo__row {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: var(--sp-4);
+  align-items: baseline;
+  padding: var(--sp-3) var(--sp-5);
+}
+.finfo__row + .finfo__row { border-top: 1px solid rgba(245, 240, 230, 0.06); }
+.finfo__row dt { font-size: 0.8rem; color: var(--text-low); }
+.finfo__row dd { margin: 0; color: var(--text-hi); font-weight: 600; min-width: 0; }
+.finfo__big { font-family: var(--font-display); font-size: 1.35rem; color: var(--gold-300) !important; }
+.finfo__mono { font-family: var(--font-mono); letter-spacing: 0.04em; }
+.finfo__status { display: inline-flex; align-items: center; gap: var(--sp-2); color: #6fd3a3 !important; }
+.finfo__status::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 10px currentColor;
+}
+.finfo__status--wait { color: var(--gold-300) !important; }
+
+@media (max-width: 900px) {
+  .thero { grid-template-columns: 1fr; gap: var(--sp-6); align-items: start; }
+}
+
+/* ── Board toolbar ───────────────────────────────────────── */
+.tboard__bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+}
+
+/* Terminal page spacing: the sign hangs below the hero with room for its rods. */
+.apt__sign { margin-top: var(--sp-8); }
+.apt__grid { margin-top: var(--sp-8) !important; scroll-margin-top: var(--sp-6); }
+.apt .apt__checkin { margin-top: var(--sp-7); }
+.tboard__title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; color: var(--text-hi); }
+.tboard__toggle {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(245, 240, 230, 0.14);
+  background: rgba(6, 9, 17, 0.7);
+}
+.tboard__toggle button {
+  padding: 6px 16px;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-sm);
+  color: var(--text-mid);
+}
+.tboard__toggle button[aria-pressed='true'] { background: var(--gold-500); color: var(--ink-900); font-weight: 600; }
+
+/* ── Dashboard hero ──────────────────────────────────────── */
+.dhero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 620px);
+  gap: var(--sp-7);
+  align-items: center;
+  padding-block: var(--sp-4) var(--sp-7);
+}
+.dhero__facts {
+  margin: var(--sp-6) 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3) var(--sp-7);
+  padding-top: var(--sp-5);
+  border-top: 1px solid rgba(245, 240, 230, 0.1);
+}
+.dhero__facts dt { font-size: 0.78rem; color: var(--text-low); }
+.dhero__facts dd { margin: 2px 0 0; font-weight: 600; color: var(--text-hi); text-transform: capitalize; }
+.dhero__facts dd.finfo__mono { text-transform: none; color: var(--gold-300); }
+
+.dhero__pass { display: grid; gap: var(--sp-4); justify-items: stretch; }
+.dhero__pass .bpass { max-width: none; transform-origin: 30% 50%; }
+@media (min-width: 1101px) {
+  .dhero__pass .bpass { rotate: 2deg; }
+}
+.dhero__why {
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--text-mid);
+  padding-left: var(--sp-4);
+  border-left: 2px solid var(--gold-500);
+}
+.dhero__blank {
+  display: grid;
+  place-content: center;
+  gap: var(--sp-2);
+  min-height: 260px;
+  text-align: center;
+  border-radius: var(--r-md);
+  border: 2px dashed rgba(201, 162, 39, 0.35);
+  background: rgba(6, 9, 17, 0.5);
+}
+.dhero__blank-t { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; color: var(--text-hi); }
+.dhero__blank-d { color: var(--text-low); }
+
+@media (max-width: 1100px) {
+  .dhero { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .dhero__pass .bpass { grid-template-columns: 1fr; }
+  .dhero__pass .bpass__stub { display: none; }
+}
+
+/* The pass takes half the row here, so the greeting has less room than on the terminal. */
+.dhero .thero__greet { font-size: clamp(2.2rem, 4.2vw, 3.7rem); }

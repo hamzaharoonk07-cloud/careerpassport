@@ -146,7 +146,9 @@
   color: var(--ink-900);
   animation: ps-spin 620ms linear infinite, btn-pop 240ms var(--ease-impact) both;
 }
-@keyframes btn-pop { from { transform: scale(0.4); opacity: 0; } }
+/* `scale`, not `transform`: the spin already owns transform, and a second
+   animation on the same property would freeze the rotation. */
+@keyframes btn-pop { from { scale: 0.4; opacity: 0; } }
 .btn--secondary .btn__spinner, .btn--ghost .btn__spinner, .btn--danger .btn__spinner { color: var(--gold-400); }
 
 @media (prefers-reduced-motion: reduce) {

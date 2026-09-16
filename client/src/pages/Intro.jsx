@@ -72,7 +72,7 @@ export default function Intro() {
             mark: <div className="sfilm__mark"><Logo size={54} /></div>,
             eyebrow: 'PathSeeker · Aptech TechWiz',
             title: <>Your career,<br />stamped and routed.</>,
-            body: `Career guidance for students, graduates and working professionals. Ten honest questions, matched against ${careersPhrase} — with the reasoning, the trade-offs and the route in.`,
+            body: `Career guidance for students, graduates and working professionals. Seven honest questions, matched against ${careersPhrase} — with the reasoning, the trade-offs and the route in.`,
             actions: loading ? (
               <p className="t-low">Checking your session…</p>
             ) : isAuthed ? (
@@ -108,8 +108,8 @@ export default function Intro() {
           {
             at: 0.34,
             eyebrow: 'Step 03 · Departure',
-            title: 'Ten questions, taken at altitude.',
-            body: 'No right answers and nothing to revise. How you solve problems, where you do your best work, what you would want true in ten years. Three minutes — and the bank holds three phrasings of every question, so a retake asks different ones.',
+            title: 'Seven questions, taken at altitude.',
+            body: 'No right answers and nothing to revise. Where you would want to work, what you would want to be called, which problem you would take on. About two minutes — and the bank holds other phrasings and a longer version, so a retake is never the same run twice.',
           },
           {
             at: 0.47,

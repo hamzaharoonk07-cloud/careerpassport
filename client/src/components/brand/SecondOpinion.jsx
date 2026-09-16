@@ -104,7 +104,7 @@ export function SecondOpinion({ result, career }) {
           <p>
             Your strongest match was <Link to={`/careers/${top.career.slug}`}>{top.career.title}</Link>{' '}
             at {top.score}%. If you already know why this one suits you better, that is a real answer —
-            the quiz measured ten questions, and you have the rest of the information.
+            the quiz measured a handful of questions, and you have the rest of the information.
           </p>
         </div>
       )}

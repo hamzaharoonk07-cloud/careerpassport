@@ -25,7 +25,7 @@ const DIMENSION_LABEL = {
 /**
  * The career quiz.
  *
- * Ten questions, one at a time, no page reload. Answers are written to
+ * Seven questions, one at a time, no page reload. Answers are written to
  * localStorage on every selection so a dropped connection or a closed tab
  * never costs the user their progress — the brief calls this out and it is
  * the single most annoying thing to get wrong in a quiz.
@@ -33,11 +33,11 @@ const DIMENSION_LABEL = {
 export default function Quiz() {
   const navigate = useNavigate();
   const { advance, chooseField } = useJourney();
-  // 'quick' is the seven-question path for a traveller who is not sure which
-  // field they want. Each mode keeps its own draft, so abandoning one never
-  // restores half-answered questions into the other.
+  // Seven questions is the quiz. ?mode=full asks every slot in the bank for
+  // anyone who wants the longer version; each mode keeps its own draft, so
+  // abandoning one never restores half-answered questions into the other.
   const [params] = useSearchParams();
-  const mode = params.get('mode') === 'quick' ? 'quick' : 'full';
+  const mode = params.get('mode') === 'full' ? 'full' : 'quick';
   const DRAFT_KEY = `pathseeker.quiz.draft.${mode}`;
 
   const [questions, setQuestions] = useState([]);
@@ -172,12 +172,14 @@ export default function Quiz() {
   return (
     <main className="qz">
       <div className="wrap-narrow">
-        {mode === 'quick' && (
-          <div className="qz__mode">
-            <span className="qz__mode-badge">Quick check · 7 questions</span>
-            <Link to="/interests" className="qz__mode-link">I already know my field</Link>
-          </div>
-        )}
+        <div className="qz__mode">
+          <span className="qz__mode-badge">
+            {mode === 'quick' ? `${questions.length || 7} questions · about 2 minutes` : `The long version · ${questions.length || 31} questions`}
+          </span>
+          <Link to={mode === 'quick' ? '/quiz?mode=full' : '/quiz'} className="qz__mode-link">
+            {mode === 'quick' ? 'Take the longer version' : 'Back to the short quiz'}
+          </Link>
+        </div>
         <div className="qz__bar-wrap">
           <div className="qz__meta">
             <span>Question <strong>{String(index + 1).padStart(2, '0')}</strong> / {String(questions.length).padStart(2, '0')}</span>

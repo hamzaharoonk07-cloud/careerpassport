@@ -119,6 +119,13 @@ export function QuizPanel({ onError }) {
                 </button>
                 <span className="atable__mono atable__dim">{q.dimension}</span>
                 {!q.active && <span className="atag">retired</span>}
+                {/* The quiz refuses a question nobody can answer, so say so
+                    here rather than letting it look live and serve nothing. */}
+                {(q.options?.length || 0) < 2 && (
+                  <span className="atag atag--warn" title="A question needs at least two options before the quiz will serve it">
+                    not served · {q.options?.length || 0} option{q.options?.length === 1 ? '' : 's'}
+                  </span>
+                )}
                 <span className="atable__acts">
                   <button type="button" className="alink" onClick={() => setEditingQ({ ...q })}>Edit</button>
                   <button type="button" className="alink alink--bad" onClick={() => setRemoving({ kind: 'question', item: q })}>Delete</button>

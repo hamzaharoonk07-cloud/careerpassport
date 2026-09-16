@@ -173,6 +173,8 @@ textarea.af__input { min-height: auto; resize: vertical; line-height: 1.6; }
   color: var(--text-low);
 }
 .atag--on { border-color: rgba(201, 162, 39, 0.42); background: rgba(201, 162, 39, 0.12); color: var(--gold-300); }
+/* Something the product will refuse to use until it is fixed. */
+.atag--warn { border-color: rgba(180, 121, 31, 0.5); background: rgba(180, 121, 31, 0.14); color: #e2b35c; }
 
 /* ── Section panel — heading, subtitle, box ──────────────────── */
 .apanel { margin-top: var(--sp-6); }

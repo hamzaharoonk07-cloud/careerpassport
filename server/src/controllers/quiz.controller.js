@@ -91,9 +91,40 @@ function chooseVariants(questions, seenIds) {
  */
 export const QUICK_SLOTS = Object.freeze([20, 26, 27, 28, 29, 30, 31]);
 
+/** How many slots the short quiz aims for when the preferred ones are missing. */
+const QUICK_TARGET = QUICK_SLOTS.length;
+
 const isQuick = (mode) => mode === 'quick';
-const inMode = (questions, mode) =>
-  isQuick(mode) ? questions.filter((q) => QUICK_SLOTS.includes(q.order)) : questions;
+
+/**
+ * The questions an attempt may draw on.
+ *
+ * Two things are enforced here rather than trusted:
+ *
+ * A question with fewer than two options is never served. The admin panel
+ * creates a question first and its options after, so a half-finished
+ * question exists in the database for as long as that takes — and one was
+ * reaching the quiz as a prompt with nothing to answer.
+ *
+ * The short quiz prefers QUICK_SLOTS, but a database whose bank was edited
+ * or only partly seeded may not have those slots at all. Rather than serving
+ * two questions, or none, it tops up from whatever other slots exist, lowest
+ * order first, so the same set is chosen on submit as on serve.
+ */
+const answerable = (questions) => questions.filter((q) => (q.options?.length || 0) >= 2);
+
+const inMode = (questions, mode) => {
+  const usable = answerable(questions);
+  if (!isQuick(mode)) return usable;
+
+  const slots = [...new Set(usable.map((q) => q.order))].sort((a, b) => a - b);
+  const chosen = slots.filter((o) => QUICK_SLOTS.includes(o));
+  for (const o of slots) {
+    if (chosen.length >= QUICK_TARGET) break;
+    if (!chosen.includes(o)) chosen.push(o);
+  }
+  return usable.filter((q) => chosen.includes(q.order));
+};
 
 export const getQuestions = asyncHandler(async (req, res) => {
   const mode = isQuick(req.query.mode) ? 'quick' : 'full';
@@ -112,6 +143,12 @@ export const getQuestions = asyncHandler(async (req, res) => {
     .lean();
 
   const questions = chooseVariants(all, previous?.askedQuestions || []);
+
+  if (!questions.length) {
+    throw ApiError.badRequest(
+      'The quiz has no answerable questions yet. An administrator needs to add questions with at least two options.'
+    );
+  }
 
   const safe = questions.map((q) => ({
     id: q._id,
@@ -143,7 +180,11 @@ export const submitQuiz = asyncHandler(async (req, res) => {
     mode
   );
 
-  if (!questions.length) throw ApiError.badRequest('The quiz is not available right now.');
+  if (!questions.length) {
+    throw ApiError.badRequest(
+      'The quiz has no answerable questions yet. An administrator needs to add questions with at least two options.'
+    );
+  }
 
   // Count slots, not rows. The bank holds several phrasings of each
   // measurement and an attempt is served one per slot, so comparing against
